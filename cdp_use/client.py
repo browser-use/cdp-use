@@ -101,36 +101,41 @@ class WebSocketLogFilter(logging.Filter):
             
         # === GENERIC PROCESSING ===
         
-        # Parse CDP messages using regex (don't use JSON parsing as websockets library modifies it)
-        if ' TEXT ' in msg:
+        # Parse CDP messages - be flexible with regex matching
+        if 'TEXT' in msg:
             # Determine direction
-            is_outgoing = '> TEXT' in msg
+            is_outgoing = '>' in msg[:10]  # Check start of message for direction
             
-            # Extract size if present
-            size_match = re.search(r'\[(\d+) bytes\]$', msg)
+            # Extract and handle size
+            size_match = re.search(r'\[(\d+) bytes\]', msg)
             if size_match:
                 size_bytes = int(size_match.group(1))
                 # Only show size if > 5kb
                 size_str = f' [{size_bytes // 1024}kb]' if size_bytes > 5120 else ''
+                # Remove size from message for cleaner parsing
+                msg_clean = msg[:msg.rfind('[')].strip() if '[' in msg else msg
             else:
                 size_str = ''
+                msg_clean = msg
             
-            # Extract id (both quoted and unquoted)
-            id_match = re.search(r'(?:"id":|id:)\s*(\d+)', msg)
+            # Extract id (flexible)
+            id_match = re.search(r'(?:"id":|id:)\s*(\d+)', msg_clean)
             msg_id = id_match.group(1) if id_match else None
             
-            # Extract method (both quoted and unquoted)
-            method_match = re.search(r'(?:"method":\s*"|method:\s*)([A-Za-z.]+)', msg)
+            # Extract method (flexible)
+            method_match = re.search(r'(?:"method":|method:)\s*"?([A-Za-z.]+)', msg_clean)
             method = method_match.group(1) if method_match else None
             
+            # Remove quotes from entire message for cleaner output
+            msg_clean = msg_clean.replace('"', '')
+            
+            # Build formatted message based on what we found
             if is_outgoing and msg_id and method:
-                # Outgoing request - extract params
-                params_match = re.search(r'(?:"params":|params:)\s*({[^}]*})', msg)
-                params_str = params_match.group(1) if params_match else '{}'
-                # Remove quotes
-                params_str = params_str.replace('"', '')
+                # Outgoing request
+                params_match = re.search(r'(?:params:)\s*({[^}]*})', msg_clean)
+                params_str = params_match.group(1) if params_match else ''
                 
-                if params_str == '{}':
+                if params_str == '{}' or not params_str:
                     record.msg = f'🌎 ← #{msg_id}: {method}(){size_str}'
                 else:
                     record.msg = f'🌎 ← #{msg_id}: {method}({params_str}){size_str}'
@@ -138,14 +143,15 @@ class WebSocketLogFilter(logging.Filter):
                 return True
                 
             elif not is_outgoing and msg_id:
-                # Check for result
-                if 'result:' in msg or '"result":' in msg:
-                    # Extract result content
-                    result_match = re.search(r'(?:"result":|result:)\s*({[^}]*(?:{[^}]*}[^}]*)*})', msg)
+                # Incoming response
+                if 'result:' in msg_clean:
+                    # Extract whatever comes after result:
+                    result_match = re.search(r'result:\s*({.*})', msg_clean)
                     if result_match:
                         result_str = result_match.group(1)
-                        # Remove quotes
-                        result_str = result_str.replace('"', '')
+                        
+                        # Clean up common artifacts
+                        result_str = re.sub(r'},?sessionId:[^}]*}?$', '}', result_str)
                         
                         # Suppress empty results
                         if result_str == '{}':
@@ -159,27 +165,26 @@ class WebSocketLogFilter(logging.Filter):
                         record.args = ()
                         return True
                         
-                # Check for error
-                elif 'error:' in msg or '"error":' in msg:
-                    error_match = re.search(r'(?:"error":|error:)\s*({[^}]*})', msg)
+                elif 'error:' in msg_clean:
+                    error_match = re.search(r'error:\s*({[^}]*})', msg_clean)
                     error_str = error_match.group(1) if error_match else 'error'
-                    error_str = error_str.replace('"', '')
                     record.msg = f'🌎 → #{msg_id}: ❌ {error_str}{size_str}'
                     record.args = ()
                     return True
                     
             elif not is_outgoing and method:
-                # Event - extract params
-                params_match = re.search(r'(?:"params":|params:)\s*({[^}]*(?:{[^}]*}[^}]*)*})', msg)
-                params_str = params_match.group(1) if params_match else '{}'
-                # Remove quotes
-                params_str = params_str.replace('"', '')
+                # Event
+                params_match = re.search(r'params:\s*({.*})', msg_clean)
+                params_str = params_match.group(1) if params_match else ''
+                
+                # Clean up common artifacts
+                params_str = re.sub(r'},?sessionId:[^}]*}?$', '}', params_str)
                 
                 # Truncate if too long
                 if len(params_str) > 200:
                     params_str = params_str[:200] + '...'
                 
-                if params_str == '{}':
+                if params_str == '{}' or not params_str:
                     record.msg = f'🌎 → Event: {method}(){size_str}'
                 else:
                     record.msg = f'🌎 → Event: {method}({params_str}){size_str}'
