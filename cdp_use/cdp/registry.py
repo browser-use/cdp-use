@@ -41,7 +41,7 @@ class EventRegistry:
         logger.debug(f"Unregistering handler for {method}")
         self._handlers.pop(method, None)
 
-    def handle_event(
+    async def handle_event(
         self,
         method: str,
         params: Any,
@@ -60,7 +60,17 @@ class EventRegistry:
         """
         if method in self._handlers:
             try:
-                self._handlers[method](params, session_id)
+                import asyncio
+                import inspect
+                handler = self._handlers[method]
+                
+                # Check if handler is async
+                if inspect.iscoroutinefunction(handler):
+                    # Await async handlers
+                    await handler(params, session_id)
+                else:
+                    # Call sync handlers directly
+                    handler(params, session_id)
                 return True
             except Exception as e:
                 logger.error(f"Error in event handler for {method}: {e}")

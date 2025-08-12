@@ -311,7 +311,7 @@ class CDPClient:
                     # logger.debug(f"Received event: {method} (session: {session_id})")
 
                     # Call registered event handler if available
-                    handled = self._event_registry.handle_event(
+                    handled = await self._event_registry.handle_event(
                         method, params, session_id
                     )
                     if not handled:
