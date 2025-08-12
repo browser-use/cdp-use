@@ -294,13 +294,19 @@ class CDPClient:
                 # Handle response messages (with id)
                 if "id" in data and data["id"] in self.pending_requests:
                     future = self.pending_requests.pop(data["id"])
-                    if "error" in data:
-                        logger.error(
-                            f"CDP Error for request {data['id']}: {data['error']}"
-                        )
-                        future.set_exception(RuntimeError(data["error"]))
+                    # Check if future is already done to avoid InvalidStateError
+                    if not future.done():
+                        if "error" in data:
+                            logger.error(
+                                f"CDP Error for request {data['id']}: {data['error']}"
+                            )
+                            future.set_exception(RuntimeError(data["error"]))
+                        else:
+                            future.set_result(data["result"])
                     else:
-                        future.set_result(data["result"])
+                        logger.warning(
+                            f"Received duplicate response for request {data['id']} - ignoring"
+                        )
 
                 # Handle event messages (without id, but with method)
                 elif "method" in data:
