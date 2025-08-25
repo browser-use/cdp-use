@@ -266,6 +266,8 @@ class NavigateReturns(TypedDict):
 as the previously committed loaderId would not change."""
     errorText: "str"
     """User friendly error message, present if and only if navigation has failed."""
+    isDownload: "bool"
+    """Whether the navigation resulted in a download."""
 
 
 

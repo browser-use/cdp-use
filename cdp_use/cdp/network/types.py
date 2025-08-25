@@ -250,6 +250,12 @@ BlockedReason = Literal["other", "csp", "mixed-content", "origin", "inspector", 
 
 
 
+IpProxyStatus = Literal["Available", "FeatureNotEnabled", "MaskedDomainListNotEnabled", "MaskedDomainListNotPopulated", "AuthTokensUnavailable", "Unavailable", "BypassedByDevTools"]
+"""Sets Controls for IP Proxy of requests.
+Page reload is required before the new behavior will be observed."""
+
+
+
 CorsError = Literal["DisallowedByMode", "InvalidResponse", "WildcardOriginNotAllowed", "MissingAllowOriginHeader", "MultipleAllowOriginValues", "InvalidAllowOriginValue", "AllowOriginMismatch", "InvalidAllowCredentials", "CorsDisabledScheme", "PreflightInvalidStatus", "PreflightDisallowedRedirect", "PreflightWildcardOriginNotAllowed", "PreflightMissingAllowOriginHeader", "PreflightMultipleAllowOriginValues", "PreflightInvalidAllowOriginValue", "PreflightAllowOriginMismatch", "PreflightInvalidAllowCredentials", "PreflightMissingAllowExternal", "PreflightInvalidAllowExternal", "PreflightMissingAllowPrivateNetwork", "PreflightInvalidAllowPrivateNetwork", "InvalidAllowMethodsPreflightResponse", "InvalidAllowHeadersPreflightResponse", "MethodDisallowedByPreflightResponse", "HeaderDisallowedByPreflightResponse", "RedirectContainsCredentials", "InsecurePrivateNetwork", "InvalidPrivateNetworkAccess", "UnexpectedPrivateNetworkAccess", "NoCorsRedirectModeNotFollow", "PreflightMissingPrivateNetworkAccessId", "PreflightMissingPrivateNetworkAccessName", "PrivateNetworkAccessPermissionUnavailable", "PrivateNetworkAccessPermissionDenied", "LocalNetworkAccessPermissionDenied"]
 """The reason why request was blocked."""
 
@@ -367,6 +373,9 @@ Otherwise, the API is not used."""
     """Security state of the request resource."""
     securityDetails: "NotRequired[SecurityDetails]"
     """Security details for the request."""
+    isIpProtectionUsed: "NotRequired[bool]"
+    """Indicates whether the request was sent through IP Protection proxies. If
+set to true, the request used the IP Protection privacy feature."""
 
 
 
@@ -767,7 +776,7 @@ PrivateNetworkRequestPolicy = Literal["Allow", "BlockFromInsecureToMorePrivate",
 
 
 
-IPAddressSpace = Literal["Loopback", "Private", "Public", "Unknown"]
+IPAddressSpace = Literal["Loopback", "Local", "Public", "Unknown"]
 
 
 

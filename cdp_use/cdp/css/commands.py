@@ -4,7 +4,7 @@
 
 """CDP CSS Domain Commands"""
 
-from typing import List
+from typing import Any, Dict, List
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -29,6 +29,7 @@ if TYPE_CHECKING:
     from .types import CSSScope
     from .types import CSSStyle
     from .types import CSSSupports
+    from .types import ComputedStyleExtraFields
     from .types import InheritedAnimatedStyleEntry
     from .types import InheritedPseudoElementMatches
     from .types import InheritedStyleEntry
@@ -134,13 +135,15 @@ class GetComputedStyleForNodeParameters(TypedDict):
 class GetComputedStyleForNodeReturns(TypedDict):
     computedStyle: "List[CSSComputedStyleProperty]"
     """Computed style for the specified DOM node."""
+    extraFields: "ComputedStyleExtraFields"
+    """A list of non-standard \"extra fields\" which blink stores alongside each
+computed style."""
 
 
 
 class ResolveValuesParameters(TypedDict):
     values: "List[str]"
-    """Substitution functions (var()/env()/attr()) and cascade-dependent
-keywords (revert/revert-layer) do not work."""
+    """Cascade-dependent keywords (revert/revert-layer) do not work."""
     nodeId: "NodeId"
     """Id of the node in whose context the expression is evaluated"""
     propertyName: "NotRequired[str]"
@@ -228,6 +231,11 @@ will not be set if there is no active position-try fallback."""
     """Id of the first parent element that does not have display: contents."""
     cssFunctionRules: "List[CSSFunctionRule]"
     """A list of CSS at-function rules referenced by styles of this node."""
+
+
+
+class GetEnvironmentVariablesReturns(TypedDict):
+    environmentVariables: "Dict[str, Any]"
 
 
 

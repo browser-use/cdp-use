@@ -305,8 +305,7 @@ class WindowOpenEvent(TypedDict):
 
 
 
-"""Issued for every compilation cache generated. Is only available
-if Page.setGenerateCompilationCache is enabled."""
+"""Issued for every compilation cache generated."""
 class CompilationCacheProducedEvent(TypedDict):
     url: "str"
     data: "str"

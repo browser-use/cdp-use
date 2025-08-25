@@ -29,6 +29,8 @@ if TYPE_CHECKING:
     from .commands import GetTargetInfoReturns
     from .commands import GetTargetsParameters
     from .commands import GetTargetsReturns
+    from .commands import OpenDevToolsParameters
+    from .commands import OpenDevToolsReturns
     from .commands import SendMessageToTargetParameters
     from .commands import SetAutoAttachParameters
     from .commands import SetDiscoverTargetsParameters
@@ -264,6 +266,18 @@ This cancels the effect of any previous `setAutoAttach` and is also cancelled by
 `true`."""
         return cast("Dict[str, Any]", await self._client.send_raw(
             method="Target.setRemoteLocations",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def openDevTools(
+        self,
+        params: "OpenDevToolsParameters",
+        session_id: Optional[str] = None,
+    ) -> "OpenDevToolsReturns":
+        """Opens a DevTools window for the target."""
+        return cast("OpenDevToolsReturns", await self._client.send_raw(
+            method="Target.openDevTools",
             params=params,
             session_id=session_id,
         ))

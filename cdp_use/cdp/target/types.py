@@ -37,6 +37,8 @@ class TargetInfo(TypedDict):
     """Whether the target has access to the originating window."""
     openerFrameId: "NotRequired[FrameId]"
     """Frame id of originating window (is only set if target has an opener)."""
+    parentFrameId: "NotRequired[FrameId]"
+    """Id of the parent frame, only present for the \"iframe\" targets."""
     browserContextId: "NotRequired[BrowserContextID]"
     subtype: "NotRequired[str]"
     """Provides additional details for specific target types. For example, for

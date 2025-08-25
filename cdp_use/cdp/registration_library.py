@@ -55,6 +55,10 @@ class CDPRegistrationLibrary:
         from .backgroundservice.registration import BackgroundServiceRegistration
         self.BackgroundService = BackgroundServiceRegistration(registry)
 
+        # BluetoothEmulation domain registration
+        from .bluetoothemulation.registration import BluetoothEmulationRegistration
+        self.BluetoothEmulation = BluetoothEmulationRegistration(registry)
+
         # Browser domain registration
         from .browser.registration import BrowserRegistration
         self.Browser = BrowserRegistration(registry)
@@ -75,9 +79,21 @@ class CDPRegistrationLibrary:
         from .domstorage.registration import DOMStorageRegistration
         self.DOMStorage = DOMStorageRegistration(registry)
 
+        # DeviceAccess domain registration
+        from .deviceaccess.registration import DeviceAccessRegistration
+        self.DeviceAccess = DeviceAccessRegistration(registry)
+
         # Emulation domain registration
         from .emulation.registration import EmulationRegistration
         self.Emulation = EmulationRegistration(registry)
+
+        # FedCm domain registration
+        from .fedcm.registration import FedCmRegistration
+        self.FedCm = FedCmRegistration(registry)
+
+        # Fetch domain registration
+        from .fetch.registration import FetchRegistration
+        self.Fetch = FetchRegistration(registry)
 
         # Input domain registration
         from .input.registration import InputRegistration
@@ -94,6 +110,10 @@ class CDPRegistrationLibrary:
         # Log domain registration
         from .log.registration import LogRegistration
         self.Log = LogRegistration(registry)
+
+        # Media domain registration
+        from .media.registration import MediaRegistration
+        self.Media = MediaRegistration(registry)
 
         # Network domain registration
         from .network.registration import NetworkRegistration
@@ -114,6 +134,10 @@ class CDPRegistrationLibrary:
         # PerformanceTimeline domain registration
         from .performancetimeline.registration import PerformanceTimelineRegistration
         self.PerformanceTimeline = PerformanceTimelineRegistration(registry)
+
+        # Preload domain registration
+        from .preload.registration import PreloadRegistration
+        self.Preload = PreloadRegistration(registry)
 
         # Security domain registration
         from .security.registration import SecurityRegistration
@@ -139,10 +163,6 @@ class CDPRegistrationLibrary:
         from .tracing.registration import TracingRegistration
         self.Tracing = TracingRegistration(registry)
 
-        # Fetch domain registration
-        from .fetch.registration import FetchRegistration
-        self.Fetch = FetchRegistration(registry)
-
         # WebAudio domain registration
         from .webaudio.registration import WebAudioRegistration
         self.WebAudio = WebAudioRegistration(registry)
@@ -151,23 +171,7 @@ class CDPRegistrationLibrary:
         from .webauthn.registration import WebAuthnRegistration
         self.WebAuthn = WebAuthnRegistration(registry)
 
-        # Media domain registration
-        from .media.registration import MediaRegistration
-        self.Media = MediaRegistration(registry)
-
-        # DeviceAccess domain registration
-        from .deviceaccess.registration import DeviceAccessRegistration
-        self.DeviceAccess = DeviceAccessRegistration(registry)
-
-        # Preload domain registration
-        from .preload.registration import PreloadRegistration
-        self.Preload = PreloadRegistration(registry)
-
-        # FedCm domain registration
-        from .fedcm.registration import FedCmRegistration
-        self.FedCm = FedCmRegistration(registry)
-
-        # BluetoothEmulation domain registration
-        from .bluetoothemulation.registration import BluetoothEmulationRegistration
-        self.BluetoothEmulation = BluetoothEmulationRegistration(registry)
+        # BrowserUse domain registration
+        from .browseruse.registration import BrowserUseRegistration
+        self.BrowserUse = BrowserUseRegistration(registry)
 

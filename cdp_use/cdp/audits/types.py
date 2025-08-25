@@ -236,6 +236,10 @@ SRIMessageSignatureError = Literal["MissingSignatureHeader", "MissingSignatureIn
 
 
 
+UnencodedDigestError = Literal["MalformedDictionary", "UnknownAlgorithm", "IncorrectDigestType", "IncorrectDigestLength"]
+
+
+
 class AttributionReportingIssueDetails(TypedDict):
     """Details for issues around \"Attribution Reporting API\" usage.
 Explainer: https://github.com/WICG/attribution-reporting-api"""
@@ -277,6 +281,12 @@ class SRIMessageSignatureIssueDetails(TypedDict):
     error: "SRIMessageSignatureError"
     signatureBase: "str"
     integrityAssertions: "List[str]"
+    request: "AffectedRequest"
+
+
+
+class UnencodedDigestIssueDetails(TypedDict):
+    error: "UnencodedDigestError"
     request: "AffectedRequest"
 
 
@@ -438,7 +448,7 @@ registrations being ignored."""
 
 
 
-UserReidentificationIssueType = Literal["BlockedFrameNavigation", "BlockedSubresource"]
+UserReidentificationIssueType = Literal["BlockedFrameNavigation", "BlockedSubresource", "NoisedCanvasReadback"]
 
 
 
@@ -449,10 +459,12 @@ re-identify users."""
     type: "UserReidentificationIssueType"
     request: "NotRequired[AffectedRequest]"
     """Applies to BlockedFrameNavigation and BlockedSubresource issue types."""
+    sourceCodeLocation: "NotRequired[SourceCodeLocation]"
+    """Applies to NoisedCanvasReadback issue type."""
 
 
 
-InspectorIssueCode = Literal["CookieIssue", "MixedContentIssue", "BlockedByResponseIssue", "HeavyAdIssue", "ContentSecurityPolicyIssue", "SharedArrayBufferIssue", "LowTextContrastIssue", "CorsIssue", "AttributionReportingIssue", "QuirksModeIssue", "PartitioningBlobURLIssue", "NavigatorUserAgentIssue", "GenericIssue", "DeprecationIssue", "ClientHintIssue", "FederatedAuthRequestIssue", "BounceTrackingIssue", "CookieDeprecationMetadataIssue", "StylesheetLoadingIssue", "FederatedAuthUserInfoRequestIssue", "PropertyRuleIssue", "SharedDictionaryIssue", "ElementAccessibilityIssue", "SRIMessageSignatureIssue", "UserReidentificationIssue"]
+InspectorIssueCode = Literal["CookieIssue", "MixedContentIssue", "BlockedByResponseIssue", "HeavyAdIssue", "ContentSecurityPolicyIssue", "SharedArrayBufferIssue", "LowTextContrastIssue", "CorsIssue", "AttributionReportingIssue", "QuirksModeIssue", "PartitioningBlobURLIssue", "NavigatorUserAgentIssue", "GenericIssue", "DeprecationIssue", "ClientHintIssue", "FederatedAuthRequestIssue", "BounceTrackingIssue", "CookieDeprecationMetadataIssue", "StylesheetLoadingIssue", "FederatedAuthUserInfoRequestIssue", "PropertyRuleIssue", "SharedDictionaryIssue", "ElementAccessibilityIssue", "SRIMessageSignatureIssue", "UnencodedDigestIssue", "UserReidentificationIssue"]
 """A unique identifier for the type of issue. Each type may use one of the
 optional fields in InspectorIssueDetails to convey more specific
 information about the kind of issue."""
@@ -488,6 +500,7 @@ add a new optional field to this type."""
     sharedDictionaryIssueDetails: "SharedDictionaryIssueDetails"
     elementAccessibilityIssueDetails: "ElementAccessibilityIssueDetails"
     sriMessageSignatureIssueDetails: "SRIMessageSignatureIssueDetails"
+    unencodedDigestIssueDetails: "UnencodedDigestIssueDetails"
     userReidentificationIssueDetails: "UserReidentificationIssueDetails"
 
 

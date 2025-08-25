@@ -51,10 +51,6 @@ class CDPLibrary:
         from .audits.library import AuditsClient
         self.Audits = AuditsClient(client)
 
-        # Extensions domain
-        from .extensions.library import ExtensionsClient
-        self.Extensions = ExtensionsClient(client)
-
         # Autofill domain
         from .autofill.library import AutofillClient
         self.Autofill = AutofillClient(client)
@@ -62,6 +58,10 @@ class CDPLibrary:
         # BackgroundService domain
         from .backgroundservice.library import BackgroundServiceClient
         self.BackgroundService = BackgroundServiceClient(client)
+
+        # BluetoothEmulation domain
+        from .bluetoothemulation.library import BluetoothEmulationClient
+        self.BluetoothEmulation = BluetoothEmulationClient(client)
 
         # Browser domain
         from .browser.library import BrowserClient
@@ -87,10 +87,6 @@ class CDPLibrary:
         from .domdebugger.library import DOMDebuggerClient
         self.DOMDebugger = DOMDebuggerClient(client)
 
-        # EventBreakpoints domain
-        from .eventbreakpoints.library import EventBreakpointsClient
-        self.EventBreakpoints = EventBreakpointsClient(client)
-
         # DOMSnapshot domain
         from .domsnapshot.library import DOMSnapshotClient
         self.DOMSnapshot = DOMSnapshotClient(client)
@@ -98,6 +94,10 @@ class CDPLibrary:
         # DOMStorage domain
         from .domstorage.library import DOMStorageClient
         self.DOMStorage = DOMStorageClient(client)
+
+        # DeviceAccess domain
+        from .deviceaccess.library import DeviceAccessClient
+        self.DeviceAccess = DeviceAccessClient(client)
 
         # DeviceOrientation domain
         from .deviceorientation.library import DeviceOrientationClient
@@ -107,6 +107,26 @@ class CDPLibrary:
         from .emulation.library import EmulationClient
         self.Emulation = EmulationClient(client)
 
+        # EventBreakpoints domain
+        from .eventbreakpoints.library import EventBreakpointsClient
+        self.EventBreakpoints = EventBreakpointsClient(client)
+
+        # Extensions domain
+        from .extensions.library import ExtensionsClient
+        self.Extensions = ExtensionsClient(client)
+
+        # FedCm domain
+        from .fedcm.library import FedCmClient
+        self.FedCm = FedCmClient(client)
+
+        # Fetch domain
+        from .fetch.library import FetchClient
+        self.Fetch = FetchClient(client)
+
+        # FileSystem domain
+        from .filesystem.library import FileSystemClient
+        self.FileSystem = FileSystemClient(client)
+
         # HeadlessExperimental domain
         from .headlessexperimental.library import HeadlessExperimentalClient
         self.HeadlessExperimental = HeadlessExperimentalClient(client)
@@ -114,10 +134,6 @@ class CDPLibrary:
         # IO domain
         from .io.library import IOClient
         self.IO = IOClient(client)
-
-        # FileSystem domain
-        from .filesystem.library import FileSystemClient
-        self.FileSystem = FileSystemClient(client)
 
         # IndexedDB domain
         from .indexeddb.library import IndexedDBClient
@@ -139,6 +155,10 @@ class CDPLibrary:
         from .log.library import LogClient
         self.Log = LogClient(client)
 
+        # Media domain
+        from .media.library import MediaClient
+        self.Media = MediaClient(client)
+
         # Memory domain
         from .memory.library import MemoryClient
         self.Memory = MemoryClient(client)
@@ -151,6 +171,10 @@ class CDPLibrary:
         from .overlay.library import OverlayClient
         self.Overlay = OverlayClient(client)
 
+        # PWA domain
+        from .pwa.library import PWAClient
+        self.PWA = PWAClient(client)
+
         # Page domain
         from .page.library import PageClient
         self.Page = PageClient(client)
@@ -162,6 +186,10 @@ class CDPLibrary:
         # PerformanceTimeline domain
         from .performancetimeline.library import PerformanceTimelineClient
         self.PerformanceTimeline = PerformanceTimelineClient(client)
+
+        # Preload domain
+        from .preload.library import PreloadClient
+        self.Preload = PreloadClient(client)
 
         # Security domain
         from .security.library import SecurityClient
@@ -191,10 +219,6 @@ class CDPLibrary:
         from .tracing.library import TracingClient
         self.Tracing = TracingClient(client)
 
-        # Fetch domain
-        from .fetch.library import FetchClient
-        self.Fetch = FetchClient(client)
-
         # WebAudio domain
         from .webaudio.library import WebAudioClient
         self.WebAudio = WebAudioClient(client)
@@ -203,27 +227,7 @@ class CDPLibrary:
         from .webauthn.library import WebAuthnClient
         self.WebAuthn = WebAuthnClient(client)
 
-        # Media domain
-        from .media.library import MediaClient
-        self.Media = MediaClient(client)
-
-        # DeviceAccess domain
-        from .deviceaccess.library import DeviceAccessClient
-        self.DeviceAccess = DeviceAccessClient(client)
-
-        # Preload domain
-        from .preload.library import PreloadClient
-        self.Preload = PreloadClient(client)
-
-        # FedCm domain
-        from .fedcm.library import FedCmClient
-        self.FedCm = FedCmClient(client)
-
-        # PWA domain
-        from .pwa.library import PWAClient
-        self.PWA = PWAClient(client)
-
-        # BluetoothEmulation domain
-        from .bluetoothemulation.library import BluetoothEmulationClient
-        self.BluetoothEmulation = BluetoothEmulationClient(client)
+        # BrowserUse domain
+        from .browseruse.library import BrowserUseClient
+        self.BrowserUse = BrowserUseClient(client)
 

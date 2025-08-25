@@ -10,9 +10,13 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
+    from .commands import AddScreenParameters
+    from .commands import AddScreenReturns
     from .commands import CanEmulateReturns
     from .commands import GetOverriddenSensorInformationParameters
     from .commands import GetOverriddenSensorInformationReturns
+    from .commands import GetScreenInfosReturns
+    from .commands import RemoveScreenParameters
     from .commands import SetAutoDarkModeOverrideParameters
     from .commands import SetAutomationOverrideParameters
     from .commands import SetCPUThrottlingRateParameters
@@ -593,6 +597,42 @@ on Android."""
 value of the `svh` and `lvh` unit, respectively. Only supported for top-level frames."""
         return cast("Dict[str, Any]", await self._client.send_raw(
             method="Emulation.setSmallViewportHeightDifferenceOverride",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def getScreenInfos(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "GetScreenInfosReturns":
+        """Returns device's screen configuration."""
+        return cast("GetScreenInfosReturns", await self._client.send_raw(
+            method="Emulation.getScreenInfos",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def addScreen(
+        self,
+        params: "AddScreenParameters",
+        session_id: Optional[str] = None,
+    ) -> "AddScreenReturns":
+        """Add a new screen to the device. Only supported in headless mode."""
+        return cast("AddScreenReturns", await self._client.send_raw(
+            method="Emulation.addScreen",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def removeScreen(
+        self,
+        params: "RemoveScreenParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Remove screen from the device. Only supported in headless mode."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Emulation.removeScreen",
             params=params,
             session_id=session_id,
         ))

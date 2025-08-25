@@ -263,6 +263,14 @@ class CSSComputedStyleProperty(TypedDict):
 
 
 
+class ComputedStyleExtraFields(TypedDict):
+    isAppearanceBase: "bool"
+    """Returns whether or not this node is being rendered with base appearance,
+which happens when it has its appearance property set to base/base-select
+or it is in the subtree of an element being rendered with base appearance."""
+
+
+
 class CSSStyle(TypedDict):
     """CSS style representation."""
 
@@ -371,6 +379,8 @@ available)."""
     """Optional logical axes queried for the container."""
     queriesScrollState: "NotRequired[bool]"
     """true if the query contains scroll-state() queries."""
+    queriesAnchored: "NotRequired[bool]"
+    """true if the query contains anchored() queries."""
 
 
 

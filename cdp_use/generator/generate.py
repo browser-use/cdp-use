@@ -10,15 +10,17 @@ import tempfile
 from pathlib import Path
 from urllib.request import urlretrieve
 
-from .constants import BROWSER_PROTOCOL_FILE, JS_PROTOCOL_FILE
+from .constants import BROWSER_PROTOCOL_FILE, CDP_VERSION, JS_PROTOCOL_FILE
 from .generator import CDPGenerator
 
 
 def download_protocol_files() -> tuple[str, str]:
-    """Download the latest protocol files from the official repository."""
+    """Download the protocol files from the official repository."""
     temp_dir = Path(tempfile.mkdtemp())
 
-    print("Downloading Chrome DevTools Protocol specifications...")
+    print(
+        f"Downloading Chrome DevTools Protocol specifications (version: {CDP_VERSION})..."
+    )
 
     # Download JavaScript protocol
     js_protocol_path = temp_dir / "js_protocol.json"
@@ -41,9 +43,20 @@ def main():
         # Download protocol files
         js_file, browser_file = download_protocol_files()
 
-        # Create generator and run it
+        # Discover any custom protocol JSON files placed under cdp_use/custom_protocols/
+        project_root = Path(__file__).resolve().parents[2]
+        custom_dir = project_root / "cdp_use" / "custom_protocols"
+        custom_protocol_files: list[str] = []
+        if custom_dir.exists() and custom_dir.is_dir():
+            for path in sorted(custom_dir.glob("*.json")):
+                print(f"  Including custom protocol: {path}")
+                custom_protocol_files.append(str(path))
+
+        # Create generator and run it, appending any custom protocol files
         generator = CDPGenerator()
-        generator.generate_all(protocol_files=[js_file, browser_file])
+        generator.generate_all(
+            protocol_files=[js_file, browser_file, *custom_protocol_files]
+        )
 
         print("🎉 CDP type-safe client generation completed!")
         print("")
