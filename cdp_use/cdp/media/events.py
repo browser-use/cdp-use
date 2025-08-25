@@ -10,6 +10,7 @@ from typing_extensions import TypedDict
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from .types import Player
     from .types import PlayerError
     from .types import PlayerEvent
     from .types import PlayerId
@@ -47,7 +48,7 @@ class PlayerErrorsRaisedEvent(TypedDict):
 
 
 """Called whenever a player is created, or when a new agent joins and receives
-a list of active players. If an agent is restored, it will receive the full
-list of player ids and all events again."""
-class PlayersCreatedEvent(TypedDict):
-    players: "List[PlayerId]"
+a list of active players. If an agent is restored, it will receive one
+event for each active player."""
+class PlayerCreatedEvent(TypedDict):
+    player: "Player"

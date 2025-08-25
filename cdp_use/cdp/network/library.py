@@ -23,6 +23,7 @@ if TYPE_CHECKING:
     from .commands import GetCertificateReturns
     from .commands import GetCookiesParameters
     from .commands import GetCookiesReturns
+    from .commands import GetIPProtectionProxyStatusReturns
     from .commands import GetRequestPostDataParameters
     from .commands import GetRequestPostDataReturns
     from .commands import GetResponseBodyForInterceptionParameters
@@ -58,6 +59,19 @@ class NetworkClient:
 
     def __init__(self, client: 'CDPClient'):
         self._client = client
+
+    async def getIPProtectionProxyStatus(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "GetIPProtectionProxyStatusReturns":
+        """Returns enum representing if IP Proxy of requests is available
+or reason it is not active."""
+        return cast("GetIPProtectionProxyStatusReturns", await self._client.send_raw(
+            method="Network.getIPProtectionProxyStatus",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def setAcceptedEncodings(
         self,
