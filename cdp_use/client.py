@@ -215,8 +215,9 @@ ws_logger.addFilter(WebSocketLogFilter())
 
 
 class CDPClient:
-    def __init__(self, url: str):
+    def __init__(self, url: str, additional_headers: Optional[Dict[str, str]] = None):
         self.url = url
+        self.additional_headers = additional_headers
         self.ws: Optional[websockets.ClientConnection] = None
         self.msg_id: int = 0
         self.pending_requests: Dict[int, asyncio.Future] = {}
@@ -253,10 +254,12 @@ class CDPClient:
             raise RuntimeError("Client is already started")
 
         logger.info(f"Connecting to {self.url}")
-        self.ws = await websockets.connect(
-            self.url,
-            max_size=100 * 1024 * 1024,  # 100MB limit instead of default 1MB
-        )
+        connect_kwargs = {
+            "max_size": 100 * 1024 * 1024,  # 100MB limit instead of default 1MB
+        }
+        if self.additional_headers:
+            connect_kwargs["additional_headers"] = self.additional_headers
+        self.ws = await websockets.connect(self.url, **connect_kwargs)
         self._message_handler_task = asyncio.create_task(self._handle_messages())
 
     async def stop(self):
