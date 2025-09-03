@@ -154,5 +154,60 @@ class PressureMetadata(TypedDict, total=False):
 
 
 
+class WorkAreaInsets(TypedDict, total=False):
+    top: "int"
+    """Work area top inset in pixels. Default is 0;"""
+    left: "int"
+    """Work area left inset in pixels. Default is 0;"""
+    bottom: "int"
+    """Work area bottom inset in pixels. Default is 0;"""
+    right: "int"
+    """Work area right inset in pixels. Default is 0;"""
+
+
+
+ScreenId = str
+
+
+
+class ScreenInfo(TypedDict):
+    """Screen information similar to the one returned by window.getScreenDetails() method,
+see https://w3c.github.io/window-management/#screendetailed."""
+
+    left: "int"
+    """Offset of the left edge of the screen."""
+    top: "int"
+    """Offset of the top edge of the screen."""
+    width: "int"
+    """Width of the screen."""
+    height: "int"
+    """Height of the screen."""
+    availLeft: "int"
+    """Offset of the left edge of the available screen area."""
+    availTop: "int"
+    """Offset of the top edge of the available screen area."""
+    availWidth: "int"
+    """Width of the available screen area."""
+    availHeight: "int"
+    """Height of the available screen area."""
+    devicePixelRatio: "float"
+    """Specifies the screen's device pixel ratio."""
+    orientation: "ScreenOrientation"
+    """Specifies the screen's orientation."""
+    colorDepth: "int"
+    """Specifies the screen's color depth in bits."""
+    isExtended: "bool"
+    """Indicates whether the device has multiple screens."""
+    isInternal: "bool"
+    """Indicates whether the screen is internal to the device or external, attached to the device."""
+    isPrimary: "bool"
+    """Indicates whether the screen is set as the the operating system primary screen."""
+    label: "str"
+    """Specifies the descriptive label for the screen."""
+    id: "ScreenId"
+    """Specifies the unique identifier of the screen."""
+
+
+
 DisabledImageType = Literal["avif", "webp"]
 """Enum of image types that can be disabled."""

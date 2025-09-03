@@ -561,6 +561,7 @@ class GetContainerForNodeParameters(TypedDict):
     physicalAxes: "NotRequired[PhysicalAxes]"
     logicalAxes: "NotRequired[LogicalAxes]"
     queriesScrollState: "NotRequired[bool]"
+    queriesAnchored: "NotRequired[bool]"
 
 
 class GetContainerForNodeReturns(TypedDict):
@@ -593,3 +594,17 @@ the given positioned element."""
 class GetAnchorElementReturns(TypedDict):
     nodeId: "NodeId"
     """The anchor element of the given anchor query."""
+
+
+
+class ForceShowPopoverParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the popover HTMLElement"""
+    enable: "bool"
+    """If true, opens the popover and keeps it open. If false, closes the
+popover if it was previously force-opened."""
+
+
+class ForceShowPopoverReturns(TypedDict):
+    nodeIds: "List[NodeId]"
+    """List of popovers that were closed in order to respect popover stacking order."""
