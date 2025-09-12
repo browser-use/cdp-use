@@ -3,7 +3,7 @@ import json
 import logging
 import re
 import time
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Callable, List, Optional
 
 import websockets
 
@@ -223,6 +223,8 @@ class CDPClient:
         self.pending_requests: Dict[int, asyncio.Future] = {}
         self._message_handler_task = None
         # self.event_handlers: Dict[str, Callable] = {}
+        # WebSocket routing/interception
+        self._web_socket_routes: List[Dict[str, Any]] = []
 
         # Initialize the type-safe CDP library
         from cdp_use.cdp.library import CDPLibrary
@@ -376,3 +378,77 @@ class CDPClient:
 
         # Wait for the response
         return await future
+
+async def route_web_socket(self, url_pattern: str, handler: Callable, session_id: Optional[str] = None):
+    """
+    Register a WebSocket route handler for upgrade interception.
+    url_pattern: glob or regex pattern for WebSocket URLs
+    handler: async function(event, session_id)
+    """
+    self._web_socket_routes.append({
+        "url_pattern": url_pattern,
+        "handler": handler
+    })
+    await self._update_web_socket_interception_patterns(session_id)
+
+async def _update_web_socket_interception_patterns(self, session_id: Optional[str] = None):
+    """
+    Enable interception for registered WebSocket patterns.
+    """
+    patterns = [
+        {
+            "urlPattern": route["url_pattern"],
+            "resourceType": "WebSocket",
+            "interceptionStage": "Request"
+        }
+        for route in self._web_socket_routes
+    ]
+    await self.send_raw("Network.enable", {}, session_id)
+    await self.send_raw("Network.setRequestInterception", {"patterns": patterns}, session_id)
+    self.register.Network.requestIntercepted(self._on_web_socket_route)
+
+async def _on_web_socket_route(self, event, session_id):
+    """
+    Called when a WebSocket upgrade request is intercepted.
+    Matches against registered patterns and calls the handler.
+    """
+    url = event.get("request", {}).get("url", "")
+    for route in self._web_socket_routes:
+        pattern = route["url_pattern"]
+        # Simple glob to regex conversion
+        regex = re.compile("^" + re.escape(pattern).replace(r"\*", ".*") + "$")
+        if regex.match(url):
+            await route["handler"](event, session_id)
+            return
+    # If no handler matches, allow the upgrade
+    await self.send_raw("Network.continueInterceptedRequest", {"interceptionId": event["interceptionId"]}, session_id)
+
+async def _connect_with_redirects(self, url, headers=None, max_redirects=3):
+    connect_kwargs = {"max_size": 100 * 1024 * 1024}
+    if headers:
+        connect_kwargs["additional_headers"] = headers
+
+    for _ in range(max_redirects):
+        try:
+            ws = await websockets.connect(url, **connect_kwargs)
+            return ws
+        except websockets.InvalidHandshake as e:
+            response = getattr(e, 'response', None)
+            status = getattr(response, 'status_code', None)  
+            if response and status in (301, 302, 307, 308):
+                location = response.headers.get('Location') or response.headers.get('location')
+                if not location:
+                    raise RuntimeError(f"Redirect status {status} but no Location header")
+                headers = {k: v for k, v in (headers or {}).items()
+                           if 'access-key' not in k.lower() and k.lower() != 'authorization'}
+                url = location
+                connect_kwargs["additional_headers"] = headers
+                continue
+           
+            if response and status in (401, 403):
+                reason = getattr(response, 'reason_phrase', '')
+                raise RuntimeError(f"WebSocket authentication failed: {status} {reason}")
+            raise
+    raise RuntimeError("Too many redirects or failed to connect")
+
+
