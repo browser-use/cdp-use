@@ -440,7 +440,7 @@ async def _connect_with_redirects(self, url, headers=None, max_redirects=3):
                 if not location:
                     raise RuntimeError(f"Redirect status {status} but no Location header")
                 headers = {k: v for k, v in (headers or {}).items()
-                           if 'access-key' not in k.lower() and k.lower() != 'authorization'}
+                           if k.lower() != 'authorization'}
                 url = location
                 connect_kwargs["additional_headers"] = headers
                 continue
