@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import PlayerErrorsRaisedEvent, PlayerEventsAddedEvent, PlayerMessagesLoggedEvent, PlayerPropertiesChangedEvent, PlayersCreatedEvent
+    from .events import PlayerCreatedEvent, PlayerErrorsRaisedEvent, PlayerEventsAddedEvent, PlayerMessagesLoggedEvent, PlayerPropertiesChangedEvent
 
 class MediaRegistration:
     """Event registration interface for Media domain."""
@@ -81,20 +81,20 @@ congestion. If batched, events must ALWAYS be in chronological order.
         """
         self._registry.register("Media.playerErrorsRaised", callback)
 
-    def playersCreated(
+    def playerCreated(
         self,
-        callback: Callable[['PlayersCreatedEvent', Optional[str]], None],
+        callback: Callable[['PlayerCreatedEvent', Optional[str]], None],
     ) -> None:
         """
-        Register a callback for playersCreated events.
+        Register a callback for playerCreated events.
         
         Called whenever a player is created, or when a new agent joins and receives
-a list of active players. If an agent is restored, it will receive the full
-list of player ids and all events again.
+a list of active players. If an agent is restored, it will receive one
+event for each active player.
         
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("Media.playersCreated", callback)
+        self._registry.register("Media.playerCreated", callback)
 

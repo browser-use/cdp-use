@@ -13,34 +13,41 @@ from . import schema
 from . import accessibility
 from . import animation
 from . import audits
-from . import extensions
 from . import autofill
 from . import backgroundservice
+from . import bluetoothemulation
 from . import browser
 from . import css
 from . import cachestorage
 from . import cast
 from . import dom
 from . import domdebugger
-from . import eventbreakpoints
 from . import domsnapshot
 from . import domstorage
+from . import deviceaccess
 from . import deviceorientation
 from . import emulation
+from . import eventbreakpoints
+from . import extensions
+from . import fedcm
+from . import fetch
+from . import filesystem
 from . import headlessexperimental
 from . import io
-from . import filesystem
 from . import indexeddb
 from . import input
 from . import inspector
 from . import layertree
 from . import log
+from . import media
 from . import memory
 from . import network
 from . import overlay
+from . import pwa
 from . import page
 from . import performance
 from . import performancetimeline
+from . import preload
 from . import security
 from . import serviceworker
 from . import storage
@@ -48,15 +55,9 @@ from . import systeminfo
 from . import target
 from . import tethering
 from . import tracing
-from . import fetch
 from . import webaudio
 from . import webauthn
-from . import media
-from . import deviceaccess
-from . import preload
-from . import fedcm
-from . import pwa
-from . import bluetoothemulation
+from . import browseruse
 
 from .library import CDPLibrary
 from .registry import EventRegistry
@@ -72,34 +73,41 @@ __all__ = [
     "accessibility",
     "animation",
     "audits",
-    "extensions",
     "autofill",
     "backgroundservice",
+    "bluetoothemulation",
     "browser",
     "css",
     "cachestorage",
     "cast",
     "dom",
     "domdebugger",
-    "eventbreakpoints",
     "domsnapshot",
     "domstorage",
+    "deviceaccess",
     "deviceorientation",
     "emulation",
+    "eventbreakpoints",
+    "extensions",
+    "fedcm",
+    "fetch",
+    "filesystem",
     "headlessexperimental",
     "io",
-    "filesystem",
     "indexeddb",
     "input",
     "inspector",
     "layertree",
     "log",
+    "media",
     "memory",
     "network",
     "overlay",
+    "pwa",
     "page",
     "performance",
     "performancetimeline",
+    "preload",
     "security",
     "serviceworker",
     "storage",
@@ -107,15 +115,9 @@ __all__ = [
     "target",
     "tethering",
     "tracing",
-    "fetch",
     "webaudio",
     "webauthn",
-    "media",
-    "deviceaccess",
-    "preload",
-    "fedcm",
-    "pwa",
-    "bluetoothemulation",
+    "browseruse",
     "CDPLibrary",
     "EventRegistry",
     "CDPRegistrationLibrary",

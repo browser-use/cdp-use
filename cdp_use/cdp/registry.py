@@ -5,6 +5,7 @@
 """CDP Event Registry"""
 
 import logging
+import inspect
 from typing import Any, Callable, Dict, Optional
 
 logger = logging.getLogger(__name__)
@@ -60,16 +61,10 @@ class EventRegistry:
         """
         if method in self._handlers:
             try:
-                import asyncio
-                import inspect
                 handler = self._handlers[method]
-                
-                # Check if handler is async
                 if inspect.iscoroutinefunction(handler):
-                    # Await async handlers
                     await handler(params, session_id)
                 else:
-                    # Call sync handlers directly
                     handler(params, session_id)
                 return True
             except Exception as e:
