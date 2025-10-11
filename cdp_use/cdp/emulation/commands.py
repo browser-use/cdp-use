@@ -21,12 +21,15 @@ if TYPE_CHECKING:
     from .types import PressureSource
     from .types import PressureState
     from .types import SafeAreaInsets
+    from .types import ScreenId
+    from .types import ScreenInfo
     from .types import ScreenOrientation
     from .types import SensorMetadata
     from .types import SensorReading
     from .types import SensorType
     from .types import UserAgentMetadata
     from .types import VirtualTimePolicy
+    from .types import WorkAreaInsets
 
 class CanEmulateReturns(TypedDict):
     result: "bool"
@@ -394,5 +397,45 @@ class SetSmallViewportHeightDifferenceOverrideParameters(TypedDict):
     difference: "int"
     """This will cause an element of size 100svh to be `difference` pixels smaller than an element
 of size 100lvh."""
+
+
+
+
+
+class GetScreenInfosReturns(TypedDict):
+    screenInfos: "List[ScreenInfo]"
+
+
+
+class AddScreenParameters(TypedDict):
+    left: "int"
+    """Offset of the left edge of the screen in pixels."""
+    top: "int"
+    """Offset of the top edge of the screen in pixels."""
+    width: "int"
+    """The width of the screen in pixels."""
+    height: "int"
+    """The height of the screen in pixels."""
+    workAreaInsets: "NotRequired[WorkAreaInsets]"
+    """Specifies the screen's work area. Default is entire screen."""
+    devicePixelRatio: "NotRequired[float]"
+    """Specifies the screen's device pixel ratio. Default is 1."""
+    rotation: "NotRequired[int]"
+    """Specifies the screen's rotation angle. Available values are 0, 90, 180 and 270. Default is 0."""
+    colorDepth: "NotRequired[int]"
+    """Specifies the screen's color depth in bits. Default is 24."""
+    label: "NotRequired[str]"
+    """Specifies the descriptive label for the screen. Default is none."""
+    isInternal: "NotRequired[bool]"
+    """Indicates whether the screen is internal to the device or external, attached to the device. Default is false."""
+
+
+class AddScreenReturns(TypedDict):
+    screenInfo: "ScreenInfo"
+
+
+
+class RemoveScreenParameters(TypedDict):
+    screenId: "ScreenId"
 
 

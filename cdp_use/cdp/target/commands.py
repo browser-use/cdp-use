@@ -223,3 +223,14 @@ class SetRemoteLocationsParameters(TypedDict):
     """List of remote locations."""
 
 
+
+
+
+class OpenDevToolsParameters(TypedDict):
+    targetId: "TargetID"
+    """This can be the page or tab target ID."""
+
+
+class OpenDevToolsReturns(TypedDict):
+    targetId: "TargetID"
+    """The targetId of DevTools page target."""

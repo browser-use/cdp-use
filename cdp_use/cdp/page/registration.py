@@ -471,8 +471,7 @@ etc.
         """
         Register a callback for compilationCacheProduced events.
         
-        Issued for every compilation cache generated. Is only available
-if Page.setGenerateCompilationCache is enabled.
+        Issued for every compilation cache generated.
         
         Args:
             callback: Function to call when event occurs.
