@@ -312,7 +312,7 @@ class CDPClient:
                     # Check if future is already done to avoid InvalidStateError
                     if not future.done():
                         if "error" in data:
-                            logger.error(
+                            logger.debug(
                                 f"CDP Error for request {data['id']}: {data['error']}"
                             )
                             future.set_exception(RuntimeError(data["error"]))
