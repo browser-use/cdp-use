@@ -24,6 +24,7 @@ if TYPE_CHECKING:
     from .commands import GetBackgroundColorsReturns
     from .commands import GetComputedStyleForNodeParameters
     from .commands import GetComputedStyleForNodeReturns
+    from .commands import GetEnvironmentVariablesReturns
     from .commands import GetInlineStylesForNodeParameters
     from .commands import GetInlineStylesForNodeReturns
     from .commands import GetLayersForNodeParameters
@@ -248,6 +249,18 @@ including the animation & transition styles coming from inheritance chain."""
         """Returns requested styles for a DOM node identified by `nodeId`."""
         return cast("GetMatchedStylesForNodeReturns", await self._client.send_raw(
             method="CSS.getMatchedStylesForNode",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def getEnvironmentVariables(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "GetEnvironmentVariablesReturns":
+        """Returns the values of the default UA-defined environment variables used in env()"""
+        return cast("GetEnvironmentVariablesReturns", await self._client.send_raw(
+            method="CSS.getEnvironmentVariables",
             params=params,
             session_id=session_id,
         ))

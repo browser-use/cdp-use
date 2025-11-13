@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from .commands import DiscardSearchResultsParameters
     from .commands import EnableParameters
     from .commands import FocusParameters
+    from .commands import ForceShowPopoverParameters
+    from .commands import ForceShowPopoverReturns
     from .commands import GetAnchorElementParameters
     from .commands import GetAnchorElementReturns
     from .commands import GetAttributesParameters
@@ -707,9 +709,9 @@ $x functions)."""
     ) -> "GetContainerForNodeReturns":
         """Returns the query container of the given node based on container query
 conditions: containerName, physical and logical axes, and whether it queries
-scroll-state. If no axes are provided and queriesScrollState is false, the
-style container is returned, which is the direct parent or the closest
-element with a matching container-name."""
+scroll-state or anchored elements. If no axes are provided and
+queriesScrollState is false, the style container is returned, which is the
+direct parent or the closest element with a matching container-name."""
         return cast("GetContainerForNodeReturns", await self._client.send_raw(
             method="DOM.getContainerForNode",
             params=params,
@@ -738,6 +740,19 @@ container queries against this container."""
 https://www.w3.org/TR/css-anchor-position-1/#target."""
         return cast("GetAnchorElementReturns", await self._client.send_raw(
             method="DOM.getAnchorElement",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def forceShowPopover(
+        self,
+        params: "ForceShowPopoverParameters",
+        session_id: Optional[str] = None,
+    ) -> "ForceShowPopoverReturns":
+        """When enabling, this API force-opens the popover identified by nodeId
+and keeps it open until disabled."""
+        return cast("ForceShowPopoverReturns", await self._client.send_raw(
+            method="DOM.forceShowPopover",
             params=params,
             session_id=session_id,
         ))

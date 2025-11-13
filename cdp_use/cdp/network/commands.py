@@ -26,12 +26,19 @@ if TYPE_CHECKING:
     from .types import ErrorReason
     from .types import Headers
     from .types import InterceptionId
+    from .types import IpProxyStatus
     from .types import LoadNetworkResourceOptions
     from .types import LoadNetworkResourcePageResult
     from .types import RequestId
     from .types import RequestPattern
     from .types import SecurityIsolationStatus
     from .types import TimeSinceEpoch
+
+class GetIPProtectionProxyStatusReturns(TypedDict):
+    status: "IpProxyStatus"
+    """Whether IP proxy is available"""
+
+
 
 class SetAcceptedEncodingsParameters(TypedDict):
     encodings: "List[ContentEncoding]"

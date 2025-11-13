@@ -396,3 +396,16 @@ class CDPClient:
 
         # Wait for the response
         return await future
+
+    async def emit_event(
+        self,
+        method: str,
+        params: Optional[Any] = None,
+        session_id: Optional[str] = None,
+    ) -> bool:
+        """Emit a synthetic/custom event through the registry.
+
+        Useful for custom domains (e.g., BrowserUse) where events are
+        produced by your application rather than the browser.
+        """
+        return await self._event_registry.handle_event(method, params or {}, session_id)
