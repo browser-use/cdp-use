@@ -10,9 +10,13 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
+    from .commands import AddScreenParameters
+    from .commands import AddScreenReturns
     from .commands import CanEmulateReturns
     from .commands import GetOverriddenSensorInformationParameters
     from .commands import GetOverriddenSensorInformationReturns
+    from .commands import GetScreenInfosReturns
+    from .commands import RemoveScreenParameters
     from .commands import SetAutoDarkModeOverrideParameters
     from .commands import SetAutomationOverrideParameters
     from .commands import SetCPUThrottlingRateParameters
@@ -50,10 +54,11 @@ if TYPE_CHECKING:
     from .commands import SetVirtualTimePolicyReturns
     from .commands import SetVisibleSizeParameters
 
+
 class EmulationClient:
     """Client for Emulation domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def canEmulate(
@@ -62,11 +67,14 @@ class EmulationClient:
         session_id: Optional[str] = None,
     ) -> "CanEmulateReturns":
         """Tells whether emulation is supported."""
-        return cast("CanEmulateReturns", await self._client.send_raw(
-            method="Emulation.canEmulate",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "CanEmulateReturns",
+            await self._client.send_raw(
+                method="Emulation.canEmulate",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearDeviceMetricsOverride(
         self,
@@ -74,11 +82,14 @@ class EmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears the overridden device metrics."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.clearDeviceMetricsOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.clearDeviceMetricsOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearGeolocationOverride(
         self,
@@ -86,11 +97,14 @@ class EmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears the overridden Geolocation Position and Error."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.clearGeolocationOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.clearGeolocationOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def resetPageScaleFactor(
         self,
@@ -98,11 +112,14 @@ class EmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Requests that page scale factor is reset to initial values."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.resetPageScaleFactor",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.resetPageScaleFactor",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setFocusEmulationEnabled(
         self,
@@ -110,11 +127,14 @@ class EmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables or disables simulating a focused and active page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setFocusEmulationEnabled",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setFocusEmulationEnabled",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setAutoDarkModeOverride(
         self,
@@ -122,11 +142,14 @@ class EmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Automatically render all web contents using a dark theme."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setAutoDarkModeOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setAutoDarkModeOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setCPUThrottlingRate(
         self,
@@ -134,11 +157,14 @@ class EmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables CPU throttling to emulate slow CPUs."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setCPUThrottlingRate",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setCPUThrottlingRate",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setDefaultBackgroundColorOverride(
         self,
@@ -146,12 +172,15 @@ class EmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets or clears an override of the default background color of the frame. This override is used
-if the content does not specify one."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setDefaultBackgroundColorOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        if the content does not specify one."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setDefaultBackgroundColorOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setSafeAreaInsetsOverride(
         self,
@@ -159,12 +188,15 @@ if the content does not specify one."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides the values for env(safe-area-inset-*) and env(safe-area-max-inset-*). Unset values will cause the
-respective variables to be undefined, even if previously overridden."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setSafeAreaInsetsOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        respective variables to be undefined, even if previously overridden."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setSafeAreaInsetsOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setDeviceMetricsOverride(
         self,
@@ -172,13 +204,16 @@ respective variables to be undefined, even if previously overridden."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
-window.innerWidth, window.innerHeight, and \"device-width\"/\"device-height\"-related CSS media
-query results)."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setDeviceMetricsOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        window.innerWidth, window.innerHeight, and \"device-width\"/\"device-height\"-related CSS media
+        query results)."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setDeviceMetricsOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setDevicePostureOverride(
         self,
@@ -186,12 +221,15 @@ query results)."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Start reporting the given posture value to the Device Posture API.
-This override can also be set in setDeviceMetricsOverride()."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setDevicePostureOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        This override can also be set in setDeviceMetricsOverride()."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setDevicePostureOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearDevicePostureOverride(
         self,
@@ -199,14 +237,17 @@ This override can also be set in setDeviceMetricsOverride()."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears a device posture override set with either setDeviceMetricsOverride()
-or setDevicePostureOverride() and starts using posture information from the
-platform again.
-Does nothing if no override is set."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.clearDevicePostureOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        or setDevicePostureOverride() and starts using posture information from the
+        platform again.
+        Does nothing if no override is set."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.clearDevicePostureOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setDisplayFeaturesOverride(
         self,
@@ -214,12 +255,15 @@ Does nothing if no override is set."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Start using the given display features to pupulate the Viewport Segments API.
-This override can also be set in setDeviceMetricsOverride()."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setDisplayFeaturesOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        This override can also be set in setDeviceMetricsOverride()."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setDisplayFeaturesOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearDisplayFeaturesOverride(
         self,
@@ -227,47 +271,59 @@ This override can also be set in setDeviceMetricsOverride()."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears the display features override set with either setDeviceMetricsOverride()
-or setDisplayFeaturesOverride() and starts using display features from the
-platform again.
-Does nothing if no override is set."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.clearDisplayFeaturesOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        or setDisplayFeaturesOverride() and starts using display features from the
+        platform again.
+        Does nothing if no override is set."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.clearDisplayFeaturesOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setScrollbarsHidden(
         self,
         params: "SetScrollbarsHiddenParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setScrollbarsHidden",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setScrollbarsHidden",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setDocumentCookieDisabled(
         self,
         params: "SetDocumentCookieDisabledParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setDocumentCookieDisabled",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setDocumentCookieDisabled",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setEmitTouchEventsForMouse(
         self,
         params: "SetEmitTouchEventsForMouseParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setEmitTouchEventsForMouse",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setEmitTouchEventsForMouse",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setEmulatedMedia(
         self,
@@ -275,11 +331,14 @@ Does nothing if no override is set."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Emulates the given media type or media feature for CSS media queries."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setEmulatedMedia",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setEmulatedMedia",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setEmulatedVisionDeficiency(
         self,
@@ -287,11 +346,14 @@ Does nothing if no override is set."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Emulates the given vision deficiency."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setEmulatedVisionDeficiency",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setEmulatedVisionDeficiency",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setEmulatedOSTextScale(
         self,
@@ -299,11 +361,14 @@ Does nothing if no override is set."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Emulates the given OS text scale."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setEmulatedOSTextScale",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setEmulatedOSTextScale",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setGeolocationOverride(
         self,
@@ -311,23 +376,29 @@ Does nothing if no override is set."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides the Geolocation Position or Error. Omitting latitude, longitude or
-accuracy emulates position unavailable."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setGeolocationOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        accuracy emulates position unavailable."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setGeolocationOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getOverriddenSensorInformation(
         self,
         params: "GetOverriddenSensorInformationParameters",
         session_id: Optional[str] = None,
     ) -> "GetOverriddenSensorInformationReturns":
-        return cast("GetOverriddenSensorInformationReturns", await self._client.send_raw(
-            method="Emulation.getOverriddenSensorInformation",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetOverriddenSensorInformationReturns",
+            await self._client.send_raw(
+                method="Emulation.getOverriddenSensorInformation",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setSensorOverrideEnabled(
         self,
@@ -335,15 +406,18 @@ accuracy emulates position unavailable."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides a platform sensor of a given type. If |enabled| is true, calls to
-Sensor.start() will use a virtual sensor as backend rather than fetching
-data from a real hardware sensor. Otherwise, existing virtual
-sensor-backend Sensor objects will fire an error event and new calls to
-Sensor.start() will attempt to use a real sensor instead."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setSensorOverrideEnabled",
-            params=params,
-            session_id=session_id,
-        ))
+        Sensor.start() will use a virtual sensor as backend rather than fetching
+        data from a real hardware sensor. Otherwise, existing virtual
+        sensor-backend Sensor objects will fire an error event and new calls to
+        Sensor.start() will attempt to use a real sensor instead."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setSensorOverrideEnabled",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setSensorOverrideReadings(
         self,
@@ -351,12 +425,15 @@ Sensor.start() will attempt to use a real sensor instead."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Updates the sensor readings reported by a sensor type previously overridden
-by setSensorOverrideEnabled."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setSensorOverrideReadings",
-            params=params,
-            session_id=session_id,
-        ))
+        by setSensorOverrideEnabled."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setSensorOverrideReadings",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setPressureSourceOverrideEnabled(
         self,
@@ -364,14 +441,17 @@ by setSensorOverrideEnabled."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides a pressure source of a given type, as used by the Compute
-Pressure API, so that updates to PressureObserver.observe() are provided
-via setPressureStateOverride instead of being retrieved from
-platform-provided telemetry data."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setPressureSourceOverrideEnabled",
-            params=params,
-            session_id=session_id,
-        ))
+        Pressure API, so that updates to PressureObserver.observe() are provided
+        via setPressureStateOverride instead of being retrieved from
+        platform-provided telemetry data."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setPressureSourceOverrideEnabled",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setPressureStateOverride(
         self,
@@ -379,14 +459,17 @@ platform-provided telemetry data."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """TODO: OBSOLETE: To remove when setPressureDataOverride is merged.
-Provides a given pressure state that will be processed and eventually be
-delivered to PressureObserver users. |source| must have been previously
-overridden by setPressureSourceOverrideEnabled."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setPressureStateOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        Provides a given pressure state that will be processed and eventually be
+        delivered to PressureObserver users. |source| must have been previously
+        overridden by setPressureSourceOverrideEnabled."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setPressureStateOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setPressureDataOverride(
         self,
@@ -394,13 +477,16 @@ overridden by setPressureSourceOverrideEnabled."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Provides a given pressure data set that will be processed and eventually be
-delivered to PressureObserver users. |source| must have been previously
-overridden by setPressureSourceOverrideEnabled."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setPressureDataOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        delivered to PressureObserver users. |source| must have been previously
+        overridden by setPressureSourceOverrideEnabled."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setPressureDataOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setIdleOverride(
         self,
@@ -408,11 +494,14 @@ overridden by setPressureSourceOverrideEnabled."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides the Idle state."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setIdleOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setIdleOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearIdleOverride(
         self,
@@ -420,11 +509,14 @@ overridden by setPressureSourceOverrideEnabled."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears Idle state overrides."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.clearIdleOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.clearIdleOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setNavigatorOverrides(
         self,
@@ -432,11 +524,14 @@ overridden by setPressureSourceOverrideEnabled."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides value returned by the javascript navigator object."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setNavigatorOverrides",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setNavigatorOverrides",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setPageScaleFactor(
         self,
@@ -444,11 +539,14 @@ overridden by setPressureSourceOverrideEnabled."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets a specified page scale factor."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setPageScaleFactor",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setPageScaleFactor",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setScriptExecutionDisabled(
         self,
@@ -456,11 +554,14 @@ overridden by setPressureSourceOverrideEnabled."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Switches script execution in the page."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setScriptExecutionDisabled",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setScriptExecutionDisabled",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setTouchEmulationEnabled(
         self,
@@ -468,11 +569,14 @@ overridden by setPressureSourceOverrideEnabled."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables touch on platforms which do not support them."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setTouchEmulationEnabled",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setTouchEmulationEnabled",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setVirtualTimePolicy(
         self,
@@ -480,12 +584,15 @@ overridden by setPressureSourceOverrideEnabled."""
         session_id: Optional[str] = None,
     ) -> "SetVirtualTimePolicyReturns":
         """Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets
-the current virtual time policy.  Note this supersedes any previous time budget."""
-        return cast("SetVirtualTimePolicyReturns", await self._client.send_raw(
-            method="Emulation.setVirtualTimePolicy",
-            params=params,
-            session_id=session_id,
-        ))
+        the current virtual time policy.  Note this supersedes any previous time budget."""
+        return cast(
+            "SetVirtualTimePolicyReturns",
+            await self._client.send_raw(
+                method="Emulation.setVirtualTimePolicy",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setLocaleOverride(
         self,
@@ -493,11 +600,14 @@ the current virtual time policy.  Note this supersedes any previous time budget.
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides default host system locale with the specified one."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setLocaleOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setLocaleOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setTimezoneOverride(
         self,
@@ -505,11 +615,14 @@ the current virtual time policy.  Note this supersedes any previous time budget.
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides default host system timezone with the specified one."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setTimezoneOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setTimezoneOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setVisibleSize(
         self,
@@ -517,24 +630,30 @@ the current virtual time policy.  Note this supersedes any previous time budget.
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Resizes the frame/viewport of the page. Note that this does not affect the frame's container
-(e.g. browser window). Can be used to produce screenshots of the specified size. Not supported
-on Android."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setVisibleSize",
-            params=params,
-            session_id=session_id,
-        ))
+        (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported
+        on Android."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setVisibleSize",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setDisabledImageTypes(
         self,
         params: "SetDisabledImageTypesParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setDisabledImageTypes",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setDisabledImageTypes",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setDataSaverOverride(
         self,
@@ -542,22 +661,28 @@ on Android."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Override the value of navigator.connection.saveData"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setDataSaverOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setDataSaverOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setHardwareConcurrencyOverride(
         self,
         params: "SetHardwareConcurrencyOverrideParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setHardwareConcurrencyOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setHardwareConcurrencyOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setUserAgentOverride(
         self,
@@ -565,12 +690,15 @@ on Android."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Allows overriding user agent with the given string.
-`userAgentMetadata` must be set for Client Hint headers to be sent."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setUserAgentOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        `userAgentMetadata` must be set for Client Hint headers to be sent."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setUserAgentOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setAutomationOverride(
         self,
@@ -578,11 +706,14 @@ on Android."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Allows overriding the automation flag."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setAutomationOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setAutomationOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setSmallViewportHeightDifferenceOverride(
         self,
@@ -590,11 +721,57 @@ on Android."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Allows overriding the difference between the small and large viewport sizes, which determine the
-value of the `svh` and `lvh` unit, respectively. Only supported for top-level frames."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Emulation.setSmallViewportHeightDifferenceOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        value of the `svh` and `lvh` unit, respectively. Only supported for top-level frames."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.setSmallViewportHeightDifferenceOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
+    async def getScreenInfos(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "GetScreenInfosReturns":
+        """Returns device's screen configuration."""
+        return cast(
+            "GetScreenInfosReturns",
+            await self._client.send_raw(
+                method="Emulation.getScreenInfos",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
+    async def addScreen(
+        self,
+        params: "AddScreenParameters",
+        session_id: Optional[str] = None,
+    ) -> "AddScreenReturns":
+        """Add a new screen to the device. Only supported in headless mode."""
+        return cast(
+            "AddScreenReturns",
+            await self._client.send_raw(
+                method="Emulation.addScreen",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def removeScreen(
+        self,
+        params: "RemoveScreenParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Remove screen from the device. Only supported in headless mode."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Emulation.removeScreen",
+                params=params,
+                session_id=session_id,
+            ),
+        )

@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from .types import AccountUrlType
     from .types import DialogButton
 
+
 class EnableParameters(TypedDict, total=False):
     disableRejectionDelay: "bool"
     """Allows callers to disable the promise rejection delay that would
@@ -19,23 +20,14 @@ normally happen, if this is unimportant to what's being tested.
 (step 4 of https://fedidcg.github.io/FedCM/#browser-api-rp-sign-in)"""
 
 
-
-
-
 class SelectAccountParameters(TypedDict):
     dialogId: "str"
     accountIndex: "int"
 
 
-
-
-
 class ClickDialogButtonParameters(TypedDict):
     dialogId: "str"
     dialogButton: "DialogButton"
-
-
-
 
 
 class OpenUrlParameters(TypedDict):
@@ -44,11 +36,6 @@ class OpenUrlParameters(TypedDict):
     accountUrlType: "AccountUrlType"
 
 
-
-
-
 class DismissDialogParameters(TypedDict):
     dialogId: "str"
     triggerCooldown: "NotRequired[bool]"
-
-

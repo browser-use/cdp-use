@@ -10,24 +10,30 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import AnimationCanceledEvent, AnimationCreatedEvent, AnimationStartedEvent, AnimationUpdatedEvent
+    from .events import (
+        AnimationCanceledEvent,
+        AnimationCreatedEvent,
+        AnimationStartedEvent,
+        AnimationUpdatedEvent,
+    )
+
 
 class AnimationRegistration:
     """Event registration interface for Animation domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Animation"
 
     def animationCanceled(
         self,
-        callback: Callable[['AnimationCanceledEvent', Optional[str]], None],
+        callback: Callable[["AnimationCanceledEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for animationCanceled events.
-        
+
         Event for when an animation has been cancelled.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -36,13 +42,13 @@ class AnimationRegistration:
 
     def animationCreated(
         self,
-        callback: Callable[['AnimationCreatedEvent', Optional[str]], None],
+        callback: Callable[["AnimationCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for animationCreated events.
-        
+
         Event for each animation that has been created.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -51,13 +57,13 @@ class AnimationRegistration:
 
     def animationStarted(
         self,
-        callback: Callable[['AnimationStartedEvent', Optional[str]], None],
+        callback: Callable[["AnimationStartedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for animationStarted events.
-        
+
         Event for animation that has been started.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -66,16 +72,15 @@ class AnimationRegistration:
 
     def animationUpdated(
         self,
-        callback: Callable[['AnimationUpdatedEvent', Optional[str]], None],
+        callback: Callable[["AnimationUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for animationUpdated events.
-        
+
         Event for animation that has been updated.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Animation.animationUpdated", callback)
-

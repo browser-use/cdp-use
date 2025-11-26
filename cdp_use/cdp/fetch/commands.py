@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from .types import RequestId
     from .types import RequestPattern
 
+
 class EnableParameters(TypedDict, total=False):
     patterns: "List[RequestPattern]"
     """If specified, only requests matching any of these patterns will produce
@@ -27,17 +28,11 @@ all requests will be affected."""
 expecting a call to continueWithAuth."""
 
 
-
-
-
 class FailRequestParameters(TypedDict):
     requestId: "RequestId"
     """An id the client received in requestPaused event."""
     errorReason: "ErrorReason"
     """Causes the request to fail with the given reason."""
-
-
-
 
 
 class FulfillRequestParameters(TypedDict):
@@ -61,9 +56,6 @@ will be used if the request is intercepted at the request stage. (Encoded as a b
 If absent, a standard phrase matching responseCode is used."""
 
 
-
-
-
 class ContinueRequestParameters(TypedDict):
     requestId: "RequestId"
     """An id the client received in requestPaused event."""
@@ -81,17 +73,11 @@ may be applied to a different request produced by a redirect."""
     """If set, overrides response interception behavior for this request."""
 
 
-
-
-
 class ContinueWithAuthParameters(TypedDict):
     requestId: "RequestId"
     """An id the client received in authRequired event."""
     authChallengeResponse: "AuthChallengeResponse"
     """Response to  with an authChallenge."""
-
-
-
 
 
 class ContinueResponseParameters(TypedDict):
@@ -111,9 +97,6 @@ need to represent some non-UTF8 values that can't be transmitted
 over the protocol as text. (Encoded as a base64 string when passed over JSON)"""
 
 
-
-
-
 class GetResponseBodyParameters(TypedDict):
     requestId: "RequestId"
     """Identifier for the intercepted request to get body for."""
@@ -124,7 +107,6 @@ class GetResponseBodyReturns(TypedDict):
     """Response body."""
     base64Encoded: "bool"
     """True, if content was sent as base64."""
-
 
 
 class TakeResponseBodyAsStreamParameters(TypedDict):

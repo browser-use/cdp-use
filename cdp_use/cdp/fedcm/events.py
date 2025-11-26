@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from .types import Account
     from .types import DialogType
 
+
 class DialogShownEvent(TypedDict):
     dialogId: "str"
     dialogType: "DialogType"
@@ -23,8 +24,9 @@ RP context was used appropriately."""
     subtitle: "NotRequired[str]"
 
 
-
 """Triggered when a dialog is closed, either by user action, JS abort,
 or a command below."""
+
+
 class DialogClosedEvent(TypedDict):
     dialogId: "str"

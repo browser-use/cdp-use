@@ -12,27 +12,32 @@ if TYPE_CHECKING:
     from .types import Animation
 
 """Event for when an animation has been cancelled."""
+
+
 class AnimationCanceledEvent(TypedDict):
     id: "str"
     """Id of the animation that was cancelled."""
 
 
-
 """Event for each animation that has been created."""
+
+
 class AnimationCreatedEvent(TypedDict):
     id: "str"
     """Id of the animation that was created."""
 
 
-
 """Event for animation that has been started."""
+
+
 class AnimationStartedEvent(TypedDict):
     animation: "Animation"
     """Animation that was started."""
 
 
-
 """Event for animation that has been updated."""
+
+
 class AnimationUpdatedEvent(TypedDict):
     animation: "Animation"
     """Animation that was updated."""

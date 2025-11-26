@@ -5,9 +5,11 @@
 """CDP Event Registry"""
 
 import logging
+import inspect
 from typing import Any, Callable, Dict, Optional
 
 logger = logging.getLogger(__name__)
+
 
 class EventRegistry:
     """Central registry for managing CDP event callbacks."""
@@ -22,7 +24,7 @@ class EventRegistry:
     ) -> None:
         """
         Register a callback for a specific CDP event method.
-        
+
         Args:
             method: The CDP method name (e.g., "Page.frameAttached")
             callback: Function to call when event occurs.
@@ -34,7 +36,7 @@ class EventRegistry:
     def unregister(self, method: str) -> None:
         """
         Unregister a callback for a specific CDP event method.
-        
+
         Args:
             method: The CDP method name to unregister
         """
@@ -49,27 +51,21 @@ class EventRegistry:
     ) -> bool:
         """
         Handle an incoming CDP event.
-        
+
         Args:
             method: The CDP method name
             params: The event parameters
             session_id: Optional session ID
-            
+
         Returns:
             True if a handler was found and called, False otherwise
         """
         if method in self._handlers:
             try:
-                import asyncio
-                import inspect
                 handler = self._handlers[method]
-                
-                # Check if handler is async
                 if inspect.iscoroutinefunction(handler):
-                    # Await async handlers
                     await handler(params, session_id)
                 else:
-                    # Call sync handlers directly
                     handler(params, session_id)
                 return True
             except Exception as e:

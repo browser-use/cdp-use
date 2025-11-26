@@ -8,9 +8,9 @@ from typing import List
 from typing_extensions import Literal
 from typing_extensions import TypedDict
 
+
 class MemoryDumpConfig(TypedDict):
     """Configuration for memory dump. Used only when \"memory-infra\" category is enabled."""
-
 
 
 class TraceConfig(TypedDict, total=False):
@@ -35,23 +35,19 @@ of 200 MB would be used."""
     """Configuration for memory dump triggers. Used only when \"memory-infra\" category is enabled."""
 
 
-
 StreamFormat = Literal["json", "proto"]
 """Data format of a trace. Can be either the legacy JSON format or the
 protocol buffer format. Note that the JSON format will be deprecated soon."""
-
 
 
 StreamCompression = Literal["none", "gzip"]
 """Compression type to use for traces returned via streams."""
 
 
-
 MemoryDumpLevelOfDetail = Literal["background", "light", "detailed"]
 """Details exposed when memory request explicitly declared.
 Keep consistent with memory_dump_request_args.h and
 memory_instrumentation.mojom"""
-
 
 
 TracingBackend = Literal["auto", "chrome", "system"]

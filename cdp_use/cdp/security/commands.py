@@ -11,12 +11,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .types import CertificateErrorAction
 
+
 class SetIgnoreCertificateErrorsParameters(TypedDict):
     ignore: "bool"
     """If true, all certificate errors will be ignored."""
-
-
-
 
 
 class HandleCertificateErrorParameters(TypedDict):
@@ -26,11 +24,6 @@ class HandleCertificateErrorParameters(TypedDict):
     """The action to take on the certificate error."""
 
 
-
-
-
 class SetOverrideCertificateErrorsParameters(TypedDict):
     override: "bool"
     """If true, certificate errors will be overridden."""
-
-

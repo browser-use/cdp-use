@@ -13,6 +13,8 @@ if TYPE_CHECKING:
     from .types import Metric
 
 """Current values of the metrics."""
+
+
 class MetricsEvent(TypedDict):
     metrics: "List[Metric]"
     """Current values of the metrics."""

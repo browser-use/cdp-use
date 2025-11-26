@@ -13,29 +13,34 @@ if TYPE_CHECKING:
     from .types import Credential
 
 """Triggered when a credential is added to an authenticator."""
+
+
 class CredentialAddedEvent(TypedDict):
     authenticatorId: "AuthenticatorId"
     credential: "Credential"
 
 
-
 """Triggered when a credential is deleted, e.g. through
 PublicKeyCredential.signalUnknownCredential()."""
+
+
 class CredentialDeletedEvent(TypedDict):
     authenticatorId: "AuthenticatorId"
     credentialId: "str"
 
 
-
 """Triggered when a credential is updated, e.g. through
 PublicKeyCredential.signalCurrentUserDetails()."""
+
+
 class CredentialUpdatedEvent(TypedDict):
     authenticatorId: "AuthenticatorId"
     credential: "Credential"
 
 
-
 """Triggered when a credential is used in a webauthn assertion."""
+
+
 class CredentialAssertedEvent(TypedDict):
     authenticatorId: "AuthenticatorId"
     credential: "Credential"

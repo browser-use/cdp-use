@@ -4,7 +4,6 @@ Registration generator for CDP protocol event registration.
 Generates type-safe event registration interfaces for CDP domains.
 """
 
-import re
 from typing import Any, Dict, List
 
 
@@ -126,23 +125,23 @@ class RegistrationGenerator:
         description = event.get("description", "")
         if description:
             escaped_desc = description.replace("\\", "\\\\").replace('"', '\\"')
-            content += f'        """\n'
+            content += '        """\n'
             content += f"        Register a callback for {event_name} events.\n"
-            content += f"        \n"
+            content += "        \n"
             content += f"        {escaped_desc}\n"
-            content += f"        \n"
-            content += f"        Args:\n"
-            content += f"            callback: Function to call when event occurs.\n"
-            content += f"                     Receives (event_data, session_id) as parameters.\n"
-            content += f'        """\n'
+            content += "        \n"
+            content += "        Args:\n"
+            content += "            callback: Function to call when event occurs.\n"
+            content += "                     Receives (event_data, session_id) as parameters.\n"
+            content += '        """\n'
         else:
-            content += f'        """\n'
+            content += '        """\n'
             content += f"        Register a callback for {event_name} events.\n"
-            content += f"        \n"
-            content += f"        Args:\n"
-            content += f"            callback: Function to call when event occurs.\n"
-            content += f"                     Receives (event_data, session_id) as parameters.\n"
-            content += f'        """\n'
+            content += "        \n"
+            content += "        Args:\n"
+            content += "            callback: Function to call when event occurs.\n"
+            content += "                     Receives (event_data, session_id) as parameters.\n"
+            content += '        """\n'
 
         content += f'        self._registry.register("{cdp_method_name}", callback)\n'
 

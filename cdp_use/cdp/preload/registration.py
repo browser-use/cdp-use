@@ -11,30 +11,31 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import (
-    PrefetchStatusUpdatedEvent,
-    PreloadEnabledStateUpdatedEvent,
-    PreloadingAttemptSourcesUpdatedEvent,
-    PrerenderStatusUpdatedEvent,
-    RuleSetRemovedEvent,
-    RuleSetUpdatedEvent
-)
+        PrefetchStatusUpdatedEvent,
+        PreloadEnabledStateUpdatedEvent,
+        PreloadingAttemptSourcesUpdatedEvent,
+        PrerenderStatusUpdatedEvent,
+        RuleSetRemovedEvent,
+        RuleSetUpdatedEvent,
+    )
+
 
 class PreloadRegistration:
     """Event registration interface for Preload domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Preload"
 
     def ruleSetUpdated(
         self,
-        callback: Callable[['RuleSetUpdatedEvent', Optional[str]], None],
+        callback: Callable[["RuleSetUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for ruleSetUpdated events.
-        
+
         Upsert. Currently, it is only emitted when a rule set added.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -43,11 +44,11 @@ class PreloadRegistration:
 
     def ruleSetRemoved(
         self,
-        callback: Callable[['RuleSetRemovedEvent', Optional[str]], None],
+        callback: Callable[["RuleSetRemovedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for ruleSetRemoved events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -56,13 +57,13 @@ class PreloadRegistration:
 
     def preloadEnabledStateUpdated(
         self,
-        callback: Callable[['PreloadEnabledStateUpdatedEvent', Optional[str]], None],
+        callback: Callable[["PreloadEnabledStateUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for preloadEnabledStateUpdated events.
-        
+
         Fired when a preload enabled state is updated.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -71,13 +72,13 @@ class PreloadRegistration:
 
     def prefetchStatusUpdated(
         self,
-        callback: Callable[['PrefetchStatusUpdatedEvent', Optional[str]], None],
+        callback: Callable[["PrefetchStatusUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for prefetchStatusUpdated events.
-        
+
         Fired when a prefetch attempt is updated.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -86,13 +87,13 @@ class PreloadRegistration:
 
     def prerenderStatusUpdated(
         self,
-        callback: Callable[['PrerenderStatusUpdatedEvent', Optional[str]], None],
+        callback: Callable[["PrerenderStatusUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for prerenderStatusUpdated events.
-        
+
         Fired when a prerender attempt is updated.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -101,16 +102,17 @@ class PreloadRegistration:
 
     def preloadingAttemptSourcesUpdated(
         self,
-        callback: Callable[['PreloadingAttemptSourcesUpdatedEvent', Optional[str]], None],
+        callback: Callable[
+            ["PreloadingAttemptSourcesUpdatedEvent", Optional[str]], None
+        ],
     ) -> None:
         """
         Register a callback for preloadingAttemptSourcesUpdated events.
-        
+
         Send a list of sources for all preloading attempts in a document.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Preload.preloadingAttemptSourcesUpdated", callback)
-

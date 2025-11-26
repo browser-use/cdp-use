@@ -31,6 +31,8 @@ if TYPE_CHECKING:
     from .commands import GetSharedStorageMetadataReturns
     from .commands import GetStorageKeyForFrameParameters
     from .commands import GetStorageKeyForFrameReturns
+    from .commands import GetStorageKeyParameters
+    from .commands import GetStorageKeyReturns
     from .commands import GetTrustTokensReturns
     from .commands import GetUsageAndQuotaParameters
     from .commands import GetUsageAndQuotaReturns
@@ -56,10 +58,11 @@ if TYPE_CHECKING:
     from .commands import UntrackIndexedDBForOriginParameters
     from .commands import UntrackIndexedDBForStorageKeyParameters
 
+
 class StorageClient:
     """Client for Storage domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def getStorageKeyForFrame(
@@ -67,12 +70,32 @@ class StorageClient:
         params: "GetStorageKeyForFrameParameters",
         session_id: Optional[str] = None,
     ) -> "GetStorageKeyForFrameReturns":
-        """Returns a storage key given a frame id."""
-        return cast("GetStorageKeyForFrameReturns", await self._client.send_raw(
-            method="Storage.getStorageKeyForFrame",
-            params=params,
-            session_id=session_id,
-        ))
+        """Returns a storage key given a frame id.
+        Deprecated. Please use Storage.getStorageKey instead."""
+        return cast(
+            "GetStorageKeyForFrameReturns",
+            await self._client.send_raw(
+                method="Storage.getStorageKeyForFrame",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getStorageKey(
+        self,
+        params: Optional["GetStorageKeyParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "GetStorageKeyReturns":
+        """Returns storage key for the given frame. If no frame ID is provided,
+        the storage key of the target executing this command is returned."""
+        return cast(
+            "GetStorageKeyReturns",
+            await self._client.send_raw(
+                method="Storage.getStorageKey",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearDataForOrigin(
         self,
@@ -80,11 +103,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears storage for origin."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.clearDataForOrigin",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.clearDataForOrigin",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearDataForStorageKey(
         self,
@@ -92,11 +118,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears storage for storage key."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.clearDataForStorageKey",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.clearDataForStorageKey",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getCookies(
         self,
@@ -104,11 +133,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "GetCookiesReturns":
         """Returns all browser cookies."""
-        return cast("GetCookiesReturns", await self._client.send_raw(
-            method="Storage.getCookies",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetCookiesReturns",
+            await self._client.send_raw(
+                method="Storage.getCookies",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setCookies(
         self,
@@ -116,11 +148,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets given cookies."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.setCookies",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.setCookies",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearCookies(
         self,
@@ -128,11 +163,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears cookies."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.clearCookies",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.clearCookies",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getUsageAndQuota(
         self,
@@ -140,11 +178,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "GetUsageAndQuotaReturns":
         """Returns usage and quota in bytes."""
-        return cast("GetUsageAndQuotaReturns", await self._client.send_raw(
-            method="Storage.getUsageAndQuota",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetUsageAndQuotaReturns",
+            await self._client.send_raw(
+                method="Storage.getUsageAndQuota",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def overrideQuotaForOrigin(
         self,
@@ -152,11 +193,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Override quota for the specified origin"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.overrideQuotaForOrigin",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.overrideQuotaForOrigin",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def trackCacheStorageForOrigin(
         self,
@@ -164,11 +208,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Registers origin to be notified when an update occurs to its cache storage list."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.trackCacheStorageForOrigin",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.trackCacheStorageForOrigin",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def trackCacheStorageForStorageKey(
         self,
@@ -176,11 +223,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Registers storage key to be notified when an update occurs to its cache storage list."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.trackCacheStorageForStorageKey",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.trackCacheStorageForStorageKey",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def trackIndexedDBForOrigin(
         self,
@@ -188,11 +238,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Registers origin to be notified when an update occurs to its IndexedDB."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.trackIndexedDBForOrigin",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.trackIndexedDBForOrigin",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def trackIndexedDBForStorageKey(
         self,
@@ -200,11 +253,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Registers storage key to be notified when an update occurs to its IndexedDB."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.trackIndexedDBForStorageKey",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.trackIndexedDBForStorageKey",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def untrackCacheStorageForOrigin(
         self,
@@ -212,11 +268,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Unregisters origin from receiving notifications for cache storage."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.untrackCacheStorageForOrigin",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.untrackCacheStorageForOrigin",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def untrackCacheStorageForStorageKey(
         self,
@@ -224,11 +283,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Unregisters storage key from receiving notifications for cache storage."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.untrackCacheStorageForStorageKey",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.untrackCacheStorageForStorageKey",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def untrackIndexedDBForOrigin(
         self,
@@ -236,11 +298,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Unregisters origin from receiving notifications for IndexedDB."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.untrackIndexedDBForOrigin",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.untrackIndexedDBForOrigin",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def untrackIndexedDBForStorageKey(
         self,
@@ -248,11 +313,14 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Unregisters storage key from receiving notifications for IndexedDB."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.untrackIndexedDBForStorageKey",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.untrackIndexedDBForStorageKey",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getTrustTokens(
         self,
@@ -260,12 +328,15 @@ class StorageClient:
         session_id: Optional[str] = None,
     ) -> "GetTrustTokensReturns":
         """Returns the number of stored Trust Tokens per issuer for the
-current browsing context."""
-        return cast("GetTrustTokensReturns", await self._client.send_raw(
-            method="Storage.getTrustTokens",
-            params=params,
-            session_id=session_id,
-        ))
+        current browsing context."""
+        return cast(
+            "GetTrustTokensReturns",
+            await self._client.send_raw(
+                method="Storage.getTrustTokens",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearTrustTokens(
         self,
@@ -273,12 +344,15 @@ current browsing context."""
         session_id: Optional[str] = None,
     ) -> "ClearTrustTokensReturns":
         """Removes all Trust Tokens issued by the provided issuerOrigin.
-Leaves other stored data, including the issuer's Redemption Records, intact."""
-        return cast("ClearTrustTokensReturns", await self._client.send_raw(
-            method="Storage.clearTrustTokens",
-            params=params,
-            session_id=session_id,
-        ))
+        Leaves other stored data, including the issuer's Redemption Records, intact."""
+        return cast(
+            "ClearTrustTokensReturns",
+            await self._client.send_raw(
+                method="Storage.clearTrustTokens",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getInterestGroupDetails(
         self,
@@ -286,11 +360,14 @@ Leaves other stored data, including the issuer's Redemption Records, intact."""
         session_id: Optional[str] = None,
     ) -> "GetInterestGroupDetailsReturns":
         """Gets details for a named interest group."""
-        return cast("GetInterestGroupDetailsReturns", await self._client.send_raw(
-            method="Storage.getInterestGroupDetails",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetInterestGroupDetailsReturns",
+            await self._client.send_raw(
+                method="Storage.getInterestGroupDetails",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setInterestGroupTracking(
         self,
@@ -298,11 +375,14 @@ Leaves other stored data, including the issuer's Redemption Records, intact."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables/Disables issuing of interestGroupAccessed events."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.setInterestGroupTracking",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.setInterestGroupTracking",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setInterestGroupAuctionTracking(
         self,
@@ -310,12 +390,15 @@ Leaves other stored data, including the issuer's Redemption Records, intact."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables/Disables issuing of interestGroupAuctionEventOccurred and
-interestGroupAuctionNetworkRequestCreated."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.setInterestGroupAuctionTracking",
-            params=params,
-            session_id=session_id,
-        ))
+        interestGroupAuctionNetworkRequestCreated."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.setInterestGroupAuctionTracking",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getSharedStorageMetadata(
         self,
@@ -323,11 +406,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "GetSharedStorageMetadataReturns":
         """Gets metadata for an origin's shared storage."""
-        return cast("GetSharedStorageMetadataReturns", await self._client.send_raw(
-            method="Storage.getSharedStorageMetadata",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetSharedStorageMetadataReturns",
+            await self._client.send_raw(
+                method="Storage.getSharedStorageMetadata",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getSharedStorageEntries(
         self,
@@ -335,11 +421,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "GetSharedStorageEntriesReturns":
         """Gets the entries in an given origin's shared storage."""
-        return cast("GetSharedStorageEntriesReturns", await self._client.send_raw(
-            method="Storage.getSharedStorageEntries",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetSharedStorageEntriesReturns",
+            await self._client.send_raw(
+                method="Storage.getSharedStorageEntries",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setSharedStorageEntry(
         self,
@@ -347,11 +436,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets entry with `key` and `value` for a given origin's shared storage."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.setSharedStorageEntry",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.setSharedStorageEntry",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def deleteSharedStorageEntry(
         self,
@@ -359,11 +451,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deletes entry for `key` (if it exists) for a given origin's shared storage."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.deleteSharedStorageEntry",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.deleteSharedStorageEntry",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearSharedStorageEntries(
         self,
@@ -371,11 +466,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears all entries for a given origin's shared storage."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.clearSharedStorageEntries",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.clearSharedStorageEntries",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def resetSharedStorageBudget(
         self,
@@ -383,11 +481,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Resets the budget for `ownerOrigin` by clearing all budget withdrawals."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.resetSharedStorageBudget",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.resetSharedStorageBudget",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setSharedStorageTracking(
         self,
@@ -395,11 +496,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables/disables issuing of sharedStorageAccessed events."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.setSharedStorageTracking",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.setSharedStorageTracking",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setStorageBucketTracking(
         self,
@@ -407,11 +511,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Set tracking for a storage key's buckets."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.setStorageBucketTracking",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.setStorageBucketTracking",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def deleteStorageBucket(
         self,
@@ -419,11 +526,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deletes the Storage Bucket with the given storage key and bucket name."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.deleteStorageBucket",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.deleteStorageBucket",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def runBounceTrackingMitigations(
         self,
@@ -431,11 +541,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "RunBounceTrackingMitigationsReturns":
         """Deletes state for sites identified as potential bounce trackers, immediately."""
-        return cast("RunBounceTrackingMitigationsReturns", await self._client.send_raw(
-            method="Storage.runBounceTrackingMitigations",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "RunBounceTrackingMitigationsReturns",
+            await self._client.send_raw(
+                method="Storage.runBounceTrackingMitigations",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setAttributionReportingLocalTestingMode(
         self,
@@ -443,11 +556,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """https://wicg.github.io/attribution-reporting-api/"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.setAttributionReportingLocalTestingMode",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.setAttributionReportingLocalTestingMode",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setAttributionReportingTracking(
         self,
@@ -455,11 +571,14 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables/disables issuing of Attribution Reporting events."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.setAttributionReportingTracking",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.setAttributionReportingTracking",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def sendPendingAttributionReports(
         self,
@@ -467,12 +586,15 @@ interestGroupAuctionNetworkRequestCreated."""
         session_id: Optional[str] = None,
     ) -> "SendPendingAttributionReportsReturns":
         """Sends all pending Attribution Reports immediately, regardless of their
-scheduled report time."""
-        return cast("SendPendingAttributionReportsReturns", await self._client.send_raw(
-            method="Storage.sendPendingAttributionReports",
-            params=params,
-            session_id=session_id,
-        ))
+        scheduled report time."""
+        return cast(
+            "SendPendingAttributionReportsReturns",
+            await self._client.send_raw(
+                method="Storage.sendPendingAttributionReports",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getRelatedWebsiteSets(
         self,
@@ -480,12 +602,15 @@ scheduled report time."""
         session_id: Optional[str] = None,
     ) -> "GetRelatedWebsiteSetsReturns":
         """Returns the effective Related Website Sets in use by this profile for the browser
-session. The effective Related Website Sets will not change during a browser session."""
-        return cast("GetRelatedWebsiteSetsReturns", await self._client.send_raw(
-            method="Storage.getRelatedWebsiteSets",
-            params=params,
-            session_id=session_id,
-        ))
+        session. The effective Related Website Sets will not change during a browser session."""
+        return cast(
+            "GetRelatedWebsiteSetsReturns",
+            await self._client.send_raw(
+                method="Storage.getRelatedWebsiteSets",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getAffectedUrlsForThirdPartyCookieMetadata(
         self,
@@ -493,23 +618,27 @@ session. The effective Related Website Sets will not change during a browser ses
         session_id: Optional[str] = None,
     ) -> "GetAffectedUrlsForThirdPartyCookieMetadataReturns":
         """Returns the list of URLs from a page and its embedded resources that match
-existing grace period URL pattern rules.
-https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/grace-period"""
-        return cast("GetAffectedUrlsForThirdPartyCookieMetadataReturns", await self._client.send_raw(
-            method="Storage.getAffectedUrlsForThirdPartyCookieMetadata",
-            params=params,
-            session_id=session_id,
-        ))
+        existing grace period URL pattern rules.
+        https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/grace-period"""
+        return cast(
+            "GetAffectedUrlsForThirdPartyCookieMetadataReturns",
+            await self._client.send_raw(
+                method="Storage.getAffectedUrlsForThirdPartyCookieMetadata",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setProtectedAudienceKAnonymity(
         self,
         params: "SetProtectedAudienceKAnonymityParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Storage.setProtectedAudienceKAnonymity",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Storage.setProtectedAudienceKAnonymity",
+                params=params,
+                session_id=session_id,
+            ),
+        )

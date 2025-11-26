@@ -18,11 +18,9 @@ if TYPE_CHECKING:
     from .types import TargetInfo
     from .types import WindowState
 
+
 class ActivateTargetParameters(TypedDict):
     targetId: "TargetID"
-
-
-
 
 
 class AttachToTargetParameters(TypedDict):
@@ -38,11 +36,9 @@ class AttachToTargetReturns(TypedDict):
     """Id assigned to the session."""
 
 
-
 class AttachToBrowserTargetReturns(TypedDict):
     sessionId: "SessionID"
     """Id assigned to the session."""
-
 
 
 class CloseTargetParameters(TypedDict):
@@ -54,16 +50,12 @@ class CloseTargetReturns(TypedDict):
     """Always set to true. If an error occurs, the response indicates protocol error."""
 
 
-
 class ExposeDevToolsProtocolParameters(TypedDict):
     targetId: "TargetID"
     bindingName: "NotRequired[str]"
     """Binding name, 'cdp' if not specified."""
     inheritPermissions: "NotRequired[bool]"
     """If true, inherits the current root session's permissions (default: false)."""
-
-
-
 
 
 class CreateBrowserContextParameters(TypedDict, total=False):
@@ -83,11 +75,9 @@ class CreateBrowserContextReturns(TypedDict):
     """The id of the context created."""
 
 
-
 class GetBrowserContextsReturns(TypedDict):
     browserContextIds: "List[BrowserContextID]"
     """An array of browser context ids."""
-
 
 
 class CreateTargetParameters(TypedDict):
@@ -127,7 +117,6 @@ class CreateTargetReturns(TypedDict):
     """The id of the page opened."""
 
 
-
 class DetachFromTargetParameters(TypedDict, total=False):
     sessionId: "SessionID"
     """Session to detach."""
@@ -135,14 +124,8 @@ class DetachFromTargetParameters(TypedDict, total=False):
     """Deprecated."""
 
 
-
-
-
 class DisposeBrowserContextParameters(TypedDict):
     browserContextId: "BrowserContextID"
-
-
-
 
 
 class GetTargetInfoParameters(TypedDict, total=False):
@@ -151,7 +134,6 @@ class GetTargetInfoParameters(TypedDict, total=False):
 
 class GetTargetInfoReturns(TypedDict):
     targetInfo: "TargetInfo"
-
 
 
 class GetTargetsParameters(TypedDict, total=False):
@@ -166,16 +148,12 @@ class GetTargetsReturns(TypedDict):
     """The list of targets."""
 
 
-
 class SendMessageToTargetParameters(TypedDict):
     message: "str"
     sessionId: "NotRequired[SessionID]"
     """Identifier of the session."""
     targetId: "NotRequired[TargetID]"
     """Deprecated."""
-
-
-
 
 
 class SetAutoAttachParameters(TypedDict):
@@ -192,9 +170,6 @@ and eventually retire it. See crbug.com/991325."""
     """Only targets matching filter will be attached."""
 
 
-
-
-
 class AutoAttachRelatedParameters(TypedDict):
     targetId: "TargetID"
     waitForDebuggerOnStart: "bool"
@@ -202,9 +177,6 @@ class AutoAttachRelatedParameters(TypedDict):
 to run paused targets."""
     filter: "NotRequired[TargetFilter]"
     """Only targets matching filter will be attached."""
-
-
-
 
 
 class SetDiscoverTargetsParameters(TypedDict):
@@ -215,11 +187,20 @@ class SetDiscoverTargetsParameters(TypedDict):
 `filter` must be omitted or empty."""
 
 
-
-
-
 class SetRemoteLocationsParameters(TypedDict):
     locations: "List[RemoteLocation]"
     """List of remote locations."""
 
 
+class OpenDevToolsParameters(TypedDict):
+    targetId: "TargetID"
+    """This can be the page or tab target ID."""
+    panelId: "NotRequired[str]"
+    """The id of the panel we want DevTools to open initially. Currently
+supported panels are elements, console, network, sources, resources
+and performance."""
+
+
+class OpenDevToolsReturns(TypedDict):
+    targetId: "TargetID"
+    """The targetId of DevTools page target."""

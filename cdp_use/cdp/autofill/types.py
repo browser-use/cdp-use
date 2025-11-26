@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
     from ..page.types import FrameId
 
+
 class CreditCard(TypedDict):
     number: "str"
     """16-digit credit card number."""
@@ -27,13 +28,13 @@ class CreditCard(TypedDict):
     """3-digit card verification code."""
 
 
-
 class AddressField(TypedDict):
     name: "str"
-    """address field name, for example GIVEN_NAME."""
+    """address field name, for example GIVEN_NAME.
+The full list of supported field names:
+https://source.chromium.org/chromium/chromium/src/+/main:components/autofill/core/browser/field_types.cc;l=38"""
     value: "str"
     """address field value, for example Jon Doe."""
-
 
 
 class AddressFields(TypedDict):
@@ -42,30 +43,26 @@ class AddressFields(TypedDict):
     fields: "List[AddressField]"
 
 
-
 class Address(TypedDict):
     fields: "List[AddressField]"
     """fields and values defining an address."""
 
 
-
 class AddressUI(TypedDict):
     """Defines how an address can be displayed like in chrome://settings/addresses.
-Address UI is a two dimensional array, each inner array is an \"address information line\", and when rendered in a UI surface should be displayed as such.
-The following address UI for instance:
-[[{name: \"GIVE_NAME\", value: \"Jon\"}, {name: \"FAMILY_NAME\", value: \"Doe\"}], [{name: \"CITY\", value: \"Munich\"}, {name: \"ZIP\", value: \"81456\"}]]
-should allow the receiver to render:
-Jon Doe
-Munich 81456"""
+    Address UI is a two dimensional array, each inner array is an \"address information line\", and when rendered in a UI surface should be displayed as such.
+    The following address UI for instance:
+    [[{name: \"GIVE_NAME\", value: \"Jon\"}, {name: \"FAMILY_NAME\", value: \"Doe\"}], [{name: \"CITY\", value: \"Munich\"}, {name: \"ZIP\", value: \"81456\"}]]
+    should allow the receiver to render:
+    Jon Doe
+    Munich 81456"""
 
     addressFields: "List[AddressFields]"
     """A two dimension array containing the representation of values from an address profile."""
 
 
-
 FillingStrategy = Literal["autocompleteAttribute", "autofillInferred"]
 """Specified whether a filled field was done so by using the html autocomplete attribute or autofill heuristics."""
-
 
 
 class FilledField(TypedDict):

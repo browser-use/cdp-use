@@ -205,6 +205,13 @@ class CDPRegistrationLibrary:
 ### Regenerating Types
 
 ```bash
+# Using task (recommended)
+task generate
+
+# Or directly with uv
+uv run python -m cdp_use.generator
+
+# Or with python
 python -m cdp_use.generator
 ```
 
@@ -214,6 +221,32 @@ This will:
 2. Generate all Python type definitions and event registrations
 3. Create domain-specific client classes
 4. Format the code
+
+### Version Pinning
+
+By default, the generator downloads the latest CDP specification from the master branch. To pin a specific version, edit `cdp_use/generator/constants.py`:
+
+```python
+# Pin to a specific commit
+CDP_VERSION = "4b0c3f2e8c5d6a7b9e1f2a3c4d5e6f7a8b9c0d1e"
+
+# Or use master for latest
+CDP_VERSION = "refs/heads/master"
+```
+
+To find specific commits, visit: https://github.com/ChromeDevTools/devtools-protocol/commits/master
+
+### Available Tasks
+
+```bash
+task generate    # Regenerate CDP types from protocol definitions
+task build       # Build the distribution package
+task lint        # Run ruff linter
+task format      # Format code with ruff
+task format-json # Format JSON protocol files
+task example     # Run the simple example
+task clean       # Clean generated files and build artifacts
+```
 
 ### Project Structure
 

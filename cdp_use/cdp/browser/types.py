@@ -11,14 +11,11 @@ from typing_extensions import NotRequired, TypedDict
 BrowserContextID = str
 
 
-
 WindowID = int
-
 
 
 WindowState = Literal["normal", "minimized", "maximized", "fullscreen"]
 """The state of the browser window."""
-
 
 
 class Bounds(TypedDict, total=False):
@@ -36,18 +33,53 @@ class Bounds(TypedDict, total=False):
     """The window state. Default to normal."""
 
 
-
-PermissionType = Literal["ar", "audioCapture", "automaticFullscreen", "backgroundFetch", "backgroundSync", "cameraPanTiltZoom", "capturedSurfaceControl", "clipboardReadWrite", "clipboardSanitizedWrite", "displayCapture", "durableStorage", "geolocation", "handTracking", "idleDetection", "keyboardLock", "localFonts", "localNetworkAccess", "midi", "midiSysex", "nfc", "notifications", "paymentHandler", "periodicBackgroundSync", "pointerLock", "protectedMediaIdentifier", "sensors", "smartCard", "speakerSelection", "storageAccess", "topLevelStorageAccess", "videoCapture", "vr", "wakeLockScreen", "wakeLockSystem", "webAppInstallation", "webPrinting", "windowManagement"]
-
+PermissionType = Literal[
+    "ar",
+    "audioCapture",
+    "automaticFullscreen",
+    "backgroundFetch",
+    "backgroundSync",
+    "cameraPanTiltZoom",
+    "capturedSurfaceControl",
+    "clipboardReadWrite",
+    "clipboardSanitizedWrite",
+    "displayCapture",
+    "durableStorage",
+    "geolocation",
+    "handTracking",
+    "idleDetection",
+    "keyboardLock",
+    "localFonts",
+    "localNetworkAccess",
+    "midi",
+    "midiSysex",
+    "nfc",
+    "notifications",
+    "paymentHandler",
+    "periodicBackgroundSync",
+    "pointerLock",
+    "protectedMediaIdentifier",
+    "sensors",
+    "smartCard",
+    "speakerSelection",
+    "storageAccess",
+    "topLevelStorageAccess",
+    "videoCapture",
+    "vr",
+    "wakeLockScreen",
+    "wakeLockSystem",
+    "webAppInstallation",
+    "webPrinting",
+    "windowManagement",
+]
 
 
 PermissionSetting = Literal["granted", "denied", "prompt"]
 
 
-
 class PermissionDescriptor(TypedDict):
     """Definition of PermissionDescriptor defined in the Permissions API:
-https://w3c.github.io/permissions/#dom-permissiondescriptor."""
+    https://w3c.github.io/permissions/#dom-permissiondescriptor."""
 
     name: "str"
     """Name of permission.
@@ -65,10 +97,8 @@ Note that userVisibleOnly = true is the only currently supported type."""
     """For \"camera\" permission, may specify panTiltZoom."""
 
 
-
 BrowserCommandId = Literal["openTabSearch", "closeTabSearch", "openGlic"]
 """Browser command ids used by executeBrowserCommand."""
-
 
 
 class Bucket(TypedDict):
@@ -82,7 +112,6 @@ class Bucket(TypedDict):
     """Number of samples."""
 
 
-
 class Histogram(TypedDict):
     """Chrome histogram."""
 
@@ -94,7 +123,6 @@ class Histogram(TypedDict):
     """Total number of samples."""
     buckets: "List[Bucket]"
     """Buckets."""
-
 
 
 PrivacySandboxAPI = Literal["BiddingAndAuctionServices", "TrustedKeyValue"]

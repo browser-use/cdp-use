@@ -13,11 +13,9 @@ if TYPE_CHECKING:
     from .types import Item
     from .types import StorageId
 
+
 class ClearParameters(TypedDict):
     storageId: "StorageId"
-
-
-
 
 
 class GetDOMStorageItemsParameters(TypedDict):
@@ -28,18 +26,12 @@ class GetDOMStorageItemsReturns(TypedDict):
     entries: "List[Item]"
 
 
-
 class RemoveDOMStorageItemParameters(TypedDict):
     storageId: "StorageId"
     key: "str"
-
-
-
 
 
 class SetDOMStorageItemParameters(TypedDict):
     storageId: "StorageId"
     key: "str"
     value: "str"
-
-

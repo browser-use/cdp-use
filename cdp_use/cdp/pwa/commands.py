@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from .types import DisplayMode
     from .types import FileHandler
 
+
 class GetOsAppStateParameters(TypedDict):
     manifestId: "str"
     """The id from the webapp's manifest file, commonly it's the url of the
@@ -26,7 +27,6 @@ class GetOsAppStateReturns(TypedDict):
     fileHandlers: "List[FileHandler]"
 
 
-
 class InstallParameters(TypedDict):
     manifestId: "str"
     installUrlOrBundleUrl: "NotRequired[str]"
@@ -34,14 +34,8 @@ class InstallParameters(TypedDict):
 manifestId."""
 
 
-
-
-
 class UninstallParameters(TypedDict):
     manifestId: "str"
-
-
-
 
 
 class LaunchParameters(TypedDict):
@@ -54,7 +48,6 @@ class LaunchReturns(TypedDict):
     """ID of the tab target created as a result."""
 
 
-
 class LaunchFilesInAppParameters(TypedDict):
     manifestId: "str"
     files: "List[str]"
@@ -65,12 +58,8 @@ class LaunchFilesInAppReturns(TypedDict):
     """IDs of the tab targets created as the result."""
 
 
-
 class OpenCurrentPageInAppParameters(TypedDict):
     manifestId: "str"
-
-
-
 
 
 class ChangeAppUserSettingsParameters(TypedDict):
@@ -88,5 +77,3 @@ it.
 TODO(crbug.com/339453269): Setting this value on ChromeOS is not
 supported yet."""
     displayMode: "NotRequired[DisplayMode]"
-
-

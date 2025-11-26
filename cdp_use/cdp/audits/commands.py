@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from ..network.types import RequestId
     from .types import GenericIssueDetails
 
+
 class GetEncodedResponseParameters(TypedDict):
     requestId: "RequestId"
     """Identifier of the network request to get content for."""
@@ -33,13 +34,9 @@ class GetEncodedResponseReturns(TypedDict):
     """Size after re-encoding."""
 
 
-
 class CheckContrastParameters(TypedDict, total=False):
     reportAAA: "bool"
     """Whether to report WCAG AAA level issues. Default is false."""
-
-
-
 
 
 class CheckFormsIssuesReturns(TypedDict):

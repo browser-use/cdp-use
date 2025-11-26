@@ -12,10 +12,11 @@ if TYPE_CHECKING:
     from ...client import CDPClient
     from .commands import StartViolationsReportParameters
 
+
 class LogClient:
     """Client for Log domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def clear(
@@ -24,11 +25,14 @@ class LogClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears the log."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Log.clear",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Log.clear",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
@@ -36,11 +40,14 @@ class LogClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables log domain, prevents further log entries from being reported to the client."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Log.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Log.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def enable(
         self,
@@ -48,12 +55,15 @@ class LogClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables log domain, sends the entries collected so far to the client by means of the
-`entryAdded` notification."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Log.enable",
-            params=params,
-            session_id=session_id,
-        ))
+        `entryAdded` notification."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Log.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def startViolationsReport(
         self,
@@ -61,11 +71,14 @@ class LogClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """start violation reporting."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Log.startViolationsReport",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Log.startViolationsReport",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def stopViolationsReport(
         self,
@@ -73,10 +86,11 @@ class LogClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Stop violation reporting."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Log.stopViolationsReport",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Log.stopViolationsReport",
+                params=params,
+                session_id=session_id,
+            ),
+        )

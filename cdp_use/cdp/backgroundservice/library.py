@@ -15,10 +15,11 @@ if TYPE_CHECKING:
     from .commands import StartObservingParameters
     from .commands import StopObservingParameters
 
+
 class BackgroundServiceClient:
     """Client for BackgroundService domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def startObserving(
@@ -27,11 +28,14 @@ class BackgroundServiceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables event updates for the service."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BackgroundService.startObserving",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BackgroundService.startObserving",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def stopObserving(
         self,
@@ -39,11 +43,14 @@ class BackgroundServiceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables event updates for the service."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BackgroundService.stopObserving",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BackgroundService.stopObserving",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setRecording(
         self,
@@ -51,11 +58,14 @@ class BackgroundServiceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Set the recording state for the service."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BackgroundService.setRecording",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BackgroundService.setRecording",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearEvents(
         self,
@@ -63,10 +73,11 @@ class BackgroundServiceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears all stored data for the service."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BackgroundService.clearEvents",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BackgroundService.clearEvents",
+                params=params,
+                session_id=session_id,
+            ),
+        )

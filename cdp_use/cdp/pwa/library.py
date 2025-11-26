@@ -21,10 +21,11 @@ if TYPE_CHECKING:
     from .commands import OpenCurrentPageInAppParameters
     from .commands import UninstallParameters
 
+
 class PWAClient:
     """Client for PWA domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def getOsAppState(
@@ -33,11 +34,14 @@ class PWAClient:
         session_id: Optional[str] = None,
     ) -> "GetOsAppStateReturns":
         """Returns the following OS state for the given manifest id."""
-        return cast("GetOsAppStateReturns", await self._client.send_raw(
-            method="PWA.getOsAppState",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetOsAppStateReturns",
+            await self._client.send_raw(
+                method="PWA.getOsAppState",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def install(
         self,
@@ -46,34 +50,38 @@ class PWAClient:
     ) -> "Dict[str, Any]":
         """Installs the given manifest identity, optionally using the given installUrlOrBundleUrl
 
-IWA-specific install description:
-manifestId corresponds to isolated-app:// + web_package::SignedWebBundleId
+        IWA-specific install description:
+        manifestId corresponds to isolated-app:// + web_package::SignedWebBundleId
 
-File installation mode:
-The installUrlOrBundleUrl can be either file:// or http(s):// pointing
-to a signed web bundle (.swbn). In this case SignedWebBundleId must correspond to
-The .swbn file's signing key.
+        File installation mode:
+        The installUrlOrBundleUrl can be either file:// or http(s):// pointing
+        to a signed web bundle (.swbn). In this case SignedWebBundleId must correspond to
+        The .swbn file's signing key.
 
-Dev proxy installation mode:
-installUrlOrBundleUrl must be http(s):// that serves dev mode IWA.
-web_package::SignedWebBundleId must be of type dev proxy.
+        Dev proxy installation mode:
+        installUrlOrBundleUrl must be http(s):// that serves dev mode IWA.
+        web_package::SignedWebBundleId must be of type dev proxy.
 
-The advantage of dev proxy mode is that all changes to IWA
-automatically will be reflected in the running app without
-reinstallation.
+        The advantage of dev proxy mode is that all changes to IWA
+        automatically will be reflected in the running app without
+        reinstallation.
 
-To generate bundle id for proxy mode:
-1. Generate 32 random bytes.
-2. Add a specific suffix 0x00 at the end.
-3. Encode the entire sequence using Base32 without padding.
+        To generate bundle id for proxy mode:
+        1. Generate 32 random bytes.
+        2. Add a specific suffix at the end following the documentation
+           https://github.com/WICG/isolated-web-apps/blob/main/Scheme.md#suffix
+        3. Encode the entire sequence using Base32 without padding.
 
-If Chrome is not in IWA dev
-mode, the installation will fail, regardless of the state of the allowlist."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="PWA.install",
-            params=params,
-            session_id=session_id,
-        ))
+        If Chrome is not in IWA dev
+        mode, the installation will fail, regardless of the state of the allowlist."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="PWA.install",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def uninstall(
         self,
@@ -81,11 +89,14 @@ mode, the installation will fail, regardless of the state of the allowlist."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Uninstalls the given manifest_id and closes any opened app windows."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="PWA.uninstall",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="PWA.uninstall",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def launch(
         self,
@@ -93,13 +104,16 @@ mode, the installation will fail, regardless of the state of the allowlist."""
         session_id: Optional[str] = None,
     ) -> "LaunchReturns":
         """Launches the installed web app, or an url in the same web app instead of the
-default start url if it is provided. Returns a page Target.TargetID which
-can be used to attach to via Target.attachToTarget or similar APIs."""
-        return cast("LaunchReturns", await self._client.send_raw(
-            method="PWA.launch",
-            params=params,
-            session_id=session_id,
-        ))
+        default start url if it is provided. Returns a page Target.TargetID which
+        can be used to attach to via Target.attachToTarget or similar APIs."""
+        return cast(
+            "LaunchReturns",
+            await self._client.send_raw(
+                method="PWA.launch",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def launchFilesInApp(
         self,
@@ -107,23 +121,26 @@ can be used to attach to via Target.attachToTarget or similar APIs."""
         session_id: Optional[str] = None,
     ) -> "LaunchFilesInAppReturns":
         """Opens one or more local files from an installed web app identified by its
-manifestId. The web app needs to have file handlers registered to process
-the files. The API returns one or more page Target.TargetIDs which can be
-used to attach to via Target.attachToTarget or similar APIs.
-If some files in the parameters cannot be handled by the web app, they will
-be ignored. If none of the files can be handled, this API returns an error.
-If no files are provided as the parameter, this API also returns an error.
+        manifestId. The web app needs to have file handlers registered to process
+        the files. The API returns one or more page Target.TargetIDs which can be
+        used to attach to via Target.attachToTarget or similar APIs.
+        If some files in the parameters cannot be handled by the web app, they will
+        be ignored. If none of the files can be handled, this API returns an error.
+        If no files are provided as the parameter, this API also returns an error.
 
-According to the definition of the file handlers in the manifest file, one
-Target.TargetID may represent a page handling one or more files. The order
-of the returned Target.TargetIDs is not guaranteed.
+        According to the definition of the file handlers in the manifest file, one
+        Target.TargetID may represent a page handling one or more files. The order
+        of the returned Target.TargetIDs is not guaranteed.
 
-TODO(crbug.com/339454034): Check the existences of the input files."""
-        return cast("LaunchFilesInAppReturns", await self._client.send_raw(
-            method="PWA.launchFilesInApp",
-            params=params,
-            session_id=session_id,
-        ))
+        TODO(crbug.com/339454034): Check the existences of the input files."""
+        return cast(
+            "LaunchFilesInAppReturns",
+            await self._client.send_raw(
+                method="PWA.launchFilesInApp",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def openCurrentPageInApp(
         self,
@@ -131,13 +148,16 @@ TODO(crbug.com/339454034): Check the existences of the input files."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Opens the current page in its web app identified by the manifest id, needs
-to be called on a page target. This function returns immediately without
-waiting for the app to finish loading."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="PWA.openCurrentPageInApp",
-            params=params,
-            session_id=session_id,
-        ))
+        to be called on a page target. This function returns immediately without
+        waiting for the app to finish loading."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="PWA.openCurrentPageInApp",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def changeAppUserSettings(
         self,
@@ -145,18 +165,19 @@ waiting for the app to finish loading."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Changes user settings of the web app identified by its manifestId. If the
-app was not installed, this command returns an error. Unset parameters will
-be ignored; unrecognized values will cause an error.
+        app was not installed, this command returns an error. Unset parameters will
+        be ignored; unrecognized values will cause an error.
 
-Unlike the ones defined in the manifest files of the web apps, these
-settings are provided by the browser and controlled by the users, they
-impact the way the browser handling the web apps.
+        Unlike the ones defined in the manifest files of the web apps, these
+        settings are provided by the browser and controlled by the users, they
+        impact the way the browser handling the web apps.
 
-See the comment of each parameter."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="PWA.changeAppUserSettings",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        See the comment of each parameter."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="PWA.changeAppUserSettings",
+                params=params,
+                session_id=session_id,
+            ),
+        )

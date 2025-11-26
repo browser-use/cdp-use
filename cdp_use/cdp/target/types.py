@@ -17,10 +17,8 @@ if TYPE_CHECKING:
 TargetID = str
 
 
-
 SessionID = str
 """Unique identifier of attached debugging session."""
-
 
 
 class TargetInfo(TypedDict):
@@ -37,11 +35,12 @@ class TargetInfo(TypedDict):
     """Whether the target has access to the originating window."""
     openerFrameId: "NotRequired[FrameId]"
     """Frame id of originating window (is only set if target has an opener)."""
+    parentFrameId: "NotRequired[FrameId]"
+    """Id of the parent frame, only present for the \"iframe\" targets."""
     browserContextId: "NotRequired[BrowserContextID]"
     subtype: "NotRequired[str]"
     """Provides additional details for specific target types. For example, for
 the type of \"page\", this may be set to \"prerender\"."""
-
 
 
 class FilterEntry(TypedDict, total=False):
@@ -53,7 +52,6 @@ class FilterEntry(TypedDict, total=False):
     """If not present, matches any type."""
 
 
-
 TargetFilter = List[FilterEntry]
 """The entries in TargetFilter are matched sequentially against targets and
 the first entry that matches determines if the target is included or not,
@@ -63,11 +61,9 @@ If filter is not specified, the one assumed is
 (i.e. include everything but `browser` and `tab`)."""
 
 
-
 class RemoteLocation(TypedDict):
     host: "str"
     port: "int"
-
 
 
 WindowState = Literal["normal", "minimized", "maximized", "fullscreen"]

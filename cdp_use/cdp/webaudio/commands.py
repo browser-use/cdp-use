@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from .types import ContextRealtimeData
     from .types import GraphObjectId
 
+
 class GetRealtimeDataParameters(TypedDict):
     contextId: "GraphObjectId"
 

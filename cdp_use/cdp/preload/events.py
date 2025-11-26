@@ -24,17 +24,19 @@ if TYPE_CHECKING:
     from .types import RuleSetId
 
 """Upsert. Currently, it is only emitted when a rule set added."""
+
+
 class RuleSetUpdatedEvent(TypedDict):
     ruleSet: "RuleSet"
-
 
 
 class RuleSetRemovedEvent(TypedDict):
     id: "RuleSetId"
 
 
-
 """Fired when a preload enabled state is updated."""
+
+
 class PreloadEnabledStateUpdatedEvent(TypedDict):
     disabledByPreference: "bool"
     disabledByDataSaver: "bool"
@@ -43,8 +45,9 @@ class PreloadEnabledStateUpdatedEvent(TypedDict):
     disabledByHoldbackPrerenderSpeculationRules: "bool"
 
 
-
 """Fired when a prefetch attempt is updated."""
+
+
 class PrefetchStatusUpdatedEvent(TypedDict):
     key: "PreloadingAttemptKey"
     pipelineId: "PreloadPipelineId"
@@ -56,8 +59,9 @@ class PrefetchStatusUpdatedEvent(TypedDict):
     requestId: "RequestId"
 
 
-
 """Fired when a prerender attempt is updated."""
+
+
 class PrerenderStatusUpdatedEvent(TypedDict):
     key: "PreloadingAttemptKey"
     pipelineId: "PreloadPipelineId"
@@ -69,8 +73,9 @@ that is incompatible with prerender and has caused the cancellation of the attem
     mismatchedHeaders: "NotRequired[List[PrerenderMismatchedHeaders]]"
 
 
-
 """Send a list of sources for all preloading attempts in a document."""
+
+
 class PreloadingAttemptSourcesUpdatedEvent(TypedDict):
     loaderId: "LoaderId"
     preloadingAttemptSources: "List[PreloadingAttemptSource]"

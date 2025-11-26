@@ -21,10 +21,11 @@ if TYPE_CHECKING:
     from .commands import SetPlaybackRateParameters
     from .commands import SetTimingParameters
 
+
 class AnimationClient:
     """Client for Animation domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def disable(
@@ -33,11 +34,14 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables animation domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Animation.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def enable(
         self,
@@ -45,11 +49,14 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables animation domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Animation.enable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getCurrentTime(
         self,
@@ -57,11 +64,14 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "GetCurrentTimeReturns":
         """Returns the current time of the an animation."""
-        return cast("GetCurrentTimeReturns", await self._client.send_raw(
-            method="Animation.getCurrentTime",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetCurrentTimeReturns",
+            await self._client.send_raw(
+                method="Animation.getCurrentTime",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getPlaybackRate(
         self,
@@ -69,11 +79,14 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "GetPlaybackRateReturns":
         """Gets the playback rate of the document timeline."""
-        return cast("GetPlaybackRateReturns", await self._client.send_raw(
-            method="Animation.getPlaybackRate",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetPlaybackRateReturns",
+            await self._client.send_raw(
+                method="Animation.getPlaybackRate",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def releaseAnimations(
         self,
@@ -81,11 +94,14 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Releases a set of animations to no longer be manipulated."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Animation.releaseAnimations",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.releaseAnimations",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def resolveAnimation(
         self,
@@ -93,11 +109,14 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "ResolveAnimationReturns":
         """Gets the remote object of the Animation."""
-        return cast("ResolveAnimationReturns", await self._client.send_raw(
-            method="Animation.resolveAnimation",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "ResolveAnimationReturns",
+            await self._client.send_raw(
+                method="Animation.resolveAnimation",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def seekAnimations(
         self,
@@ -105,11 +124,14 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Seek a set of animations to a particular time within each animation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Animation.seekAnimations",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.seekAnimations",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setPaused(
         self,
@@ -117,11 +139,14 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets the paused state of a set of animations."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Animation.setPaused",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.setPaused",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setPlaybackRate(
         self,
@@ -129,11 +154,14 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets the playback rate of the document timeline."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Animation.setPlaybackRate",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.setPlaybackRate",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setTiming(
         self,
@@ -141,10 +169,11 @@ class AnimationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets the timing of an animation node."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Animation.setTiming",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.setTiming",
+                params=params,
+                session_id=session_id,
+            ),
+        )

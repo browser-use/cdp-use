@@ -6,16 +6,12 @@
 
 from typing_extensions import TypedDict
 
+
 class BindParameters(TypedDict):
     port: "int"
     """Port number to bind."""
 
 
-
-
-
 class UnbindParameters(TypedDict):
     port: "int"
     """Port number to unbind."""
-
-

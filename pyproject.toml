@@ -4,25 +4,26 @@ version = "1.4.4"
 description = "Type safe generator/client library for CDP"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = [
-    "httpx>=0.28.1",
-    "websockets>=15.0.1",
-]
+dependencies = ["httpx>=0.28.1", "websockets>=15.0.1"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = [
-    "build>=1.2.2.post1",
-    "ruff>=0.12.2",
-]
+dev = ["build>=1.2.2.post1", "ruff>=0.12.2"]
 
 [tool.hatch.build]
-include = [
-    "cdp_use/**/*.py"
-]
-exclude = [
-    "cdp_use/generator/*.py"
-]
+include = ["cdp_use/**/*.py"]
+exclude = ["cdp_use/generator/*.py"]
+
+[tool.ruff]
+exclude = [".git", "__pycache__", "dist", "build"]
+
+[tool.ruff.lint]
+# Ignore wildcard imports (F403) and redefinition (F811) in generated code
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+# Generated CDP code uses wildcard imports by design
+"cdp_use/cdp/**/*.py" = ["F403", "F811"]

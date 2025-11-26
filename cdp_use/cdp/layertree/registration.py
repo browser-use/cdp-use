@@ -12,20 +12,21 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import LayerPaintedEvent, LayerTreeDidChangeEvent
 
+
 class LayerTreeRegistration:
     """Event registration interface for LayerTree domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "LayerTree"
 
     def layerPainted(
         self,
-        callback: Callable[['LayerPaintedEvent', Optional[str]], None],
+        callback: Callable[["LayerPaintedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for layerPainted events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -34,14 +35,13 @@ class LayerTreeRegistration:
 
     def layerTreeDidChange(
         self,
-        callback: Callable[['LayerTreeDidChangeEvent', Optional[str]], None],
+        callback: Callable[["LayerTreeDidChangeEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for layerTreeDidChange events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("LayerTree.layerTreeDidChange", callback)
-

@@ -17,14 +17,32 @@ if TYPE_CHECKING:
     from ..security.types import MixedContentType
     from ..security.types import SecurityState
 
-ResourceType = Literal["Document", "Stylesheet", "Image", "Media", "Font", "Script", "TextTrack", "XHR", "Fetch", "Prefetch", "EventSource", "WebSocket", "Manifest", "SignedExchange", "Ping", "CSPViolationReport", "Preflight", "FedCM", "Other"]
+ResourceType = Literal[
+    "Document",
+    "Stylesheet",
+    "Image",
+    "Media",
+    "Font",
+    "Script",
+    "TextTrack",
+    "XHR",
+    "Fetch",
+    "Prefetch",
+    "EventSource",
+    "WebSocket",
+    "Manifest",
+    "SignedExchange",
+    "Ping",
+    "CSPViolationReport",
+    "Preflight",
+    "FedCM",
+    "Other",
+]
 """Resource type as it was perceived by the rendering engine."""
-
 
 
 LoaderId = str
 """Unique loader identifier."""
-
 
 
 RequestId = str
@@ -33,35 +51,53 @@ Note that this does not identify individual HTTP requests that are part of
 a network request."""
 
 
-
 InterceptionId = str
 """Unique intercepted request identifier."""
 
 
-
-ErrorReason = Literal["Failed", "Aborted", "TimedOut", "AccessDenied", "ConnectionClosed", "ConnectionReset", "ConnectionRefused", "ConnectionAborted", "ConnectionFailed", "NameNotResolved", "InternetDisconnected", "AddressUnreachable", "BlockedByClient", "BlockedByResponse"]
+ErrorReason = Literal[
+    "Failed",
+    "Aborted",
+    "TimedOut",
+    "AccessDenied",
+    "ConnectionClosed",
+    "ConnectionReset",
+    "ConnectionRefused",
+    "ConnectionAborted",
+    "ConnectionFailed",
+    "NameNotResolved",
+    "InternetDisconnected",
+    "AddressUnreachable",
+    "BlockedByClient",
+    "BlockedByResponse",
+]
 """Network level fetch failure reason."""
-
 
 
 TimeSinceEpoch = float
 """UTC time in seconds, counted from January 1, 1970."""
 
 
-
 MonotonicTime = float
 """Monotonically increasing time in seconds since an arbitrary point in the past."""
-
 
 
 class Headers(TypedDict):
     """Request / response headers as keys / values of JSON object."""
 
 
-
-ConnectionType = Literal["none", "cellular2g", "cellular3g", "cellular4g", "bluetooth", "ethernet", "wifi", "wimax", "other"]
+ConnectionType = Literal[
+    "none",
+    "cellular2g",
+    "cellular3g",
+    "cellular4g",
+    "bluetooth",
+    "ethernet",
+    "wifi",
+    "wimax",
+    "other",
+]
 """The underlying connection technology that the browser is supposedly using."""
-
 
 
 CookieSameSite = Literal["Strict", "Lax", "None"]
@@ -69,18 +105,15 @@ CookieSameSite = Literal["Strict", "Lax", "None"]
 https://tools.ietf.org/html/draft-west-first-party-cookies"""
 
 
-
 CookiePriority = Literal["Low", "Medium", "High"]
 """Represents the cookie's 'Priority' status:
 https://tools.ietf.org/html/draft-west-cookie-priority-00"""
-
 
 
 CookieSourceScheme = Literal["Unset", "NonSecure", "Secure"]
 """Represents the source scheme of the origin that originally set the cookie.
 A value of "Unset" allows protocol clients to emulate legacy cookie scope for the scheme.
 This is a temporary ability and it will be removed in the future."""
-
 
 
 class ResourceTiming(TypedDict):
@@ -131,17 +164,14 @@ milliseconds relatively to this requestTime."""
     """Finished receiving response headers."""
 
 
-
 ResourcePriority = Literal["VeryLow", "Low", "Medium", "High", "VeryHigh"]
 """Loading priority of a resource request."""
-
 
 
 class PostDataEntry(TypedDict, total=False):
     """Post data entry for HTTP request"""
 
     bytes: "str"
-
 
 
 class Request(TypedDict):
@@ -176,7 +206,8 @@ passed by the developer (e.g. via \"fetch\") as understood by the backend."""
     isSameSite: "NotRequired[bool]"
     """True if this resource request is considered to be the 'same site' as the
 request corresponding to the main frame."""
-
+    isAdRelated: "NotRequired[bool]"
+    """True when the resource request is ad-related."""
 
 
 class SignedCertificateTimestamp(TypedDict):
@@ -199,7 +230,6 @@ milliseconds since January 1, 1970, UTC, not the number of seconds."""
     """Signature algorithm."""
     signatureData: "str"
     """Signature data."""
-
 
 
 class SecurityDetails(TypedDict):
@@ -239,20 +269,69 @@ applicable or not known."""
     """Whether the connection used Encrypted ClientHello"""
 
 
-
 CertificateTransparencyCompliance = Literal["unknown", "not-compliant", "compliant"]
 """Whether the request complied with Certificate Transparency policy."""
 
 
-
-BlockedReason = Literal["other", "csp", "mixed-content", "origin", "inspector", "integrity", "subresource-filter", "content-type", "coep-frame-resource-needs-coep-header", "coop-sandboxed-iframe-cannot-navigate-to-coop-page", "corp-not-same-origin", "corp-not-same-origin-after-defaulted-to-same-origin-by-coep", "corp-not-same-origin-after-defaulted-to-same-origin-by-dip", "corp-not-same-origin-after-defaulted-to-same-origin-by-coep-and-dip", "corp-not-same-site", "sri-message-signature-mismatch"]
+BlockedReason = Literal[
+    "other",
+    "csp",
+    "mixed-content",
+    "origin",
+    "inspector",
+    "integrity",
+    "subresource-filter",
+    "content-type",
+    "coep-frame-resource-needs-coep-header",
+    "coop-sandboxed-iframe-cannot-navigate-to-coop-page",
+    "corp-not-same-origin",
+    "corp-not-same-origin-after-defaulted-to-same-origin-by-coep",
+    "corp-not-same-origin-after-defaulted-to-same-origin-by-dip",
+    "corp-not-same-origin-after-defaulted-to-same-origin-by-coep-and-dip",
+    "corp-not-same-site",
+    "sri-message-signature-mismatch",
+]
 """The reason why request was blocked."""
 
 
-
-CorsError = Literal["DisallowedByMode", "InvalidResponse", "WildcardOriginNotAllowed", "MissingAllowOriginHeader", "MultipleAllowOriginValues", "InvalidAllowOriginValue", "AllowOriginMismatch", "InvalidAllowCredentials", "CorsDisabledScheme", "PreflightInvalidStatus", "PreflightDisallowedRedirect", "PreflightWildcardOriginNotAllowed", "PreflightMissingAllowOriginHeader", "PreflightMultipleAllowOriginValues", "PreflightInvalidAllowOriginValue", "PreflightAllowOriginMismatch", "PreflightInvalidAllowCredentials", "PreflightMissingAllowExternal", "PreflightInvalidAllowExternal", "PreflightMissingAllowPrivateNetwork", "PreflightInvalidAllowPrivateNetwork", "InvalidAllowMethodsPreflightResponse", "InvalidAllowHeadersPreflightResponse", "MethodDisallowedByPreflightResponse", "HeaderDisallowedByPreflightResponse", "RedirectContainsCredentials", "InsecurePrivateNetwork", "InvalidPrivateNetworkAccess", "UnexpectedPrivateNetworkAccess", "NoCorsRedirectModeNotFollow", "PreflightMissingPrivateNetworkAccessId", "PreflightMissingPrivateNetworkAccessName", "PrivateNetworkAccessPermissionUnavailable", "PrivateNetworkAccessPermissionDenied", "LocalNetworkAccessPermissionDenied"]
+CorsError = Literal[
+    "DisallowedByMode",
+    "InvalidResponse",
+    "WildcardOriginNotAllowed",
+    "MissingAllowOriginHeader",
+    "MultipleAllowOriginValues",
+    "InvalidAllowOriginValue",
+    "AllowOriginMismatch",
+    "InvalidAllowCredentials",
+    "CorsDisabledScheme",
+    "PreflightInvalidStatus",
+    "PreflightDisallowedRedirect",
+    "PreflightWildcardOriginNotAllowed",
+    "PreflightMissingAllowOriginHeader",
+    "PreflightMultipleAllowOriginValues",
+    "PreflightInvalidAllowOriginValue",
+    "PreflightAllowOriginMismatch",
+    "PreflightInvalidAllowCredentials",
+    "PreflightMissingAllowExternal",
+    "PreflightInvalidAllowExternal",
+    "PreflightMissingAllowPrivateNetwork",
+    "PreflightInvalidAllowPrivateNetwork",
+    "InvalidAllowMethodsPreflightResponse",
+    "InvalidAllowHeadersPreflightResponse",
+    "MethodDisallowedByPreflightResponse",
+    "HeaderDisallowedByPreflightResponse",
+    "RedirectContainsCredentials",
+    "InsecurePrivateNetwork",
+    "InvalidPrivateNetworkAccess",
+    "UnexpectedPrivateNetworkAccess",
+    "NoCorsRedirectModeNotFollow",
+    "PreflightMissingPrivateNetworkAccessId",
+    "PreflightMissingPrivateNetworkAccessName",
+    "PrivateNetworkAccessPermissionUnavailable",
+    "PrivateNetworkAccessPermissionDenied",
+    "LocalNetworkAccessPermissionDenied",
+]
 """The reason why request was blocked."""
-
 
 
 class CorsErrorStatus(TypedDict):
@@ -260,16 +339,16 @@ class CorsErrorStatus(TypedDict):
     failedParameter: "str"
 
 
-
-ServiceWorkerResponseSource = Literal["cache-storage", "http-cache", "fallback-code", "network"]
+ServiceWorkerResponseSource = Literal[
+    "cache-storage", "http-cache", "fallback-code", "network"
+]
 """Source of serviceworker response."""
-
 
 
 class TrustTokenParams(TypedDict):
     """Determines what type of Trust Token operation is executed and
-depending on the type, some additional parameters. The values
-are specified in third_party/blink/renderer/core/fetch/trust_token.idl."""
+    depending on the type, some additional parameters. The values
+    are specified in third_party/blink/renderer/core/fetch/trust_token.idl."""
 
     operation: "TrustTokenOperationType"
     refreshPolicy: "str"
@@ -280,19 +359,30 @@ to request a fresh SRR or use a still valid cached SRR."""
 records."""
 
 
-
 TrustTokenOperationType = Literal["Issuance", "Redemption", "Signing"]
 
 
-
-AlternateProtocolUsage = Literal["alternativeJobWonWithoutRace", "alternativeJobWonRace", "mainJobWonRace", "mappingMissing", "broken", "dnsAlpnH3JobWonWithoutRace", "dnsAlpnH3JobWonRace", "unspecifiedReason"]
+AlternateProtocolUsage = Literal[
+    "alternativeJobWonWithoutRace",
+    "alternativeJobWonRace",
+    "mainJobWonRace",
+    "mappingMissing",
+    "broken",
+    "dnsAlpnH3JobWonWithoutRace",
+    "dnsAlpnH3JobWonRace",
+    "unspecifiedReason",
+]
 """The reason why Chrome uses a specific transport protocol for HTTP semantics."""
 
 
-
-ServiceWorkerRouterSource = Literal["network", "cache", "fetch-event", "race-network-and-fetch-handler", "race-network-and-cache"]
+ServiceWorkerRouterSource = Literal[
+    "network",
+    "cache",
+    "fetch-event",
+    "race-network-and-fetch-handler",
+    "race-network-and-cache",
+]
 """Source of service worker router."""
-
 
 
 class ServiceWorkerRouterInfo(TypedDict, total=False):
@@ -304,7 +394,6 @@ be set, otherwiser no value will be set."""
 field will be set, otherwise no value will be set."""
     actualSourceType: "ServiceWorkerRouterSource"
     """The actual router source used."""
-
 
 
 class Response(TypedDict):
@@ -369,13 +458,11 @@ Otherwise, the API is not used."""
     """Security details for the request."""
 
 
-
 class WebSocketRequest(TypedDict):
     """WebSocket request data."""
 
     headers: "Headers"
     """HTTP request headers."""
-
 
 
 class WebSocketResponse(TypedDict):
@@ -395,7 +482,6 @@ class WebSocketResponse(TypedDict):
     """HTTP request headers text."""
 
 
-
 class WebSocketFrame(TypedDict):
     """WebSocket message data. This represents an entire WebSocket message, not just a fragmented frame as the name suggests."""
 
@@ -409,7 +495,6 @@ If the opcode is 1, this is a text message and payloadData is a UTF-8 string.
 If the opcode isn't 1, then payloadData is a base64 encoded string representing binary data."""
 
 
-
 class CachedResource(TypedDict):
     """Information about the cached resource."""
 
@@ -421,7 +506,6 @@ class CachedResource(TypedDict):
     """Cached response data."""
     bodySize: "float"
     """Cached response body size."""
-
 
 
 class Initiator(TypedDict):
@@ -444,17 +528,15 @@ module) (0-based)."""
     """Set if another request triggered this request (e.g. preflight)."""
 
 
-
 class CookiePartitionKey(TypedDict):
     """cookiePartitionKey object
-The representation of the components of the key that are created by the cookiePartitionKey class contained in net/cookies/cookie_partition_key.h."""
+    The representation of the components of the key that are created by the cookiePartitionKey class contained in net/cookies/cookie_partition_key.h."""
 
     topLevelSite: "str"
     """The site of the top-level URL the browser was visiting at the start
 of the request to the endpoint that set the cookie."""
     hasCrossSiteAncestor: "bool"
     """Indicates if the cookie has any ancestors that are cross-site to the topLevelSite."""
-
 
 
 class Cookie(TypedDict):
@@ -469,7 +551,10 @@ class Cookie(TypedDict):
     path: "str"
     """Cookie path."""
     expires: "float"
-    """Cookie expiration date as the number of seconds since the UNIX epoch."""
+    """Cookie expiration date as the number of seconds since the UNIX epoch.
+The value is set to -1 if the expiry date is not set.
+The value can be null for values that cannot be represented in
+JSON (±Inf)."""
     size: "int"
     """Cookie size."""
     httpOnly: "bool"
@@ -496,20 +581,71 @@ This is a temporary ability and it will be removed in the future."""
     """True if cookie partition key is opaque."""
 
 
-
-SetCookieBlockedReason = Literal["SecureOnly", "SameSiteStrict", "SameSiteLax", "SameSiteUnspecifiedTreatedAsLax", "SameSiteNoneInsecure", "UserPreferences", "ThirdPartyPhaseout", "ThirdPartyBlockedInFirstPartySet", "SyntaxError", "SchemeNotSupported", "OverwriteSecure", "InvalidDomain", "InvalidPrefix", "UnknownError", "SchemefulSameSiteStrict", "SchemefulSameSiteLax", "SchemefulSameSiteUnspecifiedTreatedAsLax", "SamePartyFromCrossPartyContext", "SamePartyConflictsWithOtherAttributes", "NameValuePairExceedsMaxSize", "DisallowedCharacter", "NoCookieContent"]
+SetCookieBlockedReason = Literal[
+    "SecureOnly",
+    "SameSiteStrict",
+    "SameSiteLax",
+    "SameSiteUnspecifiedTreatedAsLax",
+    "SameSiteNoneInsecure",
+    "UserPreferences",
+    "ThirdPartyPhaseout",
+    "ThirdPartyBlockedInFirstPartySet",
+    "SyntaxError",
+    "SchemeNotSupported",
+    "OverwriteSecure",
+    "InvalidDomain",
+    "InvalidPrefix",
+    "UnknownError",
+    "SchemefulSameSiteStrict",
+    "SchemefulSameSiteLax",
+    "SchemefulSameSiteUnspecifiedTreatedAsLax",
+    "SamePartyFromCrossPartyContext",
+    "SamePartyConflictsWithOtherAttributes",
+    "NameValuePairExceedsMaxSize",
+    "DisallowedCharacter",
+    "NoCookieContent",
+]
 """Types of reasons why a cookie may not be stored from a response."""
 
 
-
-CookieBlockedReason = Literal["SecureOnly", "NotOnPath", "DomainMismatch", "SameSiteStrict", "SameSiteLax", "SameSiteUnspecifiedTreatedAsLax", "SameSiteNoneInsecure", "UserPreferences", "ThirdPartyPhaseout", "ThirdPartyBlockedInFirstPartySet", "UnknownError", "SchemefulSameSiteStrict", "SchemefulSameSiteLax", "SchemefulSameSiteUnspecifiedTreatedAsLax", "SamePartyFromCrossPartyContext", "NameValuePairExceedsMaxSize", "PortMismatch", "SchemeMismatch", "AnonymousContext"]
+CookieBlockedReason = Literal[
+    "SecureOnly",
+    "NotOnPath",
+    "DomainMismatch",
+    "SameSiteStrict",
+    "SameSiteLax",
+    "SameSiteUnspecifiedTreatedAsLax",
+    "SameSiteNoneInsecure",
+    "UserPreferences",
+    "ThirdPartyPhaseout",
+    "ThirdPartyBlockedInFirstPartySet",
+    "UnknownError",
+    "SchemefulSameSiteStrict",
+    "SchemefulSameSiteLax",
+    "SchemefulSameSiteUnspecifiedTreatedAsLax",
+    "SamePartyFromCrossPartyContext",
+    "NameValuePairExceedsMaxSize",
+    "PortMismatch",
+    "SchemeMismatch",
+    "AnonymousContext",
+]
 """Types of reasons why a cookie may not be sent with a request."""
 
 
-
-CookieExemptionReason = Literal["None", "UserSetting", "TPCDMetadata", "TPCDDeprecationTrial", "TopLevelTPCDDeprecationTrial", "TPCDHeuristics", "EnterprisePolicy", "StorageAccess", "TopLevelStorageAccess", "Scheme", "SameSiteNoneCookiesInSandbox"]
+CookieExemptionReason = Literal[
+    "None",
+    "UserSetting",
+    "TPCDMetadata",
+    "TPCDDeprecationTrial",
+    "TopLevelTPCDDeprecationTrial",
+    "TPCDHeuristics",
+    "EnterprisePolicy",
+    "StorageAccess",
+    "TopLevelStorageAccess",
+    "Scheme",
+    "SameSiteNoneCookiesInSandbox",
+]
 """Types of reasons why a cookie should have been blocked by 3PCD but is exempted for the request."""
-
 
 
 class BlockedSetCookieWithReason(TypedDict):
@@ -526,10 +662,9 @@ sometimes complete cookie information is not available, such as in the case of p
 errors."""
 
 
-
 class ExemptedSetCookieWithReason(TypedDict):
     """A cookie should have been blocked by 3PCD but is exempted and stored from a response with the
-corresponding reason. A cookie could only have at most one exemption reason."""
+    corresponding reason. A cookie could only have at most one exemption reason."""
 
     exemptionReason: "CookieExemptionReason"
     """The reason the cookie was exempted."""
@@ -539,10 +674,9 @@ corresponding reason. A cookie could only have at most one exemption reason."""
     """The cookie object representing the cookie."""
 
 
-
 class AssociatedCookie(TypedDict):
     """A cookie associated with the request which may or may not be sent with it.
-Includes the cookies itself and reasons for blocking or exemption."""
+    Includes the cookies itself and reasons for blocking or exemption."""
 
     cookie: "Cookie"
     """The cookie object representing the cookie which was not sent."""
@@ -551,7 +685,6 @@ Includes the cookies itself and reasons for blocking or exemption."""
     exemptionReason: "NotRequired[CookieExemptionReason]"
     """The reason the cookie should have been blocked by 3PCD but is exempted. A cookie could
 only have at most one exemption reason."""
-
 
 
 class CookieParam(TypedDict):
@@ -590,7 +723,6 @@ This is a temporary ability and it will be removed in the future."""
     """Cookie partition key. If not set, the cookie will be set as not partitioned."""
 
 
-
 class AuthChallenge(TypedDict):
     """Authorization challenge for HTTP status code 401 or 407."""
 
@@ -602,7 +734,6 @@ class AuthChallenge(TypedDict):
     """The authentication scheme used, such as basic or digest"""
     realm: "str"
     """The realm of the challenge. May be empty."""
-
 
 
 class AuthChallengeResponse(TypedDict):
@@ -620,11 +751,9 @@ ProvideCredentials."""
 ProvideCredentials."""
 
 
-
 InterceptionStage = Literal["Request", "HeadersReceived"]
 """Stages of the interception to begin intercepting. Request will intercept before the request is
 sent. Response will intercept after the response is received."""
-
 
 
 class RequestPattern(TypedDict, total=False):
@@ -639,10 +768,9 @@ backslash. Omitting is equivalent to `\"*\"`."""
     """Stage at which to begin intercepting requests. Default is Request."""
 
 
-
 class SignedExchangeSignature(TypedDict):
     """Information about a signed exchange signature.
-https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#rfc.section.3.1"""
+    https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#rfc.section.3.1"""
 
     label: "str"
     """Signed exchange signature label."""
@@ -664,10 +792,9 @@ https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-
     """The encoded certificates."""
 
 
-
 class SignedExchangeHeader(TypedDict):
     """Information about a signed exchange header.
-https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#cbor-representation"""
+    https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-impl.html#cbor-representation"""
 
     requestUrl: "str"
     """Signed exchange request URL."""
@@ -681,10 +808,15 @@ https://wicg.github.io/webpackage/draft-yasskin-httpbis-origin-signed-exchanges-
     """Signed exchange header integrity hash in the form of `sha256-<base64-hash-value>`."""
 
 
-
-SignedExchangeErrorField = Literal["signatureSig", "signatureIntegrity", "signatureCertUrl", "signatureCertSha256", "signatureValidityUrl", "signatureTimestamps"]
+SignedExchangeErrorField = Literal[
+    "signatureSig",
+    "signatureIntegrity",
+    "signatureCertUrl",
+    "signatureCertSha256",
+    "signatureValidityUrl",
+    "signatureTimestamps",
+]
 """Field type for a signed exchange related error."""
-
 
 
 class SignedExchangeError(TypedDict):
@@ -696,7 +828,6 @@ class SignedExchangeError(TypedDict):
     """The index of the signature which caused the error."""
     errorField: "NotRequired[SignedExchangeErrorField]"
     """The field which caused the error."""
-
 
 
 class SignedExchangeInfo(TypedDict):
@@ -715,14 +846,41 @@ extra headers."""
     """Errors occurred while handling the signed exchange."""
 
 
-
 ContentEncoding = Literal["deflate", "gzip", "br", "zstd"]
 """List of content encodings supported by the backend."""
 
 
+class NetworkConditions(TypedDict):
+    urlPattern: "str"
+    """Only matching requests will be affected by these conditions. Patterns use the URLPattern constructor string
+syntax (https://urlpattern.spec.whatwg.org/) and must be absolute. If the pattern is empty, all requests are
+matched (including p2p connections)."""
+    latency: "float"
+    """Minimum latency from request sent to response headers received (ms)."""
+    downloadThroughput: "float"
+    """Maximal aggregated download throughput (bytes/sec). -1 disables download throttling."""
+    uploadThroughput: "float"
+    """Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling."""
+    connectionType: "NotRequired[ConnectionType]"
+    """Connection type if known."""
+    packetLoss: "NotRequired[float]"
+    """WebRTC packet loss (percent, 0-100). 0 disables packet loss emulation, 100 drops all the packets."""
+    packetQueueLength: "NotRequired[int]"
+    """WebRTC packet queue length (packet). 0 removes any queue length limitations."""
+    packetReordering: "NotRequired[bool]"
+    """WebRTC packetReordering feature."""
+
+
+class BlockPattern(TypedDict):
+    urlPattern: "str"
+    """URL pattern to match. Patterns use the URLPattern constructor string syntax
+(https://urlpattern.spec.whatwg.org/) and must be absolute. Example: `*://*:*/*.css`."""
+    block: "bool"
+    """Whether or not to block the pattern. If false, a matching request will not be blocked even if it matches a later
+`BlockPattern`."""
+
 
 DirectSocketDnsQueryType = Literal["ipv4", "ipv6"]
-
 
 
 class DirectTCPSocketOptions(TypedDict):
@@ -737,7 +895,6 @@ class DirectTCPSocketOptions(TypedDict):
     dnsQueryType: "NotRequired[DirectSocketDnsQueryType]"
 
 
-
 class DirectUDPSocketOptions(TypedDict, total=False):
     remoteAddr: "str"
     remotePort: "int"
@@ -750,7 +907,10 @@ class DirectUDPSocketOptions(TypedDict, total=False):
     """Expected to be unsigned integer."""
     receiveBufferSize: "float"
     """Expected to be unsigned integer."""
-
+    multicastLoopback: "bool"
+    multicastTimeToLive: "int"
+    """Unsigned int 8."""
+    multicastAllowAddressSharing: "bool"
 
 
 class DirectUDPMessage(TypedDict):
@@ -762,13 +922,16 @@ class DirectUDPMessage(TypedDict):
 Expected to be unsigned integer."""
 
 
+PrivateNetworkRequestPolicy = Literal[
+    "Allow",
+    "BlockFromInsecureToMorePrivate",
+    "WarnFromInsecureToMorePrivate",
+    "PermissionBlock",
+    "PermissionWarn",
+]
 
-PrivateNetworkRequestPolicy = Literal["Allow", "BlockFromInsecureToMorePrivate", "WarnFromInsecureToMorePrivate", "PreflightBlock", "PreflightWarn", "PermissionBlock", "PermissionWarn"]
 
-
-
-IPAddressSpace = Literal["Loopback", "Private", "Public", "Unknown"]
-
+IPAddressSpace = Literal["Loopback", "Local", "Public", "Unknown"]
 
 
 class ConnectTiming(TypedDict):
@@ -778,16 +941,21 @@ milliseconds relatively to this requestTime. Matches ResourceTiming's requestTim
 the same request (but not for redirected requests)."""
 
 
-
 class ClientSecurityState(TypedDict):
     initiatorIsSecureContext: "bool"
     initiatorIPAddressSpace: "IPAddressSpace"
     privateNetworkRequestPolicy: "PrivateNetworkRequestPolicy"
 
 
-
-CrossOriginOpenerPolicyValue = Literal["SameOrigin", "SameOriginAllowPopups", "RestrictProperties", "UnsafeNone", "SameOriginPlusCoep", "RestrictPropertiesPlusCoep", "NoopenerAllowPopups"]
-
+CrossOriginOpenerPolicyValue = Literal[
+    "SameOrigin",
+    "SameOriginAllowPopups",
+    "RestrictProperties",
+    "UnsafeNone",
+    "SameOriginPlusCoep",
+    "RestrictPropertiesPlusCoep",
+    "NoopenerAllowPopups",
+]
 
 
 class CrossOriginOpenerPolicyStatus(TypedDict):
@@ -797,9 +965,7 @@ class CrossOriginOpenerPolicyStatus(TypedDict):
     reportOnlyReportingEndpoint: "NotRequired[str]"
 
 
-
 CrossOriginEmbedderPolicyValue = Literal["None", "Credentialless", "RequireCorp"]
-
 
 
 class CrossOriginEmbedderPolicyStatus(TypedDict):
@@ -809,9 +975,7 @@ class CrossOriginEmbedderPolicyStatus(TypedDict):
     reportOnlyReportingEndpoint: "NotRequired[str]"
 
 
-
 ContentSecurityPolicySource = Literal["HTTP", "Meta"]
-
 
 
 class ContentSecurityPolicyStatus(TypedDict):
@@ -820,21 +984,17 @@ class ContentSecurityPolicyStatus(TypedDict):
     source: "ContentSecurityPolicySource"
 
 
-
 class SecurityIsolationStatus(TypedDict, total=False):
     coop: "CrossOriginOpenerPolicyStatus"
     coep: "CrossOriginEmbedderPolicyStatus"
     csp: "List[ContentSecurityPolicyStatus]"
 
 
-
 ReportStatus = Literal["Queued", "Pending", "MarkedForRemoval", "Success"]
 """The status of a Reporting API report."""
 
 
-
 ReportId = str
-
 
 
 class ReportingApiReport(TypedDict):
@@ -857,13 +1017,11 @@ class ReportingApiReport(TypedDict):
     status: "ReportStatus"
 
 
-
 class ReportingApiEndpoint(TypedDict):
     url: "str"
     """The URL of the endpoint to which reports may be delivered."""
     groupName: "str"
     """Name of the endpoint group."""
-
 
 
 class LoadNetworkResourcePageResult(TypedDict):
@@ -880,10 +1038,9 @@ class LoadNetworkResourcePageResult(TypedDict):
     """Response headers."""
 
 
-
 class LoadNetworkResourceOptions(TypedDict):
     """An options object that may be extended later to better support CORS,
-CORB and streaming."""
+    CORB and streaming."""
 
     disableCache: "bool"
     includeCredentials: "bool"

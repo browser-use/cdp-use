@@ -11,40 +11,32 @@ GraphObjectId = str
 """An unique ID for a graph object (AudioContext, AudioNode, AudioParam) in Web Audio API"""
 
 
-
 ContextType = Literal["realtime", "offline"]
 """Enum of BaseAudioContext types"""
-
 
 
 ContextState = Literal["suspended", "running", "closed", "interrupted"]
 """Enum of AudioContextState from the spec"""
 
 
-
 NodeType = str
 """Enum of AudioNode types"""
-
 
 
 ChannelCountMode = Literal["clamped-max", "explicit", "max"]
 """Enum of AudioNode::ChannelCountMode from the spec"""
 
 
-
 ChannelInterpretation = Literal["discrete", "speakers"]
 """Enum of AudioNode::ChannelInterpretation from the spec"""
-
 
 
 ParamType = str
 """Enum of AudioParam types"""
 
 
-
 AutomationRate = Literal["a-rate", "k-rate"]
 """Enum of AudioParam::AutomationRate from the spec"""
-
 
 
 class ContextRealtimeData(TypedDict):
@@ -62,7 +54,6 @@ capacity and glitch may occur."""
     """A running variance of callback interval."""
 
 
-
 class BaseAudioContext(TypedDict):
     """Protocol object for BaseAudioContext"""
 
@@ -78,13 +69,11 @@ class BaseAudioContext(TypedDict):
     """Context sample rate."""
 
 
-
 class AudioListener(TypedDict):
     """Protocol object for AudioListener"""
 
     listenerId: "GraphObjectId"
     contextId: "GraphObjectId"
-
 
 
 class AudioNode(TypedDict):
@@ -98,7 +87,6 @@ class AudioNode(TypedDict):
     channelCount: "float"
     channelCountMode: "ChannelCountMode"
     channelInterpretation: "ChannelInterpretation"
-
 
 
 class AudioParam(TypedDict):

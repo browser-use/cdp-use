@@ -19,10 +19,11 @@ if TYPE_CHECKING:
     from .commands import SetStorageItemsParameters
     from .commands import UninstallParameters
 
+
 class ExtensionsClient:
     """Client for Extensions domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def loadUnpacked(
@@ -31,15 +32,18 @@ class ExtensionsClient:
         session_id: Optional[str] = None,
     ) -> "LoadUnpackedReturns":
         """Installs an unpacked extension from the filesystem similar to
---load-extension CLI flags. Returns extension ID once the extension
-has been installed. Available if the client is connected using the
---remote-debugging-pipe flag and the --enable-unsafe-extension-debugging
-flag is set."""
-        return cast("LoadUnpackedReturns", await self._client.send_raw(
-            method="Extensions.loadUnpacked",
-            params=params,
-            session_id=session_id,
-        ))
+        --load-extension CLI flags. Returns extension ID once the extension
+        has been installed. Available if the client is connected using the
+        --remote-debugging-pipe flag and the --enable-unsafe-extension-debugging
+        flag is set."""
+        return cast(
+            "LoadUnpackedReturns",
+            await self._client.send_raw(
+                method="Extensions.loadUnpacked",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def uninstall(
         self,
@@ -47,13 +51,16 @@ flag is set."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Uninstalls an unpacked extension (others not supported) from the profile.
-Available if the client is connected using the --remote-debugging-pipe flag
-and the --enable-unsafe-extension-debugging."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Extensions.uninstall",
-            params=params,
-            session_id=session_id,
-        ))
+        Available if the client is connected using the --remote-debugging-pipe flag
+        and the --enable-unsafe-extension-debugging."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Extensions.uninstall",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getStorageItems(
         self,
@@ -61,12 +68,15 @@ and the --enable-unsafe-extension-debugging."""
         session_id: Optional[str] = None,
     ) -> "GetStorageItemsReturns":
         """Gets data from extension storage in the given `storageArea`. If `keys` is
-specified, these are used to filter the result."""
-        return cast("GetStorageItemsReturns", await self._client.send_raw(
-            method="Extensions.getStorageItems",
-            params=params,
-            session_id=session_id,
-        ))
+        specified, these are used to filter the result."""
+        return cast(
+            "GetStorageItemsReturns",
+            await self._client.send_raw(
+                method="Extensions.getStorageItems",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def removeStorageItems(
         self,
@@ -74,11 +84,14 @@ specified, these are used to filter the result."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes `keys` from extension storage in the given `storageArea`."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Extensions.removeStorageItems",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Extensions.removeStorageItems",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearStorageItems(
         self,
@@ -86,11 +99,14 @@ specified, these are used to filter the result."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears extension storage in the given `storageArea`."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Extensions.clearStorageItems",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Extensions.clearStorageItems",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setStorageItems(
         self,
@@ -98,11 +114,12 @@ specified, these are used to filter the result."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets `values` in extension storage in the given `storageArea`. The provided `values`
-will be merged with existing values in the storage area."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Extensions.setStorageItems",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        will be merged with existing values in the storage area."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Extensions.setStorageItems",
+                params=params,
+                session_id=session_id,
+            ),
+        )

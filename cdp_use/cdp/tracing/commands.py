@@ -16,18 +16,15 @@ if TYPE_CHECKING:
     from .types import TraceConfig
     from .types import TracingBackend
 
+
 class GetCategoriesReturns(TypedDict):
     categories: "List[str]"
     """A list of supported tracing categories."""
 
 
-
 class RecordClockSyncMarkerParameters(TypedDict):
     syncId: "str"
     """The ID of this clock sync marker"""
-
-
-
 
 
 class RequestMemoryDumpParameters(TypedDict, total=False):
@@ -42,7 +39,6 @@ class RequestMemoryDumpReturns(TypedDict):
     """GUID of the resulting global memory dump."""
     success: "bool"
     """True iff the global memory dump succeeded."""
-
 
 
 class StartParameters(TypedDict, total=False):
@@ -68,5 +64,3 @@ When specified, the parameters `categories`, `options`, `traceConfig`
 are ignored. (Encoded as a base64 string when passed over JSON)"""
     tracingBackend: "TracingBackend"
     """Backend type (defaults to `auto`)"""
-
-

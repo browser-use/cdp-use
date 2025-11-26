@@ -7,18 +7,29 @@
 from typing_extensions import TypedDict
 
 """Fired when remote debugging connection is about to be terminated. Contains detach reason."""
+
+
 class DetachedEvent(TypedDict):
     reason: "str"
     """The reason why connection has been terminated."""
 
 
-
 """Fired when debugging target has crashed"""
+
+
 class TargetCrashedEvent(TypedDict):
     pass
 
 
-
 """Fired when debugging target has reloaded after crash"""
+
+
 class TargetReloadedAfterCrashEvent(TypedDict):
+    pass
+
+
+"""Fired on worker targets when main worker script and any imported scripts have been evaluated."""
+
+
+class WorkerScriptLoadedEvent(TypedDict):
     pass

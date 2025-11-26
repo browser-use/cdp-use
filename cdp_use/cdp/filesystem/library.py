@@ -13,10 +13,11 @@ if TYPE_CHECKING:
     from .commands import GetDirectoryParameters
     from .commands import GetDirectoryReturns
 
+
 class FileSystemClient:
     """Client for FileSystem domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def getDirectory(
@@ -24,10 +25,11 @@ class FileSystemClient:
         params: "GetDirectoryParameters",
         session_id: Optional[str] = None,
     ) -> "GetDirectoryReturns":
-        return cast("GetDirectoryReturns", await self._client.send_raw(
-            method="FileSystem.getDirectory",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "GetDirectoryReturns",
+            await self._client.send_raw(
+                method="FileSystem.getDirectory",
+                params=params,
+                session_id=session_id,
+            ),
+        )

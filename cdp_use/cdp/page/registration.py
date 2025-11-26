@@ -11,50 +11,51 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import (
-    BackForwardCacheNotUsedEvent,
-    CompilationCacheProducedEvent,
-    DocumentOpenedEvent,
-    DomContentEventFiredEvent,
-    DownloadProgressEvent,
-    DownloadWillBeginEvent,
-    FileChooserOpenedEvent,
-    FrameAttachedEvent,
-    FrameClearedScheduledNavigationEvent,
-    FrameDetachedEvent,
-    FrameNavigatedEvent,
-    FrameRequestedNavigationEvent,
-    FrameResizedEvent,
-    FrameScheduledNavigationEvent,
-    FrameStartedLoadingEvent,
-    FrameStartedNavigatingEvent,
-    FrameStoppedLoadingEvent,
-    FrameSubtreeWillBeDetachedEvent,
-    InterstitialHiddenEvent,
-    InterstitialShownEvent,
-    JavascriptDialogClosedEvent,
-    JavascriptDialogOpeningEvent,
-    LifecycleEventEvent,
-    LoadEventFiredEvent,
-    NavigatedWithinDocumentEvent,
-    ScreencastFrameEvent,
-    ScreencastVisibilityChangedEvent,
-    WindowOpenEvent
-)
+        BackForwardCacheNotUsedEvent,
+        CompilationCacheProducedEvent,
+        DocumentOpenedEvent,
+        DomContentEventFiredEvent,
+        DownloadProgressEvent,
+        DownloadWillBeginEvent,
+        FileChooserOpenedEvent,
+        FrameAttachedEvent,
+        FrameClearedScheduledNavigationEvent,
+        FrameDetachedEvent,
+        FrameNavigatedEvent,
+        FrameRequestedNavigationEvent,
+        FrameResizedEvent,
+        FrameScheduledNavigationEvent,
+        FrameStartedLoadingEvent,
+        FrameStartedNavigatingEvent,
+        FrameStoppedLoadingEvent,
+        FrameSubtreeWillBeDetachedEvent,
+        InterstitialHiddenEvent,
+        InterstitialShownEvent,
+        JavascriptDialogClosedEvent,
+        JavascriptDialogOpeningEvent,
+        LifecycleEventEvent,
+        LoadEventFiredEvent,
+        NavigatedWithinDocumentEvent,
+        ScreencastFrameEvent,
+        ScreencastVisibilityChangedEvent,
+        WindowOpenEvent,
+    )
+
 
 class PageRegistration:
     """Event registration interface for Page domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Page"
 
     def domContentEventFired(
         self,
-        callback: Callable[['DomContentEventFiredEvent', Optional[str]], None],
+        callback: Callable[["DomContentEventFiredEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for domContentEventFired events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -63,13 +64,13 @@ class PageRegistration:
 
     def fileChooserOpened(
         self,
-        callback: Callable[['FileChooserOpenedEvent', Optional[str]], None],
+        callback: Callable[["FileChooserOpenedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for fileChooserOpened events.
-        
+
         Emitted only when `page.interceptFileChooser` is enabled.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -78,13 +79,13 @@ class PageRegistration:
 
     def frameAttached(
         self,
-        callback: Callable[['FrameAttachedEvent', Optional[str]], None],
+        callback: Callable[["FrameAttachedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for frameAttached events.
-        
+
         Fired when frame has been attached to its parent.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -93,13 +94,15 @@ class PageRegistration:
 
     def frameClearedScheduledNavigation(
         self,
-        callback: Callable[['FrameClearedScheduledNavigationEvent', Optional[str]], None],
+        callback: Callable[
+            ["FrameClearedScheduledNavigationEvent", Optional[str]], None
+        ],
     ) -> None:
         """
         Register a callback for frameClearedScheduledNavigation events.
-        
+
         Fired when frame no longer has a scheduled navigation.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -108,13 +111,13 @@ class PageRegistration:
 
     def frameDetached(
         self,
-        callback: Callable[['FrameDetachedEvent', Optional[str]], None],
+        callback: Callable[["FrameDetachedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for frameDetached events.
-        
+
         Fired when frame has been detached from its parent.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -123,29 +126,29 @@ class PageRegistration:
 
     def frameSubtreeWillBeDetached(
         self,
-        callback: Callable[['FrameSubtreeWillBeDetachedEvent', Optional[str]], None],
+        callback: Callable[["FrameSubtreeWillBeDetachedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for frameSubtreeWillBeDetached events.
-        
-        Fired before frame subtree is detached. Emitted before any frame of the
-subtree is actually detached.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for frameSubtreeWillBeDetached events.
+
+                Fired before frame subtree is detached. Emitted before any frame of the
+        subtree is actually detached.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.frameSubtreeWillBeDetached", callback)
 
     def frameNavigated(
         self,
-        callback: Callable[['FrameNavigatedEvent', Optional[str]], None],
+        callback: Callable[["FrameNavigatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for frameNavigated events.
-        
+
         Fired once navigation of the frame has completed. Frame is now associated with the new loader.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -154,13 +157,13 @@ subtree is actually detached.
 
     def documentOpened(
         self,
-        callback: Callable[['DocumentOpenedEvent', Optional[str]], None],
+        callback: Callable[["DocumentOpenedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for documentOpened events.
-        
+
         Fired when opening document to write to.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -169,11 +172,11 @@ subtree is actually detached.
 
     def frameResized(
         self,
-        callback: Callable[['FrameResizedEvent', Optional[str]], None],
+        callback: Callable[["FrameResizedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for frameResized events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -182,50 +185,50 @@ subtree is actually detached.
 
     def frameStartedNavigating(
         self,
-        callback: Callable[['FrameStartedNavigatingEvent', Optional[str]], None],
+        callback: Callable[["FrameStartedNavigatingEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for frameStartedNavigating events.
-        
-        Fired when a navigation starts. This event is fired for both
-renderer-initiated and browser-initiated navigations. For renderer-initiated
-navigations, the event is fired after `frameRequestedNavigation`.
-Navigation may still be cancelled after the event is issued. Multiple events
-can be fired for a single navigation, for example, when a same-document
-navigation becomes a cross-document navigation (such as in the case of a
-frameset).
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for frameStartedNavigating events.
+
+                Fired when a navigation starts. This event is fired for both
+        renderer-initiated and browser-initiated navigations. For renderer-initiated
+        navigations, the event is fired after `frameRequestedNavigation`.
+        Navigation may still be cancelled after the event is issued. Multiple events
+        can be fired for a single navigation, for example, when a same-document
+        navigation becomes a cross-document navigation (such as in the case of a
+        frameset).
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.frameStartedNavigating", callback)
 
     def frameRequestedNavigation(
         self,
-        callback: Callable[['FrameRequestedNavigationEvent', Optional[str]], None],
+        callback: Callable[["FrameRequestedNavigationEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for frameRequestedNavigation events.
-        
-        Fired when a renderer-initiated navigation is requested.
-Navigation may still be cancelled after the event is issued.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for frameRequestedNavigation events.
+
+                Fired when a renderer-initiated navigation is requested.
+        Navigation may still be cancelled after the event is issued.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.frameRequestedNavigation", callback)
 
     def frameScheduledNavigation(
         self,
-        callback: Callable[['FrameScheduledNavigationEvent', Optional[str]], None],
+        callback: Callable[["FrameScheduledNavigationEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for frameScheduledNavigation events.
-        
+
         Fired when frame schedules a potential navigation.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -234,13 +237,13 @@ Navigation may still be cancelled after the event is issued.
 
     def frameStartedLoading(
         self,
-        callback: Callable[['FrameStartedLoadingEvent', Optional[str]], None],
+        callback: Callable[["FrameStartedLoadingEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for frameStartedLoading events.
-        
+
         Fired when frame has started loading.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -249,13 +252,13 @@ Navigation may still be cancelled after the event is issued.
 
     def frameStoppedLoading(
         self,
-        callback: Callable[['FrameStoppedLoadingEvent', Optional[str]], None],
+        callback: Callable[["FrameStoppedLoadingEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for frameStoppedLoading events.
-        
+
         Fired when frame has stopped loading.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -264,45 +267,45 @@ Navigation may still be cancelled after the event is issued.
 
     def downloadWillBegin(
         self,
-        callback: Callable[['DownloadWillBeginEvent', Optional[str]], None],
+        callback: Callable[["DownloadWillBeginEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for downloadWillBegin events.
-        
-        Fired when page is about to start a download.
-Deprecated. Use Browser.downloadWillBegin instead.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for downloadWillBegin events.
+
+                Fired when page is about to start a download.
+        Deprecated. Use Browser.downloadWillBegin instead.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.downloadWillBegin", callback)
 
     def downloadProgress(
         self,
-        callback: Callable[['DownloadProgressEvent', Optional[str]], None],
+        callback: Callable[["DownloadProgressEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for downloadProgress events.
-        
-        Fired when download makes progress. Last call has |done| == true.
-Deprecated. Use Browser.downloadProgress instead.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for downloadProgress events.
+
+                Fired when download makes progress. Last call has |done| == true.
+        Deprecated. Use Browser.downloadProgress instead.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.downloadProgress", callback)
 
     def interstitialHidden(
         self,
-        callback: Callable[['InterstitialHiddenEvent', Optional[str]], None],
+        callback: Callable[["InterstitialHiddenEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for interstitialHidden events.
-        
+
         Fired when interstitial page was hidden
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -311,13 +314,13 @@ Deprecated. Use Browser.downloadProgress instead.
 
     def interstitialShown(
         self,
-        callback: Callable[['InterstitialShownEvent', Optional[str]], None],
+        callback: Callable[["InterstitialShownEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for interstitialShown events.
-        
+
         Fired when interstitial page was shown
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -326,77 +329,77 @@ Deprecated. Use Browser.downloadProgress instead.
 
     def javascriptDialogClosed(
         self,
-        callback: Callable[['JavascriptDialogClosedEvent', Optional[str]], None],
+        callback: Callable[["JavascriptDialogClosedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for javascriptDialogClosed events.
-        
-        Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
-closed.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for javascriptDialogClosed events.
+
+                Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
+        closed.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.javascriptDialogClosed", callback)
 
     def javascriptDialogOpening(
         self,
-        callback: Callable[['JavascriptDialogOpeningEvent', Optional[str]], None],
+        callback: Callable[["JavascriptDialogOpeningEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for javascriptDialogOpening events.
-        
-        Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
-open.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for javascriptDialogOpening events.
+
+                Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
+        open.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.javascriptDialogOpening", callback)
 
     def lifecycleEvent(
         self,
-        callback: Callable[['LifecycleEventEvent', Optional[str]], None],
+        callback: Callable[["LifecycleEventEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for lifecycleEvent events.
-        
-        Fired for lifecycle events (navigation, load, paint, etc) in the current
-target (including local frames).
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for lifecycleEvent events.
+
+                Fired for lifecycle events (navigation, load, paint, etc) in the current
+        target (including local frames).
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.lifecycleEvent", callback)
 
     def backForwardCacheNotUsed(
         self,
-        callback: Callable[['BackForwardCacheNotUsedEvent', Optional[str]], None],
+        callback: Callable[["BackForwardCacheNotUsedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for backForwardCacheNotUsed events.
-        
-        Fired for failed bfcache history navigations if BackForwardCache feature is enabled. Do
-not assume any ordering with the Page.frameNavigated event. This event is fired only for
-main-frame history navigation where the document changes (non-same-document navigations),
-when bfcache navigation fails.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for backForwardCacheNotUsed events.
+
+                Fired for failed bfcache history navigations if BackForwardCache feature is enabled. Do
+        not assume any ordering with the Page.frameNavigated event. This event is fired only for
+        main-frame history navigation where the document changes (non-same-document navigations),
+        when bfcache navigation fails.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.backForwardCacheNotUsed", callback)
 
     def loadEventFired(
         self,
-        callback: Callable[['LoadEventFiredEvent', Optional[str]], None],
+        callback: Callable[["LoadEventFiredEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for loadEventFired events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -405,13 +408,13 @@ when bfcache navigation fails.
 
     def navigatedWithinDocument(
         self,
-        callback: Callable[['NavigatedWithinDocumentEvent', Optional[str]], None],
+        callback: Callable[["NavigatedWithinDocumentEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for navigatedWithinDocument events.
-        
+
         Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -420,13 +423,13 @@ when bfcache navigation fails.
 
     def screencastFrame(
         self,
-        callback: Callable[['ScreencastFrameEvent', Optional[str]], None],
+        callback: Callable[["ScreencastFrameEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for screencastFrame events.
-        
+
         Compressed image data requested by the `startScreencast`.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -435,13 +438,13 @@ when bfcache navigation fails.
 
     def screencastVisibilityChanged(
         self,
-        callback: Callable[['ScreencastVisibilityChangedEvent', Optional[str]], None],
+        callback: Callable[["ScreencastVisibilityChangedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for screencastVisibilityChanged events.
-        
+
         Fired when the page with currently enabled screencast was shown or hidden `.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -450,33 +453,31 @@ when bfcache navigation fails.
 
     def windowOpen(
         self,
-        callback: Callable[['WindowOpenEvent', Optional[str]], None],
+        callback: Callable[["WindowOpenEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for windowOpen events.
-        
-        Fired when a new window is going to be opened, via window.open(), link click, form submission,
-etc.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for windowOpen events.
+
+                Fired when a new window is going to be opened, via window.open(), link click, form submission,
+        etc.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.windowOpen", callback)
 
     def compilationCacheProduced(
         self,
-        callback: Callable[['CompilationCacheProducedEvent', Optional[str]], None],
+        callback: Callable[["CompilationCacheProducedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for compilationCacheProduced events.
-        
-        Issued for every compilation cache generated. Is only available
-if Page.setGenerateCompilationCache is enabled.
-        
+
+        Issued for every compilation cache generated.
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Page.compilationCacheProduced", callback)
-

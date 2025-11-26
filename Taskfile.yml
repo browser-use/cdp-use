@@ -1,0 +1,47 @@
+version: "3"
+
+tasks:
+  generate:
+    desc: "Regenerate CDP types from protocol definitions"
+    cmds:
+      - uv run python -m cdp_use.generator
+
+  build:
+    desc: "Build the distribution package"
+    cmds:
+      - uv build
+
+  install:
+    desc: "Install package in development mode"
+    cmds:
+      - uv pip install -e .
+
+  lint:
+    desc: "Run ruff linter"
+    cmds:
+      - uv run ruff check cdp_use/ --statistics
+
+  format:
+    desc: "Format code with ruff"
+    cmds:
+      - uv run ruff format cdp_use/
+
+  format-json:
+    desc: "Format JSON protocol files"
+    cmds:
+      - |
+        for file in cdp_use/custom_protocols/*.json; do
+          [ -f "$file" ] || continue
+          python3 -m json.tool "$file" "$file.tmp" && mv "$file.tmp" "$file"
+        done
+
+  example:
+    desc: "Run the simple example"
+    cmds:
+      - uv run python simple.py
+
+  clean:
+    desc: "Clean generated files and build artifacts"
+    cmds:
+      - rm -rf dist/ build/ *.egg-info
+      - find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true

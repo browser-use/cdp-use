@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from .types import TimeSinceEpoch
     from .types import TouchPoint
 
+
 class DispatchDragEventParameters(TypedDict):
     type: "str"
     """Type of the drag event."""
@@ -28,9 +29,6 @@ the top of the viewport and Y increases as it proceeds towards the bottom of the
     modifiers: "NotRequired[int]"
     """Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8
 (default: 0)."""
-
-
-
 
 
 class DispatchKeyEventParameters(TypedDict):
@@ -73,15 +71,9 @@ These are related to but not equal the command names used in `document.execComma
 See https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/editing/commands/editor_command_names.h for valid command names."""
 
 
-
-
-
 class InsertTextParameters(TypedDict):
     text: "str"
     """The text to insert."""
-
-
-
 
 
 class ImeSetCompositionParameters(TypedDict):
@@ -95,9 +87,6 @@ class ImeSetCompositionParameters(TypedDict):
     """replacement start"""
     replacementEnd: "NotRequired[int]"
     """replacement end"""
-
-
-
 
 
 class DispatchMouseEventParameters(TypedDict):
@@ -138,9 +127,6 @@ Left=1, Right=2, Middle=4, Back=8, Forward=16, None=0."""
     """Pointer type (default: \"mouse\")."""
 
 
-
-
-
 class DispatchTouchEventParameters(TypedDict):
     type: "str"
     """Type of the touch event. TouchEnd and TouchCancel must not contain any touch points, while
@@ -154,9 +140,6 @@ one by one."""
 (default: 0)."""
     timestamp: "NotRequired[TimeSinceEpoch]"
     """Time at which the event occurred."""
-
-
-
 
 
 class EmulateTouchFromMouseEventParameters(TypedDict):
@@ -181,22 +164,13 @@ class EmulateTouchFromMouseEventParameters(TypedDict):
     """Number of times the mouse button was clicked (default: 0)."""
 
 
-
-
-
 class SetIgnoreInputEventsParameters(TypedDict):
     ignore: "bool"
     """Ignores input events processing when set to true."""
 
 
-
-
-
 class SetInterceptDragsParameters(TypedDict):
     enabled: "bool"
-
-
-
 
 
 class SynthesizePinchGestureParameters(TypedDict):
@@ -211,9 +185,6 @@ class SynthesizePinchGestureParameters(TypedDict):
     gestureSourceType: "NotRequired[GestureSourceType]"
     """Which type of input events to be generated (default: 'default', which queries the platform
 for the preferred input type)."""
-
-
-
 
 
 class SynthesizeScrollGestureParameters(TypedDict):
@@ -246,9 +217,6 @@ for the preferred input type)."""
     """The name of the interaction markers to generate, if not empty (default: \"\")."""
 
 
-
-
-
 class SynthesizeTapGestureParameters(TypedDict):
     x: "float"
     """X coordinate of the start of the gesture in CSS pixels."""
@@ -261,5 +229,3 @@ class SynthesizeTapGestureParameters(TypedDict):
     gestureSourceType: "NotRequired[GestureSourceType]"
     """Which type of input events to be generated (default: 'default', which queries the platform
 for the preferred input type)."""
-
-

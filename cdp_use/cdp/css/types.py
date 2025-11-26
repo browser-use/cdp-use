@@ -20,12 +20,10 @@ if TYPE_CHECKING:
 StyleSheetId = str
 
 
-
 StyleSheetOrigin = Literal["injected", "user-agent", "inspector", "regular"]
 """Stylesheet type: "injected" for stylesheets injected via extension, "user-agent" for user-agent
 stylesheets, "inspector" for stylesheets created by the inspector (i.e. those holding the "via
 inspector" rules), "regular" for regular stylesheets."""
-
 
 
 class PseudoElementMatches(TypedDict):
@@ -39,7 +37,6 @@ class PseudoElementMatches(TypedDict):
     """Matches of CSS rules applicable to the pseudo style."""
 
 
-
 class CSSAnimationStyle(TypedDict):
     """CSS style coming from animations with the name of the animation."""
 
@@ -47,7 +44,6 @@ class CSSAnimationStyle(TypedDict):
     """The name of the animation."""
     style: "CSSStyle"
     """The style coming from the animation."""
-
 
 
 class InheritedStyleEntry(TypedDict):
@@ -59,7 +55,6 @@ class InheritedStyleEntry(TypedDict):
     """Matches of CSS rules matching the ancestor node in the style inheritance chain."""
 
 
-
 class InheritedAnimatedStyleEntry(TypedDict, total=False):
     """Inherited CSS style collection for animated styles from ancestor node."""
 
@@ -69,13 +64,11 @@ class InheritedAnimatedStyleEntry(TypedDict, total=False):
     """The style coming from the transitions of the ancestor, if any, in the style inheritance chain."""
 
 
-
 class InheritedPseudoElementMatches(TypedDict):
     """Inherited pseudo element matches from pseudos of an ancestor node."""
 
     pseudoElements: "List[PseudoElementMatches]"
     """Matches of pseudo styles from the pseudos of an ancestor node."""
-
 
 
 class RuleMatch(TypedDict):
@@ -85,7 +78,6 @@ class RuleMatch(TypedDict):
     """CSS rule in the match."""
     matchingSelectors: "List[int]"
     """Matching selector indices in the rule's selectorList selectors (0-based)."""
-
 
 
 class Value(TypedDict):
@@ -99,10 +91,9 @@ class Value(TypedDict):
     """Specificity of the selector."""
 
 
-
 class Specificity(TypedDict):
     """Specificity:
-https://drafts.csswg.org/selectors/#specificity-rules"""
+    https://drafts.csswg.org/selectors/#specificity-rules"""
 
     a: "int"
     """The a component, which represents the number of ID selectors."""
@@ -113,7 +104,6 @@ pseudo-classes."""
     """The c component, which represents the number of type selectors and pseudo-elements."""
 
 
-
 class SelectorList(TypedDict):
     """Selector list data."""
 
@@ -121,7 +111,6 @@ class SelectorList(TypedDict):
     """Selectors in the list."""
     text: "str"
     """Rule selector text."""
-
 
 
 class CSSStyleSheetHeader(TypedDict):
@@ -172,7 +161,6 @@ CSS module script."""
     """If the style sheet was loaded from a network resource, this indicates when the resource failed to load"""
 
 
-
 class CSSRule(TypedDict):
     """CSS rule representation."""
 
@@ -187,6 +175,8 @@ stylesheet rules) this rule came from."""
     """Parent stylesheet's origin."""
     style: "CSSStyle"
     """Associated style declaration."""
+    originTreeScopeNodeId: "NotRequired[BackendNodeId]"
+    """The BackendNodeId of the DOM node that constitutes the origin tree scope of this rule."""
     media: "NotRequired[List[CSSMedia]]"
     """Media list array (for rules involving media queries). The array enumerates media queries
 starting with the innermost one, going outwards."""
@@ -209,11 +199,17 @@ The array enumerates @scope at-rules starting with the innermost one, going outw
 The array enumerates @starting-style at-rules starting with the innermost one, going outwards."""
 
 
-
-CSSRuleType = Literal["MediaRule", "SupportsRule", "ContainerRule", "LayerRule", "ScopeRule", "StyleRule", "StartingStyleRule"]
+CSSRuleType = Literal[
+    "MediaRule",
+    "SupportsRule",
+    "ContainerRule",
+    "LayerRule",
+    "ScopeRule",
+    "StyleRule",
+    "StartingStyleRule",
+]
 """Enum indicating the type of a CSS rule, used to represent the order of a style rule's ancestors.
 This list only contains rule types that are collected during the ancestor rule collection."""
-
 
 
 class RuleUsage(TypedDict):
@@ -230,7 +226,6 @@ stylesheet rules) this rule came from."""
     """Indicates whether the rule was actually used by some element in the page."""
 
 
-
 class SourceRange(TypedDict):
     """Text range within a resource. All numbers are zero-based."""
 
@@ -244,7 +239,6 @@ class SourceRange(TypedDict):
     """End column of range (exclusive)."""
 
 
-
 class ShorthandEntry(TypedDict):
     name: "str"
     """Shorthand name."""
@@ -254,13 +248,18 @@ class ShorthandEntry(TypedDict):
     """Whether the property has \"!important\" annotation (implies `false` if absent)."""
 
 
-
 class CSSComputedStyleProperty(TypedDict):
     name: "str"
     """Computed style property name."""
     value: "str"
     """Computed style property value."""
 
+
+class ComputedStyleExtraFields(TypedDict):
+    isAppearanceBase: "bool"
+    """Returns whether or not this node is being rendered with base appearance,
+which happens when it has its appearance property set to base/base-select
+or it is in the subtree of an element being rendered with base appearance."""
 
 
 class CSSStyle(TypedDict):
@@ -277,7 +276,6 @@ stylesheet rules) this rule came from."""
     """Style declaration text (if available)."""
     range: "NotRequired[SourceRange]"
     """Style declaration range in the enclosing stylesheet (if available)."""
-
 
 
 class CSSProperty(TypedDict):
@@ -304,7 +302,6 @@ class CSSProperty(TypedDict):
 This field will be empty if the given property is not a shorthand."""
 
 
-
 class CSSMedia(TypedDict):
     """CSS media rule descriptor."""
 
@@ -326,7 +323,6 @@ available)."""
     """Array of media queries."""
 
 
-
 class MediaQuery(TypedDict):
     """Media query descriptor."""
 
@@ -334,7 +330,6 @@ class MediaQuery(TypedDict):
     """Array of media query expressions."""
     active: "bool"
     """Whether the media query condition is satisfied."""
-
 
 
 class MediaQueryExpression(TypedDict):
@@ -350,7 +345,6 @@ class MediaQueryExpression(TypedDict):
     """The associated range of the value text in the enclosing stylesheet (if available)."""
     computedLength: "NotRequired[float]"
     """Computed length of media query expression (if applicable)."""
-
 
 
 class CSSContainerQuery(TypedDict):
@@ -371,7 +365,8 @@ available)."""
     """Optional logical axes queried for the container."""
     queriesScrollState: "NotRequired[bool]"
     """true if the query contains scroll-state() queries."""
-
+    queriesAnchored: "NotRequired[bool]"
+    """true if the query contains anchored() queries."""
 
 
 class CSSSupports(TypedDict):
@@ -388,7 +383,6 @@ available)."""
     """Identifier of the stylesheet containing this object (if exists)."""
 
 
-
 class CSSScope(TypedDict):
     """CSS Scope at-rule descriptor."""
 
@@ -399,7 +393,6 @@ class CSSScope(TypedDict):
 available)."""
     styleSheetId: "NotRequired[StyleSheetId]"
     """Identifier of the stylesheet containing this object (if exists)."""
-
 
 
 class CSSLayer(TypedDict):
@@ -414,7 +407,6 @@ available)."""
     """Identifier of the stylesheet containing this object (if exists)."""
 
 
-
 class CSSStartingStyle(TypedDict, total=False):
     """CSS Starting Style at-rule descriptor."""
 
@@ -423,7 +415,6 @@ class CSSStartingStyle(TypedDict, total=False):
 available)."""
     styleSheetId: "StyleSheetId"
     """Identifier of the stylesheet containing this object (if exists)."""
-
 
 
 class CSSLayerData(TypedDict):
@@ -438,7 +429,6 @@ class CSSLayerData(TypedDict):
 A higher number has higher priority in the cascade order."""
 
 
-
 class PlatformFontUsage(TypedDict):
     """Information about amount of glyphs that were rendered with given font."""
 
@@ -450,7 +440,6 @@ class PlatformFontUsage(TypedDict):
     """Indicates if the font was downloaded or resolved locally."""
     glyphCount: "float"
     """Amount of glyphs that were rendered with this font."""
-
 
 
 class FontVariationAxis(TypedDict):
@@ -468,10 +457,9 @@ class FontVariationAxis(TypedDict):
     """The default value."""
 
 
-
 class FontFace(TypedDict):
     """Properties of a web font: https://www.w3.org/TR/2008/REC-CSS2-20080411/fonts.html#font-descriptions
-and additional information such as platformFontFamily and fontVariationAxes."""
+    and additional information such as platformFontFamily and fontVariationAxes."""
 
     fontFamily: "str"
     """The font-family."""
@@ -495,7 +483,6 @@ and additional information such as platformFontFamily and fontVariationAxes."""
     """Available variation settings (a.k.a. \"axes\")."""
 
 
-
 class CSSTryRule(TypedDict):
     """CSS try rule representation."""
 
@@ -506,7 +493,6 @@ stylesheet rules) this rule came from."""
     """Parent stylesheet's origin."""
     style: "CSSStyle"
     """Associated style declaration."""
-
 
 
 class CSSPositionTryRule(TypedDict):
@@ -524,7 +510,6 @@ stylesheet rules) this rule came from."""
     active: "bool"
 
 
-
 class CSSKeyframesRule(TypedDict):
     """CSS keyframes rule representation."""
 
@@ -532,7 +517,6 @@ class CSSKeyframesRule(TypedDict):
     """Animation name."""
     keyframes: "List[CSSKeyframeRule]"
     """List of keyframes."""
-
 
 
 class CSSPropertyRegistration(TypedDict):
@@ -544,20 +528,23 @@ class CSSPropertyRegistration(TypedDict):
     syntax: "str"
 
 
+class CSSAtRule(TypedDict):
+    """CSS generic @rule representation."""
 
-class CSSFontPaletteValuesRule(TypedDict):
-    """CSS font-palette-values rule representation."""
-
+    type: "str"
+    """Type of at-rule."""
+    subsection: "NotRequired[str]"
+    """Subsection of font-feature-values, if this is a subsection."""
+    name: "NotRequired[Value]"
+    """LINT.ThenChange(//third_party/blink/renderer/core/inspector/inspector_style_sheet.cc:FontVariantAlternatesFeatureType,//third_party/blink/renderer/core/inspector/inspector_css_agent.cc:FontVariantAlternatesFeatureType)
+Associated name, if applicable."""
     styleSheetId: "NotRequired[StyleSheetId]"
     """The css style sheet identifier (absent for user agent stylesheet and user-specified
 stylesheet rules) this rule came from."""
     origin: "StyleSheetOrigin"
     """Parent stylesheet's origin."""
-    fontPaletteName: "Value"
-    """Associated font palette name."""
     style: "CSSStyle"
     """Associated style declaration."""
-
 
 
 class CSSPropertyRule(TypedDict):
@@ -574,7 +561,6 @@ stylesheet rules) this rule came from."""
     """Associated style declaration."""
 
 
-
 class CSSFunctionParameter(TypedDict):
     """CSS function argument representation."""
 
@@ -582,7 +568,6 @@ class CSSFunctionParameter(TypedDict):
     """The parameter name."""
     type: "str"
     """The parameter type."""
-
 
 
 class CSSFunctionConditionNode(TypedDict):
@@ -600,7 +585,6 @@ class CSSFunctionConditionNode(TypedDict):
     """The condition text."""
 
 
-
 class CSSFunctionNode(TypedDict, total=False):
     """Section of the body of a CSS function rule."""
 
@@ -608,7 +592,6 @@ class CSSFunctionNode(TypedDict, total=False):
     """A conditional block. If set, style should not be set."""
     style: "CSSStyle"
     """Values set by this node. If set, condition should not be set."""
-
 
 
 class CSSFunctionRule(TypedDict):
@@ -627,7 +610,6 @@ stylesheet rules) this rule came from."""
     """Function body."""
 
 
-
 class CSSKeyframeRule(TypedDict):
     """CSS keyframe rule representation."""
 
@@ -640,7 +622,6 @@ stylesheet rules) this rule came from."""
     """Associated key text."""
     style: "CSSStyle"
     """Associated style declaration."""
-
 
 
 class StyleDeclarationEdit(TypedDict):
