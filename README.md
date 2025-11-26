@@ -222,6 +222,20 @@ This will:
 3. Create domain-specific client classes
 4. Format the code
 
+### Version Pinning
+
+By default, the generator downloads the latest CDP specification from the master branch. To pin a specific version, edit `cdp_use/generator/constants.py`:
+
+```python
+# Pin to a specific commit
+CDP_VERSION = "4b0c3f2e8c5d6a7b9e1f2a3c4d5e6f7a8b9c0d1e"
+
+# Or use master for latest
+CDP_VERSION = "refs/heads/master"
+```
+
+To find specific commits, visit: https://github.com/ChromeDevTools/devtools-protocol/commits/master
+
 ### Available Tasks
 
 ```bash
