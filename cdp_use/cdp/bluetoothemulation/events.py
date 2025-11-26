@@ -16,15 +16,18 @@ if TYPE_CHECKING:
 
 """Event for when a GATT operation of |type| to the peripheral with |address|
 happened."""
+
+
 class GattOperationReceivedEvent(TypedDict):
     address: "str"
     type: "GATTOperationType"
 
 
-
 """Event for when a characteristic operation of |type| to the characteristic
 respresented by |characteristicId| happened. |data| and |writeType| is
 expected to exist when |type| is write."""
+
+
 class CharacteristicOperationReceivedEvent(TypedDict):
     characteristicId: "str"
     type: "CharacteristicOperationType"
@@ -32,10 +35,11 @@ class CharacteristicOperationReceivedEvent(TypedDict):
     writeType: "NotRequired[CharacteristicWriteType]"
 
 
-
 """Event for when a descriptor operation of |type| to the descriptor
 respresented by |descriptorId| happened. |data| is expected to exist when
 |type| is write."""
+
+
 class DescriptorOperationReceivedEvent(TypedDict):
     descriptorId: "str"
     type: "DescriptorOperationType"

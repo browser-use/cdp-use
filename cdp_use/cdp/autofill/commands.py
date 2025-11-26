@@ -15,19 +15,17 @@ if TYPE_CHECKING:
     from .types import Address
     from .types import CreditCard
 
+
 class TriggerParameters(TypedDict):
     fieldId: "BackendNodeId"
     """Identifies a field that serves as an anchor for autofill."""
     frameId: "NotRequired[FrameId]"
     """Identifies the frame that field belongs to."""
-    card: "CreditCard"
-    """Credit card information to fill out the form. Credit card data is not saved."""
-
-
-
+    card: "NotRequired[CreditCard]"
+    """Credit card information to fill out the form. Credit card data is not saved.  Mutually exclusive with `address`."""
+    address: "NotRequired[Address]"
+    """Address to fill out the form. Address data is not saved. Mutually exclusive with `card`."""
 
 
 class SetAddressesParameters(TypedDict):
     addresses: "List[Address]"
-
-

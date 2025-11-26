@@ -13,10 +13,11 @@ if TYPE_CHECKING:
     from .commands import BeginFrameParameters
     from .commands import BeginFrameReturns
 
+
 class HeadlessExperimentalClient:
     """Client for HeadlessExperimental domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def beginFrame(
@@ -25,14 +26,17 @@ class HeadlessExperimentalClient:
         session_id: Optional[str] = None,
     ) -> "BeginFrameReturns":
         """Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a
-screenshot from the resulting frame. Requires that the target was created with enabled
-BeginFrameControl. Designed for use with --run-all-compositor-stages-before-draw, see also
-https://goo.gle/chrome-headless-rendering for more background."""
-        return cast("BeginFrameReturns", await self._client.send_raw(
-            method="HeadlessExperimental.beginFrame",
-            params=params,
-            session_id=session_id,
-        ))
+        screenshot from the resulting frame. Requires that the target was created with enabled
+        BeginFrameControl. Designed for use with --run-all-compositor-stages-before-draw, see also
+        https://goo.gle/chrome-headless-rendering for more background."""
+        return cast(
+            "BeginFrameReturns",
+            await self._client.send_raw(
+                method="HeadlessExperimental.beginFrame",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
@@ -40,11 +44,14 @@ https://goo.gle/chrome-headless-rendering for more background."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables headless events for the target."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="HeadlessExperimental.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="HeadlessExperimental.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def enable(
         self,
@@ -52,10 +59,11 @@ https://goo.gle/chrome-headless-rendering for more background."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables headless events for the target."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="HeadlessExperimental.enable",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="HeadlessExperimental.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )

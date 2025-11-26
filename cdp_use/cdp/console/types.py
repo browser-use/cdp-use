@@ -6,6 +6,7 @@
 
 from typing_extensions import NotRequired, TypedDict
 
+
 class ConsoleMessage(TypedDict):
     """Console message."""
 

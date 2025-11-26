@@ -12,6 +12,8 @@ if TYPE_CHECKING:
     from ..page.types import FrameId
 
 """Fired when page is about to start a download."""
+
+
 class DownloadWillBeginEvent(TypedDict):
     frameId: "FrameId"
     """Id of the frame that caused the download to begin."""
@@ -23,8 +25,9 @@ class DownloadWillBeginEvent(TypedDict):
     """Suggested file name of the resource (the actual name of the file saved on disk may differ)."""
 
 
-
 """Fired when download makes progress. Last call has |done| == true."""
+
+
 class DownloadProgressEvent(TypedDict):
     guid: "str"
     """Global unique identifier of the download."""

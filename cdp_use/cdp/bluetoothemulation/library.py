@@ -28,10 +28,11 @@ if TYPE_CHECKING:
     from .commands import SimulateGATTOperationResponseParameters
     from .commands import SimulatePreconnectedPeripheralParameters
 
+
 class BluetoothEmulationClient:
     """Client for BluetoothEmulation domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def enable(
@@ -40,11 +41,14 @@ class BluetoothEmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enable the BluetoothEmulation domain."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.enable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setSimulatedCentralState(
         self,
@@ -52,11 +56,14 @@ class BluetoothEmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Set the state of the simulated central."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.setSimulatedCentralState",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.setSimulatedCentralState",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
@@ -64,11 +71,14 @@ class BluetoothEmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disable the BluetoothEmulation domain."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def simulatePreconnectedPeripheral(
         self,
@@ -76,12 +86,15 @@ class BluetoothEmulationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Simulates a peripheral with |address|, |name| and |knownServiceUuids|
-that has already been connected to the system."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.simulatePreconnectedPeripheral",
-            params=params,
-            session_id=session_id,
-        ))
+        that has already been connected to the system."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.simulatePreconnectedPeripheral",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def simulateAdvertisement(
         self,
@@ -89,12 +102,15 @@ that has already been connected to the system."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Simulates an advertisement packet described in |entry| being received by
-the central."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.simulateAdvertisement",
-            params=params,
-            session_id=session_id,
-        ))
+        the central."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.simulateAdvertisement",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def simulateGATTOperationResponse(
         self,
@@ -102,13 +118,16 @@ the central."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Simulates the response code from the peripheral with |address| for a
-GATT operation of |type|. The |code| value follows the HCI Error Codes from
-Bluetooth Core Specification Vol 2 Part D 1.3 List Of Error Codes."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.simulateGATTOperationResponse",
-            params=params,
-            session_id=session_id,
-        ))
+        GATT operation of |type|. The |code| value follows the HCI Error Codes from
+        Bluetooth Core Specification Vol 2 Part D 1.3 List Of Error Codes."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.simulateGATTOperationResponse",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def simulateCharacteristicOperationResponse(
         self,
@@ -116,15 +135,18 @@ Bluetooth Core Specification Vol 2 Part D 1.3 List Of Error Codes."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Simulates the response from the characteristic with |characteristicId| for a
-characteristic operation of |type|. The |code| value follows the Error
-Codes from Bluetooth Core Specification Vol 3 Part F 3.4.1.1 Error Response.
-The |data| is expected to exist when simulating a successful read operation
-response."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.simulateCharacteristicOperationResponse",
-            params=params,
-            session_id=session_id,
-        ))
+        characteristic operation of |type|. The |code| value follows the Error
+        Codes from Bluetooth Core Specification Vol 3 Part F 3.4.1.1 Error Response.
+        The |data| is expected to exist when simulating a successful read operation
+        response."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.simulateCharacteristicOperationResponse",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def simulateDescriptorOperationResponse(
         self,
@@ -132,15 +154,18 @@ response."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Simulates the response from the descriptor with |descriptorId| for a
-descriptor operation of |type|. The |code| value follows the Error
-Codes from Bluetooth Core Specification Vol 3 Part F 3.4.1.1 Error Response.
-The |data| is expected to exist when simulating a successful read operation
-response."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.simulateDescriptorOperationResponse",
-            params=params,
-            session_id=session_id,
-        ))
+        descriptor operation of |type|. The |code| value follows the Error
+        Codes from Bluetooth Core Specification Vol 3 Part F 3.4.1.1 Error Response.
+        The |data| is expected to exist when simulating a successful read operation
+        response."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.simulateDescriptorOperationResponse",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def addService(
         self,
@@ -148,11 +173,14 @@ response."""
         session_id: Optional[str] = None,
     ) -> "AddServiceReturns":
         """Adds a service with |serviceUuid| to the peripheral with |address|."""
-        return cast("AddServiceReturns", await self._client.send_raw(
-            method="BluetoothEmulation.addService",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "AddServiceReturns",
+            await self._client.send_raw(
+                method="BluetoothEmulation.addService",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def removeService(
         self,
@@ -160,11 +188,14 @@ response."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes the service respresented by |serviceId| from the simulated central."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.removeService",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.removeService",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def addCharacteristic(
         self,
@@ -172,12 +203,15 @@ response."""
         session_id: Optional[str] = None,
     ) -> "AddCharacteristicReturns":
         """Adds a characteristic with |characteristicUuid| and |properties| to the
-service represented by |serviceId|."""
-        return cast("AddCharacteristicReturns", await self._client.send_raw(
-            method="BluetoothEmulation.addCharacteristic",
-            params=params,
-            session_id=session_id,
-        ))
+        service represented by |serviceId|."""
+        return cast(
+            "AddCharacteristicReturns",
+            await self._client.send_raw(
+                method="BluetoothEmulation.addCharacteristic",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def removeCharacteristic(
         self,
@@ -185,12 +219,15 @@ service represented by |serviceId|."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes the characteristic respresented by |characteristicId| from the
-simulated central."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.removeCharacteristic",
-            params=params,
-            session_id=session_id,
-        ))
+        simulated central."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.removeCharacteristic",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def addDescriptor(
         self,
@@ -198,12 +235,15 @@ simulated central."""
         session_id: Optional[str] = None,
     ) -> "AddDescriptorReturns":
         """Adds a descriptor with |descriptorUuid| to the characteristic respresented
-by |characteristicId|."""
-        return cast("AddDescriptorReturns", await self._client.send_raw(
-            method="BluetoothEmulation.addDescriptor",
-            params=params,
-            session_id=session_id,
-        ))
+        by |characteristicId|."""
+        return cast(
+            "AddDescriptorReturns",
+            await self._client.send_raw(
+                method="BluetoothEmulation.addDescriptor",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def removeDescriptor(
         self,
@@ -211,11 +251,14 @@ by |characteristicId|."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes the descriptor with |descriptorId| from the simulated central."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.removeDescriptor",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.removeDescriptor",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def simulateGATTDisconnection(
         self,
@@ -223,10 +266,11 @@ by |characteristicId|."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Simulates a GATT disconnection from the peripheral with |address|."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="BluetoothEmulation.simulateGATTDisconnection",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="BluetoothEmulation.simulateGATTDisconnection",
+                params=params,
+                session_id=session_id,
+            ),
+        )

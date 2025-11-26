@@ -13,5 +13,7 @@ if TYPE_CHECKING:
 
 """Emitted only when `Input.setInterceptDrags` is enabled. Use this data with `Input.dispatchDragEvent` to
 restore normal drag and drop behavior."""
+
+
 class DragInterceptedEvent(TypedDict):
     data: "DragData"

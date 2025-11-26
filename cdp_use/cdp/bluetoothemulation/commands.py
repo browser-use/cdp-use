@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     from .types import ManufacturerData
     from .types import ScanEntry
 
+
 class EnableParameters(TypedDict):
     state: "CentralState"
     """State of the simulated central."""
@@ -25,15 +26,9 @@ class EnableParameters(TypedDict):
     """If the simulated central supports low-energy."""
 
 
-
-
-
 class SetSimulatedCentralStateParameters(TypedDict):
     state: "CentralState"
     """State of the simulated central."""
-
-
-
 
 
 class SimulatePreconnectedPeripheralParameters(TypedDict):
@@ -43,23 +38,14 @@ class SimulatePreconnectedPeripheralParameters(TypedDict):
     knownServiceUuids: "List[str]"
 
 
-
-
-
 class SimulateAdvertisementParameters(TypedDict):
     entry: "ScanEntry"
-
-
-
 
 
 class SimulateGATTOperationResponseParameters(TypedDict):
     address: "str"
     type: "GATTOperationType"
     code: "int"
-
-
-
 
 
 class SimulateCharacteristicOperationResponseParameters(TypedDict):
@@ -69,17 +55,11 @@ class SimulateCharacteristicOperationResponseParameters(TypedDict):
     data: "NotRequired[str]"
 
 
-
-
-
 class SimulateDescriptorOperationResponseParameters(TypedDict):
     descriptorId: "str"
     type: "DescriptorOperationType"
     code: "int"
     data: "NotRequired[str]"
-
-
-
 
 
 class AddServiceParameters(TypedDict):
@@ -92,12 +72,8 @@ class AddServiceReturns(TypedDict):
     """An identifier that uniquely represents this service."""
 
 
-
 class RemoveServiceParameters(TypedDict):
     serviceId: "str"
-
-
-
 
 
 class AddCharacteristicParameters(TypedDict):
@@ -111,12 +87,8 @@ class AddCharacteristicReturns(TypedDict):
     """An identifier that uniquely represents this characteristic."""
 
 
-
 class RemoveCharacteristicParameters(TypedDict):
     characteristicId: "str"
-
-
-
 
 
 class AddDescriptorParameters(TypedDict):
@@ -129,15 +101,9 @@ class AddDescriptorReturns(TypedDict):
     """An identifier that uniquely represents this descriptor."""
 
 
-
 class RemoveDescriptorParameters(TypedDict):
     descriptorId: "str"
 
 
-
-
-
 class SimulateGATTDisconnectionParameters(TypedDict):
     address: "str"
-
-

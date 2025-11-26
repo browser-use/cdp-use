@@ -18,12 +18,10 @@ Note that this does not identify individual HTTP requests that are part of
 a network request."""
 
 
-
 RequestStage = Literal["Request", "Response"]
 """Stages of the request to handle. Request will intercept before the request is
 sent. Response will intercept after the response is received (but before response
 body is received)."""
-
 
 
 class RequestPattern(TypedDict, total=False):
@@ -36,13 +34,11 @@ backslash. Omitting is equivalent to `\"*\"`."""
     """Stage at which to begin intercepting requests. Default is Request."""
 
 
-
 class HeaderEntry(TypedDict):
     """Response HTTP header entry"""
 
     name: "str"
     value: "str"
-
 
 
 class AuthChallenge(TypedDict):
@@ -56,7 +52,6 @@ class AuthChallenge(TypedDict):
     """The authentication scheme used, such as basic or digest"""
     realm: "str"
     """The realm of the challenge. May be empty."""
-
 
 
 class AuthChallengeResponse(TypedDict):

@@ -30,6 +30,8 @@ responses and requests. Redirect responses may be distinguished by the value
 of `responseStatusCode` (which is one of 301, 302, 303, 307, 308) along with
 presence of the `location` header. Requests resulting from a redirect will
 have `redirectedRequestId` field set."""
+
+
 class RequestPausedEvent(TypedDict):
     requestId: "RequestId"
     """Each request the page makes will have a unique id."""
@@ -55,9 +57,10 @@ then this networkId will be the same as the requestId present in the requestWill
 has caused the redirect."""
 
 
-
 """Issued when the domain is enabled with handleAuthRequests set to true.
 The request is paused until client responds with continueWithAuth."""
+
+
 class AuthRequiredEvent(TypedDict):
     requestId: "RequestId"
     """Each request the page makes will have a unique id."""

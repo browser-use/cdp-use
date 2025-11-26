@@ -12,5 +12,7 @@ if TYPE_CHECKING:
     from .types import TimelineEvent
 
 """Sent when a performance timeline event is added. See reportPerformanceTimeline method."""
+
+
 class TimelineEventAddedEvent(TypedDict):
     event: "TimelineEvent"

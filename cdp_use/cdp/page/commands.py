@@ -38,6 +38,7 @@ if TYPE_CHECKING:
     from .types import VisualViewport
     from .types import WebAppManifest
 
+
 class AddScriptToEvaluateOnLoadParameters(TypedDict):
     scriptSource: "str"
 
@@ -45,7 +46,6 @@ class AddScriptToEvaluateOnLoadParameters(TypedDict):
 class AddScriptToEvaluateOnLoadReturns(TypedDict):
     identifier: "ScriptIdentifier"
     """Identifier of the added script."""
-
 
 
 class AddScriptToEvaluateOnNewDocumentParameters(TypedDict):
@@ -65,7 +65,6 @@ Default: false."""
 class AddScriptToEvaluateOnNewDocumentReturns(TypedDict):
     identifier: "ScriptIdentifier"
     """Identifier of the added script."""
-
 
 
 class CaptureScreenshotParameters(TypedDict, total=False):
@@ -88,7 +87,6 @@ class CaptureScreenshotReturns(TypedDict):
     """Base64-encoded image data. (Encoded as a base64 string when passed over JSON)"""
 
 
-
 class CaptureSnapshotParameters(TypedDict, total=False):
     format: "str"
     """Format (defaults to mhtml)."""
@@ -97,7 +95,6 @@ class CaptureSnapshotParameters(TypedDict, total=False):
 class CaptureSnapshotReturns(TypedDict):
     data: "str"
     """Serialized page data."""
-
 
 
 class CreateIsolatedWorldParameters(TypedDict):
@@ -115,7 +112,6 @@ class CreateIsolatedWorldReturns(TypedDict):
     """Execution context of the isolated world."""
 
 
-
 class DeleteCookieParameters(TypedDict):
     cookieName: "str"
     """Name of the cookie to remove."""
@@ -123,16 +119,10 @@ class DeleteCookieParameters(TypedDict):
     """URL to match cooke domain and path."""
 
 
-
-
-
 class EnableParameters(TypedDict, total=False):
     enableFileChooserOpenedEvent: "bool"
     """If true, the `Page.fileChooserOpened` event will be emitted regardless of the state set by
 `Page.setInterceptFileChooserDialog` command (default: false)."""
-
-
-
 
 
 class GetAppManifestParameters(TypedDict, total=False):
@@ -150,15 +140,12 @@ class GetAppManifestReturns(TypedDict):
     manifest: "WebAppManifest"
 
 
-
 class GetInstallabilityErrorsReturns(TypedDict):
     installabilityErrors: "List[InstallabilityError]"
 
 
-
 class GetManifestIconsReturns(TypedDict):
     primaryIcon: "str"
-
 
 
 class GetAppIdReturns(TypedDict):
@@ -166,7 +153,6 @@ class GetAppIdReturns(TypedDict):
     """App id, either from manifest's id attribute or computed from start_url"""
     recommendedId: "str"
     """Recommendation for manifest's id attribute to match current id computed from start_url"""
-
 
 
 class GetAdScriptAncestryParameters(TypedDict):
@@ -182,11 +168,9 @@ stack) to more distant ancestors (that created the immediately preceding
 script). Only sent if frame is labelled as an ad and ids are available."""
 
 
-
 class GetFrameTreeReturns(TypedDict):
     frameTree: "FrameTree"
     """Present frame tree structure."""
-
 
 
 class GetLayoutMetricsReturns(TypedDict):
@@ -204,13 +188,11 @@ class GetLayoutMetricsReturns(TypedDict):
     """Size of scrollable area in CSS pixels."""
 
 
-
 class GetNavigationHistoryReturns(TypedDict):
     currentIndex: "int"
     """Index of the current navigation history entry."""
     entries: "List[NavigationEntry]"
     """Array of navigation history entries."""
-
 
 
 class GetResourceContentParameters(TypedDict):
@@ -227,11 +209,9 @@ class GetResourceContentReturns(TypedDict):
     """True, if content was served as base64."""
 
 
-
 class GetResourceTreeReturns(TypedDict):
     frameTree: "FrameResourceTree"
     """Present frame / resource tree structure."""
-
 
 
 class HandleJavaScriptDialogParameters(TypedDict):
@@ -240,9 +220,6 @@ class HandleJavaScriptDialogParameters(TypedDict):
     promptText: "NotRequired[str]"
     """The text to enter into the dialog prompt before accepting. Used only if this is a prompt
 dialog."""
-
-
-
 
 
 class NavigateParameters(TypedDict):
@@ -270,13 +247,9 @@ as the previously committed loaderId would not change."""
     """Whether the navigation resulted in a download."""
 
 
-
 class NavigateToHistoryEntryParameters(TypedDict):
     entryId: "int"
     """Unique id of the entry to navigate to."""
-
-
-
 
 
 class PrintToPDFParameters(TypedDict, total=False):
@@ -339,7 +312,6 @@ class PrintToPDFReturns(TypedDict):
     """A handle of the stream that holds resulting PDF data."""
 
 
-
 class ReloadParameters(TypedDict, total=False):
     ignoreCache: "bool"
     """If true, browser cache is ignored (as if the user pressed Shift+refresh)."""
@@ -352,29 +324,17 @@ loader id does not match the provided id. This prevents accidentally
 reloading an unintended target in case there's a racing navigation."""
 
 
-
-
-
 class RemoveScriptToEvaluateOnLoadParameters(TypedDict):
     identifier: "ScriptIdentifier"
-
-
-
 
 
 class RemoveScriptToEvaluateOnNewDocumentParameters(TypedDict):
     identifier: "ScriptIdentifier"
 
 
-
-
-
 class ScreencastFrameAckParameters(TypedDict):
     sessionId: "int"
     """Frame number."""
-
-
-
 
 
 class SearchInResourceParameters(TypedDict):
@@ -395,21 +355,14 @@ class SearchInResourceReturns(TypedDict):
     """List of search matches."""
 
 
-
 class SetAdBlockingEnabledParameters(TypedDict):
     enabled: "bool"
     """Whether to block ads."""
 
 
-
-
-
 class SetBypassCSPParameters(TypedDict):
     enabled: "bool"
     """Whether to bypass page CSP."""
-
-
-
 
 
 class GetPermissionsPolicyStateParameters(TypedDict):
@@ -420,14 +373,12 @@ class GetPermissionsPolicyStateReturns(TypedDict):
     states: "List[PermissionsPolicyFeatureState]"
 
 
-
 class GetOriginTrialsParameters(TypedDict):
     frameId: "FrameId"
 
 
 class GetOriginTrialsReturns(TypedDict):
     originTrials: "List[OriginTrial]"
-
 
 
 class SetDeviceMetricsOverrideParameters(TypedDict):
@@ -458,9 +409,6 @@ autosizing and more."""
     """The viewport dimensions and scale. If not set, the override is cleared."""
 
 
-
-
-
 class SetDeviceOrientationOverrideParameters(TypedDict):
     alpha: "float"
     """Mock alpha"""
@@ -470,9 +418,6 @@ class SetDeviceOrientationOverrideParameters(TypedDict):
     """Mock gamma"""
 
 
-
-
-
 class SetFontFamiliesParameters(TypedDict):
     fontFamilies: "FontFamilies"
     """Specifies font families to set. If a font family is not specified, it won't be changed."""
@@ -480,15 +425,9 @@ class SetFontFamiliesParameters(TypedDict):
     """Specifies font families to set for individual scripts."""
 
 
-
-
-
 class SetFontSizesParameters(TypedDict):
     fontSizes: "FontSizes"
     """Specifies font sizes to set. If a font size is not specified, it won't be changed."""
-
-
-
 
 
 class SetDocumentContentParameters(TypedDict):
@@ -498,18 +437,12 @@ class SetDocumentContentParameters(TypedDict):
     """HTML content to set."""
 
 
-
-
-
 class SetDownloadBehaviorParameters(TypedDict):
     behavior: "str"
     """Whether to allow all or deny all download requests, or use default Chrome behavior if
 available (otherwise deny)."""
     downloadPath: "NotRequired[str]"
     """The default path to save downloaded files to. This is required if behavior is set to 'allow'"""
-
-
-
 
 
 class SetGeolocationOverrideParameters(TypedDict, total=False):
@@ -521,15 +454,9 @@ class SetGeolocationOverrideParameters(TypedDict, total=False):
     """Mock accuracy"""
 
 
-
-
-
 class SetLifecycleEventsEnabledParameters(TypedDict):
     enabled: "bool"
     """If true, starts emitting lifecycle events."""
-
-
-
 
 
 class SetTouchEmulationEnabledParameters(TypedDict):
@@ -537,9 +464,6 @@ class SetTouchEmulationEnabledParameters(TypedDict):
     """Whether the touch event emulation should be enabled."""
     configuration: "NotRequired[str]"
     """Touch/gesture events configuration. Default: current platform."""
-
-
-
 
 
 class StartScreencastParameters(TypedDict, total=False):
@@ -555,22 +479,13 @@ class StartScreencastParameters(TypedDict, total=False):
     """Send every n-th frame."""
 
 
-
-
-
 class SetWebLifecycleStateParameters(TypedDict):
     state: "str"
     """Target lifecycle state"""
 
 
-
-
-
 class ProduceCompilationCacheParameters(TypedDict):
     scripts: "List[CompilationCacheParams]"
-
-
-
 
 
 class AddCompilationCacheParameters(TypedDict):
@@ -579,21 +494,12 @@ class AddCompilationCacheParameters(TypedDict):
     """Base64-encoded data (Encoded as a base64 string when passed over JSON)"""
 
 
-
-
-
 class SetSPCTransactionModeParameters(TypedDict):
     mode: "str"
 
 
-
-
-
 class SetRPHRegistrationModeParameters(TypedDict):
     mode: "str"
-
-
-
 
 
 class GenerateTestReportParameters(TypedDict):
@@ -601,9 +507,6 @@ class GenerateTestReportParameters(TypedDict):
     """Message to be displayed in the report."""
     group: "NotRequired[str]"
     """Specifies the endpoint group to deliver the report to."""
-
-
-
 
 
 class SetInterceptFileChooserDialogParameters(TypedDict):
@@ -614,10 +517,17 @@ in addition to not showing it if the interception is enabled
 (default: false)."""
 
 
-
-
-
 class SetPrerenderingAllowedParameters(TypedDict):
     isAllowed: "bool"
 
 
+class GetAnnotatedPageContentParameters(TypedDict, total=False):
+    includeActionableInformation: "bool"
+    """Whether to include actionable information. Defaults to true."""
+
+
+class GetAnnotatedPageContentReturns(TypedDict):
+    content: "str"
+    """The annotated page content as a base64 encoded protobuf.
+The format is defined by the `AnnotatedPageContent` message in
+components/optimization_guide/proto/features/common_quality_data.proto (Encoded as a base64 string when passed over JSON)"""

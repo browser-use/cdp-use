@@ -15,10 +15,11 @@ if TYPE_CHECKING:
     from .commands import GetEncodedResponseParameters
     from .commands import GetEncodedResponseReturns
 
+
 class AuditsClient:
     """Client for Audits domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def getEncodedResponse(
@@ -27,12 +28,15 @@ class AuditsClient:
         session_id: Optional[str] = None,
     ) -> "GetEncodedResponseReturns":
         """Returns the response body and size if it were re-encoded with the specified settings. Only
-applies to images."""
-        return cast("GetEncodedResponseReturns", await self._client.send_raw(
-            method="Audits.getEncodedResponse",
-            params=params,
-            session_id=session_id,
-        ))
+        applies to images."""
+        return cast(
+            "GetEncodedResponseReturns",
+            await self._client.send_raw(
+                method="Audits.getEncodedResponse",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
@@ -40,11 +44,14 @@ applies to images."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables issues domain, prevents further issues from being reported to the client."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Audits.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Audits.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def enable(
         self,
@@ -52,12 +59,15 @@ applies to images."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables issues domain, sends the issues collected so far to the client by means of the
-`issueAdded` event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Audits.enable",
-            params=params,
-            session_id=session_id,
-        ))
+        `issueAdded` event."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Audits.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def checkContrast(
         self,
@@ -65,12 +75,15 @@ applies to images."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Runs the contrast check for the target page. Found issues are reported
-using Audits.issueAdded event."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Audits.checkContrast",
-            params=params,
-            session_id=session_id,
-        ))
+        using Audits.issueAdded event."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Audits.checkContrast",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def checkFormsIssues(
         self,
@@ -78,11 +91,12 @@ using Audits.issueAdded event."""
         session_id: Optional[str] = None,
     ) -> "CheckFormsIssuesReturns":
         """Runs the form issues check for the target page. Found issues are reported
-using Audits.issueAdded event."""
-        return cast("CheckFormsIssuesReturns", await self._client.send_raw(
-            method="Audits.checkFormsIssues",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        using Audits.issueAdded event."""
+        return cast(
+            "CheckFormsIssuesReturns",
+            await self._client.send_raw(
+                method="Audits.checkFormsIssues",
+                params=params,
+                session_id=session_id,
+            ),
+        )

@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from .types import DatabaseWithObjectStores
     from .types import KeyRange
 
+
 class ClearObjectStoreParameters(TypedDict):
     securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
@@ -29,9 +30,6 @@ Security origin."""
     """Object store name."""
 
 
-
-
-
 class DeleteDatabaseParameters(TypedDict):
     securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
@@ -42,9 +40,6 @@ Security origin."""
     """Storage bucket. If not specified, it uses the default bucket."""
     databaseName: "str"
     """Database name."""
-
-
-
 
 
 class DeleteObjectStoreEntriesParameters(TypedDict):
@@ -61,9 +56,6 @@ Security origin."""
     """Range of entry keys to delete"""
 
 
-
-
-
 class RequestDataParameters(TypedDict):
     securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
@@ -76,8 +68,8 @@ Security origin."""
     """Database name."""
     objectStoreName: "str"
     """Object store name."""
-    indexName: "str"
-    """Index name, empty string for object store data requests."""
+    indexName: "NotRequired[str]"
+    """Index name. If not specified, it performs an object store data request."""
     skipCount: "int"
     """Number of records to skip."""
     pageSize: "int"
@@ -91,7 +83,6 @@ class RequestDataReturns(TypedDict):
     """Array of object store data entries."""
     hasMore: "bool"
     """If true, there are more entries to fetch in the given range."""
-
 
 
 class GetMetadataParameters(TypedDict):
@@ -117,7 +108,6 @@ key into the object store. Valid if objectStore.autoIncrement
 is true."""
 
 
-
 class RequestDatabaseParameters(TypedDict):
     securityOrigin: "NotRequired[str]"
     """At least and at most one of securityOrigin, storageKey, or storageBucket must be specified.
@@ -133,7 +123,6 @@ Security origin."""
 class RequestDatabaseReturns(TypedDict):
     databaseWithObjectStores: "DatabaseWithObjectStores"
     """Database with an array of object stores."""
-
 
 
 class RequestDatabaseNamesParameters(TypedDict, total=False):

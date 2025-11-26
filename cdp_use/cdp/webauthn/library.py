@@ -26,10 +26,11 @@ if TYPE_CHECKING:
     from .commands import SetResponseOverrideBitsParameters
     from .commands import SetUserVerifiedParameters
 
+
 class WebAuthnClient:
     """Client for WebAuthn domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def enable(
@@ -38,12 +39,15 @@ class WebAuthnClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enable the WebAuthn domain and start intercepting credential storage and
-retrieval with a virtual authenticator."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.enable",
-            params=params,
-            session_id=session_id,
-        ))
+        retrieval with a virtual authenticator."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
@@ -51,11 +55,14 @@ retrieval with a virtual authenticator."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disable the WebAuthn domain."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def addVirtualAuthenticator(
         self,
@@ -63,11 +70,14 @@ retrieval with a virtual authenticator."""
         session_id: Optional[str] = None,
     ) -> "AddVirtualAuthenticatorReturns":
         """Creates and adds a virtual authenticator."""
-        return cast("AddVirtualAuthenticatorReturns", await self._client.send_raw(
-            method="WebAuthn.addVirtualAuthenticator",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "AddVirtualAuthenticatorReturns",
+            await self._client.send_raw(
+                method="WebAuthn.addVirtualAuthenticator",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setResponseOverrideBits(
         self,
@@ -75,11 +85,14 @@ retrieval with a virtual authenticator."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Resets parameters isBogusSignature, isBadUV, isBadUP to false if they are not present."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.setResponseOverrideBits",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.setResponseOverrideBits",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def removeVirtualAuthenticator(
         self,
@@ -87,11 +100,14 @@ retrieval with a virtual authenticator."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes the given authenticator."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.removeVirtualAuthenticator",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.removeVirtualAuthenticator",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def addCredential(
         self,
@@ -99,11 +115,14 @@ retrieval with a virtual authenticator."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Adds the credential to the specified authenticator."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.addCredential",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.addCredential",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getCredential(
         self,
@@ -111,12 +130,15 @@ retrieval with a virtual authenticator."""
         session_id: Optional[str] = None,
     ) -> "GetCredentialReturns":
         """Returns a single credential stored in the given virtual authenticator that
-matches the credential ID."""
-        return cast("GetCredentialReturns", await self._client.send_raw(
-            method="WebAuthn.getCredential",
-            params=params,
-            session_id=session_id,
-        ))
+        matches the credential ID."""
+        return cast(
+            "GetCredentialReturns",
+            await self._client.send_raw(
+                method="WebAuthn.getCredential",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getCredentials(
         self,
@@ -124,11 +146,14 @@ matches the credential ID."""
         session_id: Optional[str] = None,
     ) -> "GetCredentialsReturns":
         """Returns all the credentials stored in the given virtual authenticator."""
-        return cast("GetCredentialsReturns", await self._client.send_raw(
-            method="WebAuthn.getCredentials",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetCredentialsReturns",
+            await self._client.send_raw(
+                method="WebAuthn.getCredentials",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def removeCredential(
         self,
@@ -136,11 +161,14 @@ matches the credential ID."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Removes a credential from the authenticator."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.removeCredential",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.removeCredential",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clearCredentials(
         self,
@@ -148,11 +176,14 @@ matches the credential ID."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears all the credentials from the specified device."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.clearCredentials",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.clearCredentials",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setUserVerified(
         self,
@@ -160,12 +191,15 @@ matches the credential ID."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets whether User Verification succeeds or fails for an authenticator.
-The default is true."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.setUserVerified",
-            params=params,
-            session_id=session_id,
-        ))
+        The default is true."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.setUserVerified",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setAutomaticPresenceSimulation(
         self,
@@ -173,12 +207,15 @@ The default is true."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets whether tests of user presence will succeed immediately (if true) or fail to resolve (if false) for an authenticator.
-The default is true."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.setAutomaticPresenceSimulation",
-            params=params,
-            session_id=session_id,
-        ))
+        The default is true."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.setAutomaticPresenceSimulation",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setCredentialProperties(
         self,
@@ -186,11 +223,12 @@ The default is true."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Allows setting credential properties.
-https://w3c.github.io/webauthn/#sctn-automation-set-credential-properties"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="WebAuthn.setCredentialProperties",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        https://w3c.github.io/webauthn/#sctn-automation-set-credential-properties"""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="WebAuthn.setCredentialProperties",
+                params=params,
+                session_id=session_id,
+            ),
+        )

@@ -17,10 +17,8 @@ if TYPE_CHECKING:
 TargetID = str
 
 
-
 SessionID = str
 """Unique identifier of attached debugging session."""
-
 
 
 class TargetInfo(TypedDict):
@@ -45,7 +43,6 @@ class TargetInfo(TypedDict):
 the type of \"page\", this may be set to \"prerender\"."""
 
 
-
 class FilterEntry(TypedDict, total=False):
     """A filter used by target query/discovery/auto-attach operations."""
 
@@ -53,7 +50,6 @@ class FilterEntry(TypedDict, total=False):
     """If set, causes exclusion of matching targets from the list."""
     type: "str"
     """If not present, matches any type."""
-
 
 
 TargetFilter = List[FilterEntry]
@@ -65,11 +61,9 @@ If filter is not specified, the one assumed is
 (i.e. include everything but `browser` and `tab`)."""
 
 
-
 class RemoteLocation(TypedDict):
     host: "str"
     port: "int"
-
 
 
 WindowState = Literal["normal", "minimized", "maximized", "fullscreen"]

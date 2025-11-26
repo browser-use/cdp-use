@@ -12,7 +12,6 @@ PressureLevel = Literal["moderate", "critical"]
 """Memory pressure level."""
 
 
-
 class SamplingProfileNode(TypedDict):
     """Heap profile sample."""
 
@@ -24,13 +23,11 @@ class SamplingProfileNode(TypedDict):
     """Execution stack at the point of allocation."""
 
 
-
 class SamplingProfile(TypedDict):
     """Array of heap profile samples."""
 
     samples: "List[SamplingProfileNode]"
     modules: "List[Module]"
-
 
 
 class Module(TypedDict):
@@ -45,7 +42,6 @@ class Module(TypedDict):
 or hexadecimal (0x prefixed) string."""
     size: "float"
     """Size of the module in bytes."""
-
 
 
 class DOMCounter(TypedDict):

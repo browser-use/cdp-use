@@ -4,16 +4,14 @@
 
 """CDP BrowserUse Domain Library"""
 
-
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
 
+
 class BrowserUseClient:
     """Client for BrowserUse domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
-
-

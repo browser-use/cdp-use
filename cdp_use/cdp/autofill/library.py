@@ -13,10 +13,11 @@ if TYPE_CHECKING:
     from .commands import SetAddressesParameters
     from .commands import TriggerParameters
 
+
 class AutofillClient:
     """Client for Autofill domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def trigger(
@@ -25,12 +26,15 @@ class AutofillClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Trigger autofill on a form identified by the fieldId.
-If the field and related form cannot be autofilled, returns an error."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Autofill.trigger",
-            params=params,
-            session_id=session_id,
-        ))
+        If the field and related form cannot be autofilled, returns an error."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Autofill.trigger",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setAddresses(
         self,
@@ -38,11 +42,14 @@ If the field and related form cannot be autofilled, returns an error."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Set addresses so that developers can verify their forms implementation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Autofill.setAddresses",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Autofill.setAddresses",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
@@ -50,11 +57,14 @@ If the field and related form cannot be autofilled, returns an error."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables autofill domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Autofill.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Autofill.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def enable(
         self,
@@ -62,10 +72,11 @@ If the field and related form cannot be autofilled, returns an error."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables autofill domain notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Autofill.enable",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Autofill.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )

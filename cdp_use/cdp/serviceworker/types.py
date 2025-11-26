@@ -16,7 +16,6 @@ if TYPE_CHECKING:
 RegistrationID = str
 
 
-
 class ServiceWorkerRegistration(TypedDict):
     """ServiceWorker registration."""
 
@@ -25,13 +24,14 @@ class ServiceWorkerRegistration(TypedDict):
     isDeleted: "bool"
 
 
+ServiceWorkerVersionRunningStatus = Literal[
+    "stopped", "starting", "running", "stopping"
+]
 
-ServiceWorkerVersionRunningStatus = Literal["stopped", "starting", "running", "stopping"]
 
-
-
-ServiceWorkerVersionStatus = Literal["new", "installing", "installed", "activating", "activated", "redundant"]
-
+ServiceWorkerVersionStatus = Literal[
+    "new", "installing", "installed", "activating", "activated", "redundant"
+]
 
 
 class ServiceWorkerVersion(TypedDict):
@@ -50,7 +50,6 @@ For cached script it is the last time the cache entry was validated."""
     controlledClients: "NotRequired[List[TargetID]]"
     targetId: "NotRequired[TargetID]"
     routerRules: "NotRequired[str]"
-
 
 
 class ServiceWorkerErrorMessage(TypedDict):

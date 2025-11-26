@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
     from ..storage.types import SerializedStorageKey
 
+
 class File(TypedDict):
     name: "str"
     lastModified: "TimeSinceEpoch"
@@ -22,13 +23,11 @@ class File(TypedDict):
     type: "str"
 
 
-
 class Directory(TypedDict):
     name: "str"
     nestedDirectories: "List[str]"
     nestedFiles: "List[File]"
     """Files that are directly nested under this directory."""
-
 
 
 class BucketFileSystemLocator(TypedDict):

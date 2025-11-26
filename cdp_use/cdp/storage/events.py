@@ -30,6 +30,8 @@ if TYPE_CHECKING:
     from .types import StorageBucketInfo
 
 """A cache's contents have been modified."""
+
+
 class CacheStorageContentUpdatedEvent(TypedDict):
     origin: "str"
     """Origin to update."""
@@ -41,8 +43,9 @@ class CacheStorageContentUpdatedEvent(TypedDict):
     """Name of cache in origin."""
 
 
-
 """A cache has been added/deleted."""
+
+
 class CacheStorageListUpdatedEvent(TypedDict):
     origin: "str"
     """Origin to update."""
@@ -52,8 +55,9 @@ class CacheStorageListUpdatedEvent(TypedDict):
     """Storage bucket to update."""
 
 
-
 """The origin's IndexedDB object store has been modified."""
+
+
 class IndexedDBContentUpdatedEvent(TypedDict):
     origin: "str"
     """Origin to update."""
@@ -67,8 +71,9 @@ class IndexedDBContentUpdatedEvent(TypedDict):
     """ObjectStore to update."""
 
 
-
 """The origin's IndexedDB database list has been modified."""
+
+
 class IndexedDBListUpdatedEvent(TypedDict):
     origin: "str"
     """Origin to update."""
@@ -78,9 +83,10 @@ class IndexedDBListUpdatedEvent(TypedDict):
     """Storage bucket to update."""
 
 
-
 """One of the interest groups was accessed. Note that these events are global
 to all targets sharing an interest group store."""
+
+
 class InterestGroupAccessedEvent(TypedDict):
     accessTime: "TimeSinceEpoch"
     type: "InterestGroupAccessType"
@@ -96,9 +102,10 @@ win and additionalBidWin"""
     """For non-global events --- links to interestGroupAuctionEvent"""
 
 
-
 """An auction involving interest groups is taking place. These events are
 target-specific."""
+
+
 class InterestGroupAuctionEventOccurredEvent(TypedDict):
     eventTime: "TimeSinceEpoch"
     type: "InterestGroupAuctionEventType"
@@ -109,11 +116,12 @@ class InterestGroupAuctionEventOccurredEvent(TypedDict):
     """Set for started and configResolved"""
 
 
-
 """Specifies which auctions a particular network fetch may be related to, and
 in what role. Note that it is not ordered with respect to
 Network.requestWillBeSent (but will happen before loadingFinished
 loadingFailed)."""
+
+
 class InterestGroupAuctionNetworkRequestCreatedEvent(TypedDict):
     type: "InterestGroupAuctionFetchType"
     requestId: "RequestId"
@@ -123,9 +131,10 @@ request.  In the case of trusted signals, it's possible that only some of
 them actually care about the keys being queried."""
 
 
-
 """Shared storage was accessed by the associated page.
 The following parameters are included in all events."""
+
+
 class SharedStorageAccessedEvent(TypedDict):
     accessTime: "TimeSinceEpoch"
     """Time of the access."""
@@ -144,9 +153,10 @@ class SharedStorageAccessedEvent(TypedDict):
 presence/absence depends on `type`."""
 
 
-
 """A shared storage run or selectURL operation finished its execution.
 The following parameters are included in all events."""
+
+
 class SharedStorageWorkletOperationExecutionFinishedEvent(TypedDict):
     finishedTime: "TimeSinceEpoch"
     """Time that the operation finished."""
@@ -166,15 +176,12 @@ associated shared storage worklet."""
     """Serialization of the origin owning the Shared Storage data."""
 
 
-
 class StorageBucketCreatedOrUpdatedEvent(TypedDict):
     bucketInfo: "StorageBucketInfo"
 
 
-
 class StorageBucketDeletedEvent(TypedDict):
     bucketId: "str"
-
 
 
 class AttributionReportingSourceRegisteredEvent(TypedDict):
@@ -182,12 +189,10 @@ class AttributionReportingSourceRegisteredEvent(TypedDict):
     result: "AttributionReportingSourceRegistrationResult"
 
 
-
 class AttributionReportingTriggerRegisteredEvent(TypedDict):
     registration: "AttributionReportingTriggerRegistration"
     eventLevel: "AttributionReportingEventLevelResult"
     aggregatable: "AttributionReportingAggregatableResult"
-
 
 
 class AttributionReportingReportSentEvent(TypedDict):
@@ -198,7 +203,6 @@ class AttributionReportingReportSentEvent(TypedDict):
     """If result is `sent`, populated with net/HTTP status."""
     netErrorName: "NotRequired[str]"
     httpStatusCode: "NotRequired[int]"
-
 
 
 class AttributionReportingVerboseDebugReportSentEvent(TypedDict):

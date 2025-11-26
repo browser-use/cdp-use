@@ -16,10 +16,11 @@ if TYPE_CHECKING:
     from .commands import OpenUrlParameters
     from .commands import SelectAccountParameters
 
+
 class FedCmClient:
     """Client for FedCm domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def enable(
@@ -27,66 +28,84 @@ class FedCmClient:
         params: Optional["EnableParameters"] = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="FedCm.enable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="FedCm.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="FedCm.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="FedCm.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def selectAccount(
         self,
         params: "SelectAccountParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="FedCm.selectAccount",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="FedCm.selectAccount",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def clickDialogButton(
         self,
         params: "ClickDialogButtonParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="FedCm.clickDialogButton",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="FedCm.clickDialogButton",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def openUrl(
         self,
         params: "OpenUrlParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="FedCm.openUrl",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="FedCm.openUrl",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def dismissDialog(
         self,
         params: "DismissDialogParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="FedCm.dismissDialog",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="FedCm.dismissDialog",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def resetCooldown(
         self,
@@ -94,11 +113,12 @@ class FedCmClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Resets the cooldown time, if any, to allow the next FedCM call to show
-a dialog even if one was recently dismissed by the user."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="FedCm.resetCooldown",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        a dialog even if one was recently dismissed by the user."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="FedCm.resetCooldown",
+                params=params,
+                session_id=session_id,
+            ),
+        )

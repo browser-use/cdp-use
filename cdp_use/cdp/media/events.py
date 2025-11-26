@@ -19,36 +19,42 @@ if TYPE_CHECKING:
 
 """This can be called multiple times, and can be used to set / override /
 remove player properties. A null propValue indicates removal."""
+
+
 class PlayerPropertiesChangedEvent(TypedDict):
     playerId: "PlayerId"
     properties: "List[PlayerProperty]"
 
 
-
 """Send events as a list, allowing them to be batched on the browser for less
 congestion. If batched, events must ALWAYS be in chronological order."""
+
+
 class PlayerEventsAddedEvent(TypedDict):
     playerId: "PlayerId"
     events: "List[PlayerEvent]"
 
 
-
 """Send a list of any messages that need to be delivered."""
+
+
 class PlayerMessagesLoggedEvent(TypedDict):
     playerId: "PlayerId"
     messages: "List[PlayerMessage]"
 
 
-
 """Send a list of any errors that need to be delivered."""
+
+
 class PlayerErrorsRaisedEvent(TypedDict):
     playerId: "PlayerId"
     errors: "List[PlayerError]"
 
 
-
 """Called whenever a player is created, or when a new agent joins and receives
 a list of active players. If an agent is restored, it will receive one
 event for each active player."""
+
+
 class PlayerCreatedEvent(TypedDict):
     player: "Player"

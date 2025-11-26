@@ -10,22 +10,27 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import WorkerErrorReportedEvent, WorkerRegistrationUpdatedEvent, WorkerVersionUpdatedEvent
+    from .events import (
+        WorkerErrorReportedEvent,
+        WorkerRegistrationUpdatedEvent,
+        WorkerVersionUpdatedEvent,
+    )
+
 
 class ServiceWorkerRegistration:
     """Event registration interface for ServiceWorker domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "ServiceWorker"
 
     def workerErrorReported(
         self,
-        callback: Callable[['WorkerErrorReportedEvent', Optional[str]], None],
+        callback: Callable[["WorkerErrorReportedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for workerErrorReported events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -34,11 +39,11 @@ class ServiceWorkerRegistration:
 
     def workerRegistrationUpdated(
         self,
-        callback: Callable[['WorkerRegistrationUpdatedEvent', Optional[str]], None],
+        callback: Callable[["WorkerRegistrationUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for workerRegistrationUpdated events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -47,14 +52,13 @@ class ServiceWorkerRegistration:
 
     def workerVersionUpdated(
         self,
-        callback: Callable[['WorkerVersionUpdatedEvent', Optional[str]], None],
+        callback: Callable[["WorkerVersionUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for workerVersionUpdated events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("ServiceWorker.workerVersionUpdated", callback)
-

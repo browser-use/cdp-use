@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from ..io.types import StreamHandle
     from ..page.types import FrameId
     from .types import AuthChallengeResponse
+    from .types import BlockPattern
     from .types import ConnectionType
     from .types import ContentEncoding
     from .types import Cookie
@@ -26,18 +27,13 @@ if TYPE_CHECKING:
     from .types import ErrorReason
     from .types import Headers
     from .types import InterceptionId
-    from .types import IpProxyStatus
     from .types import LoadNetworkResourceOptions
     from .types import LoadNetworkResourcePageResult
+    from .types import NetworkConditions
     from .types import RequestId
     from .types import RequestPattern
     from .types import SecurityIsolationStatus
     from .types import TimeSinceEpoch
-
-class GetIPProtectionProxyStatusReturns(TypedDict):
-    status: "IpProxyStatus"
-    """Whether IP proxy is available"""
-
 
 
 class SetAcceptedEncodingsParameters(TypedDict):
@@ -45,13 +41,9 @@ class SetAcceptedEncodingsParameters(TypedDict):
     """List of accepted content encodings."""
 
 
-
-
-
 class CanClearBrowserCacheReturns(TypedDict):
     result: "bool"
     """True if browser cache can be cleared."""
-
 
 
 class CanClearBrowserCookiesReturns(TypedDict):
@@ -59,11 +51,9 @@ class CanClearBrowserCookiesReturns(TypedDict):
     """True if browser cookies can be cleared."""
 
 
-
 class CanEmulateNetworkConditionsReturns(TypedDict):
     result: "bool"
     """True if emulation of network conditions is supported."""
-
 
 
 class ContinueInterceptedRequestParameters(TypedDict):
@@ -90,9 +80,6 @@ authChallenge."""
     """Response to a requestIntercepted with an authChallenge. Must not be set otherwise."""
 
 
-
-
-
 class DeleteCookiesParameters(TypedDict):
     name: "str"
     """Name of the cookies to remove."""
@@ -106,9 +93,6 @@ provided URL."""
     partitionKey: "NotRequired[CookiePartitionKey]"
     """If specified, deletes only cookies with the the given name and partitionKey where
 all partition key attributes match the cookie partition key attribute."""
-
-
-
 
 
 class EmulateNetworkConditionsParameters(TypedDict):
@@ -130,7 +114,32 @@ class EmulateNetworkConditionsParameters(TypedDict):
     """WebRTC packetReordering feature."""
 
 
+class EmulateNetworkConditionsByRuleParameters(TypedDict):
+    offline: "bool"
+    """True to emulate internet disconnection."""
+    matchedNetworkConditions: "List[NetworkConditions]"
+    """Configure conditions for matching requests. If multiple entries match a request, the first entry wins.  Global
+conditions can be configured by leaving the urlPattern for the conditions empty. These global conditions are
+also applied for throttling of p2p connections."""
 
+
+class EmulateNetworkConditionsByRuleReturns(TypedDict):
+    ruleIds: "List[str]"
+    """An id for each entry in matchedNetworkConditions. The id will be included in the requestWillBeSentExtraInfo for
+requests affected by a rule."""
+
+
+class OverrideNetworkStateParameters(TypedDict):
+    offline: "bool"
+    """True to emulate internet disconnection."""
+    latency: "float"
+    """Minimum latency from request sent to response headers received (ms)."""
+    downloadThroughput: "float"
+    """Maximal aggregated download throughput (bytes/sec). -1 disables download throttling."""
+    uploadThroughput: "float"
+    """Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling."""
+    connectionType: "NotRequired[ConnectionType]"
+    """Connection type if known."""
 
 
 class EnableParameters(TypedDict, total=False):
@@ -142,15 +151,15 @@ class EnableParameters(TypedDict, total=False):
     """Longest post body size (in bytes) that would be included in requestWillBeSent notification"""
     reportDirectSocketTraffic: "bool"
     """Whether DirectSocket chunk send/receive events should be reported."""
-
-
-
+    enableDurableMessages: "bool"
+    """Enable storing response bodies outside of renderer, so that these survive
+a cross-process navigation. Requires maxTotalBufferSize to be set.
+Currently defaults to false."""
 
 
 class GetAllCookiesReturns(TypedDict):
     cookies: "List[Cookie]"
     """Array of cookie objects."""
-
 
 
 class GetCertificateParameters(TypedDict):
@@ -160,7 +169,6 @@ class GetCertificateParameters(TypedDict):
 
 class GetCertificateReturns(TypedDict):
     tableNames: "List[str]"
-
 
 
 class GetCookiesParameters(TypedDict, total=False):
@@ -175,7 +183,6 @@ class GetCookiesReturns(TypedDict):
     """Array of cookie objects."""
 
 
-
 class GetResponseBodyParameters(TypedDict):
     requestId: "RequestId"
     """Identifier of the network request to get content for."""
@@ -188,7 +195,6 @@ class GetResponseBodyReturns(TypedDict):
     """True, if content was sent as base64."""
 
 
-
 class GetRequestPostDataParameters(TypedDict):
     requestId: "RequestId"
     """Identifier of the network request to get content for."""
@@ -197,7 +203,6 @@ class GetRequestPostDataParameters(TypedDict):
 class GetRequestPostDataReturns(TypedDict):
     postData: "str"
     """Request body string, omitting files from multipart requests"""
-
 
 
 class GetResponseBodyForInterceptionParameters(TypedDict):
@@ -212,7 +217,6 @@ class GetResponseBodyForInterceptionReturns(TypedDict):
     """True, if content was sent as base64."""
 
 
-
 class TakeResponseBodyForInterceptionAsStreamParameters(TypedDict):
     interceptionId: "InterceptionId"
 
@@ -221,13 +225,9 @@ class TakeResponseBodyForInterceptionAsStreamReturns(TypedDict):
     stream: "StreamHandle"
 
 
-
 class ReplayXHRParameters(TypedDict):
     requestId: "RequestId"
     """Identifier of XHR to replay."""
-
-
-
 
 
 class SearchInResponseBodyParameters(TypedDict):
@@ -246,13 +246,12 @@ class SearchInResponseBodyReturns(TypedDict):
     """List of search matches."""
 
 
-
-class SetBlockedURLsParameters(TypedDict):
+class SetBlockedURLsParameters(TypedDict, total=False):
+    urlPatterns: "List[BlockPattern]"
+    """Patterns to match in the order in which they are given. These patterns
+also take precedence over any wildcard patterns defined in `urls`."""
     urls: "List[str]"
     """URL patterns to block. Wildcards ('*') are allowed."""
-
-
-
 
 
 class SetBypassServiceWorkerParameters(TypedDict):
@@ -260,15 +259,9 @@ class SetBypassServiceWorkerParameters(TypedDict):
     """Bypass service worker and load from network."""
 
 
-
-
-
 class SetCacheDisabledParameters(TypedDict):
     cacheDisabled: "bool"
     """Cache disabled state."""
-
-
-
 
 
 class SetCookieParameters(TypedDict):
@@ -310,13 +303,9 @@ class SetCookieReturns(TypedDict):
     """Always set to true. If an error occurs, the response indicates protocol error."""
 
 
-
 class SetCookiesParameters(TypedDict):
     cookies: "List[CookieParam]"
     """Cookies to be set."""
-
-
-
 
 
 class SetExtraHTTPHeadersParameters(TypedDict):
@@ -324,24 +313,15 @@ class SetExtraHTTPHeadersParameters(TypedDict):
     """Map with extra HTTP headers."""
 
 
-
-
-
 class SetAttachDebugStackParameters(TypedDict):
     enabled: "bool"
     """Whether to attach a page script stack for debugging purpose."""
-
-
-
 
 
 class SetRequestInterceptionParameters(TypedDict):
     patterns: "List[RequestPattern]"
     """Requests matching any of these patterns will be forwarded and wait for the corresponding
 continueInterceptedRequest call."""
-
-
-
 
 
 class SetUserAgentOverrideParameters(TypedDict):
@@ -355,9 +335,6 @@ class SetUserAgentOverrideParameters(TypedDict):
     """To be sent in Sec-CH-UA-* headers and returned in navigator.userAgentData"""
 
 
-
-
-
 class StreamResourceContentParameters(TypedDict):
     requestId: "RequestId"
     """Identifier of the request to stream."""
@@ -366,7 +343,6 @@ class StreamResourceContentParameters(TypedDict):
 class StreamResourceContentReturns(TypedDict):
     bufferedData: "str"
     """Data that has been buffered until streaming is enabled. (Encoded as a base64 string when passed over JSON)"""
-
 
 
 class GetSecurityIsolationStatusParameters(TypedDict, total=False):
@@ -378,13 +354,9 @@ class GetSecurityIsolationStatusReturns(TypedDict):
     status: "SecurityIsolationStatus"
 
 
-
 class EnableReportingApiParameters(TypedDict):
     enable: "bool"
     """Whether to enable or disable events for the Reporting API"""
-
-
-
 
 
 class LoadNetworkResourceParameters(TypedDict):
@@ -401,7 +373,6 @@ class LoadNetworkResourceReturns(TypedDict):
     resource: "LoadNetworkResourcePageResult"
 
 
-
 class SetCookieControlsParameters(TypedDict):
     enableThirdPartyCookieRestriction: "bool"
     """Whether 3pc restriction is enabled."""
@@ -409,5 +380,3 @@ class SetCookieControlsParameters(TypedDict):
     """Whether 3pc grace period exception should be enabled; false by default."""
     disableThirdPartyCookieHeuristics: "bool"
     """Whether 3pc heuristics exceptions should be enabled; false by default."""
-
-

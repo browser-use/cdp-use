@@ -14,6 +14,8 @@ if TYPE_CHECKING:
     from .types import TargetInfo
 
 """Issued when attached to target because of auto-attach or `attachToTarget` command."""
+
+
 class AttachedToTargetEvent(TypedDict):
     sessionId: "SessionID"
     """Identifier assigned to the session used to send/receive messages."""
@@ -21,9 +23,10 @@ class AttachedToTargetEvent(TypedDict):
     waitingForDebugger: "bool"
 
 
-
 """Issued when detached from target for any reason (including `detachFromTarget` command). Can be
 issued multiple times per target if multiple sessions have been attached to it."""
+
+
 class DetachedFromTargetEvent(TypedDict):
     sessionId: "SessionID"
     """Detached session identifier."""
@@ -31,9 +34,10 @@ class DetachedFromTargetEvent(TypedDict):
     """Deprecated."""
 
 
-
 """Notifies about a new protocol message received from the session (as reported in
 `attachedToTarget` event)."""
+
+
 class ReceivedMessageFromTargetEvent(TypedDict):
     sessionId: "SessionID"
     """Identifier of a session which sends a message."""
@@ -42,20 +46,23 @@ class ReceivedMessageFromTargetEvent(TypedDict):
     """Deprecated."""
 
 
-
 """Issued when a possible inspection target is created."""
+
+
 class TargetCreatedEvent(TypedDict):
     targetInfo: "TargetInfo"
 
 
-
 """Issued when a target is destroyed."""
+
+
 class TargetDestroyedEvent(TypedDict):
     targetId: "TargetID"
 
 
-
 """Issued when a target has crashed."""
+
+
 class TargetCrashedEvent(TypedDict):
     targetId: "TargetID"
     status: "str"
@@ -64,8 +71,9 @@ class TargetCrashedEvent(TypedDict):
     """Termination error code."""
 
 
-
 """Issued when some information about a target has changed. This only happens between
 `targetCreated` and `targetDestroyed`."""
+
+
 class TargetInfoChangedEvent(TypedDict):
     targetInfo: "TargetInfo"

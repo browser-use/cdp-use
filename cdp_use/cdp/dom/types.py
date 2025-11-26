@@ -17,11 +17,9 @@ NodeId = int
 """Unique DOM node identifier."""
 
 
-
 BackendNodeId = int
 """Unique DOM node identifier used to reference a node that may not have been pushed to the
 front-end."""
-
 
 
 class BackendNode(TypedDict):
@@ -34,40 +32,75 @@ class BackendNode(TypedDict):
     backendNodeId: "BackendNodeId"
 
 
-
-PseudoType = Literal["first-line", "first-letter", "checkmark", "before", "after", "picker-icon", "interest-hint", "marker", "backdrop", "column", "selection", "search-text", "target-text", "spelling-error", "grammar-error", "highlight", "first-line-inherited", "scroll-marker", "scroll-marker-group", "scroll-button", "scrollbar", "scrollbar-thumb", "scrollbar-button", "scrollbar-track", "scrollbar-track-piece", "scrollbar-corner", "resizer", "input-list-button", "view-transition", "view-transition-group", "view-transition-image-pair", "view-transition-group-children", "view-transition-old", "view-transition-new", "placeholder", "file-selector-button", "details-content", "picker", "permission-icon"]
+PseudoType = Literal[
+    "first-line",
+    "first-letter",
+    "checkmark",
+    "before",
+    "after",
+    "picker-icon",
+    "interest-hint",
+    "marker",
+    "backdrop",
+    "column",
+    "selection",
+    "search-text",
+    "target-text",
+    "spelling-error",
+    "grammar-error",
+    "highlight",
+    "first-line-inherited",
+    "scroll-marker",
+    "scroll-marker-group",
+    "scroll-button",
+    "scrollbar",
+    "scrollbar-thumb",
+    "scrollbar-button",
+    "scrollbar-track",
+    "scrollbar-track-piece",
+    "scrollbar-corner",
+    "resizer",
+    "input-list-button",
+    "view-transition",
+    "view-transition-group",
+    "view-transition-image-pair",
+    "view-transition-group-children",
+    "view-transition-old",
+    "view-transition-new",
+    "placeholder",
+    "file-selector-button",
+    "details-content",
+    "picker",
+    "permission-icon",
+    "overscroll-area-parent",
+    "overscroll-client-area",
+]
 """Pseudo element type."""
-
 
 
 ShadowRootType = Literal["user-agent", "open", "closed"]
 """Shadow root type."""
 
 
-
 CompatibilityMode = Literal["QuirksMode", "LimitedQuirksMode", "NoQuirksMode"]
 """Document compatibility mode."""
-
 
 
 PhysicalAxes = Literal["Horizontal", "Vertical", "Both"]
 """ContainerSelector physical axes"""
 
 
-
 LogicalAxes = Literal["Inline", "Block", "Both"]
 """ContainerSelector logical axes"""
-
 
 
 ScrollOrientation = Literal["horizontal", "vertical"]
 """Physical scroll orientation"""
 
 
-
 class Node(TypedDict):
     """DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
-DOMNode is a base node mirror type."""
+    DOMNode is a base node mirror type."""
 
     nodeId: "NodeId"
     """Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
@@ -135,7 +168,7 @@ The property is always undefined now."""
     compatibilityMode: "NotRequired[CompatibilityMode]"
     assignedSlot: "NotRequired[BackendNode]"
     isScrollable: "NotRequired[bool]"
-
+    affectedByStartingStyles: "NotRequired[bool]"
 
 
 class DetachedElementInfo(TypedDict):
@@ -143,7 +176,6 @@ class DetachedElementInfo(TypedDict):
 
     treeNode: "Node"
     retainedNodeIds: "List[NodeId]"
-
 
 
 class RGBA(TypedDict):
@@ -159,10 +191,8 @@ class RGBA(TypedDict):
     """The alpha component, in the [0-1] range (default: 1)."""
 
 
-
 Quad = List[float]
 """An array of quad vertices, x immediately followed by y for each point, points clock-wise."""
-
 
 
 class BoxModel(TypedDict):
@@ -184,7 +214,6 @@ class BoxModel(TypedDict):
     """Shape outside coordinates"""
 
 
-
 class ShapeOutsideInfo(TypedDict):
     """CSS Shape Outside details."""
 
@@ -194,7 +223,6 @@ class ShapeOutsideInfo(TypedDict):
     """Shape coordinate details"""
     marginShape: "List[Any]"
     """Margin shape bounds"""
-
 
 
 class Rect(TypedDict):
@@ -208,7 +236,6 @@ class Rect(TypedDict):
     """Rectangle width"""
     height: "float"
     """Rectangle height"""
-
 
 
 class CSSComputedStyleProperty(TypedDict):

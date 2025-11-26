@@ -12,6 +12,8 @@ if TYPE_CHECKING:
     from .types import ConsoleMessage
 
 """Issued when new console message is added."""
+
+
 class MessageAddedEvent(TypedDict):
     message: "ConsoleMessage"
     """Console message that has been added."""

@@ -11,5 +11,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .types import InspectorIssue
 
+
 class IssueAddedEvent(TypedDict):
     issue: "InspectorIssue"

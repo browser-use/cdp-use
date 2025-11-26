@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
     from ..page.types import FrameId
 
+
 class LargestContentfulPaint(TypedDict):
     """See https://github.com/WICG/LargestContentfulPaint and largest_contentful_paint.idl"""
 
@@ -29,12 +30,10 @@ class LargestContentfulPaint(TypedDict):
     nodeId: "NotRequired[BackendNodeId]"
 
 
-
 class LayoutShiftAttribution(TypedDict):
     previousRect: "Rect"
     currentRect: "Rect"
     nodeId: "NotRequired[BackendNodeId]"
-
 
 
 class LayoutShift(TypedDict):
@@ -45,7 +44,6 @@ class LayoutShift(TypedDict):
     hadRecentInput: "bool"
     lastInputTime: "TimeSinceEpoch"
     sources: "List[LayoutShiftAttribution]"
-
 
 
 class TimelineEvent(TypedDict):

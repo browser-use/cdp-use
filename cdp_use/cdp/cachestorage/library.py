@@ -19,10 +19,11 @@ if TYPE_CHECKING:
     from .commands import RequestEntriesParameters
     from .commands import RequestEntriesReturns
 
+
 class CacheStorageClient:
     """Client for CacheStorage domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def deleteCache(
@@ -31,11 +32,14 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deletes a cache."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="CacheStorage.deleteCache",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="CacheStorage.deleteCache",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def deleteEntry(
         self,
@@ -43,11 +47,14 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deletes a cache entry."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="CacheStorage.deleteEntry",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="CacheStorage.deleteEntry",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def requestCacheNames(
         self,
@@ -55,11 +62,14 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "RequestCacheNamesReturns":
         """Requests cache names."""
-        return cast("RequestCacheNamesReturns", await self._client.send_raw(
-            method="CacheStorage.requestCacheNames",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "RequestCacheNamesReturns",
+            await self._client.send_raw(
+                method="CacheStorage.requestCacheNames",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def requestCachedResponse(
         self,
@@ -67,11 +77,14 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "RequestCachedResponseReturns":
         """Fetches cache entry."""
-        return cast("RequestCachedResponseReturns", await self._client.send_raw(
-            method="CacheStorage.requestCachedResponse",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "RequestCachedResponseReturns",
+            await self._client.send_raw(
+                method="CacheStorage.requestCachedResponse",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def requestEntries(
         self,
@@ -79,10 +92,11 @@ class CacheStorageClient:
         session_id: Optional[str] = None,
     ) -> "RequestEntriesReturns":
         """Requests data from cache."""
-        return cast("RequestEntriesReturns", await self._client.send_raw(
-            method="CacheStorage.requestEntries",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "RequestEntriesReturns",
+            await self._client.send_raw(
+                method="CacheStorage.requestEntries",
+                params=params,
+                session_id=session_id,
+            ),
+        )

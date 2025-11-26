@@ -14,6 +14,8 @@ if TYPE_CHECKING:
     from .types import FilledField
 
 """Emitted when an address form is filled."""
+
+
 class AddressFormFilledEvent(TypedDict):
     filledFields: "List[FilledField]"
     """Information about the fields that were filled"""

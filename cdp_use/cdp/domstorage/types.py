@@ -10,7 +10,6 @@ from typing_extensions import NotRequired, TypedDict
 SerializedStorageKey = str
 
 
-
 class StorageId(TypedDict):
     """DOM Storage identifier."""
 
@@ -20,7 +19,6 @@ class StorageId(TypedDict):
     """Represents a key by which DOM Storage keys its CachedStorageAreas"""
     isLocalStorage: "bool"
     """Whether the storage is local storage (not session storage)."""
-
 
 
 Item = List[str]

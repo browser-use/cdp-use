@@ -7,5 +7,7 @@
 from typing_extensions import TypedDict
 
 """Notification sent after the virtual time budget for the current VirtualTimePolicy has run out."""
+
+
 class VirtualTimeBudgetExpiredEvent(TypedDict):
     pass

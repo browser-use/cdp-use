@@ -11,7 +11,6 @@ ScriptId = str
 """Unique script identifier."""
 
 
-
 class SerializationOptions(TypedDict):
     """Represents options for serialization. Overrides `generatePreview` and `returnByValue`."""
 
@@ -22,7 +21,6 @@ class SerializationOptions(TypedDict):
     """Embedder-specific parameters. For example if connected to V8 in Chrome these control DOM
 serialization via `maxNodeDepth: integer` and `includeShadowTree: \"none\" | \"open\" | \"all\"`.
 Values can be only of type string or integer."""
-
 
 
 class DeepSerializedValue(TypedDict):
@@ -37,16 +35,13 @@ case, value is provided only to one of the serialized values. Unique
 per value in the scope of one CDP call."""
 
 
-
 RemoteObjectId = str
 """Unique object identifier."""
-
 
 
 UnserializableValue = str
 """Primitive value which cannot be JSON-stringified. Includes values `-0`, `NaN`, `Infinity`,
 `-Infinity`, and bigint literals."""
-
 
 
 class RemoteObject(TypedDict):
@@ -76,7 +71,6 @@ property."""
     customPreview: "NotRequired[CustomPreview]"
 
 
-
 class CustomPreview(TypedDict):
     header: "str"
     """The JSON-stringified result of formatter.header(object, config) call.
@@ -85,7 +79,6 @@ It contains json ML array that represents RemoteObject."""
     """If formatter returns true as a result of formatter.hasBody call then bodyGetterId will
 contain RemoteObjectId for the function that returns result of formatter.body(object, config) call.
 The result value is json ML array."""
-
 
 
 class ObjectPreview(TypedDict):
@@ -105,7 +98,6 @@ class ObjectPreview(TypedDict):
     """List of the entries. Specified for `map` and `set` subtype values only."""
 
 
-
 class PropertyPreview(TypedDict):
     name: "str"
     """Property name."""
@@ -119,13 +111,11 @@ class PropertyPreview(TypedDict):
     """Object subtype hint. Specified for `object` type values only."""
 
 
-
 class EntryPreview(TypedDict):
     key: "NotRequired[ObjectPreview]"
     """Preview of the key. Specified for map-like collection entries."""
     value: "ObjectPreview"
     """Preview of the value."""
-
 
 
 class PropertyDescriptor(TypedDict):
@@ -157,7 +147,6 @@ object."""
     """Property symbol object, if the property is of the `symbol` type."""
 
 
-
 class InternalPropertyDescriptor(TypedDict):
     """Object internal property descriptor. This property isn't normally visible in JavaScript code."""
 
@@ -165,7 +154,6 @@ class InternalPropertyDescriptor(TypedDict):
     """Conventional property name."""
     value: "NotRequired[RemoteObject]"
     """The value associated with the property."""
-
 
 
 class PrivatePropertyDescriptor(TypedDict):
@@ -183,10 +171,9 @@ or `undefined` if there is no getter (accessor descriptors only)."""
 or `undefined` if there is no setter (accessor descriptors only)."""
 
 
-
 class CallArgument(TypedDict, total=False):
     """Represents function call argument. Either remote object id `objectId`, primitive `value`,
-unserializable primitive value or neither of (for undefined) them should be specified."""
+    unserializable primitive value or neither of (for undefined) them should be specified."""
 
     value: "Any"
     """Primitive value or serializable javascript object."""
@@ -196,10 +183,8 @@ unserializable primitive value or neither of (for undefined) them should be spec
     """Remote object handle."""
 
 
-
 ExecutionContextId = int
 """Id of an execution context."""
-
 
 
 class ExecutionContextDescription(TypedDict):
@@ -220,10 +205,9 @@ performs a cross-process navigation."""
     """Embedder-specific auxiliary data likely matching {isDefault: boolean, type: 'default'|'isolated'|'worker', frameId: string}"""
 
 
-
 class ExceptionDetails(TypedDict):
     """Detailed information about exception (or error) that was thrown during script compilation or
-execution."""
+    execution."""
 
     exceptionId: "int"
     """Exception id."""
@@ -249,15 +233,12 @@ with this exception, such as information about associated network
 requests, etc."""
 
 
-
 Timestamp = float
 """Number of milliseconds since epoch."""
 
 
-
 TimeDelta = float
 """Number of milliseconds."""
-
 
 
 class CallFrame(TypedDict):
@@ -275,7 +256,6 @@ class CallFrame(TypedDict):
     """JavaScript script column number (0-based)."""
 
 
-
 class StackTrace(TypedDict):
     """Call frames for assertions or error messages."""
 
@@ -290,15 +270,13 @@ initiated the async call."""
     """Asynchronous JavaScript stack trace that preceded this stack, if available."""
 
 
-
 UniqueDebuggerId = str
 """Unique identifier of current debugger."""
 
 
-
 class StackTraceId(TypedDict):
     """If `debuggerId` is set stack trace comes from another debugger and can be resolved there. This
-allows to track cross-debugger calls. See `Runtime.StackTrace` and `Debugger.paused` for usages."""
+    allows to track cross-debugger calls. See `Runtime.StackTrace` and `Debugger.paused` for usages."""
 
     id: "str"
     debuggerId: "NotRequired[UniqueDebuggerId]"

@@ -14,11 +14,11 @@ if TYPE_CHECKING:
     from .types import PressureLevel
     from .types import SamplingProfile
 
+
 class GetDOMCountersReturns(TypedDict):
     documents: "int"
     nodes: "int"
     jsEventListeners: "int"
-
 
 
 class GetDOMCountersForLeakDetectionReturns(TypedDict):
@@ -26,21 +26,14 @@ class GetDOMCountersForLeakDetectionReturns(TypedDict):
     """DOM object counters."""
 
 
-
 class SetPressureNotificationsSuppressedParameters(TypedDict):
     suppressed: "bool"
     """If true, memory pressure notifications will be suppressed."""
 
 
-
-
-
 class SimulatePressureNotificationParameters(TypedDict):
     level: "PressureLevel"
     """Memory pressure level of the notification."""
-
-
-
 
 
 class StartSamplingParameters(TypedDict, total=False):
@@ -50,17 +43,12 @@ class StartSamplingParameters(TypedDict, total=False):
     """Do not randomize intervals between samples."""
 
 
-
-
-
 class GetAllTimeSamplingProfileReturns(TypedDict):
     profile: "SamplingProfile"
 
 
-
 class GetBrowserSamplingProfileReturns(TypedDict):
     profile: "SamplingProfile"
-
 
 
 class GetSamplingProfileReturns(TypedDict):

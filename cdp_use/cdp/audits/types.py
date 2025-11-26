@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from ..page.types import FrameId
     from ..runtime.types import ScriptId
 
+
 class AffectedCookie(TypedDict):
     """Information about a cookie that is affected by an inspector issue."""
 
@@ -27,7 +28,6 @@ class AffectedCookie(TypedDict):
     """The following three properties uniquely identify a cookie"""
     path: "str"
     domain: "str"
-
 
 
 class AffectedRequest(TypedDict):
@@ -38,29 +38,50 @@ class AffectedRequest(TypedDict):
     url: "str"
 
 
-
 class AffectedFrame(TypedDict):
     """Information about the frame affected by an inspector issue."""
 
     frameId: "FrameId"
 
 
+CookieExclusionReason = Literal[
+    "ExcludeSameSiteUnspecifiedTreatedAsLax",
+    "ExcludeSameSiteNoneInsecure",
+    "ExcludeSameSiteLax",
+    "ExcludeSameSiteStrict",
+    "ExcludeInvalidSameParty",
+    "ExcludeSamePartyCrossPartyContext",
+    "ExcludeDomainNonASCII",
+    "ExcludeThirdPartyCookieBlockedInFirstPartySet",
+    "ExcludeThirdPartyPhaseout",
+    "ExcludePortMismatch",
+    "ExcludeSchemeMismatch",
+]
 
-CookieExclusionReason = Literal["ExcludeSameSiteUnspecifiedTreatedAsLax", "ExcludeSameSiteNoneInsecure", "ExcludeSameSiteLax", "ExcludeSameSiteStrict", "ExcludeInvalidSameParty", "ExcludeSamePartyCrossPartyContext", "ExcludeDomainNonASCII", "ExcludeThirdPartyCookieBlockedInFirstPartySet", "ExcludeThirdPartyPhaseout", "ExcludePortMismatch", "ExcludeSchemeMismatch"]
 
-
-
-CookieWarningReason = Literal["WarnSameSiteUnspecifiedCrossSiteContext", "WarnSameSiteNoneInsecure", "WarnSameSiteUnspecifiedLaxAllowUnsafe", "WarnSameSiteStrictLaxDowngradeStrict", "WarnSameSiteStrictCrossDowngradeStrict", "WarnSameSiteStrictCrossDowngradeLax", "WarnSameSiteLaxCrossDowngradeStrict", "WarnSameSiteLaxCrossDowngradeLax", "WarnAttributeValueExceedsMaxSize", "WarnDomainNonASCII", "WarnThirdPartyPhaseout", "WarnCrossSiteRedirectDowngradeChangesInclusion", "WarnDeprecationTrialMetadata", "WarnThirdPartyCookieHeuristic"]
-
+CookieWarningReason = Literal[
+    "WarnSameSiteUnspecifiedCrossSiteContext",
+    "WarnSameSiteNoneInsecure",
+    "WarnSameSiteUnspecifiedLaxAllowUnsafe",
+    "WarnSameSiteStrictLaxDowngradeStrict",
+    "WarnSameSiteStrictCrossDowngradeStrict",
+    "WarnSameSiteStrictCrossDowngradeLax",
+    "WarnSameSiteLaxCrossDowngradeStrict",
+    "WarnSameSiteLaxCrossDowngradeLax",
+    "WarnAttributeValueExceedsMaxSize",
+    "WarnDomainNonASCII",
+    "WarnThirdPartyPhaseout",
+    "WarnCrossSiteRedirectDowngradeChangesInclusion",
+    "WarnDeprecationTrialMetadata",
+    "WarnThirdPartyCookieHeuristic",
+]
 
 
 CookieOperation = Literal["SetCookie", "ReadCookie"]
 
 
-
 InsightType = Literal["GitHubResource", "GracePeriod", "Heuristics"]
 """Represents the category of insight that a cookie issue falls under."""
-
 
 
 class CookieIssueInsight(TypedDict):
@@ -71,11 +92,10 @@ class CookieIssueInsight(TypedDict):
     """Link to table entry in third-party cookie migration readiness list."""
 
 
-
 class CookieIssueDetails(TypedDict):
     """This information is currently necessary, as the front-end has a difficult
-time finding a specific cookie. With this, we can convey specific error
-information without the cookie."""
+    time finding a specific cookie. With this, we can convey specific error
+    information without the cookie."""
 
     cookie: "NotRequired[AffectedCookie]"
     """If AffectedCookie is not set then rawCookieLine contains the raw
@@ -95,13 +115,42 @@ may be used by the front-end as additional context."""
     """The recommended solution to the issue."""
 
 
+MixedContentResolutionStatus = Literal[
+    "MixedContentBlocked", "MixedContentAutomaticallyUpgraded", "MixedContentWarning"
+]
 
-MixedContentResolutionStatus = Literal["MixedContentBlocked", "MixedContentAutomaticallyUpgraded", "MixedContentWarning"]
 
-
-
-MixedContentResourceType = Literal["AttributionSrc", "Audio", "Beacon", "CSPReport", "Download", "EventSource", "Favicon", "Font", "Form", "Frame", "Image", "Import", "JSON", "Manifest", "Ping", "PluginData", "PluginResource", "Prefetch", "Resource", "Script", "ServiceWorker", "SharedWorker", "SpeculationRules", "Stylesheet", "Track", "Video", "Worker", "XMLHttpRequest", "XSLT"]
-
+MixedContentResourceType = Literal[
+    "AttributionSrc",
+    "Audio",
+    "Beacon",
+    "CSPReport",
+    "Download",
+    "EventSource",
+    "Favicon",
+    "Font",
+    "Form",
+    "Frame",
+    "Image",
+    "Import",
+    "JSON",
+    "Manifest",
+    "Ping",
+    "PluginData",
+    "PluginResource",
+    "Prefetch",
+    "Resource",
+    "Script",
+    "ServiceWorker",
+    "SharedWorker",
+    "SpeculationRules",
+    "Stylesheet",
+    "Track",
+    "Video",
+    "Worker",
+    "XMLHttpRequest",
+    "XSLT",
+]
 
 
 class MixedContentIssueDetails(TypedDict):
@@ -123,17 +172,24 @@ Does not always exist (e.g. for unsafe form submission urls)."""
     """Optional because not every mixed content issue is necessarily linked to a frame."""
 
 
-
-BlockedByResponseReason = Literal["CoepFrameResourceNeedsCoepHeader", "CoopSandboxedIFrameCannotNavigateToCoopPage", "CorpNotSameOrigin", "CorpNotSameOriginAfterDefaultedToSameOriginByCoep", "CorpNotSameOriginAfterDefaultedToSameOriginByDip", "CorpNotSameOriginAfterDefaultedToSameOriginByCoepAndDip", "CorpNotSameSite", "SRIMessageSignatureMismatch"]
+BlockedByResponseReason = Literal[
+    "CoepFrameResourceNeedsCoepHeader",
+    "CoopSandboxedIFrameCannotNavigateToCoopPage",
+    "CorpNotSameOrigin",
+    "CorpNotSameOriginAfterDefaultedToSameOriginByCoep",
+    "CorpNotSameOriginAfterDefaultedToSameOriginByDip",
+    "CorpNotSameOriginAfterDefaultedToSameOriginByCoepAndDip",
+    "CorpNotSameSite",
+    "SRIMessageSignatureMismatch",
+]
 """Enum indicating the reason a response has been blocked. These reasons are
 refinements of the net error BLOCKED_BY_RESPONSE."""
 
 
-
 class BlockedByResponseIssueDetails(TypedDict):
     """Details for a request that has been blocked with the BLOCKED_BY_RESPONSE
-code. Currently only used for COEP/COOP, but may be extended to include
-some CSP errors in the future."""
+    code. Currently only used for COEP/COOP, but may be extended to include
+    some CSP errors in the future."""
 
     request: "AffectedRequest"
     parentFrame: "NotRequired[AffectedFrame]"
@@ -141,13 +197,10 @@ some CSP errors in the future."""
     reason: "BlockedByResponseReason"
 
 
-
 HeavyAdResolutionStatus = Literal["HeavyAdBlocked", "HeavyAdWarning"]
 
 
-
 HeavyAdReason = Literal["NetworkTotalLimit", "CpuTotalLimit", "CpuPeakLimit"]
-
 
 
 class HeavyAdIssueDetails(TypedDict):
@@ -159,9 +212,15 @@ class HeavyAdIssueDetails(TypedDict):
     """The frame that was blocked."""
 
 
-
-ContentSecurityPolicyViolationType = Literal["kInlineViolation", "kEvalViolation", "kURLViolation", "kSRIViolation", "kTrustedTypesSinkViolation", "kTrustedTypesPolicyViolation", "kWasmEvalViolation"]
-
+ContentSecurityPolicyViolationType = Literal[
+    "kInlineViolation",
+    "kEvalViolation",
+    "kURLViolation",
+    "kSRIViolation",
+    "kTrustedTypesSinkViolation",
+    "kTrustedTypesPolicyViolation",
+    "kWasmEvalViolation",
+]
 
 
 class SourceCodeLocation(TypedDict):
@@ -169,7 +228,6 @@ class SourceCodeLocation(TypedDict):
     url: "str"
     lineNumber: "int"
     columnNumber: "int"
-
 
 
 class ContentSecurityPolicyIssueDetails(TypedDict):
@@ -184,19 +242,16 @@ class ContentSecurityPolicyIssueDetails(TypedDict):
     violatingNodeId: "NotRequired[BackendNodeId]"
 
 
-
 SharedArrayBufferIssueType = Literal["TransferIssue", "CreationIssue"]
-
 
 
 class SharedArrayBufferIssueDetails(TypedDict):
     """Details for a issue arising from an SAB being instantiated in, or
-transferred to a context that is not cross-origin isolated."""
+    transferred to a context that is not cross-origin isolated."""
 
     sourceCodeLocation: "SourceCodeLocation"
     isWarning: "bool"
     type: "SharedArrayBufferIssueType"
-
 
 
 class LowTextContrastIssueDetails(TypedDict):
@@ -209,10 +264,9 @@ class LowTextContrastIssueDetails(TypedDict):
     fontWeight: "str"
 
 
-
 class CorsIssueDetails(TypedDict):
     """Details for a CORS related issue, e.g. a warning or error related to
-CORS RFC1918 enforcement."""
+    CORS RFC1918 enforcement."""
 
     corsErrorStatus: "CorsErrorStatus"
     isWarning: "bool"
@@ -223,26 +277,96 @@ CORS RFC1918 enforcement."""
     clientSecurityState: "NotRequired[ClientSecurityState]"
 
 
+AttributionReportingIssueType = Literal[
+    "PermissionPolicyDisabled",
+    "UntrustworthyReportingOrigin",
+    "InsecureContext",
+    "InvalidHeader",
+    "InvalidRegisterTriggerHeader",
+    "SourceAndTriggerHeaders",
+    "SourceIgnored",
+    "TriggerIgnored",
+    "OsSourceIgnored",
+    "OsTriggerIgnored",
+    "InvalidRegisterOsSourceHeader",
+    "InvalidRegisterOsTriggerHeader",
+    "WebAndOsHeaders",
+    "NoWebOrOsSupport",
+    "NavigationRegistrationWithoutTransientUserActivation",
+    "InvalidInfoHeader",
+    "NoRegisterSourceHeader",
+    "NoRegisterTriggerHeader",
+    "NoRegisterOsSourceHeader",
+    "NoRegisterOsTriggerHeader",
+    "NavigationRegistrationUniqueScopeAlreadySet",
+]
 
-AttributionReportingIssueType = Literal["PermissionPolicyDisabled", "UntrustworthyReportingOrigin", "InsecureContext", "InvalidHeader", "InvalidRegisterTriggerHeader", "SourceAndTriggerHeaders", "SourceIgnored", "TriggerIgnored", "OsSourceIgnored", "OsTriggerIgnored", "InvalidRegisterOsSourceHeader", "InvalidRegisterOsTriggerHeader", "WebAndOsHeaders", "NoWebOrOsSupport", "NavigationRegistrationWithoutTransientUserActivation", "InvalidInfoHeader", "NoRegisterSourceHeader", "NoRegisterTriggerHeader", "NoRegisterOsSourceHeader", "NoRegisterOsTriggerHeader", "NavigationRegistrationUniqueScopeAlreadySet"]
+
+SharedDictionaryError = Literal[
+    "UseErrorCrossOriginNoCorsRequest",
+    "UseErrorDictionaryLoadFailure",
+    "UseErrorMatchingDictionaryNotUsed",
+    "UseErrorUnexpectedContentDictionaryHeader",
+    "WriteErrorCossOriginNoCorsRequest",
+    "WriteErrorDisallowedBySettings",
+    "WriteErrorExpiredResponse",
+    "WriteErrorFeatureDisabled",
+    "WriteErrorInsufficientResources",
+    "WriteErrorInvalidMatchField",
+    "WriteErrorInvalidStructuredHeader",
+    "WriteErrorInvalidTTLField",
+    "WriteErrorNavigationRequest",
+    "WriteErrorNoMatchField",
+    "WriteErrorNonIntegerTTLField",
+    "WriteErrorNonListMatchDestField",
+    "WriteErrorNonSecureContext",
+    "WriteErrorNonStringIdField",
+    "WriteErrorNonStringInMatchDestList",
+    "WriteErrorNonStringMatchField",
+    "WriteErrorNonTokenTypeField",
+    "WriteErrorRequestAborted",
+    "WriteErrorShuttingDown",
+    "WriteErrorTooLongIdField",
+    "WriteErrorUnsupportedType",
+]
 
 
+SRIMessageSignatureError = Literal[
+    "MissingSignatureHeader",
+    "MissingSignatureInputHeader",
+    "InvalidSignatureHeader",
+    "InvalidSignatureInputHeader",
+    "SignatureHeaderValueIsNotByteSequence",
+    "SignatureHeaderValueIsParameterized",
+    "SignatureHeaderValueIsIncorrectLength",
+    "SignatureInputHeaderMissingLabel",
+    "SignatureInputHeaderValueNotInnerList",
+    "SignatureInputHeaderValueMissingComponents",
+    "SignatureInputHeaderInvalidComponentType",
+    "SignatureInputHeaderInvalidComponentName",
+    "SignatureInputHeaderInvalidHeaderComponentParameter",
+    "SignatureInputHeaderInvalidDerivedComponentParameter",
+    "SignatureInputHeaderKeyIdLength",
+    "SignatureInputHeaderInvalidParameter",
+    "SignatureInputHeaderMissingRequiredParameters",
+    "ValidationFailedSignatureExpired",
+    "ValidationFailedInvalidLength",
+    "ValidationFailedSignatureMismatch",
+    "ValidationFailedIntegrityMismatch",
+]
 
-SharedDictionaryError = Literal["UseErrorCrossOriginNoCorsRequest", "UseErrorDictionaryLoadFailure", "UseErrorMatchingDictionaryNotUsed", "UseErrorUnexpectedContentDictionaryHeader", "WriteErrorCossOriginNoCorsRequest", "WriteErrorDisallowedBySettings", "WriteErrorExpiredResponse", "WriteErrorFeatureDisabled", "WriteErrorInsufficientResources", "WriteErrorInvalidMatchField", "WriteErrorInvalidStructuredHeader", "WriteErrorNavigationRequest", "WriteErrorNoMatchField", "WriteErrorNonListMatchDestField", "WriteErrorNonSecureContext", "WriteErrorNonStringIdField", "WriteErrorNonStringInMatchDestList", "WriteErrorNonStringMatchField", "WriteErrorNonTokenTypeField", "WriteErrorRequestAborted", "WriteErrorShuttingDown", "WriteErrorTooLongIdField", "WriteErrorUnsupportedType"]
 
-
-
-SRIMessageSignatureError = Literal["MissingSignatureHeader", "MissingSignatureInputHeader", "InvalidSignatureHeader", "InvalidSignatureInputHeader", "SignatureHeaderValueIsNotByteSequence", "SignatureHeaderValueIsParameterized", "SignatureHeaderValueIsIncorrectLength", "SignatureInputHeaderMissingLabel", "SignatureInputHeaderValueNotInnerList", "SignatureInputHeaderValueMissingComponents", "SignatureInputHeaderInvalidComponentType", "SignatureInputHeaderInvalidComponentName", "SignatureInputHeaderInvalidHeaderComponentParameter", "SignatureInputHeaderInvalidDerivedComponentParameter", "SignatureInputHeaderKeyIdLength", "SignatureInputHeaderInvalidParameter", "SignatureInputHeaderMissingRequiredParameters", "ValidationFailedSignatureExpired", "ValidationFailedInvalidLength", "ValidationFailedSignatureMismatch", "ValidationFailedIntegrityMismatch"]
-
-
-
-UnencodedDigestError = Literal["MalformedDictionary", "UnknownAlgorithm", "IncorrectDigestType", "IncorrectDigestLength"]
-
+UnencodedDigestError = Literal[
+    "MalformedDictionary",
+    "UnknownAlgorithm",
+    "IncorrectDigestType",
+    "IncorrectDigestLength",
+]
 
 
 class AttributionReportingIssueDetails(TypedDict):
     """Details for issues around \"Attribution Reporting API\" usage.
-Explainer: https://github.com/WICG/attribution-reporting-api"""
+    Explainer: https://github.com/WICG/attribution-reporting-api"""
 
     violationType: "AttributionReportingIssueType"
     request: "NotRequired[AffectedRequest]"
@@ -250,10 +374,9 @@ Explainer: https://github.com/WICG/attribution-reporting-api"""
     invalidParameter: "NotRequired[str]"
 
 
-
 class QuirksModeIssueDetails(TypedDict):
     """Details for issues about documents in Quirks Mode
-or Limited Quirks Mode that affects page layouting."""
+    or Limited Quirks Mode that affects page layouting."""
 
     isLimitedQuirksMode: "bool"
     """If false, it means the document's mode is \"quirks\"
@@ -264,17 +387,14 @@ instead of \"limited-quirks\"."""
     loaderId: "LoaderId"
 
 
-
 class NavigatorUserAgentIssueDetails(TypedDict):
     url: "str"
     location: "NotRequired[SourceCodeLocation]"
 
 
-
 class SharedDictionaryIssueDetails(TypedDict):
     sharedDictionaryError: "SharedDictionaryError"
     request: "AffectedRequest"
-
 
 
 class SRIMessageSignatureIssueDetails(TypedDict):
@@ -284,15 +404,25 @@ class SRIMessageSignatureIssueDetails(TypedDict):
     request: "AffectedRequest"
 
 
-
 class UnencodedDigestIssueDetails(TypedDict):
     error: "UnencodedDigestError"
     request: "AffectedRequest"
 
 
-
-GenericIssueErrorType = Literal["FormLabelForNameError", "FormDuplicateIdForInputError", "FormInputWithNoLabelError", "FormAutocompleteAttributeEmptyError", "FormEmptyIdAndNameAttributesForInputError", "FormAriaLabelledByToNonExistingId", "FormInputAssignedAutocompleteValueToIdOrNameAttributeError", "FormLabelHasNeitherForNorNestedInput", "FormLabelForMatchesNonExistingIdError", "FormInputHasWrongButWellIntendedAutocompleteValueError", "ResponseWasBlockedByORB"]
-
+GenericIssueErrorType = Literal[
+    "FormLabelForNameError",
+    "FormDuplicateIdForInputError",
+    "FormInputWithNoLabelError",
+    "FormAutocompleteAttributeEmptyError",
+    "FormEmptyIdAndNameAttributesForInputError",
+    "FormAriaLabelledByToNonExistingIdError",
+    "FormInputAssignedAutocompleteValueToIdOrNameAttributeError",
+    "FormLabelHasNeitherForNorNestedInputError",
+    "FormLabelForMatchesNonExistingIdError",
+    "FormInputHasWrongButWellIntendedAutocompleteValueError",
+    "ResponseWasBlockedByORB",
+    "NavigationEntryMarkedSkippable",
+]
 
 
 class GenericIssueDetails(TypedDict):
@@ -306,10 +436,9 @@ class GenericIssueDetails(TypedDict):
     request: "NotRequired[AffectedRequest]"
 
 
-
 class DeprecationIssueDetails(TypedDict):
     """This issue tracks information needed to print a deprecation message.
-https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/frame/third_party/blink/renderer/core/frame/deprecation/README.md"""
+    https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/core/frame/third_party/blink/renderer/core/frame/deprecation/README.md"""
 
     affectedFrame: "NotRequired[AffectedFrame]"
     sourceCodeLocation: "SourceCodeLocation"
@@ -317,24 +446,22 @@ https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/rende
     """One of the deprecation names from third_party/blink/renderer/core/frame/deprecation/deprecation.json5"""
 
 
-
 class BounceTrackingIssueDetails(TypedDict):
     """This issue warns about sites in the redirect chain of a finished navigation
-that may be flagged as trackers and have their state cleared if they don't
-receive a user interaction. Note that in this context 'site' means eTLD+1.
-For example, if the URL `https://example.test:80/bounce` was in the
-redirect chain, the site reported would be `example.test`."""
+    that may be flagged as trackers and have their state cleared if they don't
+    receive a user interaction. Note that in this context 'site' means eTLD+1.
+    For example, if the URL `https://example.test:80/bounce` was in the
+    redirect chain, the site reported would be `example.test`."""
 
     trackingSites: "List[str]"
 
 
-
 class CookieDeprecationMetadataIssueDetails(TypedDict):
     """This issue warns about third-party sites that are accessing cookies on the
-current page, and have been permitted due to having a global metadata grant.
-Note that in this context 'site' means eTLD+1. For example, if the URL
-`https://example.test:80/web_page` was accessing cookies, the site reported
-would be `example.test`."""
+    current page, and have been permitted due to having a global metadata grant.
+    Note that in this context 'site' means eTLD+1. For example, if the URL
+    `https://example.test:80/web_page` was accessing cookies, the site reported
+    would be `example.test`."""
 
     allowedSites: "List[str]"
     optOutPercentage: "float"
@@ -342,43 +469,95 @@ would be `example.test`."""
     operation: "CookieOperation"
 
 
-
 ClientHintIssueReason = Literal["MetaTagAllowListInvalidOrigin", "MetaTagModifiedHTML"]
-
 
 
 class FederatedAuthRequestIssueDetails(TypedDict):
     federatedAuthRequestIssueReason: "FederatedAuthRequestIssueReason"
 
 
-
-FederatedAuthRequestIssueReason = Literal["ShouldEmbargo", "TooManyRequests", "WellKnownHttpNotFound", "WellKnownNoResponse", "WellKnownInvalidResponse", "WellKnownListEmpty", "WellKnownInvalidContentType", "ConfigNotInWellKnown", "WellKnownTooBig", "ConfigHttpNotFound", "ConfigNoResponse", "ConfigInvalidResponse", "ConfigInvalidContentType", "ClientMetadataHttpNotFound", "ClientMetadataNoResponse", "ClientMetadataInvalidResponse", "ClientMetadataInvalidContentType", "IdpNotPotentiallyTrustworthy", "DisabledInSettings", "DisabledInFlags", "ErrorFetchingSignin", "InvalidSigninResponse", "AccountsHttpNotFound", "AccountsNoResponse", "AccountsInvalidResponse", "AccountsListEmpty", "AccountsInvalidContentType", "IdTokenHttpNotFound", "IdTokenNoResponse", "IdTokenInvalidResponse", "IdTokenIdpErrorResponse", "IdTokenCrossSiteIdpErrorResponse", "IdTokenInvalidRequest", "IdTokenInvalidContentType", "ErrorIdToken", "Canceled", "RpPageNotVisible", "SilentMediationFailure", "ThirdPartyCookiesBlocked", "NotSignedInWithIdp", "MissingTransientUserActivation", "ReplacedByActiveMode", "InvalidFieldsSpecified", "RelyingPartyOriginIsOpaque", "TypeNotMatching", "UiDismissedNoEmbargo", "CorsError", "SuppressedBySegmentationPlatform"]
+FederatedAuthRequestIssueReason = Literal[
+    "ShouldEmbargo",
+    "TooManyRequests",
+    "WellKnownHttpNotFound",
+    "WellKnownNoResponse",
+    "WellKnownInvalidResponse",
+    "WellKnownListEmpty",
+    "WellKnownInvalidContentType",
+    "ConfigNotInWellKnown",
+    "WellKnownTooBig",
+    "ConfigHttpNotFound",
+    "ConfigNoResponse",
+    "ConfigInvalidResponse",
+    "ConfigInvalidContentType",
+    "ClientMetadataHttpNotFound",
+    "ClientMetadataNoResponse",
+    "ClientMetadataInvalidResponse",
+    "ClientMetadataInvalidContentType",
+    "IdpNotPotentiallyTrustworthy",
+    "DisabledInSettings",
+    "DisabledInFlags",
+    "ErrorFetchingSignin",
+    "InvalidSigninResponse",
+    "AccountsHttpNotFound",
+    "AccountsNoResponse",
+    "AccountsInvalidResponse",
+    "AccountsListEmpty",
+    "AccountsInvalidContentType",
+    "IdTokenHttpNotFound",
+    "IdTokenNoResponse",
+    "IdTokenInvalidResponse",
+    "IdTokenIdpErrorResponse",
+    "IdTokenCrossSiteIdpErrorResponse",
+    "IdTokenInvalidRequest",
+    "IdTokenInvalidContentType",
+    "ErrorIdToken",
+    "Canceled",
+    "RpPageNotVisible",
+    "SilentMediationFailure",
+    "ThirdPartyCookiesBlocked",
+    "NotSignedInWithIdp",
+    "MissingTransientUserActivation",
+    "ReplacedByActiveMode",
+    "InvalidFieldsSpecified",
+    "RelyingPartyOriginIsOpaque",
+    "TypeNotMatching",
+    "UiDismissedNoEmbargo",
+    "CorsError",
+    "SuppressedBySegmentationPlatform",
+]
 """Represents the failure reason when a federated authentication reason fails.
 Should be updated alongside RequestIdTokenStatus in
 third_party/blink/public/mojom/devtools/inspector_issue.mojom to include
 all cases except for success."""
 
 
-
 class FederatedAuthUserInfoRequestIssueDetails(TypedDict):
     federatedAuthUserInfoRequestIssueReason: "FederatedAuthUserInfoRequestIssueReason"
 
 
-
-FederatedAuthUserInfoRequestIssueReason = Literal["NotSameOrigin", "NotIframe", "NotPotentiallyTrustworthy", "NoApiPermission", "NotSignedInWithIdp", "NoAccountSharingPermission", "InvalidConfigOrWellKnown", "InvalidAccountsResponse", "NoReturningUserFromFetchedAccounts"]
+FederatedAuthUserInfoRequestIssueReason = Literal[
+    "NotSameOrigin",
+    "NotIframe",
+    "NotPotentiallyTrustworthy",
+    "NoApiPermission",
+    "NotSignedInWithIdp",
+    "NoAccountSharingPermission",
+    "InvalidConfigOrWellKnown",
+    "InvalidAccountsResponse",
+    "NoReturningUserFromFetchedAccounts",
+]
 """Represents the failure reason when a getUserInfo() call fails.
 Should be updated alongside FederatedAuthUserInfoRequestResult in
 third_party/blink/public/mojom/devtools/inspector_issue.mojom."""
 
 
-
 class ClientHintIssueDetails(TypedDict):
     """This issue tracks client hints related issues. It's used to deprecate old
-features, encourage the use of new ones, and provide general guidance."""
+    features, encourage the use of new ones, and provide general guidance."""
 
     sourceCodeLocation: "SourceCodeLocation"
     clientHintIssueReason: "ClientHintIssueReason"
-
 
 
 class FailedRequestInfo(TypedDict):
@@ -389,9 +568,9 @@ class FailedRequestInfo(TypedDict):
     requestId: "NotRequired[RequestId]"
 
 
-
-PartitioningBlobURLInfo = Literal["BlockedCrossPartitionFetching", "EnforceNoopenerForNavigation"]
-
+PartitioningBlobURLInfo = Literal[
+    "BlockedCrossPartitionFetching", "EnforceNoopenerForNavigation"
+]
 
 
 class PartitioningBlobURLIssueDetails(TypedDict):
@@ -401,9 +580,14 @@ class PartitioningBlobURLIssueDetails(TypedDict):
     """Additional information about the Partitioning Blob URL issue."""
 
 
-
-ElementAccessibilityIssueReason = Literal["DisallowedSelectChild", "DisallowedOptGroupChild", "NonPhrasingContentOptionChild", "InteractiveContentOptionChild", "InteractiveContentLegendChild", "InteractiveContentSummaryDescendant"]
-
+ElementAccessibilityIssueReason = Literal[
+    "DisallowedSelectChild",
+    "DisallowedOptGroupChild",
+    "NonPhrasingContentOptionChild",
+    "InteractiveContentOptionChild",
+    "InteractiveContentLegendChild",
+    "InteractiveContentSummaryDescendant",
+]
 
 
 class ElementAccessibilityIssueDetails(TypedDict):
@@ -414,9 +598,7 @@ class ElementAccessibilityIssueDetails(TypedDict):
     hasDisallowedAttributes: "bool"
 
 
-
 StyleSheetLoadingIssueReason = Literal["LateImportRule", "RequestFailed"]
-
 
 
 class StylesheetLoadingIssueDetails(TypedDict):
@@ -430,14 +612,14 @@ class StylesheetLoadingIssueDetails(TypedDict):
     """Contains additional info when the failure was due to a request."""
 
 
-
-PropertyRuleIssueReason = Literal["InvalidSyntax", "InvalidInitialValue", "InvalidInherits", "InvalidName"]
-
+PropertyRuleIssueReason = Literal[
+    "InvalidSyntax", "InvalidInitialValue", "InvalidInherits", "InvalidName"
+]
 
 
 class PropertyRuleIssueDetails(TypedDict):
     """This issue warns about errors in property rules that lead to property
-registrations being ignored."""
+    registrations being ignored."""
 
     sourceCodeLocation: "SourceCodeLocation"
     """Source code position of the property rule."""
@@ -447,14 +629,14 @@ registrations being ignored."""
     """The value of the property rule property that failed to parse"""
 
 
-
-UserReidentificationIssueType = Literal["BlockedFrameNavigation", "BlockedSubresource", "NoisedCanvasReadback"]
-
+UserReidentificationIssueType = Literal[
+    "BlockedFrameNavigation", "BlockedSubresource", "NoisedCanvasReadback"
+]
 
 
 class UserReidentificationIssueDetails(TypedDict):
     """This issue warns about uses of APIs that may be considered misuse to
-re-identify users."""
+    re-identify users."""
 
     type: "UserReidentificationIssueType"
     request: "NotRequired[AffectedRequest]"
@@ -463,18 +645,43 @@ re-identify users."""
     """Applies to NoisedCanvasReadback issue type."""
 
 
-
-InspectorIssueCode = Literal["CookieIssue", "MixedContentIssue", "BlockedByResponseIssue", "HeavyAdIssue", "ContentSecurityPolicyIssue", "SharedArrayBufferIssue", "LowTextContrastIssue", "CorsIssue", "AttributionReportingIssue", "QuirksModeIssue", "PartitioningBlobURLIssue", "NavigatorUserAgentIssue", "GenericIssue", "DeprecationIssue", "ClientHintIssue", "FederatedAuthRequestIssue", "BounceTrackingIssue", "CookieDeprecationMetadataIssue", "StylesheetLoadingIssue", "FederatedAuthUserInfoRequestIssue", "PropertyRuleIssue", "SharedDictionaryIssue", "ElementAccessibilityIssue", "SRIMessageSignatureIssue", "UnencodedDigestIssue", "UserReidentificationIssue"]
+InspectorIssueCode = Literal[
+    "CookieIssue",
+    "MixedContentIssue",
+    "BlockedByResponseIssue",
+    "HeavyAdIssue",
+    "ContentSecurityPolicyIssue",
+    "SharedArrayBufferIssue",
+    "LowTextContrastIssue",
+    "CorsIssue",
+    "AttributionReportingIssue",
+    "QuirksModeIssue",
+    "PartitioningBlobURLIssue",
+    "NavigatorUserAgentIssue",
+    "GenericIssue",
+    "DeprecationIssue",
+    "ClientHintIssue",
+    "FederatedAuthRequestIssue",
+    "BounceTrackingIssue",
+    "CookieDeprecationMetadataIssue",
+    "StylesheetLoadingIssue",
+    "FederatedAuthUserInfoRequestIssue",
+    "PropertyRuleIssue",
+    "SharedDictionaryIssue",
+    "ElementAccessibilityIssue",
+    "SRIMessageSignatureIssue",
+    "UnencodedDigestIssue",
+    "UserReidentificationIssue",
+]
 """A unique identifier for the type of issue. Each type may use one of the
 optional fields in InspectorIssueDetails to convey more specific
 information about the kind of issue."""
 
 
-
 class InspectorIssueDetails(TypedDict, total=False):
     """This struct holds a list of optional fields with additional information
-specific to the kind of issue. When adding a new issue code, please also
-add a new optional field to this type."""
+    specific to the kind of issue. When adding a new issue code, please also
+    add a new optional field to this type."""
 
     cookieIssueDetails: "CookieIssueDetails"
     mixedContentIssueDetails: "MixedContentIssueDetails"
@@ -504,11 +711,9 @@ add a new optional field to this type."""
     userReidentificationIssueDetails: "UserReidentificationIssueDetails"
 
 
-
 IssueId = str
 """A unique id for a DevTools inspector issue. Allows other entities (e.g.
 exceptions, CDP message, console messages, etc.) to reference an issue."""
-
 
 
 class InspectorIssue(TypedDict):

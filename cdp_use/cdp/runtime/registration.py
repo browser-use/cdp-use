@@ -11,32 +11,33 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import (
-    BindingCalledEvent,
-    ConsoleAPICalledEvent,
-    ExceptionRevokedEvent,
-    ExceptionThrownEvent,
-    ExecutionContextCreatedEvent,
-    ExecutionContextDestroyedEvent,
-    ExecutionContextsClearedEvent,
-    InspectRequestedEvent
-)
+        BindingCalledEvent,
+        ConsoleAPICalledEvent,
+        ExceptionRevokedEvent,
+        ExceptionThrownEvent,
+        ExecutionContextCreatedEvent,
+        ExecutionContextDestroyedEvent,
+        ExecutionContextsClearedEvent,
+        InspectRequestedEvent,
+    )
+
 
 class RuntimeRegistration:
     """Event registration interface for Runtime domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Runtime"
 
     def bindingCalled(
         self,
-        callback: Callable[['BindingCalledEvent', Optional[str]], None],
+        callback: Callable[["BindingCalledEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for bindingCalled events.
-        
+
         Notification is issued every time when binding is called.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -45,13 +46,13 @@ class RuntimeRegistration:
 
     def consoleAPICalled(
         self,
-        callback: Callable[['ConsoleAPICalledEvent', Optional[str]], None],
+        callback: Callable[["ConsoleAPICalledEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for consoleAPICalled events.
-        
+
         Issued when console API was called.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -60,13 +61,13 @@ class RuntimeRegistration:
 
     def exceptionRevoked(
         self,
-        callback: Callable[['ExceptionRevokedEvent', Optional[str]], None],
+        callback: Callable[["ExceptionRevokedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for exceptionRevoked events.
-        
+
         Issued when unhandled exception was revoked.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -75,13 +76,13 @@ class RuntimeRegistration:
 
     def exceptionThrown(
         self,
-        callback: Callable[['ExceptionThrownEvent', Optional[str]], None],
+        callback: Callable[["ExceptionThrownEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for exceptionThrown events.
-        
+
         Issued when exception was thrown and unhandled.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -90,13 +91,13 @@ class RuntimeRegistration:
 
     def executionContextCreated(
         self,
-        callback: Callable[['ExecutionContextCreatedEvent', Optional[str]], None],
+        callback: Callable[["ExecutionContextCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for executionContextCreated events.
-        
+
         Issued when new execution context is created.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -105,13 +106,13 @@ class RuntimeRegistration:
 
     def executionContextDestroyed(
         self,
-        callback: Callable[['ExecutionContextDestroyedEvent', Optional[str]], None],
+        callback: Callable[["ExecutionContextDestroyedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for executionContextDestroyed events.
-        
+
         Issued when execution context is destroyed.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -120,13 +121,13 @@ class RuntimeRegistration:
 
     def executionContextsCleared(
         self,
-        callback: Callable[['ExecutionContextsClearedEvent', Optional[str]], None],
+        callback: Callable[["ExecutionContextsClearedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for executionContextsCleared events.
-        
+
         Issued when all executionContexts were cleared in browser
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -135,17 +136,16 @@ class RuntimeRegistration:
 
     def inspectRequested(
         self,
-        callback: Callable[['InspectRequestedEvent', Optional[str]], None],
+        callback: Callable[["InspectRequestedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for inspectRequested events.
-        
-        Issued when object should be inspected (for example, as a result of inspect() command line API
-call).
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for inspectRequested events.
+
+                Issued when object should be inspected (for example, as a result of inspect() command line API
+        call).
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Runtime.inspectRequested", callback)
-

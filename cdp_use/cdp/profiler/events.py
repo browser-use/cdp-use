@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from .types import Profile
     from .types import ScriptCoverage
 
+
 class ConsoleProfileFinishedEvent(TypedDict):
     id: "str"
     location: "Location"
@@ -23,8 +24,9 @@ class ConsoleProfileFinishedEvent(TypedDict):
     """Profile title passed as an argument to console.profile()."""
 
 
-
 """Sent when new profile recording is started using console.profile() call."""
+
+
 class ConsoleProfileStartedEvent(TypedDict):
     id: "str"
     location: "Location"
@@ -33,11 +35,12 @@ class ConsoleProfileStartedEvent(TypedDict):
     """Profile title passed as an argument to console.profile()."""
 
 
-
 """Reports coverage delta since the last poll (either from an event like this, or from
 `takePreciseCoverage` for the current isolate. May only be sent if precise code
 coverage has been started. This event can be trigged by the embedder to, for example,
 trigger collection of coverage data immediately at a certain point in time."""
+
+
 class PreciseCoverageDeltaUpdateEvent(TypedDict):
     timestamp: "float"
     """Monotonically increasing time (in seconds) when the coverage update was taken in the backend."""

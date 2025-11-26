@@ -12,10 +12,11 @@ if TYPE_CHECKING:
     from ...client import CDPClient
     from .commands import GetDomainsReturns
 
+
 class SchemaClient:
     """Client for Schema domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def getDomains(
@@ -24,10 +25,11 @@ class SchemaClient:
         session_id: Optional[str] = None,
     ) -> "GetDomainsReturns":
         """Returns supported domains."""
-        return cast("GetDomainsReturns", await self._client.send_raw(
-            method="Schema.getDomains",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "GetDomainsReturns",
+            await self._client.send_raw(
+                method="Schema.getDomains",
+                params=params,
+                session_id=session_id,
+            ),
+        )

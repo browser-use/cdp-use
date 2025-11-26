@@ -10,22 +10,28 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import DomStorageItemAddedEvent, DomStorageItemRemovedEvent, DomStorageItemUpdatedEvent, DomStorageItemsClearedEvent
+    from .events import (
+        DomStorageItemAddedEvent,
+        DomStorageItemRemovedEvent,
+        DomStorageItemUpdatedEvent,
+        DomStorageItemsClearedEvent,
+    )
+
 
 class DOMStorageRegistration:
     """Event registration interface for DOMStorage domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "DOMStorage"
 
     def domStorageItemAdded(
         self,
-        callback: Callable[['DomStorageItemAddedEvent', Optional[str]], None],
+        callback: Callable[["DomStorageItemAddedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for domStorageItemAdded events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -34,11 +40,11 @@ class DOMStorageRegistration:
 
     def domStorageItemRemoved(
         self,
-        callback: Callable[['DomStorageItemRemovedEvent', Optional[str]], None],
+        callback: Callable[["DomStorageItemRemovedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for domStorageItemRemoved events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -47,11 +53,11 @@ class DOMStorageRegistration:
 
     def domStorageItemUpdated(
         self,
-        callback: Callable[['DomStorageItemUpdatedEvent', Optional[str]], None],
+        callback: Callable[["DomStorageItemUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for domStorageItemUpdated events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -60,14 +66,13 @@ class DOMStorageRegistration:
 
     def domStorageItemsCleared(
         self,
-        callback: Callable[['DomStorageItemsClearedEvent', Optional[str]], None],
+        callback: Callable[["DomStorageItemsClearedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for domStorageItemsCleared events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("DOMStorage.domStorageItemsCleared", callback)
-

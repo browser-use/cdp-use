@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from .types import GPUInfo
     from .types import ProcessInfo
 
+
 class GetInfoReturns(TypedDict):
     gpu: "GPUInfo"
     """Information about the GPUs on the system."""
@@ -27,14 +28,12 @@ example, '10.1'. Will be the empty string if not supported."""
 supported."""
 
 
-
 class GetFeatureStateParameters(TypedDict):
     featureState: "str"
 
 
 class GetFeatureStateReturns(TypedDict):
     featureEnabled: "bool"
-
 
 
 class GetProcessInfoReturns(TypedDict):

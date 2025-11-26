@@ -17,16 +17,15 @@ CertificateId = int
 """An internal certificate ID value."""
 
 
-
 MixedContentType = Literal["blockable", "optionally-blockable", "none"]
 """A description of mixed content (HTTP resources on HTTPS pages), as defined by
 https://www.w3.org/TR/mixed-content/#categories"""
 
 
-
-SecurityState = Literal["unknown", "neutral", "insecure", "secure", "info", "insecure-broken"]
+SecurityState = Literal[
+    "unknown", "neutral", "insecure", "secure", "info", "insecure-broken"
+]
 """The security level of a page or resource."""
-
 
 
 class CertificateSecurityState(TypedDict):
@@ -70,9 +69,7 @@ class CertificateSecurityState(TypedDict):
     """True if the connection is using an obsolete SSL signature."""
 
 
-
 SafetyTipStatus = Literal["badReputation", "lookalike"]
-
 
 
 class SafetyTipInfo(TypedDict):
@@ -80,7 +77,6 @@ class SafetyTipInfo(TypedDict):
     """Describes whether the page triggers any safety tips or reputation warnings. Default is unknown."""
     safeUrl: "NotRequired[str]"
     """The URL the safety tip suggested (\"Did you mean?\"). Only filled in for lookalike matches."""
-
 
 
 class VisibleSecurityState(TypedDict):
@@ -94,7 +90,6 @@ class VisibleSecurityState(TypedDict):
     """The type of Safety Tip triggered on the page. Note that this field will be set even if the Safety Tip UI was not actually shown."""
     securityStateIssueIds: "List[str]"
     """Array of security state issues ids."""
-
 
 
 class SecurityStateExplanation(TypedDict):
@@ -116,7 +111,6 @@ class SecurityStateExplanation(TypedDict):
     """Recommendations to fix any issues."""
 
 
-
 class InsecureContentStatus(TypedDict):
     """Information about insecure content on the page."""
 
@@ -134,7 +128,6 @@ class InsecureContentStatus(TypedDict):
     """Always set to unknown."""
     displayedInsecureContentStyle: "SecurityState"
     """Always set to unknown."""
-
 
 
 CertificateErrorAction = Literal["continue", "cancel"]

@@ -8,6 +8,7 @@ from typing import List
 from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
+
 class TouchPoint(TypedDict):
     x: "float"
     """X coordinate of the event relative to the main frame's viewport in CSS pixels."""
@@ -34,18 +35,14 @@ the top of the viewport and Y increases as it proceeds towards the bottom of the
     """Identifier used to track touch sources between events, must be unique within an event."""
 
 
-
 GestureSourceType = Literal["default", "touch", "mouse"]
-
 
 
 MouseButton = Literal["none", "left", "middle", "right", "back", "forward"]
 
 
-
 TimeSinceEpoch = float
 """UTC time in seconds, counted from January 1, 1970."""
-
 
 
 class DragDataItem(TypedDict):
@@ -59,7 +56,6 @@ text, HTML markup or any other data."""
     baseURL: "NotRequired[str]"
     """Stores the base URL for the contained markup. Only valid when `mimeType`
 == \"text/html\"."""
-
 
 
 class DragData(TypedDict):

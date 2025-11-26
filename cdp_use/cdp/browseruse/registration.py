@@ -10,24 +10,29 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import CaptchaSolverFinishedEvent, CaptchaSolverStartedEvent
+    from .events import (
+        ActiveTargetChangedEvent,
+        CaptchaSolverFinishedEvent,
+        CaptchaSolverStartedEvent,
+    )
+
 
 class BrowserUseRegistration:
     """Event registration interface for BrowserUse domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "BrowserUse"
 
     def captchaSolverStarted(
         self,
-        callback: Callable[['CaptchaSolverStartedEvent', Optional[str]], None],
+        callback: Callable[["CaptchaSolverStartedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for captchaSolverStarted events.
-        
+
         Captcha solving started.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -36,16 +41,30 @@ class BrowserUseRegistration:
 
     def captchaSolverFinished(
         self,
-        callback: Callable[['CaptchaSolverFinishedEvent', Optional[str]], None],
+        callback: Callable[["CaptchaSolverFinishedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for captchaSolverFinished events.
-        
+
         Captcha solving finished.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("BrowserUse.captchaSolverFinished", callback)
 
+    def activeTargetChanged(
+        self,
+        callback: Callable[["ActiveTargetChangedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for activeTargetChanged events.
+
+        Fired when a target is activated via Target.activateTarget.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("BrowserUse.activeTargetChanged", callback)

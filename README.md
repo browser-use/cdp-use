@@ -205,6 +205,13 @@ class CDPRegistrationLibrary:
 ### Regenerating Types
 
 ```bash
+# Using task (recommended)
+task generate
+
+# Or directly with uv
+uv run python -m cdp_use.generator
+
+# Or with python
 python -m cdp_use.generator
 ```
 
@@ -214,6 +221,17 @@ This will:
 2. Generate all Python type definitions and event registrations
 3. Create domain-specific client classes
 4. Format the code
+
+### Available Tasks
+
+```bash
+task generate    # Regenerate CDP types from protocol definitions
+task build       # Build the distribution package
+task lint        # Run ruff linter
+task format      # Format code with ruff
+task example     # Run the simple example
+task clean       # Clean generated files and build artifacts
+```
 
 ### Project Structure
 

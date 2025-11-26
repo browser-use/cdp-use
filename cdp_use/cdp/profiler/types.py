@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from ..runtime.types import CallFrame
     from ..runtime.types import ScriptId
 
+
 class ProfileNode(TypedDict):
     """Profile node. Holds callsite information, execution statistics and child nodes."""
 
@@ -31,7 +32,6 @@ optimize."""
     """An array of source position ticks."""
 
 
-
 class Profile(TypedDict):
     """Profile."""
 
@@ -48,7 +48,6 @@ class Profile(TypedDict):
 profile startTime."""
 
 
-
 class PositionTickInfo(TypedDict):
     """Specifies a number of samples attributed to a certain source position."""
 
@@ -56,7 +55,6 @@ class PositionTickInfo(TypedDict):
     """Source line number (1-based)."""
     ticks: "int"
     """Number of samples attributed to the source line."""
-
 
 
 class CoverageRange(TypedDict):
@@ -70,7 +68,6 @@ class CoverageRange(TypedDict):
     """Collected execution count of the source range."""
 
 
-
 class FunctionCoverage(TypedDict):
     """Coverage data for a JavaScript function."""
 
@@ -80,7 +77,6 @@ class FunctionCoverage(TypedDict):
     """Source ranges inside the function with coverage data."""
     isBlockCoverage: "bool"
     """Whether coverage data for this function has block granularity."""
-
 
 
 class ScriptCoverage(TypedDict):

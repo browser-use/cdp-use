@@ -28,6 +28,7 @@ if TYPE_CHECKING:
     from .types import SourceOrderConfig
     from .types import WindowControlsOverlayConfig
 
+
 class GetHighlightObjectForTestParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node to get highlight object for."""
@@ -46,7 +47,6 @@ class GetHighlightObjectForTestReturns(TypedDict):
     """Highlight data for the node."""
 
 
-
 class GetGridHighlightObjectsForTestParameters(TypedDict):
     nodeIds: "List[NodeId]"
     """Ids of the node to get highlight object for."""
@@ -55,7 +55,6 @@ class GetGridHighlightObjectsForTestParameters(TypedDict):
 class GetGridHighlightObjectsForTestReturns(TypedDict):
     highlights: "Dict[str, Any]"
     """Grid Highlight data for the node ids provided."""
-
 
 
 class GetSourceOrderHighlightObjectForTestParameters(TypedDict):
@@ -68,7 +67,6 @@ class GetSourceOrderHighlightObjectForTestReturns(TypedDict):
     """Source order highlight data for the node id provided."""
 
 
-
 class HighlightFrameParameters(TypedDict):
     frameId: "FrameId"
     """Identifier of the frame to highlight."""
@@ -76,9 +74,6 @@ class HighlightFrameParameters(TypedDict):
     """The content box highlight fill color (default: transparent)."""
     contentOutlineColor: "NotRequired[RGBA]"
     """The content box highlight outline color (default: transparent)."""
-
-
-
 
 
 class HighlightNodeParameters(TypedDict):
@@ -94,9 +89,6 @@ class HighlightNodeParameters(TypedDict):
     """Selectors to highlight relevant nodes."""
 
 
-
-
-
 class HighlightQuadParameters(TypedDict):
     quad: "Quad"
     """Quad to highlight"""
@@ -104,9 +96,6 @@ class HighlightQuadParameters(TypedDict):
     """The highlight fill color (default: transparent)."""
     outlineColor: "NotRequired[RGBA]"
     """The highlight outline color (default: transparent)."""
-
-
-
 
 
 class HighlightRectParameters(TypedDict):
@@ -124,9 +113,6 @@ class HighlightRectParameters(TypedDict):
     """The highlight outline color (default: transparent)."""
 
 
-
-
-
 class HighlightSourceOrderParameters(TypedDict):
     sourceOrderConfig: "SourceOrderConfig"
     """A descriptor for the appearance of the overlay drawing."""
@@ -138,9 +124,6 @@ class HighlightSourceOrderParameters(TypedDict):
     """JavaScript object id of the node to be highlighted."""
 
 
-
-
-
 class SetInspectModeParameters(TypedDict):
     mode: "InspectMode"
     """Set an inspection mode."""
@@ -149,15 +132,9 @@ class SetInspectModeParameters(TypedDict):
 == false`."""
 
 
-
-
-
 class SetShowAdHighlightsParameters(TypedDict):
     show: "bool"
     """True for showing ad highlights"""
-
-
-
 
 
 class SetPausedInDebuggerMessageParameters(TypedDict, total=False):
@@ -165,15 +142,9 @@ class SetPausedInDebuggerMessageParameters(TypedDict, total=False):
     """The message to display, also triggers resume and step over controls."""
 
 
-
-
-
 class SetShowDebugBordersParameters(TypedDict):
     show: "bool"
     """True for showing debug borders"""
-
-
-
 
 
 class SetShowFPSCounterParameters(TypedDict):
@@ -181,15 +152,9 @@ class SetShowFPSCounterParameters(TypedDict):
     """True for showing the FPS counter"""
 
 
-
-
-
 class SetShowGridOverlaysParameters(TypedDict):
     gridNodeHighlightConfigs: "List[GridNodeHighlightConfig]"
     """An array of node identifiers and descriptors for the highlight appearance."""
-
-
-
 
 
 class SetShowFlexOverlaysParameters(TypedDict):
@@ -197,15 +162,9 @@ class SetShowFlexOverlaysParameters(TypedDict):
     """An array of node identifiers and descriptors for the highlight appearance."""
 
 
-
-
-
 class SetShowScrollSnapOverlaysParameters(TypedDict):
     scrollSnapHighlightConfigs: "List[ScrollSnapHighlightConfig]"
     """An array of node identifiers and descriptors for the highlight appearance."""
-
-
-
 
 
 class SetShowContainerQueryOverlaysParameters(TypedDict):
@@ -213,15 +172,9 @@ class SetShowContainerQueryOverlaysParameters(TypedDict):
     """An array of node identifiers and descriptors for the highlight appearance."""
 
 
-
-
-
 class SetShowPaintRectsParameters(TypedDict):
     result: "bool"
     """True for showing paint rectangles"""
-
-
-
 
 
 class SetShowLayoutShiftRegionsParameters(TypedDict):
@@ -229,15 +182,9 @@ class SetShowLayoutShiftRegionsParameters(TypedDict):
     """True for showing layout shift regions"""
 
 
-
-
-
 class SetShowScrollBottleneckRectsParameters(TypedDict):
     show: "bool"
     """True for showing scroll bottleneck rects"""
-
-
-
 
 
 class SetShowHitTestBordersParameters(TypedDict):
@@ -245,14 +192,8 @@ class SetShowHitTestBordersParameters(TypedDict):
     """True for showing hit-test borders"""
 
 
-
-
-
 class SetShowWebVitalsParameters(TypedDict):
     show: "bool"
-
-
-
 
 
 class SetShowViewportSizeOnResizeParameters(TypedDict):
@@ -260,15 +201,9 @@ class SetShowViewportSizeOnResizeParameters(TypedDict):
     """Whether to paint size or not."""
 
 
-
-
-
 class SetShowHingeParameters(TypedDict, total=False):
     hingeConfig: "HingeConfig"
     """hinge data, null means hideHinge"""
-
-
-
 
 
 class SetShowIsolatedElementsParameters(TypedDict):
@@ -276,11 +211,6 @@ class SetShowIsolatedElementsParameters(TypedDict):
     """An array of node identifiers and descriptors for the highlight appearance."""
 
 
-
-
-
 class SetShowWindowControlsOverlayParameters(TypedDict, total=False):
     windowControlsOverlayConfig: "WindowControlsOverlayConfig"
     """Window Controls Overlay data, null means hide Window Controls Overlay"""
-
-

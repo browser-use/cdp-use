@@ -11,37 +11,38 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import (
-    AudioListenerCreatedEvent,
-    AudioListenerWillBeDestroyedEvent,
-    AudioNodeCreatedEvent,
-    AudioNodeWillBeDestroyedEvent,
-    AudioParamCreatedEvent,
-    AudioParamWillBeDestroyedEvent,
-    ContextChangedEvent,
-    ContextCreatedEvent,
-    ContextWillBeDestroyedEvent,
-    NodeParamConnectedEvent,
-    NodeParamDisconnectedEvent,
-    NodesConnectedEvent,
-    NodesDisconnectedEvent
-)
+        AudioListenerCreatedEvent,
+        AudioListenerWillBeDestroyedEvent,
+        AudioNodeCreatedEvent,
+        AudioNodeWillBeDestroyedEvent,
+        AudioParamCreatedEvent,
+        AudioParamWillBeDestroyedEvent,
+        ContextChangedEvent,
+        ContextCreatedEvent,
+        ContextWillBeDestroyedEvent,
+        NodeParamConnectedEvent,
+        NodeParamDisconnectedEvent,
+        NodesConnectedEvent,
+        NodesDisconnectedEvent,
+    )
+
 
 class WebAudioRegistration:
     """Event registration interface for WebAudio domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "WebAudio"
 
     def contextCreated(
         self,
-        callback: Callable[['ContextCreatedEvent', Optional[str]], None],
+        callback: Callable[["ContextCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for contextCreated events.
-        
+
         Notifies that a new BaseAudioContext has been created.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -50,13 +51,13 @@ class WebAudioRegistration:
 
     def contextWillBeDestroyed(
         self,
-        callback: Callable[['ContextWillBeDestroyedEvent', Optional[str]], None],
+        callback: Callable[["ContextWillBeDestroyedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for contextWillBeDestroyed events.
-        
+
         Notifies that an existing BaseAudioContext will be destroyed.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -65,13 +66,13 @@ class WebAudioRegistration:
 
     def contextChanged(
         self,
-        callback: Callable[['ContextChangedEvent', Optional[str]], None],
+        callback: Callable[["ContextChangedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for contextChanged events.
-        
+
         Notifies that existing BaseAudioContext has changed some properties (id stays the same)..
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -80,13 +81,13 @@ class WebAudioRegistration:
 
     def audioListenerCreated(
         self,
-        callback: Callable[['AudioListenerCreatedEvent', Optional[str]], None],
+        callback: Callable[["AudioListenerCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for audioListenerCreated events.
-        
+
         Notifies that the construction of an AudioListener has finished.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -95,13 +96,13 @@ class WebAudioRegistration:
 
     def audioListenerWillBeDestroyed(
         self,
-        callback: Callable[['AudioListenerWillBeDestroyedEvent', Optional[str]], None],
+        callback: Callable[["AudioListenerWillBeDestroyedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for audioListenerWillBeDestroyed events.
-        
+
         Notifies that a new AudioListener has been created.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -110,13 +111,13 @@ class WebAudioRegistration:
 
     def audioNodeCreated(
         self,
-        callback: Callable[['AudioNodeCreatedEvent', Optional[str]], None],
+        callback: Callable[["AudioNodeCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for audioNodeCreated events.
-        
+
         Notifies that a new AudioNode has been created.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -125,13 +126,13 @@ class WebAudioRegistration:
 
     def audioNodeWillBeDestroyed(
         self,
-        callback: Callable[['AudioNodeWillBeDestroyedEvent', Optional[str]], None],
+        callback: Callable[["AudioNodeWillBeDestroyedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for audioNodeWillBeDestroyed events.
-        
+
         Notifies that an existing AudioNode has been destroyed.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -140,13 +141,13 @@ class WebAudioRegistration:
 
     def audioParamCreated(
         self,
-        callback: Callable[['AudioParamCreatedEvent', Optional[str]], None],
+        callback: Callable[["AudioParamCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for audioParamCreated events.
-        
+
         Notifies that a new AudioParam has been created.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -155,13 +156,13 @@ class WebAudioRegistration:
 
     def audioParamWillBeDestroyed(
         self,
-        callback: Callable[['AudioParamWillBeDestroyedEvent', Optional[str]], None],
+        callback: Callable[["AudioParamWillBeDestroyedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for audioParamWillBeDestroyed events.
-        
+
         Notifies that an existing AudioParam has been destroyed.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -170,13 +171,13 @@ class WebAudioRegistration:
 
     def nodesConnected(
         self,
-        callback: Callable[['NodesConnectedEvent', Optional[str]], None],
+        callback: Callable[["NodesConnectedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for nodesConnected events.
-        
+
         Notifies that two AudioNodes are connected.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -185,13 +186,13 @@ class WebAudioRegistration:
 
     def nodesDisconnected(
         self,
-        callback: Callable[['NodesDisconnectedEvent', Optional[str]], None],
+        callback: Callable[["NodesDisconnectedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for nodesDisconnected events.
-        
+
         Notifies that AudioNodes are disconnected. The destination can be null, and it means all the outgoing connections from the source are disconnected.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -200,13 +201,13 @@ class WebAudioRegistration:
 
     def nodeParamConnected(
         self,
-        callback: Callable[['NodeParamConnectedEvent', Optional[str]], None],
+        callback: Callable[["NodeParamConnectedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for nodeParamConnected events.
-        
+
         Notifies that an AudioNode is connected to an AudioParam.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -215,16 +216,15 @@ class WebAudioRegistration:
 
     def nodeParamDisconnected(
         self,
-        callback: Callable[['NodeParamDisconnectedEvent', Optional[str]], None],
+        callback: Callable[["NodeParamDisconnectedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for nodeParamDisconnected events.
-        
+
         Notifies that an AudioNode is disconnected to an AudioParam.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("WebAudio.nodeParamDisconnected", callback)
-

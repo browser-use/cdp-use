@@ -21,14 +21,11 @@ FrameId = str
 """Unique frame identifier."""
 
 
-
 AdFrameType = Literal["none", "child", "root"]
 """Indicates whether a frame has been identified as an ad."""
 
 
-
 AdFrameExplanation = Literal["ParentIsAd", "CreatedByAdScript", "MatchedBlockingRule"]
-
 
 
 class AdFrameStatus(TypedDict):
@@ -38,10 +35,9 @@ class AdFrameStatus(TypedDict):
     explanations: "NotRequired[List[AdFrameExplanation]]"
 
 
-
 class AdScriptId(TypedDict):
     """Identifies the script which caused a script or frame to be labelled as an
-ad."""
+    ad."""
 
     scriptId: "ScriptId"
     """Script Id of the script which caused a script or frame to be labelled as
@@ -50,11 +46,10 @@ an ad."""
     """Id of scriptId's debugger."""
 
 
-
 class AdScriptAncestry(TypedDict):
     """Encapsulates the script ancestry and the root script filterlist rule that
-caused the frame to be labelled as an ad. Only created when `ancestryChain`
-is not empty."""
+    caused the frame to be labelled as an ad. Only created when `ancestryChain`
+    is not empty."""
 
     ancestryChain: "List[AdScriptId]"
     """A chain of `AdScriptId`s representing the ancestry of an ad script that
@@ -67,37 +62,150 @@ filterlist."""
 available."""
 
 
-
-SecureContextType = Literal["Secure", "SecureLocalhost", "InsecureScheme", "InsecureAncestor"]
+SecureContextType = Literal[
+    "Secure", "SecureLocalhost", "InsecureScheme", "InsecureAncestor"
+]
 """Indicates whether the frame is a secure context and why it is the case."""
 
 
-
-CrossOriginIsolatedContextType = Literal["Isolated", "NotIsolated", "NotIsolatedFeatureDisabled"]
+CrossOriginIsolatedContextType = Literal[
+    "Isolated", "NotIsolated", "NotIsolatedFeatureDisabled"
+]
 """Indicates whether the frame is cross-origin isolated and why it is the case."""
 
 
+GatedAPIFeatures = Literal[
+    "SharedArrayBuffers",
+    "SharedArrayBuffersTransferAllowed",
+    "PerformanceMeasureMemory",
+    "PerformanceProfile",
+]
 
-GatedAPIFeatures = Literal["SharedArrayBuffers", "SharedArrayBuffersTransferAllowed", "PerformanceMeasureMemory", "PerformanceProfile"]
 
-
-
-PermissionsPolicyFeature = Literal["accelerometer", "all-screens-capture", "ambient-light-sensor", "aria-notify", "attribution-reporting", "autoplay", "bluetooth", "browsing-topics", "camera", "captured-surface-control", "ch-dpr", "ch-device-memory", "ch-downlink", "ch-ect", "ch-prefers-color-scheme", "ch-prefers-reduced-motion", "ch-prefers-reduced-transparency", "ch-rtt", "ch-save-data", "ch-ua", "ch-ua-arch", "ch-ua-bitness", "ch-ua-high-entropy-values", "ch-ua-platform", "ch-ua-model", "ch-ua-mobile", "ch-ua-form-factors", "ch-ua-full-version", "ch-ua-full-version-list", "ch-ua-platform-version", "ch-ua-wow64", "ch-viewport-height", "ch-viewport-width", "ch-width", "clipboard-read", "clipboard-write", "compute-pressure", "controlled-frame", "cross-origin-isolated", "deferred-fetch", "deferred-fetch-minimal", "device-attributes", "digital-credentials-create", "digital-credentials-get", "direct-sockets", "direct-sockets-private", "display-capture", "document-domain", "encrypted-media", "execution-while-out-of-viewport", "execution-while-not-rendered", "fenced-unpartitioned-storage-read", "focus-without-user-activation", "fullscreen", "frobulate", "gamepad", "geolocation", "gyroscope", "hid", "identity-credentials-get", "idle-detection", "interest-cohort", "join-ad-interest-group", "keyboard-map", "language-detector", "language-model", "local-fonts", "local-network-access", "magnetometer", "media-playback-while-not-visible", "microphone", "midi", "on-device-speech-recognition", "otp-credentials", "payment", "picture-in-picture", "popins", "private-aggregation", "private-state-token-issuance", "private-state-token-redemption", "publickey-credentials-create", "publickey-credentials-get", "record-ad-auction-events", "rewriter", "run-ad-auction", "screen-wake-lock", "serial", "shared-autofill", "shared-storage", "shared-storage-select-url", "smart-card", "speaker-selection", "storage-access", "sub-apps", "summarizer", "sync-xhr", "translator", "unload", "usb", "usb-unrestricted", "vertical-scroll", "web-app-installation", "web-printing", "web-share", "window-management", "writer", "xr-spatial-tracking"]
+PermissionsPolicyFeature = Literal[
+    "accelerometer",
+    "all-screens-capture",
+    "ambient-light-sensor",
+    "aria-notify",
+    "attribution-reporting",
+    "autofill",
+    "autoplay",
+    "bluetooth",
+    "browsing-topics",
+    "camera",
+    "captured-surface-control",
+    "ch-dpr",
+    "ch-device-memory",
+    "ch-downlink",
+    "ch-ect",
+    "ch-prefers-color-scheme",
+    "ch-prefers-reduced-motion",
+    "ch-prefers-reduced-transparency",
+    "ch-rtt",
+    "ch-save-data",
+    "ch-ua",
+    "ch-ua-arch",
+    "ch-ua-bitness",
+    "ch-ua-high-entropy-values",
+    "ch-ua-platform",
+    "ch-ua-model",
+    "ch-ua-mobile",
+    "ch-ua-form-factors",
+    "ch-ua-full-version",
+    "ch-ua-full-version-list",
+    "ch-ua-platform-version",
+    "ch-ua-wow64",
+    "ch-viewport-height",
+    "ch-viewport-width",
+    "ch-width",
+    "clipboard-read",
+    "clipboard-write",
+    "compute-pressure",
+    "controlled-frame",
+    "cross-origin-isolated",
+    "deferred-fetch",
+    "deferred-fetch-minimal",
+    "device-attributes",
+    "digital-credentials-create",
+    "digital-credentials-get",
+    "direct-sockets",
+    "direct-sockets-multicast",
+    "direct-sockets-private",
+    "display-capture",
+    "document-domain",
+    "encrypted-media",
+    "execution-while-out-of-viewport",
+    "execution-while-not-rendered",
+    "fenced-unpartitioned-storage-read",
+    "focus-without-user-activation",
+    "fullscreen",
+    "frobulate",
+    "gamepad",
+    "geolocation",
+    "gyroscope",
+    "hid",
+    "identity-credentials-get",
+    "idle-detection",
+    "interest-cohort",
+    "join-ad-interest-group",
+    "keyboard-map",
+    "language-detector",
+    "language-model",
+    "local-fonts",
+    "local-network-access",
+    "magnetometer",
+    "manual-text",
+    "media-playback-while-not-visible",
+    "microphone",
+    "midi",
+    "on-device-speech-recognition",
+    "otp-credentials",
+    "payment",
+    "picture-in-picture",
+    "private-aggregation",
+    "private-state-token-issuance",
+    "private-state-token-redemption",
+    "publickey-credentials-create",
+    "publickey-credentials-get",
+    "record-ad-auction-events",
+    "rewriter",
+    "run-ad-auction",
+    "screen-wake-lock",
+    "serial",
+    "shared-storage",
+    "shared-storage-select-url",
+    "smart-card",
+    "speaker-selection",
+    "storage-access",
+    "sub-apps",
+    "summarizer",
+    "sync-xhr",
+    "translator",
+    "unload",
+    "usb",
+    "usb-unrestricted",
+    "vertical-scroll",
+    "web-app-installation",
+    "web-printing",
+    "web-share",
+    "window-management",
+    "writer",
+    "xr-spatial-tracking",
+]
 """All Permissions Policy features. This enum should match the one defined
 in services/network/public/cpp/permissions_policy/permissions_policy_features.json5.
 LINT.IfChange(PermissionsPolicyFeature)"""
 
 
-
-PermissionsPolicyBlockReason = Literal["Header", "IframeAttribute", "InFencedFrameTree", "InIsolatedApp"]
+PermissionsPolicyBlockReason = Literal[
+    "Header", "IframeAttribute", "InFencedFrameTree", "InIsolatedApp"
+]
 """Reason for a permissions policy feature to be disabled."""
-
 
 
 class PermissionsPolicyBlockLocator(TypedDict):
     frameId: "FrameId"
     blockReason: "PermissionsPolicyBlockReason"
-
 
 
 class PermissionsPolicyFeatureState(TypedDict):
@@ -106,20 +214,31 @@ class PermissionsPolicyFeatureState(TypedDict):
     locator: "NotRequired[PermissionsPolicyBlockLocator]"
 
 
-
-OriginTrialTokenStatus = Literal["Success", "NotSupported", "Insecure", "Expired", "WrongOrigin", "InvalidSignature", "Malformed", "WrongVersion", "FeatureDisabled", "TokenDisabled", "FeatureDisabledForUser", "UnknownTrial"]
+OriginTrialTokenStatus = Literal[
+    "Success",
+    "NotSupported",
+    "Insecure",
+    "Expired",
+    "WrongOrigin",
+    "InvalidSignature",
+    "Malformed",
+    "WrongVersion",
+    "FeatureDisabled",
+    "TokenDisabled",
+    "FeatureDisabledForUser",
+    "UnknownTrial",
+]
 """Origin Trial(https://www.chromium.org/blink/origin-trials) support.
 Status for an Origin Trial token."""
 
 
-
-OriginTrialStatus = Literal["Enabled", "ValidTokenNotProvided", "OSNotSupported", "TrialNotAllowed"]
+OriginTrialStatus = Literal[
+    "Enabled", "ValidTokenNotProvided", "OSNotSupported", "TrialNotAllowed"
+]
 """Status for an Origin Trial."""
 
 
-
 OriginTrialUsageRestriction = Literal["None", "Subset"]
-
 
 
 class OriginTrialToken(TypedDict):
@@ -131,7 +250,6 @@ class OriginTrialToken(TypedDict):
     usageRestriction: "OriginTrialUsageRestriction"
 
 
-
 class OriginTrialTokenWithStatus(TypedDict):
     rawTokenText: "str"
     parsedToken: "NotRequired[OriginTrialToken]"
@@ -140,12 +258,10 @@ parsable."""
     status: "OriginTrialTokenStatus"
 
 
-
 class OriginTrial(TypedDict):
     trialName: "str"
     status: "OriginTrialStatus"
     tokensWithStatus: "List[OriginTrialTokenWithStatus]"
-
 
 
 class SecurityOriginDetails(TypedDict):
@@ -155,7 +271,6 @@ class SecurityOriginDetails(TypedDict):
     """Indicates whether the frame document's security origin is one
 of the local hostnames (e.g. \"localhost\") or IP addresses (IPv4
 127.0.0.0/8 or IPv6 ::1)."""
-
 
 
 class Frame(TypedDict):
@@ -196,7 +311,6 @@ Example URLs: http://www.google.com/file.html -> \"google.com\"
     """Indicated which gated APIs / features are available."""
 
 
-
 class FrameResource(TypedDict):
     """Information about the Resource on the page."""
 
@@ -216,7 +330,6 @@ class FrameResource(TypedDict):
     """True if the resource was canceled during loading."""
 
 
-
 class FrameResourceTree(TypedDict):
     """Information about the Frame hierarchy along with their cached resources."""
 
@@ -228,7 +341,6 @@ class FrameResourceTree(TypedDict):
     """Information about frame resources."""
 
 
-
 class FrameTree(TypedDict):
     """Information about the Frame hierarchy."""
 
@@ -238,15 +350,26 @@ class FrameTree(TypedDict):
     """Child frames."""
 
 
-
 ScriptIdentifier = str
 """Unique script identifier."""
 
 
-
-TransitionType = Literal["link", "typed", "address_bar", "auto_bookmark", "auto_subframe", "manual_subframe", "generated", "auto_toplevel", "form_submit", "reload", "keyword", "keyword_generated", "other"]
+TransitionType = Literal[
+    "link",
+    "typed",
+    "address_bar",
+    "auto_bookmark",
+    "auto_subframe",
+    "manual_subframe",
+    "generated",
+    "auto_toplevel",
+    "form_submit",
+    "reload",
+    "keyword",
+    "keyword_generated",
+    "other",
+]
 """Transition type."""
-
 
 
 class NavigationEntry(TypedDict):
@@ -262,7 +385,6 @@ class NavigationEntry(TypedDict):
     """Title of the navigation history entry."""
     transitionType: "TransitionType"
     """Transition type."""
-
 
 
 class ScreencastFrameMetadata(TypedDict):
@@ -284,10 +406,8 @@ class ScreencastFrameMetadata(TypedDict):
     """Frame swap timestamp."""
 
 
-
 DialogType = Literal["alert", "confirm", "prompt", "beforeunload"]
 """Javascript dialog type."""
-
 
 
 class AppManifestError(TypedDict):
@@ -303,13 +423,11 @@ class AppManifestError(TypedDict):
     """Error column."""
 
 
-
 class AppManifestParsedProperties(TypedDict):
     """Parsed app manifest properties."""
 
     scope: "str"
     """Computed scope value"""
-
 
 
 class LayoutViewport(TypedDict):
@@ -323,7 +441,6 @@ class LayoutViewport(TypedDict):
     """Width (CSS pixels), excludes scrollbar if present."""
     clientHeight: "int"
     """Height (CSS pixels), excludes scrollbar if present."""
-
 
 
 class VisualViewport(TypedDict):
@@ -347,7 +464,6 @@ class VisualViewport(TypedDict):
     """Page zoom factor (CSS to device independent pixels ratio)."""
 
 
-
 class Viewport(TypedDict):
     """Viewport for capturing screenshot."""
 
@@ -361,7 +477,6 @@ class Viewport(TypedDict):
     """Rectangle height in device independent pixels (dip)."""
     scale: "float"
     """Page scale factor."""
-
 
 
 class FontFamilies(TypedDict, total=False):
@@ -383,7 +498,6 @@ class FontFamilies(TypedDict, total=False):
     """The math font-family."""
 
 
-
 class ScriptFontFamilies(TypedDict):
     """Font families collection for a script."""
 
@@ -391,7 +505,6 @@ class ScriptFontFamilies(TypedDict):
     """Name of the script which these font families are defined for."""
     fontFamilies: "FontFamilies"
     """Generic font families collection for the script."""
-
 
 
 class FontSizes(TypedDict, total=False):
@@ -403,13 +516,21 @@ class FontSizes(TypedDict, total=False):
     """Default fixed font size."""
 
 
-
-ClientNavigationReason = Literal["anchorClick", "formSubmissionGet", "formSubmissionPost", "httpHeaderRefresh", "initialFrameNavigation", "metaTagRefresh", "other", "pageBlockInterstitial", "reload", "scriptInitiated"]
-
+ClientNavigationReason = Literal[
+    "anchorClick",
+    "formSubmissionGet",
+    "formSubmissionPost",
+    "httpHeaderRefresh",
+    "initialFrameNavigation",
+    "metaTagRefresh",
+    "other",
+    "pageBlockInterstitial",
+    "reload",
+    "scriptInitiated",
+]
 
 
 ClientNavigationDisposition = Literal["currentTab", "newTab", "newWindow", "download"]
-
 
 
 class InstallabilityErrorArgument(TypedDict):
@@ -417,7 +538,6 @@ class InstallabilityErrorArgument(TypedDict):
     """Argument name (e.g. name:'minimum-icon-size-in-pixels')."""
     value: "str"
     """Argument value (e.g. value:'64')."""
-
 
 
 class InstallabilityError(TypedDict):
@@ -429,10 +549,17 @@ class InstallabilityError(TypedDict):
     """The list of error arguments (e.g. {name:'minimum-icon-size-in-pixels', value:'64'})."""
 
 
-
-ReferrerPolicy = Literal["noReferrer", "noReferrerWhenDowngrade", "origin", "originWhenCrossOrigin", "sameOrigin", "strictOrigin", "strictOriginWhenCrossOrigin", "unsafeUrl"]
+ReferrerPolicy = Literal[
+    "noReferrer",
+    "noReferrerWhenDowngrade",
+    "origin",
+    "originWhenCrossOrigin",
+    "sameOrigin",
+    "strictOrigin",
+    "strictOriginWhenCrossOrigin",
+    "unsafeUrl",
+]
 """The referring-policy used for the navigation."""
-
 
 
 class CompilationCacheParams(TypedDict):
@@ -445,11 +572,9 @@ class CompilationCacheParams(TypedDict):
 (the actual compilation mode used is upon backend discretion)."""
 
 
-
 class FileFilter(TypedDict, total=False):
     name: "str"
     accepts: "List[str]"
-
 
 
 class FileHandler(TypedDict):
@@ -463,7 +588,6 @@ class FileHandler(TypedDict):
 other enums below."""
 
 
-
 class ImageResource(TypedDict):
     """The image definition used in both icon and screenshot."""
 
@@ -474,10 +598,8 @@ consistency."""
     type: "NotRequired[str]"
 
 
-
 class LaunchHandler(TypedDict):
     clientMode: "str"
-
 
 
 class ProtocolHandler(TypedDict):
@@ -485,11 +607,9 @@ class ProtocolHandler(TypedDict):
     url: "str"
 
 
-
 class RelatedApplication(TypedDict):
     id: "NotRequired[str]"
     url: "str"
-
 
 
 class ScopeExtension(TypedDict):
@@ -499,12 +619,10 @@ for easy understanding and comparison."""
     hasOriginWildcard: "bool"
 
 
-
 class Screenshot(TypedDict):
     image: "ImageResource"
     formFactor: "str"
     label: "NotRequired[str]"
-
 
 
 class ShareTarget(TypedDict):
@@ -518,11 +636,9 @@ class ShareTarget(TypedDict):
     files: "NotRequired[List[FileFilter]]"
 
 
-
 class Shortcut(TypedDict):
     name: "str"
     url: "str"
-
 
 
 class WebAppManifest(TypedDict, total=False):
@@ -561,20 +677,164 @@ https://github.com/WICG/manifest-incubations/blob/gh-pages/scope_extensions-expl
     themeColor: "str"
 
 
-
 NavigationType = Literal["Navigation", "BackForwardCacheRestore"]
 """The type of a frameNavigated event."""
 
 
-
-BackForwardCacheNotRestoredReason = Literal["NotPrimaryMainFrame", "BackForwardCacheDisabled", "RelatedActiveContentsExist", "HTTPStatusNotOK", "SchemeNotHTTPOrHTTPS", "Loading", "WasGrantedMediaAccess", "DisableForRenderFrameHostCalled", "DomainNotAllowed", "HTTPMethodNotGET", "SubframeIsNavigating", "Timeout", "CacheLimit", "JavaScriptExecution", "RendererProcessKilled", "RendererProcessCrashed", "SchedulerTrackedFeatureUsed", "ConflictingBrowsingInstance", "CacheFlushed", "ServiceWorkerVersionActivation", "SessionRestored", "ServiceWorkerPostMessage", "EnteredBackForwardCacheBeforeServiceWorkerHostAdded", "RenderFrameHostReused_SameSite", "RenderFrameHostReused_CrossSite", "ServiceWorkerClaim", "IgnoreEventAndEvict", "HaveInnerContents", "TimeoutPuttingInCache", "BackForwardCacheDisabledByLowMemory", "BackForwardCacheDisabledByCommandLine", "NetworkRequestDatapipeDrainedAsBytesConsumer", "NetworkRequestRedirected", "NetworkRequestTimeout", "NetworkExceedsBufferLimit", "NavigationCancelledWhileRestoring", "NotMostRecentNavigationEntry", "BackForwardCacheDisabledForPrerender", "UserAgentOverrideDiffers", "ForegroundCacheLimit", "BrowsingInstanceNotSwapped", "BackForwardCacheDisabledForDelegate", "UnloadHandlerExistsInMainFrame", "UnloadHandlerExistsInSubFrame", "ServiceWorkerUnregistration", "CacheControlNoStore", "CacheControlNoStoreCookieModified", "CacheControlNoStoreHTTPOnlyCookieModified", "NoResponseHead", "Unknown", "ActivationNavigationsDisallowedForBug1234857", "ErrorDocument", "FencedFramesEmbedder", "CookieDisabled", "HTTPAuthRequired", "CookieFlushed", "BroadcastChannelOnMessage", "WebViewSettingsChanged", "WebViewJavaScriptObjectChanged", "WebViewMessageListenerInjected", "WebViewSafeBrowsingAllowlistChanged", "WebViewDocumentStartJavascriptChanged", "WebSocket", "WebTransport", "WebRTC", "MainResourceHasCacheControlNoStore", "MainResourceHasCacheControlNoCache", "SubresourceHasCacheControlNoStore", "SubresourceHasCacheControlNoCache", "ContainsPlugins", "DocumentLoaded", "OutstandingNetworkRequestOthers", "RequestedMIDIPermission", "RequestedAudioCapturePermission", "RequestedVideoCapturePermission", "RequestedBackForwardCacheBlockedSensors", "RequestedBackgroundWorkPermission", "BroadcastChannel", "WebXR", "SharedWorker", "SharedWorkerMessage", "WebLocks", "WebHID", "WebShare", "RequestedStorageAccessGrant", "WebNfc", "OutstandingNetworkRequestFetch", "OutstandingNetworkRequestXHR", "AppBanner", "Printing", "WebDatabase", "PictureInPicture", "SpeechRecognizer", "IdleManager", "PaymentManager", "SpeechSynthesis", "KeyboardLock", "WebOTPService", "OutstandingNetworkRequestDirectSocket", "InjectedJavascript", "InjectedStyleSheet", "KeepaliveRequest", "IndexedDBEvent", "Dummy", "JsNetworkRequestReceivedCacheControlNoStoreResource", "WebRTCSticky", "WebTransportSticky", "WebSocketSticky", "SmartCard", "LiveMediaStreamTrack", "UnloadHandler", "ParserAborted", "ContentSecurityHandler", "ContentWebAuthenticationAPI", "ContentFileChooser", "ContentSerial", "ContentFileSystemAccess", "ContentMediaDevicesDispatcherHost", "ContentWebBluetooth", "ContentWebUSB", "ContentMediaSessionService", "ContentScreenReader", "ContentDiscarded", "EmbedderPopupBlockerTabHelper", "EmbedderSafeBrowsingTriggeredPopupBlocker", "EmbedderSafeBrowsingThreatDetails", "EmbedderAppBannerManager", "EmbedderDomDistillerViewerSource", "EmbedderDomDistillerSelfDeletingRequestDelegate", "EmbedderOomInterventionTabHelper", "EmbedderOfflinePage", "EmbedderChromePasswordManagerClientBindCredentialManager", "EmbedderPermissionRequestManager", "EmbedderModalDialog", "EmbedderExtensions", "EmbedderExtensionMessaging", "EmbedderExtensionMessagingForOpenPort", "EmbedderExtensionSentMessageToCachedFrame", "RequestedByWebViewClient", "PostMessageByWebViewClient", "CacheControlNoStoreDeviceBoundSessionTerminated", "CacheLimitPrunedOnModerateMemoryPressure", "CacheLimitPrunedOnCriticalMemoryPressure"]
+BackForwardCacheNotRestoredReason = Literal[
+    "NotPrimaryMainFrame",
+    "BackForwardCacheDisabled",
+    "RelatedActiveContentsExist",
+    "HTTPStatusNotOK",
+    "SchemeNotHTTPOrHTTPS",
+    "Loading",
+    "WasGrantedMediaAccess",
+    "DisableForRenderFrameHostCalled",
+    "DomainNotAllowed",
+    "HTTPMethodNotGET",
+    "SubframeIsNavigating",
+    "Timeout",
+    "CacheLimit",
+    "JavaScriptExecution",
+    "RendererProcessKilled",
+    "RendererProcessCrashed",
+    "SchedulerTrackedFeatureUsed",
+    "ConflictingBrowsingInstance",
+    "CacheFlushed",
+    "ServiceWorkerVersionActivation",
+    "SessionRestored",
+    "ServiceWorkerPostMessage",
+    "EnteredBackForwardCacheBeforeServiceWorkerHostAdded",
+    "RenderFrameHostReused_SameSite",
+    "RenderFrameHostReused_CrossSite",
+    "ServiceWorkerClaim",
+    "IgnoreEventAndEvict",
+    "HaveInnerContents",
+    "TimeoutPuttingInCache",
+    "BackForwardCacheDisabledByLowMemory",
+    "BackForwardCacheDisabledByCommandLine",
+    "NetworkRequestDatapipeDrainedAsBytesConsumer",
+    "NetworkRequestRedirected",
+    "NetworkRequestTimeout",
+    "NetworkExceedsBufferLimit",
+    "NavigationCancelledWhileRestoring",
+    "NotMostRecentNavigationEntry",
+    "BackForwardCacheDisabledForPrerender",
+    "UserAgentOverrideDiffers",
+    "ForegroundCacheLimit",
+    "BrowsingInstanceNotSwapped",
+    "BackForwardCacheDisabledForDelegate",
+    "UnloadHandlerExistsInMainFrame",
+    "UnloadHandlerExistsInSubFrame",
+    "ServiceWorkerUnregistration",
+    "CacheControlNoStore",
+    "CacheControlNoStoreCookieModified",
+    "CacheControlNoStoreHTTPOnlyCookieModified",
+    "NoResponseHead",
+    "Unknown",
+    "ActivationNavigationsDisallowedForBug1234857",
+    "ErrorDocument",
+    "FencedFramesEmbedder",
+    "CookieDisabled",
+    "HTTPAuthRequired",
+    "CookieFlushed",
+    "BroadcastChannelOnMessage",
+    "WebViewSettingsChanged",
+    "WebViewJavaScriptObjectChanged",
+    "WebViewMessageListenerInjected",
+    "WebViewSafeBrowsingAllowlistChanged",
+    "WebViewDocumentStartJavascriptChanged",
+    "WebSocket",
+    "WebTransport",
+    "WebRTC",
+    "MainResourceHasCacheControlNoStore",
+    "MainResourceHasCacheControlNoCache",
+    "SubresourceHasCacheControlNoStore",
+    "SubresourceHasCacheControlNoCache",
+    "ContainsPlugins",
+    "DocumentLoaded",
+    "OutstandingNetworkRequestOthers",
+    "RequestedMIDIPermission",
+    "RequestedAudioCapturePermission",
+    "RequestedVideoCapturePermission",
+    "RequestedBackForwardCacheBlockedSensors",
+    "RequestedBackgroundWorkPermission",
+    "BroadcastChannel",
+    "WebXR",
+    "SharedWorker",
+    "SharedWorkerMessage",
+    "SharedWorkerWithNoActiveClient",
+    "WebLocks",
+    "WebHID",
+    "WebBluetooth",
+    "WebShare",
+    "RequestedStorageAccessGrant",
+    "WebNfc",
+    "OutstandingNetworkRequestFetch",
+    "OutstandingNetworkRequestXHR",
+    "AppBanner",
+    "Printing",
+    "WebDatabase",
+    "PictureInPicture",
+    "SpeechRecognizer",
+    "IdleManager",
+    "PaymentManager",
+    "SpeechSynthesis",
+    "KeyboardLock",
+    "WebOTPService",
+    "OutstandingNetworkRequestDirectSocket",
+    "InjectedJavascript",
+    "InjectedStyleSheet",
+    "KeepaliveRequest",
+    "IndexedDBEvent",
+    "Dummy",
+    "JsNetworkRequestReceivedCacheControlNoStoreResource",
+    "WebRTCUsedWithCCNS",
+    "WebTransportUsedWithCCNS",
+    "WebSocketUsedWithCCNS",
+    "SmartCard",
+    "LiveMediaStreamTrack",
+    "UnloadHandler",
+    "ParserAborted",
+    "ContentSecurityHandler",
+    "ContentWebAuthenticationAPI",
+    "ContentFileChooser",
+    "ContentSerial",
+    "ContentFileSystemAccess",
+    "ContentMediaDevicesDispatcherHost",
+    "ContentWebBluetooth",
+    "ContentWebUSB",
+    "ContentMediaSessionService",
+    "ContentScreenReader",
+    "ContentDiscarded",
+    "EmbedderPopupBlockerTabHelper",
+    "EmbedderSafeBrowsingTriggeredPopupBlocker",
+    "EmbedderSafeBrowsingThreatDetails",
+    "EmbedderAppBannerManager",
+    "EmbedderDomDistillerViewerSource",
+    "EmbedderDomDistillerSelfDeletingRequestDelegate",
+    "EmbedderOomInterventionTabHelper",
+    "EmbedderOfflinePage",
+    "EmbedderChromePasswordManagerClientBindCredentialManager",
+    "EmbedderPermissionRequestManager",
+    "EmbedderModalDialog",
+    "EmbedderExtensions",
+    "EmbedderExtensionMessaging",
+    "EmbedderExtensionMessagingForOpenPort",
+    "EmbedderExtensionSentMessageToCachedFrame",
+    "RequestedByWebViewClient",
+    "PostMessageByWebViewClient",
+    "CacheControlNoStoreDeviceBoundSessionTerminated",
+    "CacheLimitPrunedOnModerateMemoryPressure",
+    "CacheLimitPrunedOnCriticalMemoryPressure",
+]
 """List of not restored reasons for back-forward cache."""
 
 
-
-BackForwardCacheNotRestoredReasonType = Literal["SupportPending", "PageSupportNeeded", "Circumstantial"]
+BackForwardCacheNotRestoredReasonType = Literal[
+    "SupportPending", "PageSupportNeeded", "Circumstantial"
+]
 """Types of not restored reasons for back-forward cache."""
-
 
 
 class BackForwardCacheBlockingDetails(TypedDict):
@@ -588,7 +848,6 @@ class BackForwardCacheBlockingDetails(TypedDict):
     """Column number in the script (0-based)."""
 
 
-
 class BackForwardCacheNotRestoredExplanation(TypedDict):
     type: "BackForwardCacheNotRestoredReasonType"
     """Type of the reason"""
@@ -599,7 +858,6 @@ class BackForwardCacheNotRestoredExplanation(TypedDict):
 dependent on the reason:
 - EmbedderExtensionSentMessageToCachedFrame: the extension ID."""
     details: "NotRequired[List[BackForwardCacheBlockingDetails]]"
-
 
 
 class BackForwardCacheNotRestoredExplanationTree(TypedDict):

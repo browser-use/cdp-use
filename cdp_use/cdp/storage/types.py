@@ -17,10 +17,22 @@ if TYPE_CHECKING:
 SerializedStorageKey = str
 
 
-
-StorageType = Literal["cookies", "file_systems", "indexeddb", "local_storage", "shader_cache", "websql", "service_workers", "cache_storage", "interest_groups", "shared_storage", "storage_buckets", "all", "other"]
+StorageType = Literal[
+    "cookies",
+    "file_systems",
+    "indexeddb",
+    "local_storage",
+    "shader_cache",
+    "websql",
+    "service_workers",
+    "cache_storage",
+    "interest_groups",
+    "shared_storage",
+    "storage_buckets",
+    "all",
+    "other",
+]
 """Enum of possible storage types."""
-
 
 
 class UsageForType(TypedDict):
@@ -32,44 +44,68 @@ class UsageForType(TypedDict):
     """Storage usage (bytes)."""
 
 
-
 class TrustTokens(TypedDict):
     """Pair of issuer origin and number of available (signed, but not used) Trust
-Tokens from that issuer."""
+    Tokens from that issuer."""
 
     issuerOrigin: "str"
     count: "float"
-
 
 
 InterestGroupAuctionId = str
 """Protected audience interest group auction identifier."""
 
 
-
-InterestGroupAccessType = Literal["join", "leave", "update", "loaded", "bid", "win", "additionalBid", "additionalBidWin", "topLevelBid", "topLevelAdditionalBid", "clear"]
+InterestGroupAccessType = Literal[
+    "join",
+    "leave",
+    "update",
+    "loaded",
+    "bid",
+    "win",
+    "additionalBid",
+    "additionalBidWin",
+    "topLevelBid",
+    "topLevelAdditionalBid",
+    "clear",
+]
 """Enum of interest group access types."""
-
 
 
 InterestGroupAuctionEventType = Literal["started", "configResolved"]
 """Enum of auction events."""
 
 
-
-InterestGroupAuctionFetchType = Literal["bidderJs", "bidderWasm", "sellerJs", "bidderTrustedSignals", "sellerTrustedSignals"]
+InterestGroupAuctionFetchType = Literal[
+    "bidderJs", "bidderWasm", "sellerJs", "bidderTrustedSignals", "sellerTrustedSignals"
+]
 """Enum of network fetches auctions can do."""
 
 
-
-SharedStorageAccessScope = Literal["window", "sharedStorageWorklet", "protectedAudienceWorklet", "header"]
+SharedStorageAccessScope = Literal[
+    "window", "sharedStorageWorklet", "protectedAudienceWorklet", "header"
+]
 """Enum of shared storage access scopes."""
 
 
-
-SharedStorageAccessMethod = Literal["addModule", "createWorklet", "selectURL", "run", "batchUpdate", "set", "append", "delete", "clear", "get", "keys", "values", "entries", "length", "remainingBudget"]
+SharedStorageAccessMethod = Literal[
+    "addModule",
+    "createWorklet",
+    "selectURL",
+    "run",
+    "batchUpdate",
+    "set",
+    "append",
+    "delete",
+    "clear",
+    "get",
+    "keys",
+    "values",
+    "entries",
+    "length",
+    "remainingBudget",
+]
 """Enum of shared storage access methods."""
-
 
 
 class SharedStorageEntry(TypedDict):
@@ -77,7 +113,6 @@ class SharedStorageEntry(TypedDict):
 
     key: "str"
     value: "str"
-
 
 
 class SharedStorageMetadata(TypedDict):
@@ -94,10 +129,9 @@ class SharedStorageMetadata(TypedDict):
 storage."""
 
 
-
 class SharedStoragePrivateAggregationConfig(TypedDict):
     """Represents a dictionary object passed in as privateAggregationConfig to
-run or selectURL."""
+    run or selectURL."""
 
     aggregationCoordinatorOrigin: "NotRequired[str]"
     """The chosen aggregation service deployment."""
@@ -109,13 +143,11 @@ run or selectURL."""
     """The limit on the number of contributions in the final report."""
 
 
-
 class SharedStorageReportingMetadata(TypedDict):
     """Pair of reporting metadata details for a candidate URL for `selectURL()`."""
 
     eventType: "str"
     reportingUrl: "str"
-
 
 
 class SharedStorageUrlWithMetadata(TypedDict):
@@ -127,10 +159,9 @@ class SharedStorageUrlWithMetadata(TypedDict):
     """Any associated reporting metadata."""
 
 
-
 class SharedStorageAccessParams(TypedDict, total=False):
     """Bundles the parameters for shared storage access events whose
-presence/absence can vary according to SharedStorageAccessType."""
+    presence/absence can vary according to SharedStorageAccessType."""
 
     scriptSourceUrl: "str"
     """Spec of the module script URL.
@@ -198,16 +229,13 @@ batchUpdate (required), set, append, delete, and clear."""
 Present only for SharedStorageAccessMethod: batchUpdate."""
 
 
-
 StorageBucketsDurability = Literal["relaxed", "strict"]
-
 
 
 class StorageBucket(TypedDict):
     storageKey: "SerializedStorageKey"
     name: "NotRequired[str]"
     """If not specified, it is the default bucket of the storageKey."""
-
 
 
 class StorageBucketInfo(TypedDict):
@@ -220,27 +248,21 @@ class StorageBucketInfo(TypedDict):
     durability: "StorageBucketsDurability"
 
 
-
 AttributionReportingSourceType = Literal["navigation", "event"]
-
 
 
 UnsignedInt64AsBase10 = str
 
 
-
 UnsignedInt128AsBase16 = str
-
 
 
 SignedInt64AsBase10 = str
 
 
-
 class AttributionReportingFilterDataEntry(TypedDict):
     key: "str"
     values: "List[str]"
-
 
 
 class AttributionReportingFilterConfig(TypedDict):
@@ -249,17 +271,14 @@ class AttributionReportingFilterConfig(TypedDict):
     """duration in seconds"""
 
 
-
 class AttributionReportingFilterPair(TypedDict):
     filters: "List[AttributionReportingFilterConfig]"
     notFilters: "List[AttributionReportingFilterConfig]"
 
 
-
 class AttributionReportingAggregationKeysEntry(TypedDict):
     key: "str"
     value: "UnsignedInt128AsBase16"
-
 
 
 class AttributionReportingEventReportWindows(TypedDict):
@@ -269,9 +288,7 @@ class AttributionReportingEventReportWindows(TypedDict):
     """duration in seconds"""
 
 
-
 AttributionReportingTriggerDataMatching = Literal["exact", "modulus"]
-
 
 
 class AttributionReportingAggregatableDebugReportingData(TypedDict):
@@ -280,7 +297,6 @@ class AttributionReportingAggregatableDebugReportingData(TypedDict):
     """number instead of integer because not all uint32 can be represented by
 int"""
     types: "List[str]"
-
 
 
 class AttributionReportingAggregatableDebugReportingConfig(TypedDict):
@@ -292,7 +308,6 @@ int, only present for source registrations"""
     aggregationCoordinatorOrigin: "NotRequired[str]"
 
 
-
 class AttributionScopesData(TypedDict):
     values: "List[str]"
     limit: "float"
@@ -301,11 +316,9 @@ int"""
     maxEventStates: "float"
 
 
-
 class AttributionReportingNamedBudgetDef(TypedDict):
     name: "str"
     budget: "int"
-
 
 
 class AttributionReportingSourceRegistration(TypedDict):
@@ -329,7 +342,9 @@ int"""
     debugKey: "NotRequired[UnsignedInt64AsBase10]"
     triggerDataMatching: "AttributionReportingTriggerDataMatching"
     destinationLimitPriority: "SignedInt64AsBase10"
-    aggregatableDebugReportingConfig: "AttributionReportingAggregatableDebugReportingConfig"
+    aggregatableDebugReportingConfig: (
+        "AttributionReportingAggregatableDebugReportingConfig"
+    )
     scopesData: "NotRequired[AttributionScopesData]"
     maxEventLevelReports: "int"
     namedBudgets: "List[AttributionReportingNamedBudgetDef]"
@@ -337,13 +352,27 @@ int"""
     eventLevelEpsilon: "float"
 
 
-
-AttributionReportingSourceRegistrationResult = Literal["success", "internalError", "insufficientSourceCapacity", "insufficientUniqueDestinationCapacity", "excessiveReportingOrigins", "prohibitedByBrowserPolicy", "successNoised", "destinationReportingLimitReached", "destinationGlobalLimitReached", "destinationBothLimitsReached", "reportingOriginsPerSiteLimitReached", "exceedsMaxChannelCapacity", "exceedsMaxScopesChannelCapacity", "exceedsMaxTriggerStateCardinality", "exceedsMaxEventStatesLimit", "destinationPerDayReportingLimitReached"]
-
+AttributionReportingSourceRegistrationResult = Literal[
+    "success",
+    "internalError",
+    "insufficientSourceCapacity",
+    "insufficientUniqueDestinationCapacity",
+    "excessiveReportingOrigins",
+    "prohibitedByBrowserPolicy",
+    "successNoised",
+    "destinationReportingLimitReached",
+    "destinationGlobalLimitReached",
+    "destinationBothLimitsReached",
+    "reportingOriginsPerSiteLimitReached",
+    "exceedsMaxChannelCapacity",
+    "exceedsMaxScopesChannelCapacity",
+    "exceedsMaxTriggerStateCardinality",
+    "exceedsMaxEventStatesLimit",
+    "destinationPerDayReportingLimitReached",
+]
 
 
 AttributionReportingSourceRegistrationTimeConfig = Literal["include", "exclude"]
-
 
 
 class AttributionReportingAggregatableValueDictEntry(TypedDict):
@@ -354,11 +383,9 @@ int"""
     filteringId: "UnsignedInt64AsBase10"
 
 
-
 class AttributionReportingAggregatableValueEntry(TypedDict):
     values: "List[AttributionReportingAggregatableValueDictEntry]"
     filters: "AttributionReportingFilterPair"
-
 
 
 class AttributionReportingEventTriggerData(TypedDict):
@@ -368,12 +395,10 @@ class AttributionReportingEventTriggerData(TypedDict):
     filters: "AttributionReportingFilterPair"
 
 
-
 class AttributionReportingAggregatableTriggerData(TypedDict):
     keyPiece: "UnsignedInt128AsBase16"
     sourceKeys: "List[str]"
     filters: "AttributionReportingFilterPair"
-
 
 
 class AttributionReportingAggregatableDedupKey(TypedDict):
@@ -381,11 +406,9 @@ class AttributionReportingAggregatableDedupKey(TypedDict):
     filters: "AttributionReportingFilterPair"
 
 
-
 class AttributionReportingNamedBudgetCandidate(TypedDict):
     name: "NotRequired[str]"
     filters: "AttributionReportingFilterPair"
-
 
 
 class AttributionReportingTriggerRegistration(TypedDict):
@@ -400,22 +423,58 @@ class AttributionReportingTriggerRegistration(TypedDict):
     aggregationCoordinatorOrigin: "NotRequired[str]"
     sourceRegistrationTimeConfig: "AttributionReportingSourceRegistrationTimeConfig"
     triggerContextId: "NotRequired[str]"
-    aggregatableDebugReportingConfig: "AttributionReportingAggregatableDebugReportingConfig"
+    aggregatableDebugReportingConfig: (
+        "AttributionReportingAggregatableDebugReportingConfig"
+    )
     scopes: "List[str]"
     namedBudgets: "List[AttributionReportingNamedBudgetCandidate]"
 
 
+AttributionReportingEventLevelResult = Literal[
+    "success",
+    "successDroppedLowerPriority",
+    "internalError",
+    "noCapacityForAttributionDestination",
+    "noMatchingSources",
+    "deduplicated",
+    "excessiveAttributions",
+    "priorityTooLow",
+    "neverAttributedSource",
+    "excessiveReportingOrigins",
+    "noMatchingSourceFilterData",
+    "prohibitedByBrowserPolicy",
+    "noMatchingConfigurations",
+    "excessiveReports",
+    "falselyAttributedSource",
+    "reportWindowPassed",
+    "notRegistered",
+    "reportWindowNotStarted",
+    "noMatchingTriggerData",
+]
 
-AttributionReportingEventLevelResult = Literal["success", "successDroppedLowerPriority", "internalError", "noCapacityForAttributionDestination", "noMatchingSources", "deduplicated", "excessiveAttributions", "priorityTooLow", "neverAttributedSource", "excessiveReportingOrigins", "noMatchingSourceFilterData", "prohibitedByBrowserPolicy", "noMatchingConfigurations", "excessiveReports", "falselyAttributedSource", "reportWindowPassed", "notRegistered", "reportWindowNotStarted", "noMatchingTriggerData"]
+
+AttributionReportingAggregatableResult = Literal[
+    "success",
+    "internalError",
+    "noCapacityForAttributionDestination",
+    "noMatchingSources",
+    "excessiveAttributions",
+    "excessiveReportingOrigins",
+    "noHistograms",
+    "insufficientBudget",
+    "insufficientNamedBudget",
+    "noMatchingSourceFilterData",
+    "notRegistered",
+    "prohibitedByBrowserPolicy",
+    "deduplicated",
+    "reportWindowPassed",
+    "excessiveReports",
+]
 
 
-
-AttributionReportingAggregatableResult = Literal["success", "internalError", "noCapacityForAttributionDestination", "noMatchingSources", "excessiveAttributions", "excessiveReportingOrigins", "noHistograms", "insufficientBudget", "insufficientNamedBudget", "noMatchingSourceFilterData", "notRegistered", "prohibitedByBrowserPolicy", "deduplicated", "reportWindowPassed", "excessiveReports"]
-
-
-
-AttributionReportingReportResult = Literal["sent", "prohibited", "failedToAssemble", "expired"]
-
+AttributionReportingReportResult = Literal[
+    "sent", "prohibited", "failedToAssemble", "expired"
+]
 
 
 class RelatedWebsiteSet(TypedDict):
