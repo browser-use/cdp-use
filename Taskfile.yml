@@ -26,6 +26,14 @@ tasks:
     cmds:
       - uv run ruff format cdp_use/
 
+  format-json:
+    desc: "Format JSON protocol files"
+    cmds:
+      - |
+        for file in cdp_use/custom_protocols/*.json; do
+          python3 -m json.tool "$file" "$file.tmp" && mv "$file.tmp" "$file"
+        done
+
   example:
     desc: "Run the simple example"
     cmds:

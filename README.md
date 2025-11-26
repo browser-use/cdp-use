@@ -229,6 +229,7 @@ task generate    # Regenerate CDP types from protocol definitions
 task build       # Build the distribution package
 task lint        # Run ruff linter
 task format      # Format code with ruff
+task format-json # Format JSON protocol files
 task example     # Run the simple example
 task clean       # Clean generated files and build artifacts
 ```

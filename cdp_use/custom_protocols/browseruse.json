@@ -10,7 +10,10 @@
           "name": "captchaSolverStarted",
           "description": "Captcha solving started.",
           "parameters": [
-            { "name": "targetId", "$ref": "Target.TargetID" },
+            {
+              "name": "targetId",
+              "$ref": "Target.TargetID"
+            },
             {
               "name": "vendor",
               "type": "string"
@@ -24,14 +27,21 @@
               "type": "integer",
               "description": "Unix millis"
             },
-            { "name": "eventTimeout", "type": "number", "optional": true }
+            {
+              "name": "eventTimeout",
+              "type": "number",
+              "optional": true
+            }
           ]
         },
         {
           "name": "captchaSolverFinished",
           "description": "Captcha solving finished.",
           "parameters": [
-            { "name": "targetId", "$ref": "Target.TargetID" },
+            {
+              "name": "targetId",
+              "$ref": "Target.TargetID"
+            },
             {
               "name": "vendor",
               "type": "string"
@@ -40,21 +50,35 @@
               "name": "url",
               "type": "string"
             },
-            { "name": "durationMs", "type": "integer" },
+            {
+              "name": "durationMs",
+              "type": "integer"
+            },
             {
               "name": "finishedAt",
               "type": "integer",
               "description": "Unix millis"
             },
-            { "name": "eventTimeout", "type": "number", "optional": true }
+            {
+              "name": "eventTimeout",
+              "type": "number",
+              "optional": true
+            }
           ]
         },
         {
           "name": "activeTargetChanged",
           "description": "Fired when a target is activated via Target.activateTarget.",
           "parameters": [
-            { "name": "targetId", "$ref": "Target.TargetID" },
-            { "name": "eventTimeout", "type": "number", "optional": true }
+            {
+              "name": "targetId",
+              "$ref": "Target.TargetID"
+            },
+            {
+              "name": "eventTimeout",
+              "type": "number",
+              "optional": true
+            }
           ]
         }
       ]
