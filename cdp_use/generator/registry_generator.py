@@ -56,7 +56,7 @@ class RegistryGenerator:
         content += '        logger.debug(f"Unregistering handler for {method}")\n'
         content += "        self._handlers.pop(method, None)\n\n"
         
-        content += "    def handle_event(\n"
+        content += "    async def handle_event(\n"
         content += "        self,\n"
         content += "        method: str,\n"
         content += "        params: Any,\n"
@@ -75,7 +75,15 @@ class RegistryGenerator:
         content += '        """\n'
         content += "        if method in self._handlers:\n"
         content += "            try:\n"
-        content += "                self._handlers[method](params, session_id)\n"
+        content += "                import inspect\n"
+        content += "                handler = self._handlers[method]\n\n"
+        content += "                # Check if handler is async\n"
+        content += "                if inspect.iscoroutinefunction(handler):\n"
+        content += "                    # Await async handlers\n"
+        content += "                    await handler(params, session_id)\n"
+        content += "                else:\n"
+        content += "                    # Call sync handlers directly\n"
+        content += "                    handler(params, session_id)\n"
         content += "                return True\n"
         content += "            except Exception as e:\n"
         content += '                logger.error(f"Error in event handler for {method}: {e}")\n'
