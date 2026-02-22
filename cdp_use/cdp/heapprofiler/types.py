@@ -16,7 +16,6 @@ HeapSnapshotObjectId = str
 """Heap snapshot object id."""
 
 
-
 class SamplingHeapProfileNode(TypedDict):
     """Sampling Heap Profile node. Holds callsite information, allocation statistics and child nodes."""
 
@@ -30,7 +29,6 @@ class SamplingHeapProfileNode(TypedDict):
     """Child nodes."""
 
 
-
 class SamplingHeapProfileSample(TypedDict):
     """A single sample from a sampling profile."""
 
@@ -41,7 +39,6 @@ class SamplingHeapProfileSample(TypedDict):
     ordinal: "float"
     """Time-ordered sample ordinal number. It is unique across all profiles retrieved
 between startSampling and stopSampling."""
-
 
 
 class SamplingHeapProfile(TypedDict):

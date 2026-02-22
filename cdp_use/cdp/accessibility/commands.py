@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from .types import AXNode
     from .types import AXNodeId
 
+
 class GetPartialAXTreeParameters(TypedDict, total=False):
     nodeId: "NodeId"
     """Identifier of the node to get the partial accessibility tree for."""
@@ -34,7 +35,6 @@ class GetPartialAXTreeReturns(TypedDict):
 children, if requested."""
 
 
-
 class GetFullAXTreeParameters(TypedDict, total=False):
     depth: "int"
     """The maximum depth at which descendants of the root node should be retrieved.
@@ -48,7 +48,6 @@ class GetFullAXTreeReturns(TypedDict):
     nodes: "List[AXNode]"
 
 
-
 class GetRootAXNodeParameters(TypedDict, total=False):
     frameId: "FrameId"
     """The frame in whose document the node resides.
@@ -57,7 +56,6 @@ If omitted, the root frame is used."""
 
 class GetRootAXNodeReturns(TypedDict):
     node: "AXNode"
-
 
 
 class GetAXNodeAndAncestorsParameters(TypedDict, total=False):
@@ -73,7 +71,6 @@ class GetAXNodeAndAncestorsReturns(TypedDict):
     nodes: "List[AXNode]"
 
 
-
 class GetChildAXNodesParameters(TypedDict):
     id: "AXNodeId"
     frameId: "NotRequired[FrameId]"
@@ -83,7 +80,6 @@ If omitted, the root frame is used."""
 
 class GetChildAXNodesReturns(TypedDict):
     nodes: "List[AXNode]"
-
 
 
 class QueryAXTreeParameters(TypedDict, total=False):

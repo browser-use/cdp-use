@@ -12,25 +12,25 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import AcceptedEvent
 
+
 class TetheringRegistration:
     """Event registration interface for Tethering domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Tethering"
 
     def accepted(
         self,
-        callback: Callable[['AcceptedEvent', Optional[str]], None],
+        callback: Callable[["AcceptedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for accepted events.
-        
+
         Informs that port was successfully bound and got a specified connection id.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Tethering.accepted", callback)
-

@@ -11,13 +11,11 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .types import RegistrationID
 
+
 class DeliverPushMessageParameters(TypedDict):
     origin: "str"
     registrationId: "RegistrationID"
     data: "str"
-
-
-
 
 
 class DispatchSyncEventParameters(TypedDict):
@@ -27,54 +25,31 @@ class DispatchSyncEventParameters(TypedDict):
     lastChance: "bool"
 
 
-
-
-
 class DispatchPeriodicSyncEventParameters(TypedDict):
     origin: "str"
     registrationId: "RegistrationID"
     tag: "str"
 
 
-
-
-
 class SetForceUpdateOnPageLoadParameters(TypedDict):
     forceUpdateOnPageLoad: "bool"
-
-
-
 
 
 class SkipWaitingParameters(TypedDict):
     scopeURL: "str"
 
 
-
-
-
 class StartWorkerParameters(TypedDict):
     scopeURL: "str"
-
-
-
 
 
 class StopWorkerParameters(TypedDict):
     versionId: "str"
 
 
-
-
-
 class UnregisterParameters(TypedDict):
     scopeURL: "str"
 
 
-
-
-
 class UpdateRegistrationParameters(TypedDict):
     scopeURL: "str"
-
-

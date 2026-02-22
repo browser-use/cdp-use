@@ -18,6 +18,8 @@ if TYPE_CHECKING:
     from .types import Timestamp
 
 """Notification is issued every time when binding is called."""
+
+
 class BindingCalledEvent(TypedDict):
     name: "str"
     payload: "str"
@@ -25,8 +27,9 @@ class BindingCalledEvent(TypedDict):
     """Identifier of the context where the call was made."""
 
 
-
 """Issued when console API was called."""
+
+
 class ConsoleAPICalledEvent(TypedDict):
     type: "str"
     """Type of the call."""
@@ -46,8 +49,9 @@ chain can be retrieved using `Debugger.getStackTrace` and `stackTrace.parentId` 
 on named context."""
 
 
-
 """Issued when unhandled exception was revoked."""
+
+
 class ExceptionRevokedEvent(TypedDict):
     reason: "str"
     """Reason describing why exception was revoked."""
@@ -55,23 +59,26 @@ class ExceptionRevokedEvent(TypedDict):
     """The id of revoked exception, as reported in `exceptionThrown`."""
 
 
-
 """Issued when exception was thrown and unhandled."""
+
+
 class ExceptionThrownEvent(TypedDict):
     timestamp: "Timestamp"
     """Timestamp of the exception."""
     exceptionDetails: "ExceptionDetails"
 
 
-
 """Issued when new execution context is created."""
+
+
 class ExecutionContextCreatedEvent(TypedDict):
     context: "ExecutionContextDescription"
     """A newly created execution context."""
 
 
-
 """Issued when execution context is destroyed."""
+
+
 class ExecutionContextDestroyedEvent(TypedDict):
     executionContextId: "ExecutionContextId"
     """Id of the destroyed context"""
@@ -79,15 +86,17 @@ class ExecutionContextDestroyedEvent(TypedDict):
     """Unique Id of the destroyed context"""
 
 
-
 """Issued when all executionContexts were cleared in browser"""
+
+
 class ExecutionContextsClearedEvent(TypedDict):
     pass
 
 
-
 """Issued when object should be inspected (for example, as a result of inspect() command line API
 call)."""
+
+
 class InspectRequestedEvent(TypedDict):
     object: "RemoteObject"
     hints: "Dict[str, Any]"

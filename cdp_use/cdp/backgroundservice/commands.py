@@ -11,18 +11,13 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .types import ServiceName
 
+
 class StartObservingParameters(TypedDict):
     service: "ServiceName"
 
 
-
-
-
 class StopObservingParameters(TypedDict):
     service: "ServiceName"
-
-
-
 
 
 class SetRecordingParameters(TypedDict):
@@ -30,10 +25,5 @@ class SetRecordingParameters(TypedDict):
     service: "ServiceName"
 
 
-
-
-
 class ClearEventsParameters(TypedDict):
     service: "ServiceName"
-
-

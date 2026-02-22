@@ -17,6 +17,7 @@ if TYPE_CHECKING:
     from ..domdebugger.types import EventListener
     from ..page.types import FrameId
 
+
 class DOMNode(TypedDict):
     """A Node in the DOM tree."""
 
@@ -83,10 +84,9 @@ clicked."""
     scrollOffsetY: "NotRequired[float]"
 
 
-
 class InlineTextBox(TypedDict):
     """Details of post layout rendered text positions. The exact layout should not be regarded as
-stable and may change between versions."""
+    stable and may change between versions."""
 
     boundingBox: "Rect"
     """The bounding box in document coordinates. Note that scroll offset of the document is ignored."""
@@ -96,7 +96,6 @@ would be represented as a surrogate pair in UTF-16 have length 2."""
     numCharacters: "int"
     """The number of characters in this post layout textbox substring. Characters that would be
 represented as a surrogate pair in UTF-16 have length 2."""
-
 
 
 class LayoutTreeNode(TypedDict):
@@ -120,13 +119,11 @@ getSnapshot was true."""
     """Set to true to indicate the element begins a new stacking context."""
 
 
-
 class ComputedStyle(TypedDict):
     """A subset of the full ComputedStyle as defined by the request whitelist."""
 
     properties: "List[NameValue]"
     """Name/value pairs of computed style properties."""
-
 
 
 class NameValue(TypedDict):
@@ -138,15 +135,12 @@ class NameValue(TypedDict):
     """Attribute/property value."""
 
 
-
 StringIndex = int
 """Index of the string in the strings table."""
 
 
-
 ArrayOfStrings = List[StringIndex]
 """Index of the string in the strings table."""
-
 
 
 class RareStringData(TypedDict):
@@ -156,10 +150,8 @@ class RareStringData(TypedDict):
     value: "List[StringIndex]"
 
 
-
 class RareBooleanData(TypedDict):
     index: "List[int]"
-
 
 
 class RareIntegerData(TypedDict):
@@ -167,9 +159,7 @@ class RareIntegerData(TypedDict):
     value: "List[int]"
 
 
-
 Rectangle = List[float]
-
 
 
 class DocumentSnapshot(TypedDict):
@@ -205,7 +195,6 @@ class DocumentSnapshot(TypedDict):
     """Document content width."""
     contentHeight: "NotRequired[float]"
     """Document content height."""
-
 
 
 class NodeTreeSnapshot(TypedDict, total=False):
@@ -250,7 +239,6 @@ clicked."""
     """The url of the script (if any) that generates this node."""
 
 
-
 class LayoutTreeSnapshot(TypedDict):
     """Table of details of an element in the DOM tree with a LayoutObject."""
 
@@ -280,10 +268,9 @@ captureSnapshot was true."""
     """The list of computed text opacities."""
 
 
-
 class TextBoxSnapshot(TypedDict):
     """Table of details of the post layout rendered text positions. The exact layout should not be regarded as
-stable and may change between versions."""
+    stable and may change between versions."""
 
     layoutIndex: "List[int]"
     """Index of the layout tree node that owns this box collection."""

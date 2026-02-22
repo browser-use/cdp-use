@@ -10,40 +10,46 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import InspectModeCanceledEvent, InspectNodeRequestedEvent, NodeHighlightRequestedEvent, ScreenshotRequestedEvent
+    from .events import (
+        InspectModeCanceledEvent,
+        InspectNodeRequestedEvent,
+        NodeHighlightRequestedEvent,
+        ScreenshotRequestedEvent,
+    )
+
 
 class OverlayRegistration:
     """Event registration interface for Overlay domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Overlay"
 
     def inspectNodeRequested(
         self,
-        callback: Callable[['InspectNodeRequestedEvent', Optional[str]], None],
+        callback: Callable[["InspectNodeRequestedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for inspectNodeRequested events.
-        
-        Fired when the node should be inspected. This happens after call to `setInspectMode` or when
-user manually inspects an element.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for inspectNodeRequested events.
+
+                Fired when the node should be inspected. This happens after call to `setInspectMode` or when
+        user manually inspects an element.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Overlay.inspectNodeRequested", callback)
 
     def nodeHighlightRequested(
         self,
-        callback: Callable[['NodeHighlightRequestedEvent', Optional[str]], None],
+        callback: Callable[["NodeHighlightRequestedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for nodeHighlightRequested events.
-        
+
         Fired when the node should be highlighted. This happens after call to `setInspectMode`.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -52,13 +58,13 @@ user manually inspects an element.
 
     def screenshotRequested(
         self,
-        callback: Callable[['ScreenshotRequestedEvent', Optional[str]], None],
+        callback: Callable[["ScreenshotRequestedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for screenshotRequested events.
-        
+
         Fired when user asks to capture screenshot of some area on the page.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -67,16 +73,15 @@ user manually inspects an element.
 
     def inspectModeCanceled(
         self,
-        callback: Callable[['InspectModeCanceledEvent', Optional[str]], None],
+        callback: Callable[["InspectModeCanceledEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for inspectModeCanceled events.
-        
+
         Fired when user cancels the inspect mode.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Overlay.inspectModeCanceled", callback)
-

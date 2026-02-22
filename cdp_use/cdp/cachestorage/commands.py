@@ -17,12 +17,10 @@ if TYPE_CHECKING:
     from .types import DataEntry
     from .types import Header
 
+
 class DeleteCacheParameters(TypedDict):
     cacheId: "CacheId"
     """Id of cache for deletion."""
-
-
-
 
 
 class DeleteEntryParameters(TypedDict):
@@ -30,9 +28,6 @@ class DeleteEntryParameters(TypedDict):
     """Id of cache where the entry will be deleted."""
     request: "str"
     """URL spec of the request."""
-
-
-
 
 
 class RequestCacheNamesParameters(TypedDict, total=False):
@@ -50,7 +45,6 @@ class RequestCacheNamesReturns(TypedDict):
     """Caches for the security origin."""
 
 
-
 class RequestCachedResponseParameters(TypedDict):
     cacheId: "CacheId"
     """Id of cache that contains the entry."""
@@ -63,7 +57,6 @@ class RequestCachedResponseParameters(TypedDict):
 class RequestCachedResponseReturns(TypedDict):
     response: "CachedResponse"
     """Response read from the cache."""
-
 
 
 class RequestEntriesParameters(TypedDict):

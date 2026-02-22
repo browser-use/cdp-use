@@ -6,6 +6,7 @@
 
 from typing_extensions import NotRequired, TypedDict
 
+
 class Sink(TypedDict):
     name: "str"
     id: "str"

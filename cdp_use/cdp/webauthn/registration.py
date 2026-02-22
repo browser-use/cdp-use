@@ -10,24 +10,30 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import CredentialAddedEvent, CredentialAssertedEvent, CredentialDeletedEvent, CredentialUpdatedEvent
+    from .events import (
+        CredentialAddedEvent,
+        CredentialAssertedEvent,
+        CredentialDeletedEvent,
+        CredentialUpdatedEvent,
+    )
+
 
 class WebAuthnRegistration:
     """Event registration interface for WebAuthn domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "WebAuthn"
 
     def credentialAdded(
         self,
-        callback: Callable[['CredentialAddedEvent', Optional[str]], None],
+        callback: Callable[["CredentialAddedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for credentialAdded events.
-        
+
         Triggered when a credential is added to an authenticator.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -36,48 +42,47 @@ class WebAuthnRegistration:
 
     def credentialDeleted(
         self,
-        callback: Callable[['CredentialDeletedEvent', Optional[str]], None],
+        callback: Callable[["CredentialDeletedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for credentialDeleted events.
-        
-        Triggered when a credential is deleted, e.g. through
-PublicKeyCredential.signalUnknownCredential().
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for credentialDeleted events.
+
+                Triggered when a credential is deleted, e.g. through
+        PublicKeyCredential.signalUnknownCredential().
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("WebAuthn.credentialDeleted", callback)
 
     def credentialUpdated(
         self,
-        callback: Callable[['CredentialUpdatedEvent', Optional[str]], None],
+        callback: Callable[["CredentialUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for credentialUpdated events.
-        
-        Triggered when a credential is updated, e.g. through
-PublicKeyCredential.signalCurrentUserDetails().
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for credentialUpdated events.
+
+                Triggered when a credential is updated, e.g. through
+        PublicKeyCredential.signalCurrentUserDetails().
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("WebAuthn.credentialUpdated", callback)
 
     def credentialAsserted(
         self,
-        callback: Callable[['CredentialAssertedEvent', Optional[str]], None],
+        callback: Callable[["CredentialAssertedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for credentialAsserted events.
-        
+
         Triggered when a credential is used in a webauthn assertion.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("WebAuthn.credentialAsserted", callback)
-

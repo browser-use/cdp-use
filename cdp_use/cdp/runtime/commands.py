@@ -22,6 +22,7 @@ if TYPE_CHECKING:
     from .types import SerializationOptions
     from .types import TimeDelta
 
+
 class AwaitPromiseParameters(TypedDict):
     promiseObjectId: "RemoteObjectId"
     """Identifier of the promise."""
@@ -36,7 +37,6 @@ class AwaitPromiseReturns(TypedDict):
     """Promise result. Will contain rejected value if promise was rejected."""
     exceptionDetails: "ExceptionDetails"
     """Exception details if stack strace is available."""
-
 
 
 class CallFunctionOnParameters(TypedDict):
@@ -88,7 +88,6 @@ class CallFunctionOnReturns(TypedDict):
     """Exception details."""
 
 
-
 class CompileScriptParameters(TypedDict):
     expression: "str"
     """Expression to compile."""
@@ -106,7 +105,6 @@ class CompileScriptReturns(TypedDict):
     """Id of the script."""
     exceptionDetails: "ExceptionDetails"
     """Exception details."""
-
 
 
 class EvaluateParameters(TypedDict):
@@ -169,11 +167,9 @@ class EvaluateReturns(TypedDict):
     """Exception details."""
 
 
-
 class GetIsolateIdReturns(TypedDict):
     id: "str"
     """The isolate id."""
-
 
 
 class GetHeapUsageReturns(TypedDict):
@@ -185,7 +181,6 @@ class GetHeapUsageReturns(TypedDict):
     """Used size in bytes in the embedder's garbage-collected heap."""
     backingStorageSize: "float"
     """Size in bytes of backing storage for array buffers and external strings."""
-
 
 
 class GetPropertiesParameters(TypedDict):
@@ -214,7 +209,6 @@ class GetPropertiesReturns(TypedDict):
     """Exception details."""
 
 
-
 class GlobalLexicalScopeNamesParameters(TypedDict, total=False):
     executionContextId: "ExecutionContextId"
     """Specifies in which execution context to lookup global scope variables."""
@@ -222,7 +216,6 @@ class GlobalLexicalScopeNamesParameters(TypedDict, total=False):
 
 class GlobalLexicalScopeNamesReturns(TypedDict):
     names: "List[str]"
-
 
 
 class QueryObjectsParameters(TypedDict):
@@ -237,21 +230,14 @@ class QueryObjectsReturns(TypedDict):
     """Array with objects."""
 
 
-
 class ReleaseObjectParameters(TypedDict):
     objectId: "RemoteObjectId"
     """Identifier of the object to release."""
 
 
-
-
-
 class ReleaseObjectGroupParameters(TypedDict):
     objectGroup: "str"
     """Symbolic object group name."""
-
-
-
 
 
 class RunScriptParameters(TypedDict):
@@ -283,28 +269,18 @@ class RunScriptReturns(TypedDict):
     """Exception details."""
 
 
-
 class SetAsyncCallStackDepthParameters(TypedDict):
     maxDepth: "int"
     """Maximum depth of async call stacks. Setting to `0` will effectively disable collecting async
 call stacks (default)."""
 
 
-
-
-
 class SetCustomObjectFormatterEnabledParameters(TypedDict):
     enabled: "bool"
 
 
-
-
-
 class SetMaxCallStackSizeToCaptureParameters(TypedDict):
     size: "int"
-
-
-
 
 
 class AddBindingParameters(TypedDict):
@@ -325,14 +301,8 @@ See also `ExecutionContext.name` and `worldName` parameter to
 This parameter is mutually exclusive with `executionContextId`."""
 
 
-
-
-
 class RemoveBindingParameters(TypedDict):
     name: "str"
-
-
-
 
 
 class GetExceptionDetailsParameters(TypedDict):

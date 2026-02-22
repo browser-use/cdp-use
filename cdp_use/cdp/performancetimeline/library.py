@@ -12,10 +12,11 @@ if TYPE_CHECKING:
     from ...client import CDPClient
     from .commands import EnableParameters
 
+
 class PerformanceTimelineClient:
     """Client for PerformanceTimeline domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def enable(
@@ -24,11 +25,12 @@ class PerformanceTimelineClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Previously buffered events would be reported before method returns.
-See also: timelineEventAdded"""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="PerformanceTimeline.enable",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        See also: timelineEventAdded"""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="PerformanceTimeline.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )

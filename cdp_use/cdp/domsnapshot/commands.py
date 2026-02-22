@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from .types import DocumentSnapshot
     from .types import LayoutTreeNode
 
+
 class GetSnapshotParameters(TypedDict):
     computedStyleWhitelist: "List[str]"
     """Whitelist of computed styles to return."""
@@ -33,7 +34,6 @@ class GetSnapshotReturns(TypedDict):
     """The nodes in the layout tree."""
     computedStyles: "List[ComputedStyle]"
     """Whitelisted ComputedStyle properties for each node in the layout tree."""
-
 
 
 class CaptureSnapshotParameters(TypedDict):

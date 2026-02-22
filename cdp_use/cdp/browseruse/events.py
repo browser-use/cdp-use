@@ -12,6 +12,8 @@ if TYPE_CHECKING:
     from ..target.types import TargetID
 
 """Captcha solving started."""
+
+
 class CaptchaSolverStartedEvent(TypedDict):
     targetId: "TargetID"
     vendor: "str"
@@ -21,8 +23,9 @@ class CaptchaSolverStartedEvent(TypedDict):
     eventTimeout: "NotRequired[float]"
 
 
-
 """Captcha solving finished."""
+
+
 class CaptchaSolverFinishedEvent(TypedDict):
     targetId: "TargetID"
     vendor: "str"
@@ -35,8 +38,9 @@ class CaptchaSolverFinishedEvent(TypedDict):
     eventTimeout: "NotRequired[float]"
 
 
-
 """Fired when a target is activated via Target.activateTarget."""
+
+
 class ActiveTargetChangedEvent(TypedDict):
     targetId: "TargetID"
     eventTimeout: "NotRequired[float]"

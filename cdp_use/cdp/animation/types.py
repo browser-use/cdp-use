@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
     from ..dom.types import ScrollOrientation
 
+
 class Animation(TypedDict):
     """Animation instance."""
 
@@ -44,7 +45,6 @@ animation/transition."""
     """View or scroll timeline"""
 
 
-
 class ViewOrScrollTimeline(TypedDict):
     """Timeline instance"""
 
@@ -62,7 +62,6 @@ scrollport defined the progress of the timeline.
 Does not exist for animations with ScrollTimeline"""
     axis: "ScrollOrientation"
     """Orientation of the scroll"""
-
 
 
 class AnimationEffect(TypedDict):
@@ -93,7 +92,6 @@ percentage [0 - 100] for scroll driven animations
     """`AnimationEffect`'s timing function."""
 
 
-
 class KeyframesRule(TypedDict):
     """Keyframes Rule"""
 
@@ -101,7 +99,6 @@ class KeyframesRule(TypedDict):
     """CSS keyframed animation's name."""
     keyframes: "List[KeyframeStyle]"
     """List of animation keyframes."""
-
 
 
 class KeyframeStyle(TypedDict):

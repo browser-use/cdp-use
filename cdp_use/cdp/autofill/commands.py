@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from .types import Address
     from .types import CreditCard
 
+
 class TriggerParameters(TypedDict):
     fieldId: "BackendNodeId"
     """Identifies a field that serves as an anchor for autofill."""
@@ -26,10 +27,5 @@ class TriggerParameters(TypedDict):
     """Address to fill out the form. Address data is not saved. Mutually exclusive with `card`."""
 
 
-
-
-
 class SetAddressesParameters(TypedDict):
     addresses: "List[Address]"
-
-

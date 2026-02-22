@@ -14,12 +14,12 @@ if TYPE_CHECKING:
     from .types import Layer
     from .types import LayerId
 
+
 class LayerPaintedEvent(TypedDict):
     layerId: "LayerId"
     """The id of the painted layer."""
     clip: "Rect"
     """Clip rectangle."""
-
 
 
 class LayerTreeDidChangeEvent(TypedDict, total=False):

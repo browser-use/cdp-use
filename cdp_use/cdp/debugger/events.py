@@ -23,6 +23,8 @@ if TYPE_CHECKING:
 
 """Fired when breakpoint is resolved to an actual script and location.
 Deprecated in favor of `resolvedBreakpoints` in the `scriptParsed` event."""
+
+
 class BreakpointResolvedEvent(TypedDict):
     breakpointId: "BreakpointId"
     """Breakpoint unique identifier."""
@@ -30,8 +32,9 @@ class BreakpointResolvedEvent(TypedDict):
     """Actual breakpoint location."""
 
 
-
 """Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria."""
+
+
 class PausedEvent(TypedDict):
     callFrames: "List[CallFrame]"
     """Call stack the virtual machine stopped on."""
@@ -49,14 +52,16 @@ class PausedEvent(TypedDict):
     """Never present, will be removed."""
 
 
-
 """Fired when the virtual machine resumed execution."""
+
+
 class ResumedEvent(TypedDict):
     pass
 
 
-
 """Fired when virtual machine fails to parse the script."""
+
+
 class ScriptFailedToParseEvent(TypedDict):
     scriptId: "ScriptId"
     """Identifier of the script parsed."""
@@ -96,9 +101,10 @@ class ScriptFailedToParseEvent(TypedDict):
     """The name the embedder supplied for this script."""
 
 
-
 """Fired when virtual machine parses script. This event is also fired for all known and uncollected
 scripts upon enabling debugger."""
+
+
 class ScriptParsedEvent(TypedDict):
     scriptId: "ScriptId"
     """Identifier of the script parsed."""

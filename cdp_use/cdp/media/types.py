@@ -16,14 +16,12 @@ PlayerId = str
 """Players will get an ID that is unique within the agent context."""
 
 
-
 Timestamp = float
-
 
 
 class PlayerMessage(TypedDict):
     """Have one type per entry in MediaLogRecord::Type
-Corresponds to kMessage"""
+    Corresponds to kMessage"""
 
     level: "str"
     """Keep in sync with MediaLogMessageLevel
@@ -38,13 +36,11 @@ the error log level into the PlayerError type."""
     message: "str"
 
 
-
 class PlayerProperty(TypedDict):
     """Corresponds to kMediaPropertyChange"""
 
     name: "str"
     value: "str"
-
 
 
 class PlayerEvent(TypedDict):
@@ -54,14 +50,12 @@ class PlayerEvent(TypedDict):
     value: "str"
 
 
-
 class PlayerErrorSourceLocation(TypedDict):
     """Represents logged source line numbers reported in an error.
-NOTE: file and line are from chromium c++ implementation code, not js."""
+    NOTE: file and line are from chromium c++ implementation code, not js."""
 
     file: "str"
     line: "int"
-
 
 
 class PlayerError(TypedDict):
@@ -78,7 +72,6 @@ as PipelineStatusCodes in media/base/pipeline_status.h"""
 caused by an WindowsError"""
     data: "Dict[str, Any]"
     """Extra data attached to an error, such as an HRESULT, Video Codec, etc."""
-
 
 
 class Player(TypedDict):

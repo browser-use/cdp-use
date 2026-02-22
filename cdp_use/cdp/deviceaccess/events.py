@@ -15,6 +15,8 @@ if TYPE_CHECKING:
 
 """A device request opened a user prompt to select a device. Respond with the
 selectPrompt or cancelPrompt command."""
+
+
 class DeviceRequestPromptedEvent(TypedDict):
     id: "RequestId"
     devices: "List[PromptDevice]"

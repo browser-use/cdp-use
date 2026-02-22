@@ -22,13 +22,13 @@ if TYPE_CHECKING:
     from .types import TrustTokens
     from .types import UsageForType
 
+
 class GetStorageKeyForFrameParameters(TypedDict):
     frameId: "FrameId"
 
 
 class GetStorageKeyForFrameReturns(TypedDict):
     storageKey: "SerializedStorageKey"
-
 
 
 class GetStorageKeyParameters(TypedDict, total=False):
@@ -39,7 +39,6 @@ class GetStorageKeyReturns(TypedDict):
     storageKey: "SerializedStorageKey"
 
 
-
 class ClearDataForOriginParameters(TypedDict):
     origin: "str"
     """Security origin."""
@@ -47,17 +46,11 @@ class ClearDataForOriginParameters(TypedDict):
     """Comma separated list of StorageType to clear."""
 
 
-
-
-
 class ClearDataForStorageKeyParameters(TypedDict):
     storageKey: "str"
     """Storage key."""
     storageTypes: "str"
     """Comma separated list of StorageType to clear."""
-
-
-
 
 
 class GetCookiesParameters(TypedDict, total=False):
@@ -70,7 +63,6 @@ class GetCookiesReturns(TypedDict):
     """Array of cookie objects."""
 
 
-
 class SetCookiesParameters(TypedDict):
     cookies: "List[CookieParam]"
     """Cookies to be set."""
@@ -78,15 +70,9 @@ class SetCookiesParameters(TypedDict):
     """Browser context to use when called on the browser endpoint."""
 
 
-
-
-
 class ClearCookiesParameters(TypedDict, total=False):
     browserContextId: "BrowserContextID"
     """Browser context to use when called on the browser endpoint."""
-
-
-
 
 
 class GetUsageAndQuotaParameters(TypedDict):
@@ -105,7 +91,6 @@ class GetUsageAndQuotaReturns(TypedDict):
     """Storage usage per type (bytes)."""
 
 
-
 class OverrideQuotaForOriginParameters(TypedDict):
     origin: "str"
     """Security origin."""
@@ -119,15 +104,9 @@ origins, the override will be maintained for each origin until it is
 disabled (called without a quotaSize)."""
 
 
-
-
-
 class TrackCacheStorageForOriginParameters(TypedDict):
     origin: "str"
     """Security origin."""
-
-
-
 
 
 class TrackCacheStorageForStorageKeyParameters(TypedDict):
@@ -135,15 +114,9 @@ class TrackCacheStorageForStorageKeyParameters(TypedDict):
     """Storage key."""
 
 
-
-
-
 class TrackIndexedDBForOriginParameters(TypedDict):
     origin: "str"
     """Security origin."""
-
-
-
 
 
 class TrackIndexedDBForStorageKeyParameters(TypedDict):
@@ -151,15 +124,9 @@ class TrackIndexedDBForStorageKeyParameters(TypedDict):
     """Storage key."""
 
 
-
-
-
 class UntrackCacheStorageForOriginParameters(TypedDict):
     origin: "str"
     """Security origin."""
-
-
-
 
 
 class UntrackCacheStorageForStorageKeyParameters(TypedDict):
@@ -167,15 +134,9 @@ class UntrackCacheStorageForStorageKeyParameters(TypedDict):
     """Storage key."""
 
 
-
-
-
 class UntrackIndexedDBForOriginParameters(TypedDict):
     origin: "str"
     """Security origin."""
-
-
-
 
 
 class UntrackIndexedDBForStorageKeyParameters(TypedDict):
@@ -183,12 +144,8 @@ class UntrackIndexedDBForStorageKeyParameters(TypedDict):
     """Storage key."""
 
 
-
-
-
 class GetTrustTokensReturns(TypedDict):
     tokens: "List[TrustTokens]"
-
 
 
 class ClearTrustTokensParameters(TypedDict):
@@ -198,7 +155,6 @@ class ClearTrustTokensParameters(TypedDict):
 class ClearTrustTokensReturns(TypedDict):
     didDeleteTokens: "bool"
     """True if any tokens were deleted, false otherwise."""
-
 
 
 class GetInterestGroupDetailsParameters(TypedDict):
@@ -214,19 +170,12 @@ but has absolute expirationTime instead of relative lifetimeMs and
 also adds joiningOrigin."""
 
 
-
 class SetInterestGroupTrackingParameters(TypedDict):
     enable: "bool"
 
 
-
-
-
 class SetInterestGroupAuctionTrackingParameters(TypedDict):
     enable: "bool"
-
-
-
 
 
 class GetSharedStorageMetadataParameters(TypedDict):
@@ -237,14 +186,12 @@ class GetSharedStorageMetadataReturns(TypedDict):
     metadata: "SharedStorageMetadata"
 
 
-
 class GetSharedStorageEntriesParameters(TypedDict):
     ownerOrigin: "str"
 
 
 class GetSharedStorageEntriesReturns(TypedDict):
     entries: "List[SharedStorageEntry]"
-
 
 
 class SetSharedStorageEntryParameters(TypedDict):
@@ -256,36 +203,21 @@ class SetSharedStorageEntryParameters(TypedDict):
 `key` doesn't already exist."""
 
 
-
-
-
 class DeleteSharedStorageEntryParameters(TypedDict):
     ownerOrigin: "str"
     key: "str"
-
-
-
 
 
 class ClearSharedStorageEntriesParameters(TypedDict):
     ownerOrigin: "str"
 
 
-
-
-
 class ResetSharedStorageBudgetParameters(TypedDict):
     ownerOrigin: "str"
 
 
-
-
-
 class SetSharedStorageTrackingParameters(TypedDict):
     enable: "bool"
-
-
-
 
 
 class SetStorageBucketTrackingParameters(TypedDict):
@@ -293,19 +225,12 @@ class SetStorageBucketTrackingParameters(TypedDict):
     enable: "bool"
 
 
-
-
-
 class DeleteStorageBucketParameters(TypedDict):
     bucket: "StorageBucket"
 
 
-
-
-
 class RunBounceTrackingMitigationsReturns(TypedDict):
     deletedSites: "List[str]"
-
 
 
 class SetAttributionReportingLocalTestingModeParameters(TypedDict):
@@ -313,14 +238,8 @@ class SetAttributionReportingLocalTestingModeParameters(TypedDict):
     """If enabled, noise is suppressed and reports are sent immediately."""
 
 
-
-
-
 class SetAttributionReportingTrackingParameters(TypedDict):
     enable: "bool"
-
-
-
 
 
 class SendPendingAttributionReportsReturns(TypedDict):
@@ -328,10 +247,8 @@ class SendPendingAttributionReportsReturns(TypedDict):
     """The number of reports that were sent."""
 
 
-
 class GetRelatedWebsiteSetsReturns(TypedDict):
     sets: "List[RelatedWebsiteSet]"
-
 
 
 class GetAffectedUrlsForThirdPartyCookieMetadataParameters(TypedDict):
@@ -347,10 +264,7 @@ class GetAffectedUrlsForThirdPartyCookieMetadataReturns(TypedDict):
 party URL, only the first-party URL is returned in the array."""
 
 
-
 class SetProtectedAudienceKAnonymityParameters(TypedDict):
     owner: "str"
     name: "str"
     hashes: "List[str]"
-
-

@@ -13,10 +13,11 @@ if TYPE_CHECKING:
     from .commands import BindParameters
     from .commands import UnbindParameters
 
+
 class TetheringClient:
     """Client for Tethering domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def bind(
@@ -25,11 +26,14 @@ class TetheringClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Request browser port binding."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Tethering.bind",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Tethering.bind",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def unbind(
         self,
@@ -37,10 +41,11 @@ class TetheringClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Request browser port unbinding."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Tethering.unbind",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Tethering.unbind",
+                params=params,
+                session_id=session_id,
+            ),
+        )

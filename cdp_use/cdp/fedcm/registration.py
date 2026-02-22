@@ -12,20 +12,21 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import DialogClosedEvent, DialogShownEvent
 
+
 class FedCmRegistration:
     """Event registration interface for FedCm domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "FedCm"
 
     def dialogShown(
         self,
-        callback: Callable[['DialogShownEvent', Optional[str]], None],
+        callback: Callable[["DialogShownEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for dialogShown events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -34,17 +35,16 @@ class FedCmRegistration:
 
     def dialogClosed(
         self,
-        callback: Callable[['DialogClosedEvent', Optional[str]], None],
+        callback: Callable[["DialogClosedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for dialogClosed events.
-        
-        Triggered when a dialog is closed, either by user action, JS abort,
-or a command below.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for dialogClosed events.
+
+                Triggered when a dialog is closed, either by user action, JS abort,
+        or a command below.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("FedCm.dialogClosed", callback)
-

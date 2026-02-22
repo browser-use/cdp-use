@@ -12,15 +12,11 @@ if TYPE_CHECKING:
     from .types import DeviceId
     from .types import RequestId
 
+
 class SelectPromptParameters(TypedDict):
     id: "RequestId"
     deviceId: "DeviceId"
 
 
-
-
-
 class CancelPromptParameters(TypedDict):
     id: "RequestId"
-
-

@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .types import Domain
 
+
 class GetDomainsReturns(TypedDict):
     domains: "List[Domain]"
     """List of supported domains."""

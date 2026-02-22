@@ -21,6 +21,7 @@ if TYPE_CHECKING:
     from .types import PrivacySandboxAPI
     from .types import WindowID
 
+
 class SetPermissionParameters(TypedDict):
     permission: "PermissionDescriptor"
     """Descriptor of permission to override."""
@@ -36,9 +37,6 @@ embedding origin is used as the embedded origin."""
     """Context to override. When omitted, default browser context is used."""
 
 
-
-
-
 class GrantPermissionsParameters(TypedDict):
     permissions: "List[PermissionType]"
     origin: "NotRequired[str]"
@@ -47,15 +45,9 @@ class GrantPermissionsParameters(TypedDict):
     """BrowserContext to override permissions. When omitted, default browser context is used."""
 
 
-
-
-
 class ResetPermissionsParameters(TypedDict, total=False):
     browserContextId: "BrowserContextID"
     """BrowserContext to reset permissions. When omitted, default browser context is used."""
-
-
-
 
 
 class SetDownloadBehaviorParameters(TypedDict):
@@ -72,17 +64,11 @@ or 'allowAndName'."""
     """Whether to emit download events (defaults to false)."""
 
 
-
-
-
 class CancelDownloadParameters(TypedDict):
     guid: "str"
     """Global unique identifier of the download."""
     browserContextId: "NotRequired[BrowserContextID]"
     """BrowserContext to perform the action in. When omitted, default browser context is used."""
-
-
-
 
 
 class GetVersionReturns(TypedDict):
@@ -98,11 +84,9 @@ class GetVersionReturns(TypedDict):
     """V8 version."""
 
 
-
 class GetBrowserCommandLineReturns(TypedDict):
     arguments: "List[str]"
     """Commandline parameters"""
-
 
 
 class GetHistogramsParameters(TypedDict, total=False):
@@ -119,7 +103,6 @@ class GetHistogramsReturns(TypedDict):
     """Histograms."""
 
 
-
 class GetHistogramParameters(TypedDict):
     name: "str"
     """Requested histogram name."""
@@ -132,7 +115,6 @@ class GetHistogramReturns(TypedDict):
     """Histogram."""
 
 
-
 class GetWindowBoundsParameters(TypedDict):
     windowId: "WindowID"
     """Browser window id."""
@@ -142,7 +124,6 @@ class GetWindowBoundsReturns(TypedDict):
     bounds: "Bounds"
     """Bounds information of the window. When window state is 'minimized', the restored window
 position and size are returned."""
-
 
 
 class GetWindowForTargetParameters(TypedDict, total=False):
@@ -158,16 +139,12 @@ class GetWindowForTargetReturns(TypedDict):
 position and size are returned."""
 
 
-
 class SetWindowBoundsParameters(TypedDict):
     windowId: "WindowID"
     """Browser window id."""
     bounds: "Bounds"
     """New window bounds. The 'minimized', 'maximized' and 'fullscreen' states cannot be combined
 with 'left', 'top', 'width' or 'height'. Leaves unspecified fields unchanged."""
-
-
-
 
 
 class SetContentsSizeParameters(TypedDict):
@@ -181,30 +158,18 @@ Must be specified if 'height' is omitted."""
 Must be specified if 'width' is omitted."""
 
 
-
-
-
 class SetDockTileParameters(TypedDict, total=False):
     badgeLabel: "str"
     image: "str"
     """Png encoded image. (Encoded as a base64 string when passed over JSON)"""
 
 
-
-
-
 class ExecuteBrowserCommandParameters(TypedDict):
     commandId: "BrowserCommandId"
 
 
-
-
-
 class AddPrivacySandboxEnrollmentOverrideParameters(TypedDict):
     url: "str"
-
-
-
 
 
 class AddPrivacySandboxCoordinatorKeyConfigParameters(TypedDict):
@@ -214,5 +179,3 @@ class AddPrivacySandboxCoordinatorKeyConfigParameters(TypedDict):
     browserContextId: "NotRequired[BrowserContextID]"
     """BrowserContext to perform the action in. When omitted, default browser
 context is used."""
-
-

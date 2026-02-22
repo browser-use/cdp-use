@@ -18,10 +18,8 @@ BreakpointId = str
 """Breakpoint identifier."""
 
 
-
 CallFrameId = str
 """Call frame identifier."""
-
 
 
 class Location(TypedDict):
@@ -35,13 +33,11 @@ class Location(TypedDict):
     """Column number in the script (0-based)."""
 
 
-
 class ScriptPosition(TypedDict):
     """Location in the source code."""
 
     lineNumber: "int"
     columnNumber: "int"
-
 
 
 class LocationRange(TypedDict):
@@ -50,7 +46,6 @@ class LocationRange(TypedDict):
     scriptId: "ScriptId"
     start: "ScriptPosition"
     end: "ScriptPosition"
-
 
 
 class CallFrame(TypedDict):
@@ -81,7 +76,6 @@ guarantee that Debugger#restartFrame with this CallFrameId will be
 successful, but it is very likely."""
 
 
-
 class Scope(TypedDict):
     """Scope description."""
 
@@ -98,7 +92,6 @@ variables as its properties."""
     """Location in the source code where scope ends"""
 
 
-
 class SearchMatch(TypedDict):
     """Search match for resource."""
 
@@ -106,7 +99,6 @@ class SearchMatch(TypedDict):
     """Line number in resource content."""
     lineContent: "str"
     """Line with match content."""
-
 
 
 class BreakLocation(TypedDict):
@@ -119,7 +111,6 @@ class BreakLocation(TypedDict):
     type: "NotRequired[str]"
 
 
-
 class WasmDisassemblyChunk(TypedDict):
     lines: "List[str]"
     """The next chunk of disassembled lines."""
@@ -127,10 +118,8 @@ class WasmDisassemblyChunk(TypedDict):
     """The bytecode offsets describing the start of each line."""
 
 
-
 ScriptLanguage = Literal["JavaScript", "WebAssembly"]
 """Enum of possible script languages."""
-
 
 
 class DebugSymbols(TypedDict):
@@ -140,7 +129,6 @@ class DebugSymbols(TypedDict):
     """Type of the debug symbols."""
     externalURL: "NotRequired[str]"
     """URL of the external symbol source."""
-
 
 
 class ResolvedBreakpoint(TypedDict):

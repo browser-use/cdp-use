@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
 
+
 class GetCurrentTimeParameters(TypedDict):
     id: "str"
     """Id of animation."""
@@ -22,19 +23,14 @@ class GetCurrentTimeReturns(TypedDict):
     """Current time of the page."""
 
 
-
 class GetPlaybackRateReturns(TypedDict):
     playbackRate: "float"
     """Playback rate for animations on page."""
 
 
-
 class ReleaseAnimationsParameters(TypedDict):
     animations: "List[str]"
     """List of animation ids to seek."""
-
-
-
 
 
 class ResolveAnimationParameters(TypedDict):
@@ -47,15 +43,11 @@ class ResolveAnimationReturns(TypedDict):
     """Corresponding remote object."""
 
 
-
 class SeekAnimationsParameters(TypedDict):
     animations: "List[str]"
     """List of animation ids to seek."""
     currentTime: "float"
     """Set the current time of each animation."""
-
-
-
 
 
 class SetPausedParameters(TypedDict):
@@ -65,15 +57,9 @@ class SetPausedParameters(TypedDict):
     """Paused state to set to."""
 
 
-
-
-
 class SetPlaybackRateParameters(TypedDict):
     playbackRate: "float"
     """Playback rate for animations on page"""
-
-
-
 
 
 class SetTimingParameters(TypedDict):
@@ -83,5 +69,3 @@ class SetTimingParameters(TypedDict):
     """Duration of the animation."""
     delay: "float"
     """Delay of the animation."""
-
-

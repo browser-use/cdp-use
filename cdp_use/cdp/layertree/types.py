@@ -17,10 +17,8 @@ LayerId = str
 """Unique Layer identifier."""
 
 
-
 SnapshotId = str
 """Unique snapshot identifier."""
-
 
 
 class ScrollRect(TypedDict):
@@ -30,7 +28,6 @@ class ScrollRect(TypedDict):
     """Rectangle itself."""
     type: "str"
     """Reason for rectangle to force scrolling on the main thread"""
-
 
 
 class StickyPositionConstraint(TypedDict):
@@ -46,7 +43,6 @@ class StickyPositionConstraint(TypedDict):
     """The nearest sticky layer that shifts the containing block"""
 
 
-
 class PictureTile(TypedDict):
     """Serialized fragment of layer picture along with its offset within the layer."""
 
@@ -56,7 +52,6 @@ class PictureTile(TypedDict):
     """Offset from owning layer top boundary"""
     picture: "str"
     """Base64-encoded snapshot data. (Encoded as a base64 string when passed over JSON)"""
-
 
 
 class Layer(TypedDict):
@@ -95,7 +90,6 @@ transform/scrolling purposes only."""
     """Rectangles scrolling on main thread only."""
     stickyPositionConstraint: "NotRequired[StickyPositionConstraint]"
     """Sticky position constraint information"""
-
 
 
 PaintProfile = List[float]

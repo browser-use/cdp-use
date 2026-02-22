@@ -15,10 +15,11 @@ if TYPE_CHECKING:
     from .commands import GetInfoReturns
     from .commands import GetProcessInfoReturns
 
+
 class SystemInfoClient:
     """Client for SystemInfo domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def getInfo(
@@ -27,11 +28,14 @@ class SystemInfoClient:
         session_id: Optional[str] = None,
     ) -> "GetInfoReturns":
         """Returns information about the system."""
-        return cast("GetInfoReturns", await self._client.send_raw(
-            method="SystemInfo.getInfo",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetInfoReturns",
+            await self._client.send_raw(
+                method="SystemInfo.getInfo",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getFeatureState(
         self,
@@ -39,11 +43,14 @@ class SystemInfoClient:
         session_id: Optional[str] = None,
     ) -> "GetFeatureStateReturns":
         """Returns information about the feature state."""
-        return cast("GetFeatureStateReturns", await self._client.send_raw(
-            method="SystemInfo.getFeatureState",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetFeatureStateReturns",
+            await self._client.send_raw(
+                method="SystemInfo.getFeatureState",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getProcessInfo(
         self,
@@ -51,10 +58,11 @@ class SystemInfoClient:
         session_id: Optional[str] = None,
     ) -> "GetProcessInfoReturns":
         """Returns information about all running processes."""
-        return cast("GetProcessInfoReturns", await self._client.send_raw(
-            method="SystemInfo.getProcessInfo",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "GetProcessInfoReturns",
+            await self._client.send_raw(
+                method="SystemInfo.getProcessInfo",
+                params=params,
+                session_id=session_id,
+            ),
+        )
