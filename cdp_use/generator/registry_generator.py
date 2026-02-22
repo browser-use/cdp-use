@@ -83,10 +83,9 @@ class RegistryGenerator:
         content += "        if method in self._handlers:\n"
         content += "            try:\n"
         content += "                handler = self._handlers[method]\n"
-        content += "                if inspect.iscoroutinefunction(handler):\n"
-        content += "                    await handler(params, session_id)\n"
-        content += "                else:\n"
-        content += "                    handler(params, session_id)\n"
+        content += "                result = handler(params, session_id)\n"
+        content += "                if inspect.isawaitable(result):\n"
+        content += "                    await result\n"
         content += "                return True\n"
         content += "            except Exception as e:\n"
         content += '                logger.error(f"Error in event handler for {method}: {e}")\n'

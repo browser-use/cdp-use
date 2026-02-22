@@ -62,10 +62,9 @@ class EventRegistry:
         if method in self._handlers:
             try:
                 handler = self._handlers[method]
-                if inspect.iscoroutinefunction(handler):
-                    await handler(params, session_id)
-                else:
-                    handler(params, session_id)
+                result = handler(params, session_id)
+                if inspect.isawaitable(result):
+                    await result
                 return True
             except Exception as e:
                 logger.error(f"Error in event handler for {method}: {e}")
