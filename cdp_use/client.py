@@ -227,8 +227,15 @@ ws_logger.addFilter(WebSocketLogFilter())
 
 
 class CDPClient:
-    def __init__(self, url: str):
+    def __init__(
+        self,
+        url: str,
+        additional_headers: Optional[Dict[str, str]] = None,
+        max_ws_frame_size: int = 100 * 1024 * 1024,  # Default 100MB
+    ):
         self.url = url
+        self.additional_headers = additional_headers
+        self.max_ws_frame_size = max_ws_frame_size
         self.ws: Optional[websockets.ClientConnection] = None
         self.msg_id: int = 0
         self.pending_requests: Dict[int, asyncio.Future] = {}
@@ -259,11 +266,15 @@ class CDPClient:
         if self.ws is not None:
             raise RuntimeError("Client is already started")
 
-        logger.info(f"Connecting to {self.url}")
-        self.ws = await websockets.connect(
-            self.url,
-            max_size=100 * 1024 * 1024,  # 100MB limit instead of default 1MB
+        logger.info(
+            f"Connecting to {self.url} (max frame size: {self.max_ws_frame_size / 1024 / 1024:.0f}MB)"
         )
+        connect_kwargs = {
+            "max_size": self.max_ws_frame_size,
+        }
+        if self.additional_headers:
+            connect_kwargs["additional_headers"] = self.additional_headers
+        self.ws = await websockets.connect(self.url, **connect_kwargs)
         self._message_handler_task = asyncio.create_task(self._handle_messages())
 
     async def stop(self):
@@ -304,7 +315,7 @@ class CDPClient:
                     # Check if future is already done to avoid InvalidStateError
                     if not future.done():
                         if "error" in data:
-                            logger.error(
+                            logger.debug(
                                 f"CDP Error for request {data['id']}: {data['error']}"
                             )
                             future.set_exception(RuntimeError(data["error"]))
@@ -333,7 +344,7 @@ class CDPClient:
                     logger.warning(f"Received unexpected message: {data}")
 
         except websockets.exceptions.ConnectionClosed as e:
-            logger.warning(f"WebSocket connection closed: {e}")
+            logger.debug(f"WebSocket connection closed: {e}")
             # Connection closed, resolve all pending futures with an exception
             for future in self.pending_requests.values():
                 if not future.done():
