@@ -4,6 +4,7 @@
 
 """CDP Profiler Domain Events"""
 
+from typing import List
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -11,17 +12,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..debugger.types import Location
     from .types import Profile
-
-"""Sent when new profile recording is started using console.profile() call."""
-
-
-class ConsoleProfileStartedEvent(TypedDict):
-    id: "str"
-    location: "Location"
-    """Location of console.profile()."""
-    title: "NotRequired[str]"
-    """Profile title passed as an argument to console.profile()."""
-
+    from .types import ScriptCoverage
 
 class ConsoleProfileFinishedEvent(TypedDict):
     id: "str"
@@ -30,3 +21,27 @@ class ConsoleProfileFinishedEvent(TypedDict):
     profile: "Profile"
     title: "NotRequired[str]"
     """Profile title passed as an argument to console.profile()."""
+
+
+
+"""Sent when new profile recording is started using console.profile() call."""
+class ConsoleProfileStartedEvent(TypedDict):
+    id: "str"
+    location: "Location"
+    """Location of console.profile()."""
+    title: "NotRequired[str]"
+    """Profile title passed as an argument to console.profile()."""
+
+
+
+"""Reports coverage delta since the last poll (either from an event like this, or from
+`takePreciseCoverage` for the current isolate. May only be sent if precise code
+coverage has been started. This event can be trigged by the embedder to, for example,
+trigger collection of coverage data immediately at a certain point in time."""
+class PreciseCoverageDeltaUpdateEvent(TypedDict):
+    timestamp: "float"
+    """Monotonically increasing time (in seconds) when the coverage update was taken in the backend."""
+    occasion: "str"
+    """Identifier for distinguishing coverage events."""
+    result: "List[ScriptCoverage]"
+    """Coverage data for the current isolate."""

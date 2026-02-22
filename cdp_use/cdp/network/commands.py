@@ -11,17 +11,153 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..debugger.types import SearchMatch
+    from ..emulation.types import UserAgentMetadata
+    from ..io.types import StreamHandle
+    from ..page.types import FrameId
     from .types import AuthChallengeResponse
+    from .types import BlockPattern
     from .types import ConnectionType
+    from .types import ContentEncoding
     from .types import Cookie
     from .types import CookieParam
+    from .types import CookiePartitionKey
+    from .types import CookiePriority
     from .types import CookieSameSite
+    from .types import CookieSourceScheme
     from .types import ErrorReason
     from .types import Headers
     from .types import InterceptionId
+    from .types import LoadNetworkResourceOptions
+    from .types import LoadNetworkResourcePageResult
+    from .types import NetworkConditions
     from .types import RequestId
     from .types import RequestPattern
+    from .types import SecurityIsolationStatus
     from .types import TimeSinceEpoch
+
+class SetAcceptedEncodingsParameters(TypedDict):
+    encodings: "List[ContentEncoding]"
+    """List of accepted content encodings."""
+
+
+
+
+
+class CanClearBrowserCacheReturns(TypedDict):
+    result: "bool"
+    """True if browser cache can be cleared."""
+
+
+
+class CanClearBrowserCookiesReturns(TypedDict):
+    result: "bool"
+    """True if browser cookies can be cleared."""
+
+
+
+class CanEmulateNetworkConditionsReturns(TypedDict):
+    result: "bool"
+    """True if emulation of network conditions is supported."""
+
+
+
+class ContinueInterceptedRequestParameters(TypedDict):
+    interceptionId: "InterceptionId"
+    errorReason: "NotRequired[ErrorReason]"
+    """If set this causes the request to fail with the given reason. Passing `Aborted` for requests
+marked with `isNavigationRequest` also cancels the navigation. Must not be set in response
+to an authChallenge."""
+    rawResponse: "NotRequired[str]"
+    """If set the requests completes using with the provided base64 encoded raw response, including
+HTTP status line and headers etc... Must not be set in response to an authChallenge. (Encoded as a base64 string when passed over JSON)"""
+    url: "NotRequired[str]"
+    """If set the request url will be modified in a way that's not observable by page. Must not be
+set in response to an authChallenge."""
+    method: "NotRequired[str]"
+    """If set this allows the request method to be overridden. Must not be set in response to an
+authChallenge."""
+    postData: "NotRequired[str]"
+    """If set this allows postData to be set. Must not be set in response to an authChallenge."""
+    headers: "NotRequired[Headers]"
+    """If set this allows the request headers to be changed. Must not be set in response to an
+authChallenge."""
+    authChallengeResponse: "NotRequired[AuthChallengeResponse]"
+    """Response to a requestIntercepted with an authChallenge. Must not be set otherwise."""
+
+
+
+
+
+class DeleteCookiesParameters(TypedDict):
+    name: "str"
+    """Name of the cookies to remove."""
+    url: "NotRequired[str]"
+    """If specified, deletes all the cookies with the given name where domain and path match
+provided URL."""
+    domain: "NotRequired[str]"
+    """If specified, deletes only cookies with the exact domain."""
+    path: "NotRequired[str]"
+    """If specified, deletes only cookies with the exact path."""
+    partitionKey: "NotRequired[CookiePartitionKey]"
+    """If specified, deletes only cookies with the the given name and partitionKey where
+all partition key attributes match the cookie partition key attribute."""
+
+
+
+
+
+class EmulateNetworkConditionsParameters(TypedDict):
+    offline: "bool"
+    """True to emulate internet disconnection."""
+    latency: "float"
+    """Minimum latency from request sent to response headers received (ms)."""
+    downloadThroughput: "float"
+    """Maximal aggregated download throughput (bytes/sec). -1 disables download throttling."""
+    uploadThroughput: "float"
+    """Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling."""
+    connectionType: "NotRequired[ConnectionType]"
+    """Connection type if known."""
+    packetLoss: "NotRequired[float]"
+    """WebRTC packet loss (percent, 0-100). 0 disables packet loss emulation, 100 drops all the packets."""
+    packetQueueLength: "NotRequired[int]"
+    """WebRTC packet queue length (packet). 0 removes any queue length limitations."""
+    packetReordering: "NotRequired[bool]"
+    """WebRTC packetReordering feature."""
+
+
+
+
+
+class EmulateNetworkConditionsByRuleParameters(TypedDict):
+    offline: "bool"
+    """True to emulate internet disconnection."""
+    matchedNetworkConditions: "List[NetworkConditions]"
+    """Configure conditions for matching requests. If multiple entries match a request, the first entry wins.  Global
+conditions can be configured by leaving the urlPattern for the conditions empty. These global conditions are
+also applied for throttling of p2p connections."""
+
+
+class EmulateNetworkConditionsByRuleReturns(TypedDict):
+    ruleIds: "List[str]"
+    """An id for each entry in matchedNetworkConditions. The id will be included in the requestWillBeSentExtraInfo for
+requests affected by a rule."""
+
+
+
+class OverrideNetworkStateParameters(TypedDict):
+    offline: "bool"
+    """True to emulate internet disconnection."""
+    latency: "float"
+    """Minimum latency from request sent to response headers received (ms)."""
+    downloadThroughput: "float"
+    """Maximal aggregated download throughput (bytes/sec). -1 disables download throttling."""
+    uploadThroughput: "float"
+    """Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling."""
+    connectionType: "NotRequired[ConnectionType]"
+    """Connection type if known."""
+
+
+
 
 
 class EnableParameters(TypedDict, total=False):
@@ -29,11 +165,100 @@ class EnableParameters(TypedDict, total=False):
     """Buffer size in bytes to use when preserving network payloads (XHRs, etc)."""
     maxResourceBufferSize: "int"
     """Per-resource buffer size in bytes to use when preserving network payloads (XHRs, etc)."""
+    maxPostDataSize: "int"
+    """Longest post body size (in bytes) that would be included in requestWillBeSent notification"""
+    reportDirectSocketTraffic: "bool"
+    """Whether DirectSocket chunk send/receive events should be reported."""
+    enableDurableMessages: "bool"
+    """Enable storing response bodies outside of renderer, so that these survive
+a cross-process navigation. Requires maxTotalBufferSize to be set.
+Currently defaults to false."""
 
 
-class SetUserAgentOverrideParameters(TypedDict):
-    userAgent: "str"
-    """User agent to use."""
+
+
+
+class GetAllCookiesReturns(TypedDict):
+    cookies: "List[Cookie]"
+    """Array of cookie objects."""
+
+
+
+class GetCertificateParameters(TypedDict):
+    origin: "str"
+    """Origin to get certificate for."""
+
+
+class GetCertificateReturns(TypedDict):
+    tableNames: "List[str]"
+
+
+
+class GetCookiesParameters(TypedDict, total=False):
+    urls: "List[str]"
+    """The list of URLs for which applicable cookies will be fetched.
+If not specified, it's assumed to be set to the list containing
+the URLs of the page and all of its subframes."""
+
+
+class GetCookiesReturns(TypedDict):
+    cookies: "List[Cookie]"
+    """Array of cookie objects."""
+
+
+
+class GetResponseBodyParameters(TypedDict):
+    requestId: "RequestId"
+    """Identifier of the network request to get content for."""
+
+
+class GetResponseBodyReturns(TypedDict):
+    body: "str"
+    """Response body."""
+    base64Encoded: "bool"
+    """True, if content was sent as base64."""
+
+
+
+class GetRequestPostDataParameters(TypedDict):
+    requestId: "RequestId"
+    """Identifier of the network request to get content for."""
+
+
+class GetRequestPostDataReturns(TypedDict):
+    postData: "str"
+    """Request body string, omitting files from multipart requests"""
+
+
+
+class GetResponseBodyForInterceptionParameters(TypedDict):
+    interceptionId: "InterceptionId"
+    """Identifier for the intercepted request to get body for."""
+
+
+class GetResponseBodyForInterceptionReturns(TypedDict):
+    body: "str"
+    """Response body."""
+    base64Encoded: "bool"
+    """True, if content was sent as base64."""
+
+
+
+class TakeResponseBodyForInterceptionAsStreamParameters(TypedDict):
+    interceptionId: "InterceptionId"
+
+
+class TakeResponseBodyForInterceptionAsStreamReturns(TypedDict):
+    stream: "StreamHandle"
+
+
+
+class ReplayXHRParameters(TypedDict):
+    requestId: "RequestId"
+    """Identifier of XHR to replay."""
+
+
+
 
 
 class SearchInResponseBodyParameters(TypedDict):
@@ -52,67 +277,32 @@ class SearchInResponseBodyReturns(TypedDict):
     """List of search matches."""
 
 
-class SetExtraHTTPHeadersParameters(TypedDict):
-    headers: "Headers"
-    """Map with extra HTTP headers."""
 
-
-class GetResponseBodyParameters(TypedDict):
-    requestId: "RequestId"
-    """Identifier of the network request to get content for."""
-
-
-class GetResponseBodyReturns(TypedDict):
-    body: "str"
-    """Response body."""
-    base64Encoded: "bool"
-    """True, if content was sent as base64."""
-
-
-class SetBlockedURLsParameters(TypedDict):
+class SetBlockedURLsParameters(TypedDict, total=False):
+    urlPatterns: "List[BlockPattern]"
+    """Patterns to match in the order in which they are given. These patterns
+also take precedence over any wildcard patterns defined in `urls`."""
     urls: "List[str]"
     """URL patterns to block. Wildcards ('*') are allowed."""
 
 
-class ReplayXHRParameters(TypedDict):
-    requestId: "RequestId"
-    """Identifier of XHR to replay."""
 
 
-class CanClearBrowserCacheReturns(TypedDict):
-    result: "bool"
-    """True if browser cache can be cleared."""
+
+class SetBypassServiceWorkerParameters(TypedDict):
+    bypass: "bool"
+    """Bypass service worker and load from network."""
 
 
-class CanClearBrowserCookiesReturns(TypedDict):
-    result: "bool"
-    """True if browser cookies can be cleared."""
 
 
-class GetCookiesParameters(TypedDict, total=False):
-    urls: "List[str]"
-    """The list of URLs for which applicable cookies will be fetched"""
+
+class SetCacheDisabledParameters(TypedDict):
+    cacheDisabled: "bool"
+    """Cache disabled state."""
 
 
-class GetCookiesReturns(TypedDict):
-    cookies: "List[Cookie]"
-    """Array of cookie objects."""
 
-
-class GetAllCookiesReturns(TypedDict):
-    cookies: "List[Cookie]"
-    """Array of cookie objects."""
-
-
-class DeleteCookiesParameters(TypedDict):
-    name: "str"
-    """Name of the cookies to remove."""
-    url: "NotRequired[str]"
-    """If specified, deletes all the cookies with the given name where domain and path match provided URL."""
-    domain: "NotRequired[str]"
-    """If specified, deletes only cookies with the exact domain."""
-    path: "NotRequired[str]"
-    """If specified, deletes only cookies with the exact path."""
 
 
 class SetCookieParameters(TypedDict):
@@ -121,7 +311,8 @@ class SetCookieParameters(TypedDict):
     value: "str"
     """Cookie value."""
     url: "NotRequired[str]"
-    """The request-URI to associate with the setting of the cookie. This value can affect the default domain and path values of the created cookie."""
+    """The request-URI to associate with the setting of the cookie. This value can affect the
+default domain, path, source port, and source scheme values of the created cookie."""
     domain: "NotRequired[str]"
     """Cookie domain."""
     path: "NotRequired[str]"
@@ -134,11 +325,24 @@ class SetCookieParameters(TypedDict):
     """Cookie SameSite type."""
     expires: "NotRequired[TimeSinceEpoch]"
     """Cookie expiration date, session cookie if not set"""
+    priority: "NotRequired[CookiePriority]"
+    """Cookie Priority type."""
+    sameParty: "NotRequired[bool]"
+    """True if cookie is SameParty."""
+    sourceScheme: "NotRequired[CookieSourceScheme]"
+    """Cookie source scheme type."""
+    sourcePort: "NotRequired[int]"
+    """Cookie source port. Valid values are {-1, [1, 65535]}, -1 indicates an unspecified port.
+An unspecified port value allows protocol clients to emulate legacy cookie scope for the port.
+This is a temporary ability and it will be removed in the future."""
+    partitionKey: "NotRequired[CookiePartitionKey]"
+    """Cookie partition key. If not set, the cookie will be set as not partitioned."""
 
 
 class SetCookieReturns(TypedDict):
     success: "bool"
-    """True if successfully set cookie."""
+    """Always set to true. If an error occurs, the response indicates protocol error."""
+
 
 
 class SetCookiesParameters(TypedDict):
@@ -146,80 +350,98 @@ class SetCookiesParameters(TypedDict):
     """Cookies to be set."""
 
 
-class CanEmulateNetworkConditionsReturns(TypedDict):
-    result: "bool"
-    """True if emulation of network conditions is supported."""
 
 
-class EmulateNetworkConditionsParameters(TypedDict):
-    offline: "bool"
-    """True to emulate internet disconnection."""
-    latency: "float"
-    """Minimum latency from request sent to response headers received (ms)."""
-    downloadThroughput: "float"
-    """Maximal aggregated download throughput (bytes/sec). -1 disables download throttling."""
-    uploadThroughput: "float"
-    """Maximal aggregated upload throughput (bytes/sec).  -1 disables upload throttling."""
-    connectionType: "NotRequired[ConnectionType]"
-    """Connection type if known."""
+
+class SetExtraHTTPHeadersParameters(TypedDict):
+    headers: "Headers"
+    """Map with extra HTTP headers."""
 
 
-class SetCacheDisabledParameters(TypedDict):
-    cacheDisabled: "bool"
-    """Cache disabled state."""
 
 
-class SetBypassServiceWorkerParameters(TypedDict):
-    bypass: "bool"
-    """Bypass service worker and load from network."""
+
+class SetAttachDebugStackParameters(TypedDict):
+    enabled: "bool"
+    """Whether to attach a page script stack for debugging purpose."""
 
 
-class SetDataSizeLimitsForTestParameters(TypedDict):
-    maxTotalSize: "int"
-    """Maximum total buffer size."""
-    maxResourceSize: "int"
-    """Maximum per-resource size."""
 
-
-class GetCertificateParameters(TypedDict):
-    origin: "str"
-    """Origin to get certificate for."""
-
-
-class GetCertificateReturns(TypedDict):
-    tableNames: "List[str]"
 
 
 class SetRequestInterceptionParameters(TypedDict):
     patterns: "List[RequestPattern]"
-    """Requests matching any of these patterns will be forwarded and wait for the corresponding continueInterceptedRequest call."""
+    """Requests matching any of these patterns will be forwarded and wait for the corresponding
+continueInterceptedRequest call."""
 
 
-class ContinueInterceptedRequestParameters(TypedDict):
-    interceptionId: "InterceptionId"
-    errorReason: "NotRequired[ErrorReason]"
-    """If set this causes the request to fail with the given reason. Passing <code>Aborted</code> for requests marked with <code>isNavigationRequest</code> also cancels the navigation. Must not be set in response to an authChallenge."""
-    rawResponse: "NotRequired[str]"
-    """If set the requests completes using with the provided base64 encoded raw response, including HTTP status line and headers etc... Must not be set in response to an authChallenge."""
-    url: "NotRequired[str]"
-    """If set the request url will be modified in a way that's not observable by page. Must not be set in response to an authChallenge."""
-    method: "NotRequired[str]"
-    """If set this allows the request method to be overridden. Must not be set in response to an authChallenge."""
-    postData: "NotRequired[str]"
-    """If set this allows postData to be set. Must not be set in response to an authChallenge."""
-    headers: "NotRequired[Headers]"
-    """If set this allows the request headers to be changed. Must not be set in response to an authChallenge."""
-    authChallengeResponse: "NotRequired[AuthChallengeResponse]"
-    """Response to a requestIntercepted with an authChallenge. Must not be set otherwise."""
 
 
-class GetResponseBodyForInterceptionParameters(TypedDict):
-    interceptionId: "InterceptionId"
-    """Identifier for the intercepted request to get body for."""
+
+class SetUserAgentOverrideParameters(TypedDict):
+    userAgent: "str"
+    """User agent to use."""
+    acceptLanguage: "NotRequired[str]"
+    """Browser language to emulate."""
+    platform: "NotRequired[str]"
+    """The platform navigator.platform should return."""
+    userAgentMetadata: "NotRequired[UserAgentMetadata]"
+    """To be sent in Sec-CH-UA-* headers and returned in navigator.userAgentData"""
 
 
-class GetResponseBodyForInterceptionReturns(TypedDict):
-    body: "str"
-    """Response body."""
-    base64Encoded: "bool"
-    """True, if content was sent as base64."""
+
+
+
+class StreamResourceContentParameters(TypedDict):
+    requestId: "RequestId"
+    """Identifier of the request to stream."""
+
+
+class StreamResourceContentReturns(TypedDict):
+    bufferedData: "str"
+    """Data that has been buffered until streaming is enabled. (Encoded as a base64 string when passed over JSON)"""
+
+
+
+class GetSecurityIsolationStatusParameters(TypedDict, total=False):
+    frameId: "FrameId"
+    """If no frameId is provided, the status of the target is provided."""
+
+
+class GetSecurityIsolationStatusReturns(TypedDict):
+    status: "SecurityIsolationStatus"
+
+
+
+class EnableReportingApiParameters(TypedDict):
+    enable: "bool"
+    """Whether to enable or disable events for the Reporting API"""
+
+
+
+
+
+class LoadNetworkResourceParameters(TypedDict):
+    frameId: "NotRequired[FrameId]"
+    """Frame id to get the resource for. Mandatory for frame targets, and
+should be omitted for worker targets."""
+    url: "str"
+    """URL of the resource to get content for."""
+    options: "LoadNetworkResourceOptions"
+    """Options for the request."""
+
+
+class LoadNetworkResourceReturns(TypedDict):
+    resource: "LoadNetworkResourcePageResult"
+
+
+
+class SetCookieControlsParameters(TypedDict):
+    enableThirdPartyCookieRestriction: "bool"
+    """Whether 3pc restriction is enabled."""
+    disableThirdPartyCookieMetadata: "bool"
+    """Whether 3pc grace period exception should be enabled; false by default."""
+    disableThirdPartyCookieHeuristics: "bool"
+    """Whether 3pc heuristics exceptions should be enabled; false by default."""
+
+

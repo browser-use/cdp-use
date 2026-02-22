@@ -10,29 +10,15 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
+    from .commands import EnableParameters
     from .commands import GetMetricsReturns
-
+    from .commands import SetTimeDomainParameters
 
 class PerformanceClient:
     """Client for Performance domain commands."""
 
-    def __init__(self, client: "CDPClient"):
+    def __init__(self, client: 'CDPClient'):
         self._client = client
-
-    async def enable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Enable collecting and reporting metrics."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Performance.enable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
 
     async def disable(
         self,
@@ -40,14 +26,37 @@ class PerformanceClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disable collecting and reporting metrics."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Performance.disable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Performance.disable",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def enable(
+        self,
+        params: Optional["EnableParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Enable collecting and reporting metrics."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Performance.enable",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def setTimeDomain(
+        self,
+        params: "SetTimeDomainParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Sets time domain to use for collecting and reporting duration metrics.
+Note that this must be called before enabling metrics collection. Calling
+this method while metrics collection is enabled returns an error."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Performance.setTimeDomain",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def getMetrics(
         self,
@@ -55,11 +64,10 @@ class PerformanceClient:
         session_id: Optional[str] = None,
     ) -> "GetMetricsReturns":
         """Retrieve current values of run-time metrics."""
-        return cast(
-            "GetMetricsReturns",
-            await self._client.send_raw(
-                method="Performance.getMetrics",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("GetMetricsReturns", await self._client.send_raw(
+            method="Performance.getMetrics",
+            params=params,
+            session_id=session_id,
+        ))
+
+

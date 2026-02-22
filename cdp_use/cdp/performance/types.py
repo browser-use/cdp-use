@@ -6,7 +6,6 @@
 
 from typing_extensions import TypedDict
 
-
 class Metric(TypedDict):
     """Run-time execution metric."""
 

@@ -11,92 +11,108 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import (
-        FontsUpdatedEvent,
-        MediaQueryResultChangedEvent,
-        StyleSheetAddedEvent,
-        StyleSheetChangedEvent,
-        StyleSheetRemovedEvent,
-    )
-
+    ComputedStyleUpdatedEvent,
+    FontsUpdatedEvent,
+    MediaQueryResultChangedEvent,
+    StyleSheetAddedEvent,
+    StyleSheetChangedEvent,
+    StyleSheetRemovedEvent
+)
 
 class CSSRegistration:
     """Event registration interface for CSS domain."""
 
-    def __init__(self, registry: "EventRegistry"):
+    def __init__(self, registry: 'EventRegistry'):
         self._registry = registry
         self._domain = "CSS"
 
-    def mediaQueryResultChanged(
-        self,
-        callback: Callable[["MediaQueryResultChangedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for mediaQueryResultChanged events.
-
-        Fires whenever a MediaQuery result changes (for example, after a browser window has been resized.) The current implementation considers only viewport-dependent media features.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("CSS.mediaQueryResultChanged", callback)
-
     def fontsUpdated(
         self,
-        callback: Callable[["FontsUpdatedEvent", Optional[str]], None],
+        callback: Callable[['FontsUpdatedEvent', Optional[str]], None],
     ) -> None:
         """
         Register a callback for fontsUpdated events.
-
-        Fires whenever a web font gets loaded.
-
+        
+        Fires whenever a web font is updated.  A non-empty font parameter indicates a successfully loaded
+web font.
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("CSS.fontsUpdated", callback)
 
-    def styleSheetChanged(
+    def mediaQueryResultChanged(
         self,
-        callback: Callable[["StyleSheetChangedEvent", Optional[str]], None],
+        callback: Callable[['MediaQueryResultChangedEvent', Optional[str]], None],
     ) -> None:
         """
-        Register a callback for styleSheetChanged events.
-
-        Fired whenever a stylesheet is changed as a result of the client operation.
-
+        Register a callback for mediaQueryResultChanged events.
+        
+        Fires whenever a MediaQuery result changes (for example, after a browser window has been
+resized.) The current implementation considers only viewport-dependent media features.
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("CSS.styleSheetChanged", callback)
+        self._registry.register("CSS.mediaQueryResultChanged", callback)
 
     def styleSheetAdded(
         self,
-        callback: Callable[["StyleSheetAddedEvent", Optional[str]], None],
+        callback: Callable[['StyleSheetAddedEvent', Optional[str]], None],
     ) -> None:
         """
         Register a callback for styleSheetAdded events.
-
+        
         Fired whenever an active document stylesheet is added.
-
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("CSS.styleSheetAdded", callback)
 
+    def styleSheetChanged(
+        self,
+        callback: Callable[['StyleSheetChangedEvent', Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for styleSheetChanged events.
+        
+        Fired whenever a stylesheet is changed as a result of the client operation.
+        
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("CSS.styleSheetChanged", callback)
+
     def styleSheetRemoved(
         self,
-        callback: Callable[["StyleSheetRemovedEvent", Optional[str]], None],
+        callback: Callable[['StyleSheetRemovedEvent', Optional[str]], None],
     ) -> None:
         """
         Register a callback for styleSheetRemoved events.
-
+        
         Fired whenever an active document stylesheet is removed.
-
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("CSS.styleSheetRemoved", callback)
+
+    def computedStyleUpdated(
+        self,
+        callback: Callable[['ComputedStyleUpdatedEvent', Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for computedStyleUpdated events.
+        
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("CSS.computedStyleUpdated", callback)
+

@@ -4,18 +4,5 @@
 
 """CDP HeadlessExperimental Domain Events"""
 
-from typing_extensions import TypedDict
 
-"""Issued when the target starts or stops needing BeginFrames."""
-
-
-class NeedsBeginFramesChangedEvent(TypedDict):
-    needsBeginFrames: "bool"
-    """True if BeginFrames are needed, false otherwise."""
-
-
-"""Issued when the main frame has first submitted a frame to the browser. May only be fired while a BeginFrame is in flight. Before this event, screenshotting requests may fail."""
-
-
-class MainFrameReadyForScreenshotsEvent(TypedDict):
-    pass
+# No events defined for this domain

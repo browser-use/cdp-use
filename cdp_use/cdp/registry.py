@@ -10,7 +10,6 @@ from typing import Any, Callable, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
-
 class EventRegistry:
     """Central registry for managing CDP event callbacks."""
 
@@ -24,7 +23,7 @@ class EventRegistry:
     ) -> None:
         """
         Register a callback for a specific CDP event method.
-
+        
         Args:
             method: The CDP method name (e.g., "Page.frameAttached")
             callback: Function to call when event occurs.
@@ -36,7 +35,7 @@ class EventRegistry:
     def unregister(self, method: str) -> None:
         """
         Unregister a callback for a specific CDP event method.
-
+        
         Args:
             method: The CDP method name to unregister
         """
@@ -51,12 +50,12 @@ class EventRegistry:
     ) -> bool:
         """
         Handle an incoming CDP event.
-
+        
         Args:
             method: The CDP method name
             params: The event parameters
             session_id: Optional session ID
-
+            
         Returns:
             True if a handler was found and called, False otherwise
         """

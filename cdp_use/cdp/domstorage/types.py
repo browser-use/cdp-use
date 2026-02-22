@@ -5,16 +5,22 @@
 """CDP DOMStorage Domain Types"""
 
 from typing import List
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
+
+SerializedStorageKey = str
+
 
 
 class StorageId(TypedDict):
     """DOM Storage identifier."""
 
-    securityOrigin: "str"
+    securityOrigin: "NotRequired[str]"
     """Security origin for the storage."""
+    storageKey: "NotRequired[SerializedStorageKey]"
+    """Represents a key by which DOM Storage keys its CachedStorageAreas"""
     isLocalStorage: "bool"
     """Whether the storage is local storage (not session storage)."""
+
 
 
 Item = List[str]

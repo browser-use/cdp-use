@@ -12,8 +12,6 @@ if TYPE_CHECKING:
     from .types import LogEntry
 
 """Issued when new message was logged."""
-
-
 class EntryAddedEvent(TypedDict):
     entry: "LogEntry"
     """The entry."""

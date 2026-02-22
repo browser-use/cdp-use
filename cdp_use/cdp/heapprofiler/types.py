@@ -16,6 +16,7 @@ HeapSnapshotObjectId = str
 """Heap snapshot object id."""
 
 
+
 class SamplingHeapProfileNode(TypedDict):
     """Sampling Heap Profile node. Holds callsite information, allocation statistics and child nodes."""
 
@@ -23,11 +24,28 @@ class SamplingHeapProfileNode(TypedDict):
     """Function location."""
     selfSize: "float"
     """Allocations size in bytes for the node excluding children."""
+    id: "int"
+    """Node id. Ids are unique across all profiles collected between startSampling and stopSampling."""
     children: "List[SamplingHeapProfileNode]"
     """Child nodes."""
 
 
+
+class SamplingHeapProfileSample(TypedDict):
+    """A single sample from a sampling profile."""
+
+    size: "float"
+    """Allocation size in bytes attributed to the sample."""
+    nodeId: "int"
+    """Id of the corresponding profile tree node."""
+    ordinal: "float"
+    """Time-ordered sample ordinal number. It is unique across all profiles retrieved
+between startSampling and stopSampling."""
+
+
+
 class SamplingHeapProfile(TypedDict):
-    """Profile."""
+    """Sampling profile."""
 
     head: "SamplingHeapProfileNode"
+    samples: "List[SamplingHeapProfileSample]"

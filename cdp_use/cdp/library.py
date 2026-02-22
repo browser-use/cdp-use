@@ -9,209 +9,225 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..client import CDPClient
 
-
 class CDPLibrary:
     """Main CDP library with domain-specific clients."""
 
-    def __init__(self, client: "CDPClient"):
+    def __init__(self, client: 'CDPClient'):
         self._client = client
-
-        # Schema domain
-        from .schema.library import SchemaClient
-
-        self.Schema = SchemaClient(client)
-
-        # Runtime domain
-        from .runtime.library import RuntimeClient
-
-        self.Runtime = RuntimeClient(client)
-
-        # Debugger domain
-        from .debugger.library import DebuggerClient
-
-        self.Debugger = DebuggerClient(client)
 
         # Console domain
         from .console.library import ConsoleClient
-
         self.Console = ConsoleClient(client)
 
-        # Profiler domain
-        from .profiler.library import ProfilerClient
-
-        self.Profiler = ProfilerClient(client)
+        # Debugger domain
+        from .debugger.library import DebuggerClient
+        self.Debugger = DebuggerClient(client)
 
         # HeapProfiler domain
         from .heapprofiler.library import HeapProfilerClient
-
         self.HeapProfiler = HeapProfilerClient(client)
 
-        # Inspector domain
-        from .inspector.library import InspectorClient
+        # Profiler domain
+        from .profiler.library import ProfilerClient
+        self.Profiler = ProfilerClient(client)
 
-        self.Inspector = InspectorClient(client)
+        # Runtime domain
+        from .runtime.library import RuntimeClient
+        self.Runtime = RuntimeClient(client)
 
-        # Memory domain
-        from .memory.library import MemoryClient
-
-        self.Memory = MemoryClient(client)
-
-        # Performance domain
-        from .performance.library import PerformanceClient
-
-        self.Performance = PerformanceClient(client)
-
-        # Page domain
-        from .page.library import PageClient
-
-        self.Page = PageClient(client)
-
-        # Overlay domain
-        from .overlay.library import OverlayClient
-
-        self.Overlay = OverlayClient(client)
-
-        # Emulation domain
-        from .emulation.library import EmulationClient
-
-        self.Emulation = EmulationClient(client)
-
-        # Security domain
-        from .security.library import SecurityClient
-
-        self.Security = SecurityClient(client)
-
-        # Audits domain
-        from .audits.library import AuditsClient
-
-        self.Audits = AuditsClient(client)
-
-        # Network domain
-        from .network.library import NetworkClient
-
-        self.Network = NetworkClient(client)
-
-        # Database domain
-        from .database.library import DatabaseClient
-
-        self.Database = DatabaseClient(client)
-
-        # IndexedDB domain
-        from .indexeddb.library import IndexedDBClient
-
-        self.IndexedDB = IndexedDBClient(client)
-
-        # CacheStorage domain
-        from .cachestorage.library import CacheStorageClient
-
-        self.CacheStorage = CacheStorageClient(client)
-
-        # DOMStorage domain
-        from .domstorage.library import DOMStorageClient
-
-        self.DOMStorage = DOMStorageClient(client)
-
-        # ApplicationCache domain
-        from .applicationcache.library import ApplicationCacheClient
-
-        self.ApplicationCache = ApplicationCacheClient(client)
-
-        # DOM domain
-        from .dom.library import DOMClient
-
-        self.DOM = DOMClient(client)
-
-        # CSS domain
-        from .css.library import CSSClient
-
-        self.CSS = CSSClient(client)
-
-        # DOMSnapshot domain
-        from .domsnapshot.library import DOMSnapshotClient
-
-        self.DOMSnapshot = DOMSnapshotClient(client)
-
-        # IO domain
-        from .io.library import IOClient
-
-        self.IO = IOClient(client)
-
-        # DOMDebugger domain
-        from .domdebugger.library import DOMDebuggerClient
-
-        self.DOMDebugger = DOMDebuggerClient(client)
-
-        # Target domain
-        from .target.library import TargetClient
-
-        self.Target = TargetClient(client)
-
-        # HeadlessExperimental domain
-        from .headlessexperimental.library import HeadlessExperimentalClient
-
-        self.HeadlessExperimental = HeadlessExperimentalClient(client)
-
-        # ServiceWorker domain
-        from .serviceworker.library import ServiceWorkerClient
-
-        self.ServiceWorker = ServiceWorkerClient(client)
-
-        # Input domain
-        from .input.library import InputClient
-
-        self.Input = InputClient(client)
-
-        # LayerTree domain
-        from .layertree.library import LayerTreeClient
-
-        self.LayerTree = LayerTreeClient(client)
-
-        # DeviceOrientation domain
-        from .deviceorientation.library import DeviceOrientationClient
-
-        self.DeviceOrientation = DeviceOrientationClient(client)
-
-        # Tracing domain
-        from .tracing.library import TracingClient
-
-        self.Tracing = TracingClient(client)
-
-        # Animation domain
-        from .animation.library import AnimationClient
-
-        self.Animation = AnimationClient(client)
+        # Schema domain
+        from .schema.library import SchemaClient
+        self.Schema = SchemaClient(client)
 
         # Accessibility domain
         from .accessibility.library import AccessibilityClient
-
         self.Accessibility = AccessibilityClient(client)
 
-        # Storage domain
-        from .storage.library import StorageClient
+        # Animation domain
+        from .animation.library import AnimationClient
+        self.Animation = AnimationClient(client)
 
-        self.Storage = StorageClient(client)
+        # Audits domain
+        from .audits.library import AuditsClient
+        self.Audits = AuditsClient(client)
 
-        # Log domain
-        from .log.library import LogClient
+        # Autofill domain
+        from .autofill.library import AutofillClient
+        self.Autofill = AutofillClient(client)
 
-        self.Log = LogClient(client)
+        # BackgroundService domain
+        from .backgroundservice.library import BackgroundServiceClient
+        self.BackgroundService = BackgroundServiceClient(client)
 
-        # SystemInfo domain
-        from .systeminfo.library import SystemInfoClient
-
-        self.SystemInfo = SystemInfoClient(client)
-
-        # Tethering domain
-        from .tethering.library import TetheringClient
-
-        self.Tethering = TetheringClient(client)
+        # BluetoothEmulation domain
+        from .bluetoothemulation.library import BluetoothEmulationClient
+        self.BluetoothEmulation = BluetoothEmulationClient(client)
 
         # Browser domain
         from .browser.library import BrowserClient
-
         self.Browser = BrowserClient(client)
+
+        # CSS domain
+        from .css.library import CSSClient
+        self.CSS = CSSClient(client)
+
+        # CacheStorage domain
+        from .cachestorage.library import CacheStorageClient
+        self.CacheStorage = CacheStorageClient(client)
+
+        # Cast domain
+        from .cast.library import CastClient
+        self.Cast = CastClient(client)
+
+        # DOM domain
+        from .dom.library import DOMClient
+        self.DOM = DOMClient(client)
+
+        # DOMDebugger domain
+        from .domdebugger.library import DOMDebuggerClient
+        self.DOMDebugger = DOMDebuggerClient(client)
+
+        # DOMSnapshot domain
+        from .domsnapshot.library import DOMSnapshotClient
+        self.DOMSnapshot = DOMSnapshotClient(client)
+
+        # DOMStorage domain
+        from .domstorage.library import DOMStorageClient
+        self.DOMStorage = DOMStorageClient(client)
+
+        # DeviceAccess domain
+        from .deviceaccess.library import DeviceAccessClient
+        self.DeviceAccess = DeviceAccessClient(client)
+
+        # DeviceOrientation domain
+        from .deviceorientation.library import DeviceOrientationClient
+        self.DeviceOrientation = DeviceOrientationClient(client)
+
+        # Emulation domain
+        from .emulation.library import EmulationClient
+        self.Emulation = EmulationClient(client)
+
+        # EventBreakpoints domain
+        from .eventbreakpoints.library import EventBreakpointsClient
+        self.EventBreakpoints = EventBreakpointsClient(client)
+
+        # Extensions domain
+        from .extensions.library import ExtensionsClient
+        self.Extensions = ExtensionsClient(client)
+
+        # FedCm domain
+        from .fedcm.library import FedCmClient
+        self.FedCm = FedCmClient(client)
+
+        # Fetch domain
+        from .fetch.library import FetchClient
+        self.Fetch = FetchClient(client)
+
+        # FileSystem domain
+        from .filesystem.library import FileSystemClient
+        self.FileSystem = FileSystemClient(client)
+
+        # HeadlessExperimental domain
+        from .headlessexperimental.library import HeadlessExperimentalClient
+        self.HeadlessExperimental = HeadlessExperimentalClient(client)
+
+        # IO domain
+        from .io.library import IOClient
+        self.IO = IOClient(client)
+
+        # IndexedDB domain
+        from .indexeddb.library import IndexedDBClient
+        self.IndexedDB = IndexedDBClient(client)
+
+        # Input domain
+        from .input.library import InputClient
+        self.Input = InputClient(client)
+
+        # Inspector domain
+        from .inspector.library import InspectorClient
+        self.Inspector = InspectorClient(client)
+
+        # LayerTree domain
+        from .layertree.library import LayerTreeClient
+        self.LayerTree = LayerTreeClient(client)
+
+        # Log domain
+        from .log.library import LogClient
+        self.Log = LogClient(client)
+
+        # Media domain
+        from .media.library import MediaClient
+        self.Media = MediaClient(client)
+
+        # Memory domain
+        from .memory.library import MemoryClient
+        self.Memory = MemoryClient(client)
+
+        # Network domain
+        from .network.library import NetworkClient
+        self.Network = NetworkClient(client)
+
+        # Overlay domain
+        from .overlay.library import OverlayClient
+        self.Overlay = OverlayClient(client)
+
+        # PWA domain
+        from .pwa.library import PWAClient
+        self.PWA = PWAClient(client)
+
+        # Page domain
+        from .page.library import PageClient
+        self.Page = PageClient(client)
+
+        # Performance domain
+        from .performance.library import PerformanceClient
+        self.Performance = PerformanceClient(client)
+
+        # PerformanceTimeline domain
+        from .performancetimeline.library import PerformanceTimelineClient
+        self.PerformanceTimeline = PerformanceTimelineClient(client)
+
+        # Preload domain
+        from .preload.library import PreloadClient
+        self.Preload = PreloadClient(client)
+
+        # Security domain
+        from .security.library import SecurityClient
+        self.Security = SecurityClient(client)
+
+        # ServiceWorker domain
+        from .serviceworker.library import ServiceWorkerClient
+        self.ServiceWorker = ServiceWorkerClient(client)
+
+        # Storage domain
+        from .storage.library import StorageClient
+        self.Storage = StorageClient(client)
+
+        # SystemInfo domain
+        from .systeminfo.library import SystemInfoClient
+        self.SystemInfo = SystemInfoClient(client)
+
+        # Target domain
+        from .target.library import TargetClient
+        self.Target = TargetClient(client)
+
+        # Tethering domain
+        from .tethering.library import TetheringClient
+        self.Tethering = TetheringClient(client)
+
+        # Tracing domain
+        from .tracing.library import TracingClient
+        self.Tracing = TracingClient(client)
+
+        # WebAudio domain
+        from .webaudio.library import WebAudioClient
+        self.WebAudio = WebAudioClient(client)
+
+        # WebAuthn domain
+        from .webauthn.library import WebAuthnClient
+        self.WebAuthn = WebAuthnClient(client)
 
         # BrowserUse domain
         from .browseruse.library import BrowserUseClient
-
         self.BrowserUse = BrowserUseClient(client)
+

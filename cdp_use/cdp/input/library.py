@@ -10,36 +10,36 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
+    from .commands import DispatchDragEventParameters
     from .commands import DispatchKeyEventParameters
     from .commands import DispatchMouseEventParameters
     from .commands import DispatchTouchEventParameters
     from .commands import EmulateTouchFromMouseEventParameters
+    from .commands import ImeSetCompositionParameters
+    from .commands import InsertTextParameters
     from .commands import SetIgnoreInputEventsParameters
+    from .commands import SetInterceptDragsParameters
     from .commands import SynthesizePinchGestureParameters
     from .commands import SynthesizeScrollGestureParameters
     from .commands import SynthesizeTapGestureParameters
 
-
 class InputClient:
     """Client for Input domain commands."""
 
-    def __init__(self, client: "CDPClient"):
+    def __init__(self, client: 'CDPClient'):
         self._client = client
 
-    async def setIgnoreInputEvents(
+    async def dispatchDragEvent(
         self,
-        params: "SetIgnoreInputEventsParameters",
+        params: "DispatchDragEventParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Ignores input events (useful while auditing page)."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Input.setIgnoreInputEvents",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        """Dispatches a drag event into the page."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.dispatchDragEvent",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def dispatchKeyEvent(
         self,
@@ -47,14 +47,38 @@ class InputClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Dispatches a key event to the page."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Input.dispatchKeyEvent",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.dispatchKeyEvent",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def insertText(
+        self,
+        params: "InsertTextParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """This method emulates inserting text that doesn't come from a key press,
+for example an emoji keyboard or an IME."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.insertText",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def imeSetComposition(
+        self,
+        params: "ImeSetCompositionParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """This method sets the current candidate text for IME.
+Use imeCommitComposition to commit the final text.
+Use imeSetComposition with empty string as text to cancel composition."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.imeSetComposition",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def dispatchMouseEvent(
         self,
@@ -62,14 +86,11 @@ class InputClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Dispatches a mouse event to the page."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Input.dispatchMouseEvent",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.dispatchMouseEvent",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def dispatchTouchEvent(
         self,
@@ -77,14 +98,23 @@ class InputClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Dispatches a touch event to the page."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Input.dispatchTouchEvent",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.dispatchTouchEvent",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def cancelDragging(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Cancels any active dragging in the page."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.cancelDragging",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def emulateTouchFromMouseEvent(
         self,
@@ -92,14 +122,36 @@ class InputClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Emulates touch event from the mouse event parameters."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Input.emulateTouchFromMouseEvent",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.emulateTouchFromMouseEvent",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def setIgnoreInputEvents(
+        self,
+        params: "SetIgnoreInputEventsParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Ignores input events (useful while auditing page)."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.setIgnoreInputEvents",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def setInterceptDrags(
+        self,
+        params: "SetInterceptDragsParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Prevents default drag and drop behavior and instead emits `Input.dragIntercepted` events.
+Drag and drop behavior can be directly controlled via `Input.dispatchDragEvent`."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.setInterceptDrags",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def synthesizePinchGesture(
         self,
@@ -107,14 +159,11 @@ class InputClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Synthesizes a pinch gesture over a time period by issuing appropriate touch events."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Input.synthesizePinchGesture",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.synthesizePinchGesture",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def synthesizeScrollGesture(
         self,
@@ -122,14 +171,11 @@ class InputClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Synthesizes a scroll gesture over a time period by issuing appropriate touch events."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Input.synthesizeScrollGesture",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.synthesizeScrollGesture",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def synthesizeTapGesture(
         self,
@@ -137,11 +183,10 @@ class InputClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Synthesizes a tap gesture over a time period by issuing appropriate touch events."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Input.synthesizeTapGesture",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Input.synthesizeTapGesture",
+            params=params,
+            session_id=session_id,
+        ))
+
+

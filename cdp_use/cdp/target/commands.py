@@ -10,33 +10,161 @@ from typing_extensions import NotRequired, TypedDict
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .types import BrowserContextID
+    from ..browser.types import BrowserContextID
     from .types import RemoteLocation
     from .types import SessionID
+    from .types import TargetFilter
     from .types import TargetID
     from .types import TargetInfo
+    from .types import WindowState
+
+class ActivateTargetParameters(TypedDict):
+    targetId: "TargetID"
 
 
-class SetDiscoverTargetsParameters(TypedDict):
-    discover: "bool"
-    """Whether to discover available targets."""
 
 
-class SetAutoAttachParameters(TypedDict):
-    autoAttach: "bool"
-    """Whether to auto-attach to related targets."""
-    waitForDebuggerOnStart: "bool"
-    """Whether to pause new targets when attaching to them. Use <code>Runtime.runIfWaitingForDebugger</code> to run paused targets."""
+
+class AttachToTargetParameters(TypedDict):
+    targetId: "TargetID"
+    flatten: "NotRequired[bool]"
+    """Enables \"flat\" access to the session via specifying sessionId attribute in the commands.
+We plan to make this the default, deprecate non-flattened mode,
+and eventually retire it. See crbug.com/991325."""
 
 
-class SetAttachToFramesParameters(TypedDict):
-    value: "bool"
-    """Whether to attach to frames."""
+class AttachToTargetReturns(TypedDict):
+    sessionId: "SessionID"
+    """Id assigned to the session."""
 
 
-class SetRemoteLocationsParameters(TypedDict):
-    locations: "List[RemoteLocation]"
-    """List of remote locations."""
+
+class AttachToBrowserTargetReturns(TypedDict):
+    sessionId: "SessionID"
+    """Id assigned to the session."""
+
+
+
+class CloseTargetParameters(TypedDict):
+    targetId: "TargetID"
+
+
+class CloseTargetReturns(TypedDict):
+    success: "bool"
+    """Always set to true. If an error occurs, the response indicates protocol error."""
+
+
+
+class ExposeDevToolsProtocolParameters(TypedDict):
+    targetId: "TargetID"
+    bindingName: "NotRequired[str]"
+    """Binding name, 'cdp' if not specified."""
+    inheritPermissions: "NotRequired[bool]"
+    """If true, inherits the current root session's permissions (default: false)."""
+
+
+
+
+
+class CreateBrowserContextParameters(TypedDict, total=False):
+    disposeOnDetach: "bool"
+    """If specified, disposes this context when debugging session disconnects."""
+    proxyServer: "str"
+    """Proxy server, similar to the one passed to --proxy-server"""
+    proxyBypassList: "str"
+    """Proxy bypass list, similar to the one passed to --proxy-bypass-list"""
+    originsWithUniversalNetworkAccess: "List[str]"
+    """An optional list of origins to grant unlimited cross-origin access to.
+Parts of the URL other than those constituting origin are ignored."""
+
+
+class CreateBrowserContextReturns(TypedDict):
+    browserContextId: "BrowserContextID"
+    """The id of the context created."""
+
+
+
+class GetBrowserContextsReturns(TypedDict):
+    browserContextIds: "List[BrowserContextID]"
+    """An array of browser context ids."""
+
+
+
+class CreateTargetParameters(TypedDict):
+    url: "str"
+    """The initial URL the page will be navigated to. An empty string indicates about:blank."""
+    left: "NotRequired[int]"
+    """Frame left origin in DIP (requires newWindow to be true or headless shell)."""
+    top: "NotRequired[int]"
+    """Frame top origin in DIP (requires newWindow to be true or headless shell)."""
+    width: "NotRequired[int]"
+    """Frame width in DIP (requires newWindow to be true or headless shell)."""
+    height: "NotRequired[int]"
+    """Frame height in DIP (requires newWindow to be true or headless shell)."""
+    windowState: "NotRequired[WindowState]"
+    """Frame window state (requires newWindow to be true or headless shell).
+Default is normal."""
+    browserContextId: "NotRequired[BrowserContextID]"
+    """The browser context to create the page in."""
+    enableBeginFrameControl: "NotRequired[bool]"
+    """Whether BeginFrames for this target will be controlled via DevTools (headless shell only,
+not supported on MacOS yet, false by default)."""
+    newWindow: "NotRequired[bool]"
+    """Whether to create a new Window or Tab (false by default, not supported by headless shell)."""
+    background: "NotRequired[bool]"
+    """Whether to create the target in background or foreground (false by default, not supported
+by headless shell)."""
+    forTab: "NotRequired[bool]"
+    """Whether to create the target of type \"tab\"."""
+    hidden: "NotRequired[bool]"
+    """Whether to create a hidden target. The hidden target is observable via protocol, but not
+present in the tab UI strip. Cannot be created with `forTab: true`, `newWindow: true` or
+`background: false`. The life-time of the tab is limited to the life-time of the session."""
+
+
+class CreateTargetReturns(TypedDict):
+    targetId: "TargetID"
+    """The id of the page opened."""
+
+
+
+class DetachFromTargetParameters(TypedDict, total=False):
+    sessionId: "SessionID"
+    """Session to detach."""
+    targetId: "TargetID"
+    """Deprecated."""
+
+
+
+
+
+class DisposeBrowserContextParameters(TypedDict):
+    browserContextId: "BrowserContextID"
+
+
+
+
+
+class GetTargetInfoParameters(TypedDict, total=False):
+    targetId: "TargetID"
+
+
+class GetTargetInfoReturns(TypedDict):
+    targetInfo: "TargetInfo"
+
+
+
+class GetTargetsParameters(TypedDict, total=False):
+    filter: "TargetFilter"
+    """Only targets matching filter will be reported. If filter is not specified
+and target discovery is currently enabled, a filter used for target discovery
+is used for consistency."""
+
+
+class GetTargetsReturns(TypedDict):
+    targetInfos: "List[TargetInfo]"
+    """The list of targets."""
+
 
 
 class SendMessageToTargetParameters(TypedDict):
@@ -47,73 +175,77 @@ class SendMessageToTargetParameters(TypedDict):
     """Deprecated."""
 
 
-class GetTargetInfoParameters(TypedDict):
+
+
+
+class SetAutoAttachParameters(TypedDict):
+    autoAttach: "bool"
+    """Whether to auto-attach to related targets."""
+    waitForDebuggerOnStart: "bool"
+    """Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
+to run paused targets."""
+    flatten: "NotRequired[bool]"
+    """Enables \"flat\" access to the session via specifying sessionId attribute in the commands.
+We plan to make this the default, deprecate non-flattened mode,
+and eventually retire it. See crbug.com/991325."""
+    filter: "NotRequired[TargetFilter]"
+    """Only targets matching filter will be attached."""
+
+
+
+
+
+class AutoAttachRelatedParameters(TypedDict):
     targetId: "TargetID"
+    waitForDebuggerOnStart: "bool"
+    """Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
+to run paused targets."""
+    filter: "NotRequired[TargetFilter]"
+    """Only targets matching filter will be attached."""
 
 
-class GetTargetInfoReturns(TypedDict):
-    targetInfo: "TargetInfo"
 
 
-class ActivateTargetParameters(TypedDict):
+
+class SetDiscoverTargetsParameters(TypedDict):
+    discover: "bool"
+    """Whether to discover available targets."""
+    filter: "NotRequired[TargetFilter]"
+    """Only targets matching filter will be attached. If `discover` is false,
+`filter` must be omitted or empty."""
+
+
+
+
+
+class SetRemoteLocationsParameters(TypedDict):
+    locations: "List[RemoteLocation]"
+    """List of remote locations."""
+
+
+
+
+
+class GetDevToolsTargetParameters(TypedDict):
     targetId: "TargetID"
+    """Page or tab target ID."""
 
 
-class CloseTargetParameters(TypedDict):
+class GetDevToolsTargetReturns(TypedDict):
     targetId: "TargetID"
+    """The targetId of DevTools page target if exists."""
 
 
-class CloseTargetReturns(TypedDict):
-    success: "bool"
 
-
-class AttachToTargetParameters(TypedDict):
+class OpenDevToolsParameters(TypedDict):
     targetId: "TargetID"
+    """This can be the page or tab target ID."""
+    panelId: "NotRequired[str]"
+    """The id of the panel we want DevTools to open initially. Currently
+supported panels are elements, console, network, sources, resources
+and performance."""
 
 
-class AttachToTargetReturns(TypedDict):
-    sessionId: "SessionID"
-    """Id assigned to the session."""
-
-
-class DetachFromTargetParameters(TypedDict, total=False):
-    sessionId: "SessionID"
-    """Session to detach."""
+class OpenDevToolsReturns(TypedDict):
     targetId: "TargetID"
-    """Deprecated."""
-
-
-class CreateBrowserContextReturns(TypedDict):
-    browserContextId: "BrowserContextID"
-    """The id of the context created."""
-
-
-class DisposeBrowserContextParameters(TypedDict):
-    browserContextId: "BrowserContextID"
-
-
-class DisposeBrowserContextReturns(TypedDict):
-    success: "bool"
-
-
-class CreateTargetParameters(TypedDict):
-    url: "str"
-    """The initial URL the page will be navigated to."""
-    width: "NotRequired[int]"
-    """Frame width in DIP (headless chrome only)."""
-    height: "NotRequired[int]"
-    """Frame height in DIP (headless chrome only)."""
-    browserContextId: "NotRequired[BrowserContextID]"
-    """The browser context to create the page in (headless chrome only)."""
-    enableBeginFrameControl: "NotRequired[bool]"
-    """Whether BeginFrames for this target will be controlled via DevTools (headless chrome only, not supported on MacOS yet, false by default)."""
-
-
-class CreateTargetReturns(TypedDict):
-    targetId: "TargetID"
-    """The id of the page opened."""
-
-
-class GetTargetsReturns(TypedDict):
-    targetInfos: "List[TargetInfo]"
-    """The list of targets."""
+    """The targetId of DevTools page target."""

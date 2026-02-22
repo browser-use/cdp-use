@@ -17,51 +17,16 @@ if TYPE_CHECKING:
     from .types import StackTrace
     from .types import Timestamp
 
-"""Issued when new execution context is created."""
-
-
-class ExecutionContextCreatedEvent(TypedDict):
-    context: "ExecutionContextDescription"
-    """A newly created execution context."""
-
-
-"""Issued when execution context is destroyed."""
-
-
-class ExecutionContextDestroyedEvent(TypedDict):
+"""Notification is issued every time when binding is called."""
+class BindingCalledEvent(TypedDict):
+    name: "str"
+    payload: "str"
     executionContextId: "ExecutionContextId"
-    """Id of the destroyed context"""
+    """Identifier of the context where the call was made."""
 
-
-"""Issued when all executionContexts were cleared in browser"""
-
-
-class ExecutionContextsClearedEvent(TypedDict):
-    pass
-
-
-"""Issued when exception was thrown and unhandled."""
-
-
-class ExceptionThrownEvent(TypedDict):
-    timestamp: "Timestamp"
-    """Timestamp of the exception."""
-    exceptionDetails: "ExceptionDetails"
-
-
-"""Issued when unhandled exception was revoked."""
-
-
-class ExceptionRevokedEvent(TypedDict):
-    reason: "str"
-    """Reason describing why exception was revoked."""
-    exceptionId: "int"
-    """The id of revoked exception, as reported in <code>exceptionThrown</code>."""
 
 
 """Issued when console API was called."""
-
-
 class ConsoleAPICalledEvent(TypedDict):
     type: "str"
     """Type of the call."""
@@ -72,14 +37,59 @@ class ConsoleAPICalledEvent(TypedDict):
     timestamp: "Timestamp"
     """Call timestamp."""
     stackTrace: "NotRequired[StackTrace]"
-    """Stack trace captured when the call was made."""
+    """Stack trace captured when the call was made. The async stack chain is automatically reported for
+the following call types: `assert`, `error`, `trace`, `warning`. For other types the async call
+chain can be retrieved using `Debugger.getStackTrace` and `stackTrace.parentId` field."""
     context: "NotRequired[str]"
-    """Console context descriptor for calls on non-default console context (not console.*): 'anonymous#unique-logger-id' for call on unnamed context, 'name#unique-logger-id' for call on named context."""
+    """Console context descriptor for calls on non-default console context (not console.*):
+'anonymous#unique-logger-id' for call on unnamed context, 'name#unique-logger-id' for call
+on named context."""
 
 
-"""Issued when object should be inspected (for example, as a result of inspect() command line API call)."""
+
+"""Issued when unhandled exception was revoked."""
+class ExceptionRevokedEvent(TypedDict):
+    reason: "str"
+    """Reason describing why exception was revoked."""
+    exceptionId: "int"
+    """The id of revoked exception, as reported in `exceptionThrown`."""
 
 
+
+"""Issued when exception was thrown and unhandled."""
+class ExceptionThrownEvent(TypedDict):
+    timestamp: "Timestamp"
+    """Timestamp of the exception."""
+    exceptionDetails: "ExceptionDetails"
+
+
+
+"""Issued when new execution context is created."""
+class ExecutionContextCreatedEvent(TypedDict):
+    context: "ExecutionContextDescription"
+    """A newly created execution context."""
+
+
+
+"""Issued when execution context is destroyed."""
+class ExecutionContextDestroyedEvent(TypedDict):
+    executionContextId: "ExecutionContextId"
+    """Id of the destroyed context"""
+    executionContextUniqueId: "str"
+    """Unique Id of the destroyed context"""
+
+
+
+"""Issued when all executionContexts were cleared in browser"""
+class ExecutionContextsClearedEvent(TypedDict):
+    pass
+
+
+
+"""Issued when object should be inspected (for example, as a result of inspect() command line API
+call)."""
 class InspectRequestedEvent(TypedDict):
     object: "RemoteObject"
     hints: "Dict[str, Any]"
+    executionContextId: "NotRequired[ExecutionContextId]"
+    """Identifier of the context where the call was made."""

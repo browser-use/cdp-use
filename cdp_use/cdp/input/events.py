@@ -4,5 +4,14 @@
 
 """CDP Input Domain Events"""
 
+from typing_extensions import TypedDict
 
-# No events defined for this domain
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .types import DragData
+
+"""Emitted only when `Input.setInterceptDrags` is enabled. Use this data with `Input.dispatchDragEvent` to
+restore normal drag and drop behavior."""
+class DragInterceptedEvent(TypedDict):
+    data: "DragData"

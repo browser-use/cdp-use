@@ -12,6 +12,9 @@ if TYPE_CHECKING:
     from ...client import CDPClient
     from .commands import ClearObjectStoreParameters
     from .commands import DeleteDatabaseParameters
+    from .commands import DeleteObjectStoreEntriesParameters
+    from .commands import GetMetadataParameters
+    from .commands import GetMetadataReturns
     from .commands import RequestDataParameters
     from .commands import RequestDataReturns
     from .commands import RequestDatabaseNamesParameters
@@ -19,87 +22,11 @@ if TYPE_CHECKING:
     from .commands import RequestDatabaseParameters
     from .commands import RequestDatabaseReturns
 
-
 class IndexedDBClient:
     """Client for IndexedDB domain commands."""
 
-    def __init__(self, client: "CDPClient"):
+    def __init__(self, client: 'CDPClient'):
         self._client = client
-
-    async def enable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Enables events from backend."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="IndexedDB.enable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def disable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Disables events from backend."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="IndexedDB.disable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def requestDatabaseNames(
-        self,
-        params: "RequestDatabaseNamesParameters",
-        session_id: Optional[str] = None,
-    ) -> "RequestDatabaseNamesReturns":
-        """Requests database names for given security origin."""
-        return cast(
-            "RequestDatabaseNamesReturns",
-            await self._client.send_raw(
-                method="IndexedDB.requestDatabaseNames",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def requestDatabase(
-        self,
-        params: "RequestDatabaseParameters",
-        session_id: Optional[str] = None,
-    ) -> "RequestDatabaseReturns":
-        """Requests database with given name in given frame."""
-        return cast(
-            "RequestDatabaseReturns",
-            await self._client.send_raw(
-                method="IndexedDB.requestDatabase",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def requestData(
-        self,
-        params: "RequestDataParameters",
-        session_id: Optional[str] = None,
-    ) -> "RequestDataReturns":
-        """Requests data from object store or index."""
-        return cast(
-            "RequestDataReturns",
-            await self._client.send_raw(
-                method="IndexedDB.requestData",
-                params=params,
-                session_id=session_id,
-            ),
-        )
 
     async def clearObjectStore(
         self,
@@ -107,14 +34,11 @@ class IndexedDBClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears all entries from an object store."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="IndexedDB.clearObjectStore",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="IndexedDB.clearObjectStore",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def deleteDatabase(
         self,
@@ -122,11 +46,94 @@ class IndexedDBClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Deletes a database."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="IndexedDB.deleteDatabase",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="IndexedDB.deleteDatabase",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def deleteObjectStoreEntries(
+        self,
+        params: "DeleteObjectStoreEntriesParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Delete a range of entries from an object store"""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="IndexedDB.deleteObjectStoreEntries",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def disable(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Disables events from backend."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="IndexedDB.disable",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def enable(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Enables events from backend."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="IndexedDB.enable",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def requestData(
+        self,
+        params: "RequestDataParameters",
+        session_id: Optional[str] = None,
+    ) -> "RequestDataReturns":
+        """Requests data from object store or index."""
+        return cast("RequestDataReturns", await self._client.send_raw(
+            method="IndexedDB.requestData",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def getMetadata(
+        self,
+        params: "GetMetadataParameters",
+        session_id: Optional[str] = None,
+    ) -> "GetMetadataReturns":
+        """Gets metadata of an object store."""
+        return cast("GetMetadataReturns", await self._client.send_raw(
+            method="IndexedDB.getMetadata",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def requestDatabase(
+        self,
+        params: "RequestDatabaseParameters",
+        session_id: Optional[str] = None,
+    ) -> "RequestDatabaseReturns":
+        """Requests database with given name in given frame."""
+        return cast("RequestDatabaseReturns", await self._client.send_raw(
+            method="IndexedDB.requestDatabase",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def requestDatabaseNames(
+        self,
+        params: Optional["RequestDatabaseNamesParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "RequestDatabaseNamesReturns":
+        """Requests database names for given security origin."""
+        return cast("RequestDatabaseNamesReturns", await self._client.send_raw(
+            method="IndexedDB.requestDatabaseNames",
+            params=params,
+            session_id=session_id,
+        ))
+
+

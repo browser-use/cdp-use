@@ -7,23 +7,5 @@
 from typing_extensions import TypedDict
 
 """Notification sent after the virtual time budget for the current VirtualTimePolicy has run out."""
-
-
 class VirtualTimeBudgetExpiredEvent(TypedDict):
     pass
-
-
-"""Notification sent after the virtual time has advanced."""
-
-
-class VirtualTimeAdvancedEvent(TypedDict):
-    virtualTimeElapsed: "float"
-    """The amount of virtual time that has elapsed in milliseconds since virtual time was first enabled."""
-
-
-"""Notification sent after the virtual time has paused."""
-
-
-class VirtualTimePausedEvent(TypedDict):
-    virtualTimeElapsed: "float"
-    """The amount of virtual time that has elapsed in milliseconds since virtual time was first enabled."""

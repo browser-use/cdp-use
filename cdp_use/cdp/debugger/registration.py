@@ -10,61 +10,25 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import (
-        BreakpointResolvedEvent,
-        PausedEvent,
-        ResumedEvent,
-        ScriptFailedToParseEvent,
-        ScriptParsedEvent,
-    )
-
+    from .events import BreakpointResolvedEvent, PausedEvent, ResumedEvent, ScriptFailedToParseEvent, ScriptParsedEvent
 
 class DebuggerRegistration:
     """Event registration interface for Debugger domain."""
 
-    def __init__(self, registry: "EventRegistry"):
+    def __init__(self, registry: 'EventRegistry'):
         self._registry = registry
         self._domain = "Debugger"
 
-    def scriptParsed(
-        self,
-        callback: Callable[["ScriptParsedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for scriptParsed events.
-
-        Fired when virtual machine parses script. This event is also fired for all known and uncollected scripts upon enabling debugger.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Debugger.scriptParsed", callback)
-
-    def scriptFailedToParse(
-        self,
-        callback: Callable[["ScriptFailedToParseEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for scriptFailedToParse events.
-
-        Fired when virtual machine fails to parse the script.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Debugger.scriptFailedToParse", callback)
-
     def breakpointResolved(
         self,
-        callback: Callable[["BreakpointResolvedEvent", Optional[str]], None],
+        callback: Callable[['BreakpointResolvedEvent', Optional[str]], None],
     ) -> None:
         """
         Register a callback for breakpointResolved events.
-
+        
         Fired when breakpoint is resolved to an actual script and location.
-
+Deprecated in favor of `resolvedBreakpoints` in the `scriptParsed` event.
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -73,13 +37,13 @@ class DebuggerRegistration:
 
     def paused(
         self,
-        callback: Callable[["PausedEvent", Optional[str]], None],
+        callback: Callable[['PausedEvent', Optional[str]], None],
     ) -> None:
         """
         Register a callback for paused events.
-
+        
         Fired when the virtual machine stopped on breakpoint or exception or any other stop criteria.
-
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -88,15 +52,47 @@ class DebuggerRegistration:
 
     def resumed(
         self,
-        callback: Callable[["ResumedEvent", Optional[str]], None],
+        callback: Callable[['ResumedEvent', Optional[str]], None],
     ) -> None:
         """
         Register a callback for resumed events.
-
+        
         Fired when the virtual machine resumed execution.
-
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Debugger.resumed", callback)
+
+    def scriptFailedToParse(
+        self,
+        callback: Callable[['ScriptFailedToParseEvent', Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for scriptFailedToParse events.
+        
+        Fired when virtual machine fails to parse the script.
+        
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Debugger.scriptFailedToParse", callback)
+
+    def scriptParsed(
+        self,
+        callback: Callable[['ScriptParsedEvent', Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for scriptParsed events.
+        
+        Fired when virtual machine parses script. This event is also fired for all known and uncollected
+scripts upon enabling debugger.
+        
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Debugger.scriptParsed", callback)
+

@@ -10,61 +10,27 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import (
-        VirtualTimeAdvancedEvent,
-        VirtualTimeBudgetExpiredEvent,
-        VirtualTimePausedEvent,
-    )
-
+    from .events import VirtualTimeBudgetExpiredEvent
 
 class EmulationRegistration:
     """Event registration interface for Emulation domain."""
 
-    def __init__(self, registry: "EventRegistry"):
+    def __init__(self, registry: 'EventRegistry'):
         self._registry = registry
         self._domain = "Emulation"
 
     def virtualTimeBudgetExpired(
         self,
-        callback: Callable[["VirtualTimeBudgetExpiredEvent", Optional[str]], None],
+        callback: Callable[['VirtualTimeBudgetExpiredEvent', Optional[str]], None],
     ) -> None:
         """
         Register a callback for virtualTimeBudgetExpired events.
-
+        
         Notification sent after the virtual time budget for the current VirtualTimePolicy has run out.
-
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Emulation.virtualTimeBudgetExpired", callback)
 
-    def virtualTimeAdvanced(
-        self,
-        callback: Callable[["VirtualTimeAdvancedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for virtualTimeAdvanced events.
-
-        Notification sent after the virtual time has advanced.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Emulation.virtualTimeAdvanced", callback)
-
-    def virtualTimePaused(
-        self,
-        callback: Callable[["VirtualTimePausedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for virtualTimePaused events.
-
-        Notification sent after the virtual time has paused.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Emulation.virtualTimePaused", callback)

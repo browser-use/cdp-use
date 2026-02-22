@@ -13,46 +13,51 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..target.types import TargetID
 
+RegistrationID = str
+
+
 
 class ServiceWorkerRegistration(TypedDict):
     """ServiceWorker registration."""
 
-    registrationId: "str"
+    registrationId: "RegistrationID"
     scopeURL: "str"
     isDeleted: "bool"
 
 
-ServiceWorkerVersionRunningStatus = Literal[
-    "stopped", "starting", "running", "stopping"
-]
+
+ServiceWorkerVersionRunningStatus = Literal["stopped", "starting", "running", "stopping"]
 
 
-ServiceWorkerVersionStatus = Literal[
-    "new", "installing", "installed", "activating", "activated", "redundant"
-]
+
+ServiceWorkerVersionStatus = Literal["new", "installing", "installed", "activating", "activated", "redundant"]
+
 
 
 class ServiceWorkerVersion(TypedDict):
     """ServiceWorker version."""
 
     versionId: "str"
-    registrationId: "str"
+    registrationId: "RegistrationID"
     scriptURL: "str"
     runningStatus: "ServiceWorkerVersionRunningStatus"
     status: "ServiceWorkerVersionStatus"
     scriptLastModified: "NotRequired[float]"
     """The Last-Modified header value of the main script."""
     scriptResponseTime: "NotRequired[float]"
-    """The time at which the response headers of the main script were received from the server.  For cached script it is the last time the cache entry was validated."""
+    """The time at which the response headers of the main script were received from the server.
+For cached script it is the last time the cache entry was validated."""
     controlledClients: "NotRequired[List[TargetID]]"
     targetId: "NotRequired[TargetID]"
+    routerRules: "NotRequired[str]"
+
 
 
 class ServiceWorkerErrorMessage(TypedDict):
     """ServiceWorker error message."""
 
     errorMessage: "str"
-    registrationId: "str"
+    registrationId: "RegistrationID"
     versionId: "str"
     sourceURL: "str"
     lineNumber: "int"

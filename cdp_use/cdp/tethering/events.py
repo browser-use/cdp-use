@@ -7,8 +7,6 @@
 from typing_extensions import TypedDict
 
 """Informs that port was successfully bound and got a specified connection id."""
-
-
 class AcceptedEvent(TypedDict):
     port: "int"
     """Port number that was successfully bound."""

@@ -1,37 +1,39 @@
 """
 CDP Protocol Version Configuration
 
-Pin the protocol to a specific Chromium release tag so that the generated
+Pin the protocol to a specific Chromium revision so that the generated
 types exactly match the browser version being targeted.
 
-The protocol JSON files are fetched directly from the Chromium and V8
-source repositories at the given tag.  Googlesource returns base64-encoded
-content when `?format=TEXT` is appended — the downloader handles decoding.
+The full (unfrozen) protocol JSON files are fetched from the
+ChromeDevTools/devtools-protocol GitHub repository, which auto-syncs
+from Chromium source. Tags use the format v0.0.<Cr-Commit-Position>.
 
 To update:
   1. Find the Chromium tag at https://chromium.googlesource.com/chromium/src/+refs
-  2. Look up the V8 sub-module commit for that tag:
-       https://chromium.googlesource.com/chromium/src/+/<tag>/v8?format=TEXT
-     (the response is the commit hash)
-  3. Update CHROMIUM_TAG and V8_COMMIT below.
-  4. Run `uv run python -m cdp_use.generator` to regenerate.
+  2. Get the commit metadata (format=JSON) to find the Cr-Branched-From
+     position: refs/heads/main@{#XXXXXXX}
+  3. Find the nearest devtools-protocol tag at:
+       https://api.github.com/repos/ChromeDevTools/devtools-protocol/git/matching-refs/tags/v0.0.XXXX
+  4. Update CHROMIUM_TAG and DEVTOOLS_PROTOCOL_TAG below.
+  5. Run `uv run python -m cdp_use.generator` to regenerate.
 """
 
-# ── Chromium TAG  ──
+# ── Chromium 144.0.7559.109 ──
+# Branch point: refs/heads/main@{#1552494}
+# Nearest devtools-protocol tag: v0.0.1551306
 CHROMIUM_TAG = "144.0.7559.109"
-V8_COMMIT = "d75d178c137447df1a3e8830eae86b0bd72b9ac6"
+DEVTOOLS_PROTOCOL_TAG = "v0.0.1551306"
 
-# Browser protocol (from Blink / Chromium source)
+# Full protocol JSON files from ChromeDevTools/devtools-protocol
 BROWSER_PROTOCOL_FILE = (
-    f"https://chromium.googlesource.com/chromium/src/+/refs/tags/{CHROMIUM_TAG}"
-    f"/third_party/blink/public/devtools_protocol/browser_protocol-1.3.json?format=TEXT"
+    f"https://raw.githubusercontent.com/ChromeDevTools/devtools-protocol"
+    f"/{DEVTOOLS_PROTOCOL_TAG}/json/browser_protocol.json"
 )
 
-# JS protocol (from V8 source, pinned to the commit embedded in this Chromium tag)
 JS_PROTOCOL_FILE = (
-    f"https://chromium.googlesource.com/v8/v8/+/{V8_COMMIT}"
-    f"/include/js_protocol-1.3.json?format=TEXT"
+    f"https://raw.githubusercontent.com/ChromeDevTools/devtools-protocol"
+    f"/{DEVTOOLS_PROTOCOL_TAG}/json/js_protocol.json"
 )
 
-# Legacy alias used by generate.py log messages
-CDP_VERSION = f"chromium-{CHROMIUM_TAG}"
+# Used by generate.py log messages
+CDP_VERSION = f"chromium-{CHROMIUM_TAG} ({DEVTOOLS_PROTOCOL_TAG})"

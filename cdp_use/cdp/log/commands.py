@@ -12,7 +12,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .types import ViolationSetting
 
-
 class StartViolationsReportParameters(TypedDict):
     config: "List[ViolationSetting]"
     """Configuration for violations."""
+
+

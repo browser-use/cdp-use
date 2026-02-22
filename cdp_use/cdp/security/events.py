@@ -13,26 +13,12 @@ if TYPE_CHECKING:
     from .types import InsecureContentStatus
     from .types import SecurityState
     from .types import SecurityStateExplanation
+    from .types import VisibleSecurityState
 
-"""The security state of the page changed."""
-
-
-class SecurityStateChangedEvent(TypedDict):
-    securityState: "SecurityState"
-    """Security state."""
-    schemeIsCryptographic: "bool"
-    """True if the page was loaded over cryptographic transport such as HTTPS."""
-    explanations: "List[SecurityStateExplanation]"
-    """List of explanations for the security state. If the overall security state is `insecure` or `warning`, at least one corresponding explanation should be included."""
-    insecureContentStatus: "InsecureContentStatus"
-    """Information about insecure content on the page."""
-    summary: "NotRequired[str]"
-    """Overrides user-visible description of the state."""
-
-
-"""There is a certificate error. If overriding certificate errors is enabled, then it should be handled with the handleCertificateError command. Note: this event does not fire if the certificate error has been allowed internally."""
-
-
+"""There is a certificate error. If overriding certificate errors is enabled, then it should be
+handled with the `handleCertificateError` command. Note: this event does not fire if the
+certificate error has been allowed internally. Only one client per target should override
+certificate errors at the same time."""
 class CertificateErrorEvent(TypedDict):
     eventId: "int"
     """The ID of the event."""
@@ -40,3 +26,26 @@ class CertificateErrorEvent(TypedDict):
     """The type of the error."""
     requestURL: "str"
     """The url that was requested."""
+
+
+
+"""The security state of the page changed."""
+class VisibleSecurityStateChangedEvent(TypedDict):
+    visibleSecurityState: "VisibleSecurityState"
+    """Security state information about the page."""
+
+
+
+"""The security state of the page changed. No longer being sent."""
+class SecurityStateChangedEvent(TypedDict):
+    securityState: "SecurityState"
+    """Security state."""
+    schemeIsCryptographic: "bool"
+    """True if the page was loaded over cryptographic transport such as HTTPS."""
+    explanations: "List[SecurityStateExplanation]"
+    """Previously a list of explanations for the security state. Now always
+empty."""
+    insecureContentStatus: "InsecureContentStatus"
+    """Information about insecure content on the page."""
+    summary: "NotRequired[str]"
+    """Overrides user-visible description of the state. Always omitted."""

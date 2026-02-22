@@ -11,120 +11,38 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ...client import CDPClient
     from .commands import ActivateTargetParameters
+    from .commands import AttachToBrowserTargetReturns
     from .commands import AttachToTargetParameters
     from .commands import AttachToTargetReturns
+    from .commands import AutoAttachRelatedParameters
     from .commands import CloseTargetParameters
     from .commands import CloseTargetReturns
+    from .commands import CreateBrowserContextParameters
     from .commands import CreateBrowserContextReturns
     from .commands import CreateTargetParameters
     from .commands import CreateTargetReturns
     from .commands import DetachFromTargetParameters
     from .commands import DisposeBrowserContextParameters
-    from .commands import DisposeBrowserContextReturns
+    from .commands import ExposeDevToolsProtocolParameters
+    from .commands import GetBrowserContextsReturns
+    from .commands import GetDevToolsTargetParameters
+    from .commands import GetDevToolsTargetReturns
     from .commands import GetTargetInfoParameters
     from .commands import GetTargetInfoReturns
+    from .commands import GetTargetsParameters
     from .commands import GetTargetsReturns
+    from .commands import OpenDevToolsParameters
+    from .commands import OpenDevToolsReturns
     from .commands import SendMessageToTargetParameters
-    from .commands import SetAttachToFramesParameters
     from .commands import SetAutoAttachParameters
     from .commands import SetDiscoverTargetsParameters
     from .commands import SetRemoteLocationsParameters
 
-
 class TargetClient:
     """Client for Target domain commands."""
 
-    def __init__(self, client: "CDPClient"):
+    def __init__(self, client: 'CDPClient'):
         self._client = client
-
-    async def setDiscoverTargets(
-        self,
-        params: "SetDiscoverTargetsParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Controls whether to discover available targets and notify via <code>targetCreated/targetInfoChanged/targetDestroyed</code> events."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Target.setDiscoverTargets",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setAutoAttach(
-        self,
-        params: "SetAutoAttachParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Controls whether to automatically attach to new targets which are considered to be related to this one. When turned on, attaches to all existing related targets as well. When turned off, automatically detaches from all currently attached targets."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Target.setAutoAttach",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setAttachToFrames(
-        self,
-        params: "SetAttachToFramesParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Target.setAttachToFrames",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setRemoteLocations(
-        self,
-        params: "SetRemoteLocationsParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Enables target discovery for the specified locations, when <code>setDiscoverTargets</code> was set to <code>true</code>."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Target.setRemoteLocations",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def sendMessageToTarget(
-        self,
-        params: "SendMessageToTargetParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Sends protocol message over session with given id."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Target.sendMessageToTarget",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getTargetInfo(
-        self,
-        params: "GetTargetInfoParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetTargetInfoReturns":
-        """Returns information about a target."""
-        return cast(
-            "GetTargetInfoReturns",
-            await self._client.send_raw(
-                method="Target.getTargetInfo",
-                params=params,
-                session_id=session_id,
-            ),
-        )
 
     async def activateTarget(
         self,
@@ -132,29 +50,11 @@ class TargetClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Activates (focuses) the target."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Target.activateTarget",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def closeTarget(
-        self,
-        params: "CloseTargetParameters",
-        session_id: Optional[str] = None,
-    ) -> "CloseTargetReturns":
-        """Closes the target. If the target is a page that gets closed too."""
-        return cast(
-            "CloseTargetReturns",
-            await self._client.send_raw(
-                method="Target.closeTarget",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Target.activateTarget",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def attachToTarget(
         self,
@@ -162,59 +62,79 @@ class TargetClient:
         session_id: Optional[str] = None,
     ) -> "AttachToTargetReturns":
         """Attaches to the target with given id."""
-        return cast(
-            "AttachToTargetReturns",
-            await self._client.send_raw(
-                method="Target.attachToTarget",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("AttachToTargetReturns", await self._client.send_raw(
+            method="Target.attachToTarget",
+            params=params,
+            session_id=session_id,
+        ))
 
-    async def detachFromTarget(
-        self,
-        params: Optional["DetachFromTargetParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Detaches session with given id."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Target.detachFromTarget",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def createBrowserContext(
+    async def attachToBrowserTarget(
         self,
         params: None = None,
         session_id: Optional[str] = None,
-    ) -> "CreateBrowserContextReturns":
-        """Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than one."""
-        return cast(
-            "CreateBrowserContextReturns",
-            await self._client.send_raw(
-                method="Target.createBrowserContext",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+    ) -> "AttachToBrowserTargetReturns":
+        """Attaches to the browser target, only uses flat sessionId mode."""
+        return cast("AttachToBrowserTargetReturns", await self._client.send_raw(
+            method="Target.attachToBrowserTarget",
+            params=params,
+            session_id=session_id,
+        ))
 
-    async def disposeBrowserContext(
+    async def closeTarget(
         self,
-        params: "DisposeBrowserContextParameters",
+        params: "CloseTargetParameters",
         session_id: Optional[str] = None,
-    ) -> "DisposeBrowserContextReturns":
-        """Deletes a BrowserContext, will fail of any open page uses it."""
-        return cast(
-            "DisposeBrowserContextReturns",
-            await self._client.send_raw(
-                method="Target.disposeBrowserContext",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+    ) -> "CloseTargetReturns":
+        """Closes the target. If the target is a page that gets closed too."""
+        return cast("CloseTargetReturns", await self._client.send_raw(
+            method="Target.closeTarget",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def exposeDevToolsProtocol(
+        self,
+        params: "ExposeDevToolsProtocolParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Inject object to the target's main frame that provides a communication
+channel with browser target.
+
+Injected object will be available as `window[bindingName]`.
+
+The object has the following API:
+- `binding.send(json)` - a method to send messages over the remote debugging protocol
+- `binding.onmessage = json => handleMessage(json)` - a callback that will be called for the protocol notifications and command responses."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Target.exposeDevToolsProtocol",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def createBrowserContext(
+        self,
+        params: Optional["CreateBrowserContextParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "CreateBrowserContextReturns":
+        """Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than
+one."""
+        return cast("CreateBrowserContextReturns", await self._client.send_raw(
+            method="Target.createBrowserContext",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def getBrowserContexts(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "GetBrowserContextsReturns":
+        """Returns all browser contexts created with `Target.createBrowserContext` method."""
+        return cast("GetBrowserContextsReturns", await self._client.send_raw(
+            method="Target.getBrowserContexts",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def createTarget(
         self,
@@ -222,26 +142,159 @@ class TargetClient:
         session_id: Optional[str] = None,
     ) -> "CreateTargetReturns":
         """Creates a new page."""
-        return cast(
-            "CreateTargetReturns",
-            await self._client.send_raw(
-                method="Target.createTarget",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("CreateTargetReturns", await self._client.send_raw(
+            method="Target.createTarget",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def detachFromTarget(
+        self,
+        params: Optional["DetachFromTargetParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Detaches session with given id."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Target.detachFromTarget",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def disposeBrowserContext(
+        self,
+        params: "DisposeBrowserContextParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Deletes a BrowserContext. All the belonging pages will be closed without calling their
+beforeunload hooks."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Target.disposeBrowserContext",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def getTargetInfo(
+        self,
+        params: Optional["GetTargetInfoParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "GetTargetInfoReturns":
+        """Returns information about a target."""
+        return cast("GetTargetInfoReturns", await self._client.send_raw(
+            method="Target.getTargetInfo",
+            params=params,
+            session_id=session_id,
+        ))
 
     async def getTargets(
         self,
-        params: None = None,
+        params: Optional["GetTargetsParameters"] = None,
         session_id: Optional[str] = None,
     ) -> "GetTargetsReturns":
         """Retrieves a list of available targets."""
-        return cast(
-            "GetTargetsReturns",
-            await self._client.send_raw(
-                method="Target.getTargets",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("GetTargetsReturns", await self._client.send_raw(
+            method="Target.getTargets",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def sendMessageToTarget(
+        self,
+        params: "SendMessageToTargetParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Sends protocol message over session with given id.
+Consider using flat mode instead; see commands attachToTarget, setAutoAttach,
+and crbug.com/991325."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Target.sendMessageToTarget",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def setAutoAttach(
+        self,
+        params: "SetAutoAttachParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Controls whether to automatically attach to new targets which are considered
+to be directly related to this one (for example, iframes or workers).
+When turned on, attaches to all existing related targets as well. When turned off,
+automatically detaches from all currently attached targets.
+This also clears all targets added by `autoAttachRelated` from the list of targets to watch
+for creation of related targets.
+You might want to call this recursively for auto-attached targets to attach
+to all available targets."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Target.setAutoAttach",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def autoAttachRelated(
+        self,
+        params: "AutoAttachRelatedParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Adds the specified target to the list of targets that will be monitored for any related target
+creation (such as child frames, child workers and new versions of service worker) and reported
+through `attachedToTarget`. The specified target is also auto-attached.
+This cancels the effect of any previous `setAutoAttach` and is also cancelled by subsequent
+`setAutoAttach`. Only available at the Browser target."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Target.autoAttachRelated",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def setDiscoverTargets(
+        self,
+        params: "SetDiscoverTargetsParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Controls whether to discover available targets and notify via
+`targetCreated/targetInfoChanged/targetDestroyed` events."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Target.setDiscoverTargets",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def setRemoteLocations(
+        self,
+        params: "SetRemoteLocationsParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Enables target discovery for the specified locations, when `setDiscoverTargets` was set to
+`true`."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Target.setRemoteLocations",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def getDevToolsTarget(
+        self,
+        params: "GetDevToolsTargetParameters",
+        session_id: Optional[str] = None,
+    ) -> "GetDevToolsTargetReturns":
+        """Gets the targetId of the DevTools page target opened for the given target
+(if any)."""
+        return cast("GetDevToolsTargetReturns", await self._client.send_raw(
+            method="Target.getDevToolsTarget",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def openDevTools(
+        self,
+        params: "OpenDevToolsParameters",
+        session_id: Optional[str] = None,
+    ) -> "OpenDevToolsReturns":
+        """Opens a DevTools window for the target."""
+        return cast("OpenDevToolsReturns", await self._client.send_raw(
+            method="Target.openDevTools",
+            params=params,
+            session_id=session_id,
+        ))
+
+

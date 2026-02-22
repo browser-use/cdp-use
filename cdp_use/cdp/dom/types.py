@@ -17,85 +17,106 @@ NodeId = int
 """Unique DOM node identifier."""
 
 
+
 BackendNodeId = int
-"""Unique DOM node identifier used to reference a node that may not have been pushed to the front-end."""
+"""Unique DOM node identifier used to reference a node that may not have been pushed to the
+front-end."""
+
+
+
+StyleSheetId = str
+"""Unique identifier for a CSS stylesheet."""
+
 
 
 class BackendNode(TypedDict):
     """Backend node with a friendly name."""
 
     nodeType: "int"
-    """<code>Node</code>'s nodeType."""
+    """`Node`'s nodeType."""
     nodeName: "str"
-    """<code>Node</code>'s nodeName."""
+    """`Node`'s nodeName."""
     backendNodeId: "BackendNodeId"
 
 
-PseudoType = Literal[
-    "first-line",
-    "first-letter",
-    "before",
-    "after",
-    "backdrop",
-    "selection",
-    "first-line-inherited",
-    "scrollbar",
-    "scrollbar-thumb",
-    "scrollbar-button",
-    "scrollbar-track",
-    "scrollbar-track-piece",
-    "scrollbar-corner",
-    "resizer",
-    "input-list-button",
-]
+
+PseudoType = Literal["first-line", "first-letter", "checkmark", "before", "after", "picker-icon", "interest-hint", "marker", "backdrop", "column", "selection", "search-text", "target-text", "spelling-error", "grammar-error", "highlight", "first-line-inherited", "scroll-marker", "scroll-marker-group", "scroll-button", "scrollbar", "scrollbar-thumb", "scrollbar-button", "scrollbar-track", "scrollbar-track-piece", "scrollbar-corner", "resizer", "input-list-button", "view-transition", "view-transition-group", "view-transition-image-pair", "view-transition-group-children", "view-transition-old", "view-transition-new", "placeholder", "file-selector-button", "details-content", "picker", "permission-icon", "overscroll-area-parent", "overscroll-client-area"]
 """Pseudo element type."""
+
 
 
 ShadowRootType = Literal["user-agent", "open", "closed"]
 """Shadow root type."""
 
 
+
+CompatibilityMode = Literal["QuirksMode", "LimitedQuirksMode", "NoQuirksMode"]
+"""Document compatibility mode."""
+
+
+
+PhysicalAxes = Literal["Horizontal", "Vertical", "Both"]
+"""ContainerSelector physical axes"""
+
+
+
+LogicalAxes = Literal["Inline", "Block", "Both"]
+"""ContainerSelector logical axes"""
+
+
+
+ScrollOrientation = Literal["horizontal", "vertical"]
+"""Physical scroll orientation"""
+
+
+
 class Node(TypedDict):
-    """DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes. DOMNode is a base node mirror type."""
+    """DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
+DOMNode is a base node mirror type."""
 
     nodeId: "NodeId"
-    """Node identifier that is passed into the rest of the DOM messages as the <code>nodeId</code>. Backend will only push node with given <code>id</code> once. It is aware of all requested nodes and will only fire DOM events for nodes known to the client."""
+    """Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
+will only push node with given `id` once. It is aware of all requested nodes and will only
+fire DOM events for nodes known to the client."""
     parentId: "NotRequired[NodeId]"
     """The id of the parent node if any."""
     backendNodeId: "BackendNodeId"
     """The BackendNodeId for this node."""
     nodeType: "int"
-    """<code>Node</code>'s nodeType."""
+    """`Node`'s nodeType."""
     nodeName: "str"
-    """<code>Node</code>'s nodeName."""
+    """`Node`'s nodeName."""
     localName: "str"
-    """<code>Node</code>'s localName."""
+    """`Node`'s localName."""
     nodeValue: "str"
-    """<code>Node</code>'s nodeValue."""
+    """`Node`'s nodeValue."""
     childNodeCount: "NotRequired[int]"
-    """Child count for <code>Container</code> nodes."""
+    """Child count for `Container` nodes."""
     children: "NotRequired[List[Node]]"
     """Child nodes of this node when requested with children."""
     attributes: "NotRequired[List[str]]"
-    """Attributes of the <code>Element</code> node in the form of flat array <code>[name1, value1, name2, value2]</code>."""
+    """Attributes of the `Element` node in the form of flat array `[name1, value1, name2, value2]`."""
     documentURL: "NotRequired[str]"
-    """Document URL that <code>Document</code> or <code>FrameOwner</code> node points to."""
+    """Document URL that `Document` or `FrameOwner` node points to."""
     baseURL: "NotRequired[str]"
-    """Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion."""
+    """Base URL that `Document` or `FrameOwner` node uses for URL completion."""
     publicId: "NotRequired[str]"
-    """<code>DocumentType</code>'s publicId."""
+    """`DocumentType`'s publicId."""
     systemId: "NotRequired[str]"
-    """<code>DocumentType</code>'s systemId."""
+    """`DocumentType`'s systemId."""
     internalSubset: "NotRequired[str]"
-    """<code>DocumentType</code>'s internalSubset."""
+    """`DocumentType`'s internalSubset."""
     xmlVersion: "NotRequired[str]"
-    """<code>Document</code>'s XML version in case of XML documents."""
+    """`Document`'s XML version in case of XML documents."""
     name: "NotRequired[str]"
-    """<code>Attr</code>'s name."""
+    """`Attr`'s name."""
     value: "NotRequired[str]"
-    """<code>Attr</code>'s value."""
+    """`Attr`'s value."""
     pseudoType: "NotRequired[PseudoType]"
     """Pseudo element type for this node."""
+    pseudoIdentifier: "NotRequired[str]"
+    """Pseudo element identifier for this node. Only present if there is a
+valid pseudoType."""
     shadowRootType: "NotRequired[ShadowRootType]"
     """Shadow root type."""
     frameId: "NotRequired[FrameId]"
@@ -109,11 +130,27 @@ class Node(TypedDict):
     pseudoElements: "NotRequired[List[Node]]"
     """Pseudo elements associated with this node."""
     importedDocument: "NotRequired[Node]"
-    """Import document for the HTMLImport links."""
+    """Deprecated, as the HTML Imports API has been removed (crbug.com/937746).
+This property used to return the imported document for the HTMLImport links.
+The property is always undefined now."""
     distributedNodes: "NotRequired[List[BackendNode]]"
     """Distributed nodes for given insertion point."""
     isSVG: "NotRequired[bool]"
     """Whether the node is SVG."""
+    compatibilityMode: "NotRequired[CompatibilityMode]"
+    assignedSlot: "NotRequired[BackendNode]"
+    isScrollable: "NotRequired[bool]"
+    affectedByStartingStyles: "NotRequired[bool]"
+    adoptedStyleSheets: "NotRequired[List[StyleSheetId]]"
+
+
+
+class DetachedElementInfo(TypedDict):
+    """A structure to hold the top-level node of a detached tree and an array of its retained descendants."""
+
+    treeNode: "Node"
+    retainedNodeIds: "List[NodeId]"
+
 
 
 class RGBA(TypedDict):
@@ -129,8 +166,10 @@ class RGBA(TypedDict):
     """The alpha component, in the [0-1] range (default: 1)."""
 
 
+
 Quad = List[float]
 """An array of quad vertices, x immediately followed by y for each point, points clock-wise."""
+
 
 
 class BoxModel(TypedDict):
@@ -152,6 +191,7 @@ class BoxModel(TypedDict):
     """Shape outside coordinates"""
 
 
+
 class ShapeOutsideInfo(TypedDict):
     """CSS Shape Outside details."""
 
@@ -161,6 +201,7 @@ class ShapeOutsideInfo(TypedDict):
     """Shape coordinate details"""
     marginShape: "List[Any]"
     """Margin shape bounds"""
+
 
 
 class Rect(TypedDict):
@@ -174,3 +215,11 @@ class Rect(TypedDict):
     """Rectangle width"""
     height: "float"
     """Rectangle height"""
+
+
+
+class CSSComputedStyleProperty(TypedDict):
+    name: "str"
+    """Computed style property name."""
+    value: "str"
+    """Computed style property value."""

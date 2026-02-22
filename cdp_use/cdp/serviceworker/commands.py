@@ -6,43 +6,75 @@
 
 from typing_extensions import TypedDict
 
+from typing import TYPE_CHECKING
 
-class UnregisterParameters(TypedDict):
-    scopeURL: "str"
+if TYPE_CHECKING:
+    from .types import RegistrationID
 
-
-class UpdateRegistrationParameters(TypedDict):
-    scopeURL: "str"
-
-
-class StartWorkerParameters(TypedDict):
-    scopeURL: "str"
+class DeliverPushMessageParameters(TypedDict):
+    origin: "str"
+    registrationId: "RegistrationID"
+    data: "str"
 
 
-class SkipWaitingParameters(TypedDict):
-    scopeURL: "str"
 
 
-class StopWorkerParameters(TypedDict):
-    versionId: "str"
+
+class DispatchSyncEventParameters(TypedDict):
+    origin: "str"
+    registrationId: "RegistrationID"
+    tag: "str"
+    lastChance: "bool"
 
 
-class InspectWorkerParameters(TypedDict):
-    versionId: "str"
+
+
+
+class DispatchPeriodicSyncEventParameters(TypedDict):
+    origin: "str"
+    registrationId: "RegistrationID"
+    tag: "str"
+
+
+
 
 
 class SetForceUpdateOnPageLoadParameters(TypedDict):
     forceUpdateOnPageLoad: "bool"
 
 
-class DeliverPushMessageParameters(TypedDict):
-    origin: "str"
-    registrationId: "str"
-    data: "str"
 
 
-class DispatchSyncEventParameters(TypedDict):
-    origin: "str"
-    registrationId: "str"
-    tag: "str"
-    lastChance: "bool"
+
+class SkipWaitingParameters(TypedDict):
+    scopeURL: "str"
+
+
+
+
+
+class StartWorkerParameters(TypedDict):
+    scopeURL: "str"
+
+
+
+
+
+class StopWorkerParameters(TypedDict):
+    versionId: "str"
+
+
+
+
+
+class UnregisterParameters(TypedDict):
+    scopeURL: "str"
+
+
+
+
+
+class UpdateRegistrationParameters(TypedDict):
+    scopeURL: "str"
+
+

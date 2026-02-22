@@ -11,37 +11,21 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
+    from ..page.types import FrameId
+    from ..runtime.types import ExecutionContextId
     from ..runtime.types import RemoteObject
     from ..runtime.types import RemoteObjectId
+    from ..runtime.types import StackTrace
     from .types import BackendNodeId
     from .types import BoxModel
+    from .types import CSSComputedStyleProperty
+    from .types import DetachedElementInfo
+    from .types import LogicalAxes
     from .types import Node
     from .types import NodeId
-
-
-class GetDocumentParameters(TypedDict, total=False):
-    depth: "int"
-    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0."""
-    pierce: "bool"
-    """Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false)."""
-
-
-class GetDocumentReturns(TypedDict):
-    root: "Node"
-    """Resulting node."""
-
-
-class GetFlattenedDocumentParameters(TypedDict, total=False):
-    depth: "int"
-    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0."""
-    pierce: "bool"
-    """Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false)."""
-
-
-class GetFlattenedDocumentReturns(TypedDict):
-    nodes: "List[Node]"
-    """Resulting node."""
-
+    from .types import PhysicalAxes
+    from .types import Quad
+    from .types import Rect
 
 class CollectClassNamesFromSubtreeParameters(TypedDict):
     nodeId: "NodeId"
@@ -53,200 +37,6 @@ class CollectClassNamesFromSubtreeReturns(TypedDict):
     """Class name list."""
 
 
-class RequestChildNodesParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node to get children for."""
-    depth: "NotRequired[int]"
-    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0."""
-    pierce: "NotRequired[bool]"
-    """Whether or not iframes and shadow roots should be traversed when returning the sub-tree (default is false)."""
-
-
-class QuerySelectorParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node to query upon."""
-    selector: "str"
-    """Selector string."""
-
-
-class QuerySelectorReturns(TypedDict):
-    nodeId: "NodeId"
-    """Query selector result."""
-
-
-class QuerySelectorAllParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node to query upon."""
-    selector: "str"
-    """Selector string."""
-
-
-class QuerySelectorAllReturns(TypedDict):
-    nodeIds: "List[NodeId]"
-    """Query selector result."""
-
-
-class SetNodeNameParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node to set name for."""
-    name: "str"
-    """New node's name."""
-
-
-class SetNodeNameReturns(TypedDict):
-    nodeId: "NodeId"
-    """New node's id."""
-
-
-class SetNodeValueParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node to set value for."""
-    value: "str"
-    """New node's value."""
-
-
-class RemoveNodeParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node to remove."""
-
-
-class SetAttributeValueParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the element to set attribute for."""
-    name: "str"
-    """Attribute name."""
-    value: "str"
-    """Attribute value."""
-
-
-class SetAttributesAsTextParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the element to set attributes for."""
-    text: "str"
-    """Text with a number of attributes. Will parse this text using HTML parser."""
-    name: "NotRequired[str]"
-    """Attribute name to replace with new attributes derived from text in case text parsed successfully."""
-
-
-class RemoveAttributeParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the element to remove attribute from."""
-    name: "str"
-    """Name of the attribute to remove."""
-
-
-class GetOuterHTMLParameters(TypedDict, total=False):
-    nodeId: "NodeId"
-    """Identifier of the node."""
-    backendNodeId: "BackendNodeId"
-    """Identifier of the backend node."""
-    objectId: "RemoteObjectId"
-    """JavaScript object id of the node wrapper."""
-
-
-class GetOuterHTMLReturns(TypedDict):
-    outerHTML: "str"
-    """Outer HTML markup."""
-
-
-class SetOuterHTMLParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node to set markup for."""
-    outerHTML: "str"
-    """Outer HTML markup to set."""
-
-
-class PerformSearchParameters(TypedDict):
-    query: "str"
-    """Plain text or query selector or XPath search query."""
-    includeUserAgentShadowDOM: "NotRequired[bool]"
-    """True to search in user agent shadow DOM."""
-
-
-class PerformSearchReturns(TypedDict):
-    searchId: "str"
-    """Unique search session identifier."""
-    resultCount: "int"
-    """Number of search results."""
-
-
-class GetSearchResultsParameters(TypedDict):
-    searchId: "str"
-    """Unique search session identifier."""
-    fromIndex: "int"
-    """Start index of the search result to be returned."""
-    toIndex: "int"
-    """End index of the search result to be returned."""
-
-
-class GetSearchResultsReturns(TypedDict):
-    nodeIds: "List[NodeId]"
-    """Ids of the search result nodes."""
-
-
-class DiscardSearchResultsParameters(TypedDict):
-    searchId: "str"
-    """Unique search session identifier."""
-
-
-class RequestNodeParameters(TypedDict):
-    objectId: "RemoteObjectId"
-    """JavaScript object id to convert into node."""
-
-
-class RequestNodeReturns(TypedDict):
-    nodeId: "NodeId"
-    """Node id for given object."""
-
-
-class PushNodeByPathToFrontendParameters(TypedDict):
-    path: "str"
-    """Path to node in the proprietary format."""
-
-
-class PushNodeByPathToFrontendReturns(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node for given path."""
-
-
-class PushNodesByBackendIdsToFrontendParameters(TypedDict):
-    backendNodeIds: "List[BackendNodeId]"
-    """The array of backend node ids."""
-
-
-class PushNodesByBackendIdsToFrontendReturns(TypedDict):
-    nodeIds: "List[NodeId]"
-    """The array of ids of pushed nodes that correspond to the backend ids specified in backendNodeIds."""
-
-
-class SetInspectedNodeParameters(TypedDict):
-    nodeId: "NodeId"
-    """DOM node id to be accessible by means of $x command line API."""
-
-
-class ResolveNodeParameters(TypedDict, total=False):
-    nodeId: "NodeId"
-    """Id of the node to resolve."""
-    backendNodeId: "BackendNodeId"
-    """Backend identifier of the node to resolve."""
-    objectGroup: "str"
-    """Symbolic group name that can be used to release multiple objects."""
-
-
-class ResolveNodeReturns(TypedDict):
-    object: "RemoteObject"
-    """JavaScript object wrapper for given node."""
-
-
-class GetAttributesParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node to retrieve attibutes for."""
-
-
-class GetAttributesReturns(TypedDict):
-    attributes: "List[str]"
-    """An interleaved array of node attribute names and values."""
-
 
 class CopyToParameters(TypedDict):
     nodeId: "NodeId"
@@ -254,7 +44,8 @@ class CopyToParameters(TypedDict):
     targetNodeId: "NodeId"
     """Id of the element to drop the copy into."""
     insertBeforeNodeId: "NotRequired[NodeId]"
-    """Drop the copy before this node (if absent, the copy becomes the last child of <code>targetNodeId</code>)."""
+    """Drop the copy before this node (if absent, the copy becomes the last child of
+`targetNodeId`)."""
 
 
 class CopyToReturns(TypedDict):
@@ -262,18 +53,57 @@ class CopyToReturns(TypedDict):
     """Id of the node clone."""
 
 
-class MoveToParameters(TypedDict):
+
+class DescribeNodeParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """Id of the node to move."""
-    targetNodeId: "NodeId"
-    """Id of the element to drop the moved node into."""
-    insertBeforeNodeId: "NotRequired[NodeId]"
-    """Drop node before this one (if absent, the moved node becomes the last child of <code>targetNodeId</code>)."""
+    """Identifier of the node."""
+    backendNodeId: "BackendNodeId"
+    """Identifier of the backend node."""
+    objectId: "RemoteObjectId"
+    """JavaScript object id of the node wrapper."""
+    depth: "int"
+    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
+entire subtree or provide an integer larger than 0."""
+    pierce: "bool"
+    """Whether or not iframes and shadow roots should be traversed when returning the subtree
+(default is false)."""
 
 
-class MoveToReturns(TypedDict):
+class DescribeNodeReturns(TypedDict):
+    node: "Node"
+    """Node description."""
+
+
+
+class ScrollIntoViewIfNeededParameters(TypedDict, total=False):
     nodeId: "NodeId"
-    """New id of the moved node."""
+    """Identifier of the node."""
+    backendNodeId: "BackendNodeId"
+    """Identifier of the backend node."""
+    objectId: "RemoteObjectId"
+    """JavaScript object id of the node wrapper."""
+    rect: "Rect"
+    """The rect to be scrolled into view, relative to the node's border box, in CSS pixels.
+When omitted, center of the node will be used, similar to Element.scrollIntoView."""
+
+
+
+
+
+class DiscardSearchResultsParameters(TypedDict):
+    searchId: "str"
+    """Unique search session identifier."""
+
+
+
+
+
+class EnableParameters(TypedDict, total=False):
+    includeWhitespace: "str"
+    """Whether to include whitespaces in the children array of returned Nodes."""
+
+
+
 
 
 class FocusParameters(TypedDict, total=False):
@@ -285,15 +115,18 @@ class FocusParameters(TypedDict, total=False):
     """JavaScript object id of the node wrapper."""
 
 
-class SetFileInputFilesParameters(TypedDict):
-    files: "List[str]"
-    """Array of file paths to set."""
-    nodeId: "NotRequired[NodeId]"
-    """Identifier of the node."""
-    backendNodeId: "NotRequired[BackendNodeId]"
-    """Identifier of the backend node."""
-    objectId: "NotRequired[RemoteObjectId]"
-    """JavaScript object id of the node wrapper."""
+
+
+
+class GetAttributesParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to retrieve attributes for."""
+
+
+class GetAttributesReturns(TypedDict):
+    attributes: "List[str]"
+    """An interleaved array of node attribute names and values."""
+
 
 
 class GetBoxModelParameters(TypedDict, total=False):
@@ -310,6 +143,68 @@ class GetBoxModelReturns(TypedDict):
     """Box model for the node."""
 
 
+
+class GetContentQuadsParameters(TypedDict, total=False):
+    nodeId: "NodeId"
+    """Identifier of the node."""
+    backendNodeId: "BackendNodeId"
+    """Identifier of the backend node."""
+    objectId: "RemoteObjectId"
+    """JavaScript object id of the node wrapper."""
+
+
+class GetContentQuadsReturns(TypedDict):
+    quads: "List[Quad]"
+    """Quads that describe node layout relative to viewport."""
+
+
+
+class GetDocumentParameters(TypedDict, total=False):
+    depth: "int"
+    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
+entire subtree or provide an integer larger than 0."""
+    pierce: "bool"
+    """Whether or not iframes and shadow roots should be traversed when returning the subtree
+(default is false)."""
+
+
+class GetDocumentReturns(TypedDict):
+    root: "Node"
+    """Resulting node."""
+
+
+
+class GetFlattenedDocumentParameters(TypedDict, total=False):
+    depth: "int"
+    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
+entire subtree or provide an integer larger than 0."""
+    pierce: "bool"
+    """Whether or not iframes and shadow roots should be traversed when returning the subtree
+(default is false)."""
+
+
+class GetFlattenedDocumentReturns(TypedDict):
+    nodes: "List[Node]"
+    """Resulting node."""
+
+
+
+class GetNodesForSubtreeByStyleParameters(TypedDict):
+    nodeId: "NodeId"
+    """Node ID pointing to the root of a subtree."""
+    computedStyles: "List[CSSComputedStyleProperty]"
+    """The style to filter nodes by (includes nodes if any of properties matches)."""
+    pierce: "NotRequired[bool]"
+    """Whether or not iframes and shadow roots in the same target should be traversed when returning the
+results (default is false)."""
+
+
+class GetNodesForSubtreeByStyleReturns(TypedDict):
+    nodeIds: "List[NodeId]"
+    """Resulting nodes."""
+
+
+
 class GetNodeForLocationParameters(TypedDict):
     x: "int"
     """X coordinate."""
@@ -317,11 +212,35 @@ class GetNodeForLocationParameters(TypedDict):
     """Y coordinate."""
     includeUserAgentShadowDOM: "NotRequired[bool]"
     """False to skip to the nearest non-UA shadow root ancestor (default: false)."""
+    ignorePointerEventsNone: "NotRequired[bool]"
+    """Whether to ignore pointer-events: none on elements and hit test them."""
 
 
 class GetNodeForLocationReturns(TypedDict):
+    backendNodeId: "BackendNodeId"
+    """Resulting node."""
+    frameId: "FrameId"
+    """Frame this node belongs to."""
     nodeId: "NodeId"
-    """Id of the node at given coordinates."""
+    """Id of the node at given coordinates, only when enabled and requested document."""
+
+
+
+class GetOuterHTMLParameters(TypedDict, total=False):
+    nodeId: "NodeId"
+    """Identifier of the node."""
+    backendNodeId: "BackendNodeId"
+    """Identifier of the backend node."""
+    objectId: "RemoteObjectId"
+    """JavaScript object id of the node wrapper."""
+    includeShadowDOM: "bool"
+    """Include all shadow roots. Equals to false if not specified."""
+
+
+class GetOuterHTMLReturns(TypedDict):
+    outerHTML: "str"
+    """Outer HTML markup."""
+
 
 
 class GetRelayoutBoundaryParameters(TypedDict):
@@ -334,19 +253,358 @@ class GetRelayoutBoundaryReturns(TypedDict):
     """Relayout boundary node id for the given node."""
 
 
-class DescribeNodeParameters(TypedDict, total=False):
+
+class GetSearchResultsParameters(TypedDict):
+    searchId: "str"
+    """Unique search session identifier."""
+    fromIndex: "int"
+    """Start index of the search result to be returned."""
+    toIndex: "int"
+    """End index of the search result to be returned."""
+
+
+class GetSearchResultsReturns(TypedDict):
+    nodeIds: "List[NodeId]"
+    """Ids of the search result nodes."""
+
+
+
+class MoveToParameters(TypedDict):
     nodeId: "NodeId"
-    """Identifier of the node."""
+    """Id of the node to move."""
+    targetNodeId: "NodeId"
+    """Id of the element to drop the moved node into."""
+    insertBeforeNodeId: "NotRequired[NodeId]"
+    """Drop node before this one (if absent, the moved node becomes the last child of
+`targetNodeId`)."""
+
+
+class MoveToReturns(TypedDict):
+    nodeId: "NodeId"
+    """New id of the moved node."""
+
+
+
+class PerformSearchParameters(TypedDict):
+    query: "str"
+    """Plain text or query selector or XPath search query."""
+    includeUserAgentShadowDOM: "NotRequired[bool]"
+    """True to search in user agent shadow DOM."""
+
+
+class PerformSearchReturns(TypedDict):
+    searchId: "str"
+    """Unique search session identifier."""
+    resultCount: "int"
+    """Number of search results."""
+
+
+
+class PushNodeByPathToFrontendParameters(TypedDict):
+    path: "str"
+    """Path to node in the proprietary format."""
+
+
+class PushNodeByPathToFrontendReturns(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node for given path."""
+
+
+
+class PushNodesByBackendIdsToFrontendParameters(TypedDict):
+    backendNodeIds: "List[BackendNodeId]"
+    """The array of backend node ids."""
+
+
+class PushNodesByBackendIdsToFrontendReturns(TypedDict):
+    nodeIds: "List[NodeId]"
+    """The array of ids of pushed nodes that correspond to the backend ids specified in
+backendNodeIds."""
+
+
+
+class QuerySelectorParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to query upon."""
+    selector: "str"
+    """Selector string."""
+
+
+class QuerySelectorReturns(TypedDict):
+    nodeId: "NodeId"
+    """Query selector result."""
+
+
+
+class QuerySelectorAllParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to query upon."""
+    selector: "str"
+    """Selector string."""
+
+
+class QuerySelectorAllReturns(TypedDict):
+    nodeIds: "List[NodeId]"
+    """Query selector result."""
+
+
+
+class GetTopLayerElementsReturns(TypedDict):
+    nodeIds: "List[NodeId]"
+    """NodeIds of top layer elements"""
+
+
+
+class GetElementByRelationParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node from which to query the relation."""
+    relation: "str"
+    """Type of relation to get."""
+
+
+class GetElementByRelationReturns(TypedDict):
+    nodeId: "NodeId"
+    """NodeId of the element matching the queried relation."""
+
+
+
+class RemoveAttributeParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the element to remove attribute from."""
+    name: "str"
+    """Name of the attribute to remove."""
+
+
+
+
+
+class RemoveNodeParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to remove."""
+
+
+
+
+
+class RequestChildNodesParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to get children for."""
+    depth: "NotRequired[int]"
+    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
+entire subtree or provide an integer larger than 0."""
+    pierce: "NotRequired[bool]"
+    """Whether or not iframes and shadow roots should be traversed when returning the sub-tree
+(default is false)."""
+
+
+
+
+
+class RequestNodeParameters(TypedDict):
+    objectId: "RemoteObjectId"
+    """JavaScript object id to convert into node."""
+
+
+class RequestNodeReturns(TypedDict):
+    nodeId: "NodeId"
+    """Node id for given object."""
+
+
+
+class ResolveNodeParameters(TypedDict, total=False):
+    nodeId: "NodeId"
+    """Id of the node to resolve."""
     backendNodeId: "BackendNodeId"
+    """Backend identifier of the node to resolve."""
+    objectGroup: "str"
+    """Symbolic group name that can be used to release multiple objects."""
+    executionContextId: "ExecutionContextId"
+    """Execution context in which to resolve the node."""
+
+
+class ResolveNodeReturns(TypedDict):
+    object: "RemoteObject"
+    """JavaScript object wrapper for given node."""
+
+
+
+class SetAttributeValueParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the element to set attribute for."""
+    name: "str"
+    """Attribute name."""
+    value: "str"
+    """Attribute value."""
+
+
+
+
+
+class SetAttributesAsTextParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the element to set attributes for."""
+    text: "str"
+    """Text with a number of attributes. Will parse this text using HTML parser."""
+    name: "NotRequired[str]"
+    """Attribute name to replace with new attributes derived from text in case text parsed
+successfully."""
+
+
+
+
+
+class SetFileInputFilesParameters(TypedDict):
+    files: "List[str]"
+    """Array of file paths to set."""
+    nodeId: "NotRequired[NodeId]"
+    """Identifier of the node."""
+    backendNodeId: "NotRequired[BackendNodeId]"
     """Identifier of the backend node."""
+    objectId: "NotRequired[RemoteObjectId]"
+    """JavaScript object id of the node wrapper."""
+
+
+
+
+
+class SetNodeStackTracesEnabledParameters(TypedDict):
+    enable: "bool"
+    """Enable or disable."""
+
+
+
+
+
+class GetNodeStackTracesParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to get stack traces for."""
+
+
+class GetNodeStackTracesReturns(TypedDict):
+    creation: "StackTrace"
+    """Creation stack trace, if available."""
+
+
+
+class GetFileInfoParameters(TypedDict):
     objectId: "RemoteObjectId"
     """JavaScript object id of the node wrapper."""
-    depth: "int"
-    """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0."""
-    pierce: "bool"
-    """Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false)."""
 
 
-class DescribeNodeReturns(TypedDict):
-    node: "Node"
-    """Node description."""
+class GetFileInfoReturns(TypedDict):
+    path: "str"
+
+
+
+class GetDetachedDomNodesReturns(TypedDict):
+    detachedNodes: "List[DetachedElementInfo]"
+    """The list of detached nodes"""
+
+
+
+class SetInspectedNodeParameters(TypedDict):
+    nodeId: "NodeId"
+    """DOM node id to be accessible by means of $x command line API."""
+
+
+
+
+
+class SetNodeNameParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to set name for."""
+    name: "str"
+    """New node's name."""
+
+
+class SetNodeNameReturns(TypedDict):
+    nodeId: "NodeId"
+    """New node's id."""
+
+
+
+class SetNodeValueParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to set value for."""
+    value: "str"
+    """New node's value."""
+
+
+
+
+
+class SetOuterHTMLParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to set markup for."""
+    outerHTML: "str"
+    """Outer HTML markup to set."""
+
+
+
+
+
+class GetFrameOwnerParameters(TypedDict):
+    frameId: "FrameId"
+
+
+class GetFrameOwnerReturns(TypedDict):
+    backendNodeId: "BackendNodeId"
+    """Resulting node."""
+    nodeId: "NodeId"
+    """Id of the node at given coordinates, only when enabled and requested document."""
+
+
+
+class GetContainerForNodeParameters(TypedDict):
+    nodeId: "NodeId"
+    containerName: "NotRequired[str]"
+    physicalAxes: "NotRequired[PhysicalAxes]"
+    logicalAxes: "NotRequired[LogicalAxes]"
+    queriesScrollState: "NotRequired[bool]"
+    queriesAnchored: "NotRequired[bool]"
+
+
+class GetContainerForNodeReturns(TypedDict):
+    nodeId: "NodeId"
+    """The container node for the given node, or null if not found."""
+
+
+
+class GetQueryingDescendantsForContainerParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the container node to find querying descendants from."""
+
+
+class GetQueryingDescendantsForContainerReturns(TypedDict):
+    nodeIds: "List[NodeId]"
+    """Descendant nodes with container queries against the given container."""
+
+
+
+class GetAnchorElementParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the positioned element from which to find the anchor."""
+    anchorSpecifier: "NotRequired[str]"
+    """An optional anchor specifier, as defined in
+https://www.w3.org/TR/css-anchor-position-1/#anchor-specifier.
+If not provided, it will return the implicit anchor element for
+the given positioned element."""
+
+
+class GetAnchorElementReturns(TypedDict):
+    nodeId: "NodeId"
+    """The anchor element of the given anchor query."""
+
+
+
+class ForceShowPopoverParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the popover HTMLElement"""
+    enable: "bool"
+    """If true, opens the popover and keeps it open. If false, closes the
+popover if it was previously force-opened."""
+
+
+class ForceShowPopoverReturns(TypedDict):
+    nodeIds: "List[NodeId]"
+    """List of popovers that were closed in order to respect popover stacking order."""

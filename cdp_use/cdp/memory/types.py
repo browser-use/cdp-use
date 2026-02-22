@@ -4,7 +4,55 @@
 
 """CDP Memory Domain Types"""
 
+from typing import List
 from typing_extensions import Literal
+from typing_extensions import TypedDict
 
 PressureLevel = Literal["moderate", "critical"]
 """Memory pressure level."""
+
+
+
+class SamplingProfileNode(TypedDict):
+    """Heap profile sample."""
+
+    size: "float"
+    """Size of the sampled allocation."""
+    total: "float"
+    """Total bytes attributed to this sample."""
+    stack: "List[str]"
+    """Execution stack at the point of allocation."""
+
+
+
+class SamplingProfile(TypedDict):
+    """Array of heap profile samples."""
+
+    samples: "List[SamplingProfileNode]"
+    modules: "List[Module]"
+
+
+
+class Module(TypedDict):
+    """Executable module information"""
+
+    name: "str"
+    """Name of the module."""
+    uuid: "str"
+    """UUID of the module."""
+    baseAddress: "str"
+    """Base address where the module is loaded into memory. Encoded as a decimal
+or hexadecimal (0x prefixed) string."""
+    size: "float"
+    """Size of the module in bytes."""
+
+
+
+class DOMCounter(TypedDict):
+    """DOM object counter data."""
+
+    name: "str"
+    """Object name. Note: object names should be presumed volatile and clients should not expect
+the returned names to be consistent across runs."""
+    count: "int"
+    """Object count."""

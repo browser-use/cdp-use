@@ -5,19 +5,48 @@
 """CDP Runtime Domain Types"""
 
 from typing import Any, Dict, List
-from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 ScriptId = str
 """Unique script identifier."""
 
 
+
+class SerializationOptions(TypedDict):
+    """Represents options for serialization. Overrides `generatePreview` and `returnByValue`."""
+
+    serialization: "str"
+    maxDepth: "NotRequired[int]"
+    """Deep serialization depth. Default is full depth. Respected only in `deep` serialization mode."""
+    additionalParameters: "NotRequired[Dict[str, Any]]"
+    """Embedder-specific parameters. For example if connected to V8 in Chrome these control DOM
+serialization via `maxNodeDepth: integer` and `includeShadowTree: \"none\" | \"open\" | \"all\"`.
+Values can be only of type string or integer."""
+
+
+
+class DeepSerializedValue(TypedDict):
+    """Represents deep serialized value."""
+
+    type: "str"
+    value: "NotRequired[Any]"
+    objectId: "NotRequired[str]"
+    weakLocalObjectReference: "NotRequired[int]"
+    """Set if value reference met more then once during serialization. In such
+case, value is provided only to one of the serialized values. Unique
+per value in the scope of one CDP call."""
+
+
+
 RemoteObjectId = str
 """Unique object identifier."""
 
 
-UnserializableValue = Literal["Infinity", "NaN", "-Infinity", "-0"]
-"""Primitive value which cannot be JSON-stringified."""
+
+UnserializableValue = str
+"""Primitive value which cannot be JSON-stringified. Includes values `-0`, `NaN`, `Infinity`,
+`-Infinity`, and bigint literals."""
+
 
 
 class RemoteObject(TypedDict):
@@ -26,28 +55,37 @@ class RemoteObject(TypedDict):
     type: "str"
     """Object type."""
     subtype: "NotRequired[str]"
-    """Object subtype hint. Specified for <code>object</code> type values only."""
+    """Object subtype hint. Specified for `object` type values only.
+NOTE: If you change anything here, make sure to also update
+`subtype` in `ObjectPreview` and `PropertyPreview` below."""
     className: "NotRequired[str]"
-    """Object class (constructor) name. Specified for <code>object</code> type values only."""
+    """Object class (constructor) name. Specified for `object` type values only."""
     value: "NotRequired[Any]"
     """Remote object value in case of primitive values or JSON values (if it was requested)."""
     unserializableValue: "NotRequired[UnserializableValue]"
-    """Primitive value which can not be JSON-stringified does not have <code>value</code>, but gets this property."""
+    """Primitive value which can not be JSON-stringified does not have `value`, but gets this
+property."""
     description: "NotRequired[str]"
     """String representation of the object."""
+    deepSerializedValue: "NotRequired[DeepSerializedValue]"
+    """Deep serialized value."""
     objectId: "NotRequired[RemoteObjectId]"
     """Unique object identifier (for non-primitive values)."""
     preview: "NotRequired[ObjectPreview]"
-    """Preview containing abbreviated property values. Specified for <code>object</code> type values only."""
+    """Preview containing abbreviated property values. Specified for `object` type values only."""
     customPreview: "NotRequired[CustomPreview]"
+
 
 
 class CustomPreview(TypedDict):
     header: "str"
-    hasBody: "bool"
-    formatterObjectId: "RemoteObjectId"
-    bindRemoteObjectFunctionId: "RemoteObjectId"
-    configObjectId: "NotRequired[RemoteObjectId]"
+    """The JSON-stringified result of formatter.header(object, config) call.
+It contains json ML array that represents RemoteObject."""
+    bodyGetterId: "NotRequired[RemoteObjectId]"
+    """If formatter returns true as a result of formatter.hasBody call then bodyGetterId will
+contain RemoteObjectId for the function that returns result of formatter.body(object, config) call.
+The result value is json ML array."""
+
 
 
 class ObjectPreview(TypedDict):
@@ -56,7 +94,7 @@ class ObjectPreview(TypedDict):
     type: "str"
     """Object type."""
     subtype: "NotRequired[str]"
-    """Object subtype hint. Specified for <code>object</code> type values only."""
+    """Object subtype hint. Specified for `object` type values only."""
     description: "NotRequired[str]"
     """String representation of the object."""
     overflow: "bool"
@@ -64,7 +102,8 @@ class ObjectPreview(TypedDict):
     properties: "List[PropertyPreview]"
     """List of the properties."""
     entries: "NotRequired[List[EntryPreview]]"
-    """List of the entries. Specified for <code>map</code> and <code>set</code> subtype values only."""
+    """List of the entries. Specified for `map` and `set` subtype values only."""
+
 
 
 class PropertyPreview(TypedDict):
@@ -77,7 +116,8 @@ class PropertyPreview(TypedDict):
     valuePreview: "NotRequired[ObjectPreview]"
     """Nested value preview."""
     subtype: "NotRequired[str]"
-    """Object subtype hint. Specified for <code>object</code> type values only."""
+    """Object subtype hint. Specified for `object` type values only."""
+
 
 
 class EntryPreview(TypedDict):
@@ -85,6 +125,7 @@ class EntryPreview(TypedDict):
     """Preview of the key. Specified for map-like collection entries."""
     value: "ObjectPreview"
     """Preview of the value."""
+
 
 
 class PropertyDescriptor(TypedDict):
@@ -97,19 +138,24 @@ class PropertyDescriptor(TypedDict):
     writable: "NotRequired[bool]"
     """True if the value associated with the property may be changed (data descriptors only)."""
     get: "NotRequired[RemoteObject]"
-    """A function which serves as a getter for the property, or <code>undefined</code> if there is no getter (accessor descriptors only)."""
+    """A function which serves as a getter for the property, or `undefined` if there is no getter
+(accessor descriptors only)."""
     set: "NotRequired[RemoteObject]"
-    """A function which serves as a setter for the property, or <code>undefined</code> if there is no setter (accessor descriptors only)."""
+    """A function which serves as a setter for the property, or `undefined` if there is no setter
+(accessor descriptors only)."""
     configurable: "bool"
-    """True if the type of this property descriptor may be changed and if the property may be deleted from the corresponding object."""
+    """True if the type of this property descriptor may be changed and if the property may be
+deleted from the corresponding object."""
     enumerable: "bool"
-    """True if this property shows up during enumeration of the properties on the corresponding object."""
+    """True if this property shows up during enumeration of the properties on the corresponding
+object."""
     wasThrown: "NotRequired[bool]"
     """True if the result was thrown during the evaluation."""
     isOwn: "NotRequired[bool]"
     """True if the property is owned for the object."""
     symbol: "NotRequired[RemoteObject]"
-    """Property symbol object, if the property is of the <code>symbol</code> type."""
+    """Property symbol object, if the property is of the `symbol` type."""
+
 
 
 class InternalPropertyDescriptor(TypedDict):
@@ -121,8 +167,26 @@ class InternalPropertyDescriptor(TypedDict):
     """The value associated with the property."""
 
 
+
+class PrivatePropertyDescriptor(TypedDict):
+    """Object private field descriptor."""
+
+    name: "str"
+    """Private property name."""
+    value: "NotRequired[RemoteObject]"
+    """The value associated with the private property."""
+    get: "NotRequired[RemoteObject]"
+    """A function which serves as a getter for the private property,
+or `undefined` if there is no getter (accessor descriptors only)."""
+    set: "NotRequired[RemoteObject]"
+    """A function which serves as a setter for the private property,
+or `undefined` if there is no setter (accessor descriptors only)."""
+
+
+
 class CallArgument(TypedDict, total=False):
-    """Represents function call argument. Either remote object id <code>objectId</code>, primitive <code>value</code>, unserializable primitive value or neither of (for undefined) them should be specified."""
+    """Represents function call argument. Either remote object id `objectId`, primitive `value`,
+unserializable primitive value or neither of (for undefined) them should be specified."""
 
     value: "Any"
     """Primitive value or serializable javascript object."""
@@ -132,25 +196,34 @@ class CallArgument(TypedDict, total=False):
     """Remote object handle."""
 
 
+
 ExecutionContextId = int
 """Id of an execution context."""
+
 
 
 class ExecutionContextDescription(TypedDict):
     """Description of an isolated world."""
 
     id: "ExecutionContextId"
-    """Unique id of the execution context. It can be used to specify in which execution context script evaluation should be performed."""
+    """Unique id of the execution context. It can be used to specify in which execution context
+script evaluation should be performed."""
     origin: "str"
     """Execution context origin."""
     name: "str"
     """Human readable name describing given context."""
+    uniqueId: "str"
+    """A system-unique execution context identifier. Unlike the id, this is unique across
+multiple processes, so can be reliably used to identify specific context while backend
+performs a cross-process navigation."""
     auxData: "NotRequired[Dict[str, Any]]"
-    """Embedder-specific auxiliary data."""
+    """Embedder-specific auxiliary data likely matching {isDefault: boolean, type: 'default'|'isolated'|'worker', frameId: string}"""
+
 
 
 class ExceptionDetails(TypedDict):
-    """Detailed information about exception (or error) that was thrown during script compilation or execution."""
+    """Detailed information about exception (or error) that was thrown during script compilation or
+execution."""
 
     exceptionId: "int"
     """Exception id."""
@@ -170,10 +243,21 @@ class ExceptionDetails(TypedDict):
     """Exception object if available."""
     executionContextId: "NotRequired[ExecutionContextId]"
     """Identifier of the context where exception happened."""
+    exceptionMetaData: "NotRequired[Dict[str, Any]]"
+    """Dictionary with entries of meta data that the client associated
+with this exception, such as information about associated network
+requests, etc."""
+
 
 
 Timestamp = float
 """Number of milliseconds since epoch."""
+
+
+
+TimeDelta = float
+"""Number of milliseconds."""
+
 
 
 class CallFrame(TypedDict):
@@ -191,11 +275,13 @@ class CallFrame(TypedDict):
     """JavaScript script column number (0-based)."""
 
 
+
 class StackTrace(TypedDict):
     """Call frames for assertions or error messages."""
 
     description: "NotRequired[str]"
-    """String label of this stack trace. For async traces this may be a name of the function that initiated the async call."""
+    """String label of this stack trace. For async traces this may be a name of the function that
+initiated the async call."""
     callFrames: "List[CallFrame]"
     """JavaScript function name."""
     parent: "NotRequired[StackTrace]"
@@ -204,12 +290,15 @@ class StackTrace(TypedDict):
     """Asynchronous JavaScript stack trace that preceded this stack, if available."""
 
 
+
 UniqueDebuggerId = str
 """Unique identifier of current debugger."""
 
 
+
 class StackTraceId(TypedDict):
-    """If <code>debuggerId</code> is set stack trace comes from another debugger and can be resolved there. This allows to track cross-debugger calls. See <code>Runtime.StackTrace</code> and <code>Debugger.paused</code> for usages."""
+    """If `debuggerId` is set stack trace comes from another debugger and can be resolved there. This
+allows to track cross-debugger calls. See `Runtime.StackTrace` and `Debugger.paused` for usages."""
 
     id: "str"
     debuggerId: "NotRequired[UniqueDebuggerId]"

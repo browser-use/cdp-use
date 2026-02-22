@@ -6,7 +6,6 @@
 
 from typing_extensions import TypedDict
 
-
 class SetDeviceOrientationOverrideParameters(TypedDict):
     alpha: "float"
     """Mock alpha"""
@@ -14,3 +13,5 @@ class SetDeviceOrientationOverrideParameters(TypedDict):
     """Mock beta"""
     gamma: "float"
     """Mock gamma"""
+
+

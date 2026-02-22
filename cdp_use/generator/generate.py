@@ -2,46 +2,34 @@
 """
 CDP Protocol Downloader and Generator
 
-Downloads Chrome DevTools Protocol specifications from the Chromium /
-V8 source repositories and generates type-safe Python bindings.
-
-Googlesource URLs return base64-encoded content (when `?format=TEXT`
-is appended).  This module handles the decoding transparently.
+Downloads Chrome DevTools Protocol specifications from the
+ChromeDevTools/devtools-protocol GitHub repository and generates
+type-safe Python bindings.
 """
 
-import base64
 import tempfile
 from pathlib import Path
-from urllib.request import Request, urlopen
+from urllib.request import urlretrieve
 
 from .constants import BROWSER_PROTOCOL_FILE, CDP_VERSION, JS_PROTOCOL_FILE
 from .generator import CDPGenerator
 
 
-def _download_googlesource(url: str, dest: Path) -> None:
-    """Download a file from googlesource, decoding the base64 response."""
-    req = Request(url)
-    with urlopen(req) as resp:
-        raw = resp.read()
-    decoded = base64.b64decode(raw)
-    dest.write_bytes(decoded)
-
-
 def download_protocol_files() -> tuple[str, str]:
-    """Download the protocol files from the Chromium / V8 source."""
+    """Download the protocol files from the ChromeDevTools/devtools-protocol repo."""
     temp_dir = Path(tempfile.mkdtemp())
 
     print(f"Downloading Chrome DevTools Protocol specifications ({CDP_VERSION})...")
 
-    # Download JavaScript protocol (from V8)
+    # Download JavaScript protocol
     js_protocol_path = temp_dir / "js_protocol.json"
     print(f"  Downloading JS protocol from {JS_PROTOCOL_FILE}")
-    _download_googlesource(JS_PROTOCOL_FILE, js_protocol_path)
+    urlretrieve(JS_PROTOCOL_FILE, js_protocol_path)
 
-    # Download Browser protocol (from Blink / Chromium)
+    # Download Browser protocol
     browser_protocol_path = temp_dir / "browser_protocol.json"
     print(f"  Downloading Browser protocol from {BROWSER_PROTOCOL_FILE}")
-    _download_googlesource(BROWSER_PROTOCOL_FILE, browser_protocol_path)
+    urlretrieve(BROWSER_PROTOCOL_FILE, browser_protocol_path)
 
     print("Protocol files downloaded successfully")
 

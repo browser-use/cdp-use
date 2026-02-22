@@ -12,12 +12,20 @@ if TYPE_CHECKING:
     from ..runtime.types import RemoteObjectId
     from .types import StreamHandle
 
+class CloseParameters(TypedDict):
+    handle: "StreamHandle"
+    """Handle of the stream to close."""
+
+
+
+
 
 class ReadParameters(TypedDict):
     handle: "StreamHandle"
     """Handle of the stream to read."""
     offset: "NotRequired[int]"
-    """Seek to the specified offset before reading (if not specificed, proceed with offset following the last read)."""
+    """Seek to the specified offset before reading (if not specified, proceed with offset
+following the last read). Some types of streams may only support sequential reads."""
     size: "NotRequired[int]"
     """Maximum number of bytes to read (left upon the agent discretion if not specified)."""
 
@@ -28,12 +36,8 @@ class ReadReturns(TypedDict):
     data: "str"
     """Data that were read."""
     eof: "bool"
-    """Set if the end-of-file condition occured while reading."""
+    """Set if the end-of-file condition occurred while reading."""
 
-
-class CloseParameters(TypedDict):
-    handle: "StreamHandle"
-    """Handle of the stream to close."""
 
 
 class ResolveBlobParameters(TypedDict):

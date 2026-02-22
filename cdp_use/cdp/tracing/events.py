@@ -5,32 +5,43 @@
 """CDP Tracing Domain Events"""
 
 from typing import Any, Dict, List
-from typing_extensions import TypedDict
+from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..io.types import StreamHandle
+    from .types import StreamCompression
+    from .types import StreamFormat
 
-"""Contains an bucket of collected trace events. When tracing is stopped collected events will be send as a sequence of dataCollected events followed by tracingComplete event."""
+class BufferUsageEvent(TypedDict, total=False):
+    percentFull: "float"
+    """A number in range [0..1] that indicates the used size of event buffer as a fraction of its
+total size."""
+    eventCount: "float"
+    """An approximate number of events in the trace log."""
+    value: "float"
+    """A number in range [0..1] that indicates the used size of event buffer as a fraction of its
+total size."""
 
 
+
+"""Contains a bucket of collected trace events. When tracing is stopped collected events will be
+sent as a sequence of dataCollected events followed by tracingComplete event."""
 class DataCollectedEvent(TypedDict):
     value: "List[Dict[str, Any]]"
 
 
-"""Signals that tracing is stopped and there is no trace buffers pending flush, all data were delivered via dataCollected events."""
 
-
-class TracingCompleteEvent(TypedDict, total=False):
-    stream: "StreamHandle"
+"""Signals that tracing is stopped and there is no trace buffers pending flush, all data were
+delivered via dataCollected events."""
+class TracingCompleteEvent(TypedDict):
+    dataLossOccurred: "bool"
+    """Indicates whether some trace data is known to have been lost, e.g. because the trace ring
+buffer wrapped around."""
+    stream: "NotRequired[StreamHandle]"
     """A handle of the stream that holds resulting trace data."""
-
-
-class BufferUsageEvent(TypedDict, total=False):
-    percentFull: "float"
-    """A number in range [0..1] that indicates the used size of event buffer as a fraction of its total size."""
-    eventCount: "float"
-    """An approximate number of events in the trace log."""
-    value: "float"
-    """A number in range [0..1] that indicates the used size of event buffer as a fraction of its total size."""
+    traceFormat: "NotRequired[StreamFormat]"
+    """Trace data format of returned stream."""
+    streamCompression: "NotRequired[StreamCompression]"
+    """Compression format of returned stream."""

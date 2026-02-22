@@ -4,5 +4,37 @@
 
 """CDP Browser Domain Events"""
 
+from typing_extensions import NotRequired, TypedDict
 
-# No events defined for this domain
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..page.types import FrameId
+
+"""Fired when page is about to start a download."""
+class DownloadWillBeginEvent(TypedDict):
+    frameId: "FrameId"
+    """Id of the frame that caused the download to begin."""
+    guid: "str"
+    """Global unique identifier of the download."""
+    url: "str"
+    """URL of the resource being downloaded."""
+    suggestedFilename: "str"
+    """Suggested file name of the resource (the actual name of the file saved on disk may differ)."""
+
+
+
+"""Fired when download makes progress. Last call has |done| == true."""
+class DownloadProgressEvent(TypedDict):
+    guid: "str"
+    """Global unique identifier of the download."""
+    totalBytes: "float"
+    """Total expected bytes to download."""
+    receivedBytes: "float"
+    """Total bytes received."""
+    state: "str"
+    """Download status."""
+    filePath: "NotRequired[str]"
+    """If download is \"completed\", provides the path of the downloaded file.
+Depending on the platform, it is not guaranteed to be set, nor the file
+is guaranteed to exist."""

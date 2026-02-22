@@ -11,42 +11,11 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ...client import CDPClient
 
-
 class ConsoleClient:
     """Client for Console domain commands."""
 
-    def __init__(self, client: "CDPClient"):
+    def __init__(self, client: 'CDPClient'):
         self._client = client
-
-    async def enable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Enables console domain, sends the messages collected so far to the client by means of the <code>messageAdded</code> notification."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Console.enable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def disable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Disables console domain, prevents further console messages from being reported to the client."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Console.disable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
 
     async def clearMessages(
         self,
@@ -54,11 +23,35 @@ class ConsoleClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Does nothing."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Console.clearMessages",
-                params=params,
-                session_id=session_id,
-            ),
-        )
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Console.clearMessages",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def disable(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Disables console domain, prevents further console messages from being reported to the client."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Console.disable",
+            params=params,
+            session_id=session_id,
+        ))
+
+    async def enable(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Enables console domain, sends the messages collected so far to the client by means of the
+`messageAdded` notification."""
+        return cast("Dict[str, Any]", await self._client.send_raw(
+            method="Console.enable",
+            params=params,
+            session_id=session_id,
+        ))
+
+

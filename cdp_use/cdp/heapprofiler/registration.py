@@ -10,87 +10,83 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import (
-        AddHeapSnapshotChunkEvent,
-        HeapStatsUpdateEvent,
-        LastSeenObjectIdEvent,
-        ReportHeapSnapshotProgressEvent,
-        ResetProfilesEvent,
-    )
-
+    from .events import AddHeapSnapshotChunkEvent, HeapStatsUpdateEvent, LastSeenObjectIdEvent, ReportHeapSnapshotProgressEvent, ResetProfilesEvent
 
 class HeapProfilerRegistration:
     """Event registration interface for HeapProfiler domain."""
 
-    def __init__(self, registry: "EventRegistry"):
+    def __init__(self, registry: 'EventRegistry'):
         self._registry = registry
         self._domain = "HeapProfiler"
 
     def addHeapSnapshotChunk(
         self,
-        callback: Callable[["AddHeapSnapshotChunkEvent", Optional[str]], None],
+        callback: Callable[['AddHeapSnapshotChunkEvent', Optional[str]], None],
     ) -> None:
         """
         Register a callback for addHeapSnapshotChunk events.
-
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("HeapProfiler.addHeapSnapshotChunk", callback)
 
-    def resetProfiles(
+    def heapStatsUpdate(
         self,
-        callback: Callable[["ResetProfilesEvent", Optional[str]], None],
+        callback: Callable[['HeapStatsUpdateEvent', Optional[str]], None],
     ) -> None:
         """
-        Register a callback for resetProfiles events.
-
+        Register a callback for heapStatsUpdate events.
+        
+        If heap objects tracking has been started then backend may send update for one or more fragments
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("HeapProfiler.resetProfiles", callback)
-
-    def reportHeapSnapshotProgress(
-        self,
-        callback: Callable[["ReportHeapSnapshotProgressEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for reportHeapSnapshotProgress events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("HeapProfiler.reportHeapSnapshotProgress", callback)
+        self._registry.register("HeapProfiler.heapStatsUpdate", callback)
 
     def lastSeenObjectId(
         self,
-        callback: Callable[["LastSeenObjectIdEvent", Optional[str]], None],
+        callback: Callable[['LastSeenObjectIdEvent', Optional[str]], None],
     ) -> None:
         """
         Register a callback for lastSeenObjectId events.
-
-        If heap objects tracking has been started then backend regularly sends a current value for last seen object id and corresponding timestamp. If the were changes in the heap since last event then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event.
-
+        
+        If heap objects tracking has been started then backend regularly sends a current value for last
+seen object id and corresponding timestamp. If the were changes in the heap since last event
+then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event.
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("HeapProfiler.lastSeenObjectId", callback)
 
-    def heapStatsUpdate(
+    def reportHeapSnapshotProgress(
         self,
-        callback: Callable[["HeapStatsUpdateEvent", Optional[str]], None],
+        callback: Callable[['ReportHeapSnapshotProgressEvent', Optional[str]], None],
     ) -> None:
         """
-        Register a callback for heapStatsUpdate events.
-
-        If heap objects tracking has been started then backend may send update for one or more fragments
-
+        Register a callback for reportHeapSnapshotProgress events.
+        
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("HeapProfiler.heapStatsUpdate", callback)
+        self._registry.register("HeapProfiler.reportHeapSnapshotProgress", callback)
+
+    def resetProfiles(
+        self,
+        callback: Callable[['ResetProfilesEvent', Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for resetProfiles events.
+        
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("HeapProfiler.resetProfiles", callback)
+

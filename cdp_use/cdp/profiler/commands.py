@@ -13,15 +13,18 @@ if TYPE_CHECKING:
     from .types import Profile
     from .types import ScriptCoverage
 
+class GetBestEffortCoverageReturns(TypedDict):
+    result: "List[ScriptCoverage]"
+    """Coverage data for the current isolate."""
+
+
 
 class SetSamplingIntervalParameters(TypedDict):
     interval: "int"
     """New sampling interval in microseconds."""
 
 
-class StopReturns(TypedDict):
-    profile: "Profile"
-    """Recorded profile."""
+
 
 
 class StartPreciseCoverageParameters(TypedDict, total=False):
@@ -29,13 +32,24 @@ class StartPreciseCoverageParameters(TypedDict, total=False):
     """Collect accurate call counts beyond simple 'covered' or 'not covered'."""
     detailed: "bool"
     """Collect block-based coverage."""
+    allowTriggeredUpdates: "bool"
+    """Allow the backend to send updates on its own initiative"""
+
+
+class StartPreciseCoverageReturns(TypedDict):
+    timestamp: "float"
+    """Monotonically increasing time (in seconds) when the coverage update was taken in the backend."""
+
+
+
+class StopReturns(TypedDict):
+    profile: "Profile"
+    """Recorded profile."""
+
 
 
 class TakePreciseCoverageReturns(TypedDict):
     result: "List[ScriptCoverage]"
     """Coverage data for the current isolate."""
-
-
-class GetBestEffortCoverageReturns(TypedDict):
-    result: "List[ScriptCoverage]"
-    """Coverage data for the current isolate."""
+    timestamp: "float"
+    """Monotonically increasing time (in seconds) when the coverage update was taken in the backend."""

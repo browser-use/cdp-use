@@ -4,13 +4,15 @@
 
 """CDP Memory Domain Commands"""
 
+from typing import List
 from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from .types import DOMCounter
     from .types import PressureLevel
-
+    from .types import SamplingProfile
 
 class GetDOMCountersReturns(TypedDict):
     documents: "int"
@@ -18,11 +20,48 @@ class GetDOMCountersReturns(TypedDict):
     jsEventListeners: "int"
 
 
+
+class GetDOMCountersForLeakDetectionReturns(TypedDict):
+    counters: "List[DOMCounter]"
+    """DOM object counters."""
+
+
+
 class SetPressureNotificationsSuppressedParameters(TypedDict):
     suppressed: "bool"
     """If true, memory pressure notifications will be suppressed."""
 
 
+
+
+
 class SimulatePressureNotificationParameters(TypedDict):
     level: "PressureLevel"
     """Memory pressure level of the notification."""
+
+
+
+
+
+class StartSamplingParameters(TypedDict, total=False):
+    samplingInterval: "int"
+    """Average number of bytes between samples."""
+    suppressRandomness: "bool"
+    """Do not randomize intervals between samples."""
+
+
+
+
+
+class GetAllTimeSamplingProfileReturns(TypedDict):
+    profile: "SamplingProfile"
+
+
+
+class GetBrowserSamplingProfileReturns(TypedDict):
+    profile: "SamplingProfile"
+
+
+
+class GetSamplingProfileReturns(TypedDict):
+    profile: "SamplingProfile"

@@ -15,7 +15,6 @@ if TYPE_CHECKING:
     from ..runtime.types import StackTrace
     from ..runtime.types import Timestamp
 
-
 class LogEntry(TypedDict):
     """Log entry."""
 
@@ -25,6 +24,7 @@ class LogEntry(TypedDict):
     """Log entry severity."""
     text: "str"
     """Logged text."""
+    category: "NotRequired[str]"
     timestamp: "Timestamp"
     """Timestamp when this entry was added."""
     url: "NotRequired[str]"
@@ -39,6 +39,7 @@ class LogEntry(TypedDict):
     """Identifier of the worker associated with this entry."""
     args: "NotRequired[List[RemoteObject]]"
     """Call arguments."""
+
 
 
 class ViolationSetting(TypedDict):

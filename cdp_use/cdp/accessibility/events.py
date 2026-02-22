@@ -4,5 +4,23 @@
 
 """CDP Accessibility Domain Events"""
 
+from typing import List
+from typing_extensions import TypedDict
 
-# No events defined for this domain
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .types import AXNode
+
+"""The loadComplete event mirrors the load complete event sent by the browser to assistive
+technology when the web page has finished loading."""
+class LoadCompleteEvent(TypedDict):
+    root: "AXNode"
+    """New document root node."""
+
+
+
+"""The nodesUpdated event is sent every time a previously requested node has changed the in tree."""
+class NodesUpdatedEvent(TypedDict):
+    nodes: "List[AXNode]"
+    """Updated node data."""

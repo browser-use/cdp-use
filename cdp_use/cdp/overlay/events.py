@@ -13,24 +13,27 @@ if TYPE_CHECKING:
     from ..dom.types import NodeId
     from ..page.types import Viewport
 
-"""Fired when the node should be highlighted. This happens after call to <code>setInspectMode</code>."""
-
-
-class NodeHighlightRequestedEvent(TypedDict):
-    nodeId: "NodeId"
-
-
-"""Fired when the node should be inspected. This happens after call to <code>setInspectMode</code> or when user manually inspects an element."""
-
-
+"""Fired when the node should be inspected. This happens after call to `setInspectMode` or when
+user manually inspects an element."""
 class InspectNodeRequestedEvent(TypedDict):
     backendNodeId: "BackendNodeId"
     """Id of the node to inspect."""
 
 
+
+"""Fired when the node should be highlighted. This happens after call to `setInspectMode`."""
+class NodeHighlightRequestedEvent(TypedDict):
+    nodeId: "NodeId"
+
+
+
 """Fired when user asks to capture screenshot of some area on the page."""
-
-
 class ScreenshotRequestedEvent(TypedDict):
     viewport: "Viewport"
-    """Viewport to capture, in CSS."""
+    """Viewport to capture, in device independent pixels (dip)."""
+
+
+
+"""Fired when user cancels the inspect mode."""
+class InspectModeCanceledEvent(TypedDict):
+    pass
