@@ -8,6 +8,7 @@ from typing import List
 from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
+
 class SafeAreaInsets(TypedDict, total=False):
     top: "int"
     """Overrides safe-area-inset-top."""
@@ -27,7 +28,6 @@ class SafeAreaInsets(TypedDict, total=False):
     """Overrides safe-area-max-inset-right."""
 
 
-
 class ScreenOrientation(TypedDict):
     """Screen orientation."""
 
@@ -35,7 +35,6 @@ class ScreenOrientation(TypedDict):
     """Orientation type."""
     angle: "int"
     """Orientation angle."""
-
 
 
 class DisplayFeature(TypedDict):
@@ -50,17 +49,14 @@ displayed - this length along with the offset describes this area.
 A display feature that only splits content will have a 0 mask_length."""
 
 
-
 class DevicePosture(TypedDict):
     type: "str"
     """Current posture of the device"""
 
 
-
 class MediaFeature(TypedDict):
     name: "str"
     value: "str"
-
 
 
 VirtualTimePolicy = Literal["advance", "pause", "pauseIfNetworkFetchesPending"]
@@ -70,7 +66,6 @@ pauseIfNetworkFetchesPending: The virtual time base may not advance if there are
 resource fetches."""
 
 
-
 class UserAgentBrandVersion(TypedDict):
     """Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints"""
 
@@ -78,10 +73,9 @@ class UserAgentBrandVersion(TypedDict):
     version: "str"
 
 
-
 class UserAgentMetadata(TypedDict):
     """Used to specify User Agent Client Hints to emulate. See https://wicg.github.io/ua-client-hints
-Missing optional values will be filled in by the target with what it would normally use."""
+    Missing optional values will be filled in by the target with what it would normally use."""
 
     brands: "NotRequired[List[UserAgentBrandVersion]]"
     """Brands appearing in Sec-CH-UA."""
@@ -100,11 +94,18 @@ Missing optional values will be filled in by the target with what it would norma
 See https://wicg.github.io/ua-client-hints/#sec-ch-ua-form-factors"""
 
 
-
-SensorType = Literal["absolute-orientation", "accelerometer", "ambient-light", "gravity", "gyroscope", "linear-acceleration", "magnetometer", "relative-orientation"]
+SensorType = Literal[
+    "absolute-orientation",
+    "accelerometer",
+    "ambient-light",
+    "gravity",
+    "gyroscope",
+    "linear-acceleration",
+    "magnetometer",
+    "relative-orientation",
+]
 """Used to specify sensor types to emulate.
 See https://w3c.github.io/sensors/#automation for more information."""
-
 
 
 class SensorMetadata(TypedDict, total=False):
@@ -113,17 +114,14 @@ class SensorMetadata(TypedDict, total=False):
     maximumFrequency: "float"
 
 
-
 class SensorReadingSingle(TypedDict):
     value: "float"
-
 
 
 class SensorReadingXYZ(TypedDict):
     x: "float"
     y: "float"
     z: "float"
-
 
 
 class SensorReadingQuaternion(TypedDict):
@@ -133,25 +131,72 @@ class SensorReadingQuaternion(TypedDict):
     w: "float"
 
 
-
 class SensorReading(TypedDict, total=False):
     single: "SensorReadingSingle"
     xyz: "SensorReadingXYZ"
     quaternion: "SensorReadingQuaternion"
 
 
-
 PressureSource = Literal["cpu"]
-
 
 
 PressureState = Literal["nominal", "fair", "serious", "critical"]
 
 
-
 class PressureMetadata(TypedDict, total=False):
     available: "bool"
 
+
+class WorkAreaInsets(TypedDict, total=False):
+    top: "int"
+    """Work area top inset in pixels. Default is 0;"""
+    left: "int"
+    """Work area left inset in pixels. Default is 0;"""
+    bottom: "int"
+    """Work area bottom inset in pixels. Default is 0;"""
+    right: "int"
+    """Work area right inset in pixels. Default is 0;"""
+
+
+ScreenId = str
+
+
+class ScreenInfo(TypedDict):
+    """Screen information similar to the one returned by window.getScreenDetails() method,
+    see https://w3c.github.io/window-management/#screendetailed."""
+
+    left: "int"
+    """Offset of the left edge of the screen."""
+    top: "int"
+    """Offset of the top edge of the screen."""
+    width: "int"
+    """Width of the screen."""
+    height: "int"
+    """Height of the screen."""
+    availLeft: "int"
+    """Offset of the left edge of the available screen area."""
+    availTop: "int"
+    """Offset of the top edge of the available screen area."""
+    availWidth: "int"
+    """Width of the available screen area."""
+    availHeight: "int"
+    """Height of the available screen area."""
+    devicePixelRatio: "float"
+    """Specifies the screen's device pixel ratio."""
+    orientation: "ScreenOrientation"
+    """Specifies the screen's orientation."""
+    colorDepth: "int"
+    """Specifies the screen's color depth in bits."""
+    isExtended: "bool"
+    """Indicates whether the device has multiple screens."""
+    isInternal: "bool"
+    """Indicates whether the screen is internal to the device or external, attached to the device."""
+    isPrimary: "bool"
+    """Indicates whether the screen is set as the the operating system primary screen."""
+    label: "str"
+    """Specifies the descriptive label for the screen."""
+    id: "ScreenId"
+    """Specifies the unique identifier of the screen."""
 
 
 DisabledImageType = Literal["avif", "webp"]

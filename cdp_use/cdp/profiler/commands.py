@@ -13,18 +13,15 @@ if TYPE_CHECKING:
     from .types import Profile
     from .types import ScriptCoverage
 
+
 class GetBestEffortCoverageReturns(TypedDict):
     result: "List[ScriptCoverage]"
     """Coverage data for the current isolate."""
 
 
-
 class SetSamplingIntervalParameters(TypedDict):
     interval: "int"
     """New sampling interval in microseconds."""
-
-
-
 
 
 class StartPreciseCoverageParameters(TypedDict, total=False):
@@ -41,11 +38,9 @@ class StartPreciseCoverageReturns(TypedDict):
     """Monotonically increasing time (in seconds) when the coverage update was taken in the backend."""
 
 
-
 class StopReturns(TypedDict):
     profile: "Profile"
     """Recorded profile."""
-
 
 
 class TakePreciseCoverageReturns(TypedDict):

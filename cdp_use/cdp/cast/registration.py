@@ -12,42 +12,42 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import IssueUpdatedEvent, SinksUpdatedEvent
 
+
 class CastRegistration:
     """Event registration interface for Cast domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Cast"
 
     def sinksUpdated(
         self,
-        callback: Callable[['SinksUpdatedEvent', Optional[str]], None],
+        callback: Callable[["SinksUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for sinksUpdated events.
-        
-        This is fired whenever the list of available sinks changes. A sink is a
-device or a software surface that you can cast to.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for sinksUpdated events.
+
+                This is fired whenever the list of available sinks changes. A sink is a
+        device or a software surface that you can cast to.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Cast.sinksUpdated", callback)
 
     def issueUpdated(
         self,
-        callback: Callable[['IssueUpdatedEvent', Optional[str]], None],
+        callback: Callable[["IssueUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for issueUpdated events.
-        
-        This is fired whenever the outstanding issue/error message changes.
-|issueMessage| is empty if there is no issue.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for issueUpdated events.
+
+                This is fired whenever the outstanding issue/error message changes.
+        |issueMessage| is empty if there is no issue.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Cast.issueUpdated", callback)
-

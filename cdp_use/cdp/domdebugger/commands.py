@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from .types import DOMBreakpointType
     from .types import EventListener
 
+
 class GetEventListenersParameters(TypedDict):
     objectId: "RemoteObjectId"
     """Identifier of the object to return listeners for."""
@@ -32,15 +33,11 @@ class GetEventListenersReturns(TypedDict):
     """Array of relevant listeners."""
 
 
-
 class RemoveDOMBreakpointParameters(TypedDict):
     nodeId: "NodeId"
     """Identifier of the node to remove breakpoint from."""
     type: "DOMBreakpointType"
     """Type of the breakpoint to remove."""
-
-
-
 
 
 class RemoveEventListenerBreakpointParameters(TypedDict):
@@ -50,15 +47,9 @@ class RemoveEventListenerBreakpointParameters(TypedDict):
     """EventTarget interface name."""
 
 
-
-
-
 class RemoveInstrumentationBreakpointParameters(TypedDict):
     eventName: "str"
     """Instrumentation name to stop on."""
-
-
-
 
 
 class RemoveXHRBreakpointParameters(TypedDict):
@@ -66,15 +57,9 @@ class RemoveXHRBreakpointParameters(TypedDict):
     """Resource URL substring."""
 
 
-
-
-
 class SetBreakOnCSPViolationParameters(TypedDict):
     violationTypes: "List[CSPViolationType]"
     """CSP Violations to stop upon."""
-
-
-
 
 
 class SetDOMBreakpointParameters(TypedDict):
@@ -82,9 +67,6 @@ class SetDOMBreakpointParameters(TypedDict):
     """Identifier of the node to set breakpoint on."""
     type: "DOMBreakpointType"
     """Type of the operation to stop upon."""
-
-
-
 
 
 class SetEventListenerBreakpointParameters(TypedDict):
@@ -95,19 +77,11 @@ class SetEventListenerBreakpointParameters(TypedDict):
 EventTarget."""
 
 
-
-
-
 class SetInstrumentationBreakpointParameters(TypedDict):
     eventName: "str"
     """Instrumentation name to stop on."""
 
 
-
-
-
 class SetXHRBreakpointParameters(TypedDict):
     url: "str"
     """Resource URL substring. All XHRs having this substring in the URL will get stopped upon."""
-
-

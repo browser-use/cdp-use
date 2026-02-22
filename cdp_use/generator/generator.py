@@ -188,7 +188,11 @@ class CDPGenerator:
 
     def generate_main_registration_library(self, domains: List[Dict[str, Any]]) -> None:
         """Generate the main registration library file."""
-        content = self.registration_library_generator.generate_main_registration_library(domains)
+        content = (
+            self.registration_library_generator.generate_main_registration_library(
+                domains
+            )
+        )
         self.write_file(self.output_dir / "registration_library.py", content)
 
     def generate_domain_init(self, domain: Dict[str, Any]) -> str:

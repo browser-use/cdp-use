@@ -11,10 +11,11 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ...client import CDPClient
 
+
 class PreloadClient:
     """Client for Preload domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def enable(
@@ -22,21 +23,25 @@ class PreloadClient:
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Preload.enable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Preload.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Preload.disable",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Preload.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )

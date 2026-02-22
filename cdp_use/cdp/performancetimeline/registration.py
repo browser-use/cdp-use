@@ -12,25 +12,25 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import TimelineEventAddedEvent
 
+
 class PerformanceTimelineRegistration:
     """Event registration interface for PerformanceTimeline domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "PerformanceTimeline"
 
     def timelineEventAdded(
         self,
-        callback: Callable[['TimelineEventAddedEvent', Optional[str]], None],
+        callback: Callable[["TimelineEventAddedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for timelineEventAdded events.
-        
+
         Sent when a performance timeline event is added. See reportPerformanceTimeline method.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("PerformanceTimeline.timelineEventAdded", callback)
-

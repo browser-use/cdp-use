@@ -45,6 +45,8 @@ if TYPE_CHECKING:
     from .types import WebSocketResponse
 
 """Fired when data chunk was received over the network."""
+
+
 class DataReceivedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -58,8 +60,9 @@ class DataReceivedEvent(TypedDict):
     """Data that was received. (Encoded as a base64 string when passed over JSON)"""
 
 
-
 """Fired when EventSource message is received."""
+
+
 class EventSourceMessageReceivedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -73,8 +76,9 @@ class EventSourceMessageReceivedEvent(TypedDict):
     """Message content."""
 
 
-
 """Fired when HTTP request has failed to load."""
+
+
 class LoadingFailedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -92,8 +96,9 @@ class LoadingFailedEvent(TypedDict):
     """The reason why loading was blocked by CORS, if any."""
 
 
-
 """Fired when HTTP request has finished loading."""
+
+
 class LoadingFinishedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -103,10 +108,11 @@ class LoadingFinishedEvent(TypedDict):
     """Total number of bytes received for this request."""
 
 
-
 """Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
 mocked.
 Deprecated, use Fetch.requestPaused instead."""
+
+
 class RequestInterceptedEvent(TypedDict):
     interceptionId: "InterceptionId"
     """Each request the page makes will have a unique id, however if any redirects are encountered
@@ -141,15 +147,17 @@ intercepting request or auth retry occurred."""
 this requestId will be the same as the requestId present in the requestWillBeSent event."""
 
 
-
 """Fired if request ended up loading from cache."""
+
+
 class RequestServedFromCacheEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
 
 
-
 """Fired when page is about to send HTTP request."""
+
+
 class RequestWillBeSentEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -179,8 +187,9 @@ for the request which was just redirected."""
     """Whether the request is initiated by a user gesture. Defaults to false."""
 
 
-
 """Fired when resource loading priority is changed"""
+
+
 class ResourceChangedPriorityEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -190,8 +199,9 @@ class ResourceChangedPriorityEvent(TypedDict):
     """Timestamp."""
 
 
-
 """Fired when a signed exchange was received over the network"""
+
+
 class SignedExchangeReceivedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -199,8 +209,9 @@ class SignedExchangeReceivedEvent(TypedDict):
     """Information about the signed exchange response."""
 
 
-
 """Fired when HTTP response is available."""
+
+
 class ResponseReceivedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -219,8 +230,9 @@ or were emitted for this request."""
     """Frame identifier."""
 
 
-
 """Fired when WebSocket is closed."""
+
+
 class WebSocketClosedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -228,8 +240,9 @@ class WebSocketClosedEvent(TypedDict):
     """Timestamp."""
 
 
-
 """Fired upon WebSocket creation."""
+
+
 class WebSocketCreatedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -239,8 +252,9 @@ class WebSocketCreatedEvent(TypedDict):
     """Request initiator."""
 
 
-
 """Fired when WebSocket message error occurs."""
+
+
 class WebSocketFrameErrorEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -250,8 +264,9 @@ class WebSocketFrameErrorEvent(TypedDict):
     """WebSocket error message."""
 
 
-
 """Fired when WebSocket message is received."""
+
+
 class WebSocketFrameReceivedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -261,8 +276,9 @@ class WebSocketFrameReceivedEvent(TypedDict):
     """WebSocket response data."""
 
 
-
 """Fired when WebSocket message is sent."""
+
+
 class WebSocketFrameSentEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -272,8 +288,9 @@ class WebSocketFrameSentEvent(TypedDict):
     """WebSocket response data."""
 
 
-
 """Fired when WebSocket handshake response becomes available."""
+
+
 class WebSocketHandshakeResponseReceivedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -283,8 +300,9 @@ class WebSocketHandshakeResponseReceivedEvent(TypedDict):
     """WebSocket response data."""
 
 
-
 """Fired when WebSocket is about to initiate handshake."""
+
+
 class WebSocketWillSendHandshakeRequestEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
@@ -296,8 +314,9 @@ class WebSocketWillSendHandshakeRequestEvent(TypedDict):
     """WebSocket request data."""
 
 
-
 """Fired upon WebTransport creation."""
+
+
 class WebTransportCreatedEvent(TypedDict):
     transportId: "RequestId"
     """WebTransport identifier."""
@@ -309,8 +328,9 @@ class WebTransportCreatedEvent(TypedDict):
     """Request initiator."""
 
 
-
 """Fired when WebTransport handshake is finished."""
+
+
 class WebTransportConnectionEstablishedEvent(TypedDict):
     transportId: "RequestId"
     """WebTransport identifier."""
@@ -318,8 +338,9 @@ class WebTransportConnectionEstablishedEvent(TypedDict):
     """Timestamp."""
 
 
-
 """Fired when WebTransport is disposed."""
+
+
 class WebTransportClosedEvent(TypedDict):
     transportId: "RequestId"
     """WebTransport identifier."""
@@ -327,8 +348,9 @@ class WebTransportClosedEvent(TypedDict):
     """Timestamp."""
 
 
-
 """Fired upon direct_socket.TCPSocket creation."""
+
+
 class DirectTCPSocketCreatedEvent(TypedDict):
     identifier: "RequestId"
     remoteAddr: "str"
@@ -339,8 +361,9 @@ class DirectTCPSocketCreatedEvent(TypedDict):
     initiator: "NotRequired[Initiator]"
 
 
-
 """Fired when direct_socket.TCPSocket connection is opened."""
+
+
 class DirectTCPSocketOpenedEvent(TypedDict):
     identifier: "RequestId"
     remoteAddr: "str"
@@ -352,39 +375,54 @@ class DirectTCPSocketOpenedEvent(TypedDict):
     """Expected to be unsigned integer."""
 
 
-
 """Fired when direct_socket.TCPSocket is aborted."""
+
+
 class DirectTCPSocketAbortedEvent(TypedDict):
     identifier: "RequestId"
     errorMessage: "str"
     timestamp: "MonotonicTime"
 
 
-
 """Fired when direct_socket.TCPSocket is closed."""
+
+
 class DirectTCPSocketClosedEvent(TypedDict):
     identifier: "RequestId"
     timestamp: "MonotonicTime"
 
 
-
 """Fired when data is sent to tcp direct socket stream."""
+
+
 class DirectTCPSocketChunkSentEvent(TypedDict):
     identifier: "RequestId"
     data: "str"
     timestamp: "MonotonicTime"
 
 
-
 """Fired when data is received from tcp direct socket stream."""
+
+
 class DirectTCPSocketChunkReceivedEvent(TypedDict):
     identifier: "RequestId"
     data: "str"
     timestamp: "MonotonicTime"
 
 
+class DirectUDPSocketJoinedMulticastGroupEvent(TypedDict):
+    identifier: "RequestId"
+    IPAddress: "str"
+
+
+class DirectUDPSocketLeftMulticastGroupEvent(TypedDict):
+    identifier: "RequestId"
+    IPAddress: "str"
+
 
 """Fired upon direct_socket.UDPSocket creation."""
+
+
 class DirectUDPSocketCreatedEvent(TypedDict):
     identifier: "RequestId"
     options: "DirectUDPSocketOptions"
@@ -392,8 +430,9 @@ class DirectUDPSocketCreatedEvent(TypedDict):
     initiator: "NotRequired[Initiator]"
 
 
-
 """Fired when direct_socket.UDPSocket connection is opened."""
+
+
 class DirectUDPSocketOpenedEvent(TypedDict):
     identifier: "RequestId"
     localAddr: "str"
@@ -405,42 +444,47 @@ class DirectUDPSocketOpenedEvent(TypedDict):
     """Expected to be unsigned integer."""
 
 
-
 """Fired when direct_socket.UDPSocket is aborted."""
+
+
 class DirectUDPSocketAbortedEvent(TypedDict):
     identifier: "RequestId"
     errorMessage: "str"
     timestamp: "MonotonicTime"
 
 
-
 """Fired when direct_socket.UDPSocket is closed."""
+
+
 class DirectUDPSocketClosedEvent(TypedDict):
     identifier: "RequestId"
     timestamp: "MonotonicTime"
 
 
-
 """Fired when message is sent to udp direct socket stream."""
+
+
 class DirectUDPSocketChunkSentEvent(TypedDict):
     identifier: "RequestId"
     message: "DirectUDPMessage"
     timestamp: "MonotonicTime"
 
 
-
 """Fired when message is received from udp direct socket stream."""
+
+
 class DirectUDPSocketChunkReceivedEvent(TypedDict):
     identifier: "RequestId"
     message: "DirectUDPMessage"
     timestamp: "MonotonicTime"
 
 
-
 """Fired when additional information about a requestWillBeSent event is available from the
 network stack. Not every requestWillBeSent event will have an additional
 requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
 or requestWillBeSentExtraInfo will be fired first for the same request."""
+
+
 class RequestWillBeSentExtraInfoEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier. Used to match this information to an existing requestWillBeSent event."""
@@ -455,12 +499,16 @@ the request and the ones not sent; the latter are distinguished by having blocke
     """The client security state set for the request."""
     siteHasCookieInOtherPartition: "NotRequired[bool]"
     """Whether the site has partitioned cookies stored in a partition different than the current one."""
-
+    appliedNetworkConditionsId: "NotRequired[str]"
+    """The network conditions id if this request was affected by network conditions configured via
+emulateNetworkConditionsByRule."""
 
 
 """Fired when additional information about a responseReceived event is available from the network
 stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
 it, and responseReceivedExtraInfo may be fired before or after responseReceived."""
+
+
 class ResponseReceivedExtraInfoEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier. Used to match this information to another responseReceived event."""
@@ -493,10 +541,11 @@ Only sent when partitioned cookies are enabled."""
 the response with the corresponding reason."""
 
 
-
 """Fired when 103 Early Hints headers is received in addition to the common response.
 Not every responseReceived event will have an responseReceivedEarlyHints fired.
 Only one responseReceivedEarlyHints may be fired for eached responseReceived event."""
+
+
 class ResponseReceivedEarlyHintsEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier. Used to match this information to another responseReceived event."""
@@ -507,11 +556,12 @@ concatentated using `\\n` as the separator.
 See also `headersText` that contains verbatim text for HTTP/1.*."""
 
 
-
 """Fired exactly once for each Trust Token operation. Depending on
 the type of the operation and whether the operation succeeded or
 failed, the event is fired before the corresponding request was sent
 or after the response was received."""
+
+
 class TrustTokenOperationDoneEvent(TypedDict):
     status: "str"
     """Detailed success or error status of the operation.
@@ -528,71 +578,23 @@ preemptively (e.g. a cache hit)."""
     """The number of obtained Trust Tokens on a successful \"Issuance\" operation."""
 
 
-
 """Fired once security policy has been updated."""
+
+
 class PolicyUpdatedEvent(TypedDict):
     pass
 
 
-
-"""Fired once when parsing the .wbn file has succeeded.
-The event contains the information about the web bundle contents."""
-class SubresourceWebBundleMetadataReceivedEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier. Used to match this information to another event."""
-    urls: "List[str]"
-    """A list of URLs of resources in the subresource Web Bundle."""
-
-
-
-"""Fired once when parsing the .wbn file has failed."""
-class SubresourceWebBundleMetadataErrorEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier. Used to match this information to another event."""
-    errorMessage: "str"
-    """Error message"""
-
-
-
-"""Fired when handling requests for resources within a .wbn file.
-Note: this will only be fired for resources that are requested by the webpage."""
-class SubresourceWebBundleInnerResponseParsedEvent(TypedDict):
-    innerRequestId: "RequestId"
-    """Request identifier of the subresource request"""
-    innerRequestURL: "str"
-    """URL of the subresource resource."""
-    bundleRequestId: "NotRequired[RequestId]"
-    """Bundle request identifier. Used to match this information to another event.
-This made be absent in case when the instrumentation was enabled only
-after webbundle was parsed."""
-
-
-
-"""Fired when request for resources within a .wbn file failed."""
-class SubresourceWebBundleInnerResponseErrorEvent(TypedDict):
-    innerRequestId: "RequestId"
-    """Request identifier of the subresource request"""
-    innerRequestURL: "str"
-    """URL of the subresource resource."""
-    errorMessage: "str"
-    """Error message"""
-    bundleRequestId: "NotRequired[RequestId]"
-    """Bundle request identifier. Used to match this information to another event.
-This made be absent in case when the instrumentation was enabled only
-after webbundle was parsed."""
-
-
-
 """Is sent whenever a new report is added.
 And after 'enableReportingApi' for all existing reports."""
+
+
 class ReportingApiReportAddedEvent(TypedDict):
     report: "ReportingApiReport"
 
 
-
 class ReportingApiReportUpdatedEvent(TypedDict):
     report: "ReportingApiReport"
-
 
 
 class ReportingApiEndpointsChangedForOriginEvent(TypedDict):

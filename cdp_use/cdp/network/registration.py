@@ -11,68 +11,67 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import (
-    DataReceivedEvent,
-    DirectTCPSocketAbortedEvent,
-    DirectTCPSocketChunkReceivedEvent,
-    DirectTCPSocketChunkSentEvent,
-    DirectTCPSocketClosedEvent,
-    DirectTCPSocketCreatedEvent,
-    DirectTCPSocketOpenedEvent,
-    DirectUDPSocketAbortedEvent,
-    DirectUDPSocketChunkReceivedEvent,
-    DirectUDPSocketChunkSentEvent,
-    DirectUDPSocketClosedEvent,
-    DirectUDPSocketCreatedEvent,
-    DirectUDPSocketOpenedEvent,
-    EventSourceMessageReceivedEvent,
-    LoadingFailedEvent,
-    LoadingFinishedEvent,
-    PolicyUpdatedEvent,
-    ReportingApiEndpointsChangedForOriginEvent,
-    ReportingApiReportAddedEvent,
-    ReportingApiReportUpdatedEvent,
-    RequestInterceptedEvent,
-    RequestServedFromCacheEvent,
-    RequestWillBeSentEvent,
-    RequestWillBeSentExtraInfoEvent,
-    ResourceChangedPriorityEvent,
-    ResponseReceivedEarlyHintsEvent,
-    ResponseReceivedEvent,
-    ResponseReceivedExtraInfoEvent,
-    SignedExchangeReceivedEvent,
-    SubresourceWebBundleInnerResponseErrorEvent,
-    SubresourceWebBundleInnerResponseParsedEvent,
-    SubresourceWebBundleMetadataErrorEvent,
-    SubresourceWebBundleMetadataReceivedEvent,
-    TrustTokenOperationDoneEvent,
-    WebSocketClosedEvent,
-    WebSocketCreatedEvent,
-    WebSocketFrameErrorEvent,
-    WebSocketFrameReceivedEvent,
-    WebSocketFrameSentEvent,
-    WebSocketHandshakeResponseReceivedEvent,
-    WebSocketWillSendHandshakeRequestEvent,
-    WebTransportClosedEvent,
-    WebTransportConnectionEstablishedEvent,
-    WebTransportCreatedEvent
-)
+        DataReceivedEvent,
+        DirectTCPSocketAbortedEvent,
+        DirectTCPSocketChunkReceivedEvent,
+        DirectTCPSocketChunkSentEvent,
+        DirectTCPSocketClosedEvent,
+        DirectTCPSocketCreatedEvent,
+        DirectTCPSocketOpenedEvent,
+        DirectUDPSocketAbortedEvent,
+        DirectUDPSocketChunkReceivedEvent,
+        DirectUDPSocketChunkSentEvent,
+        DirectUDPSocketClosedEvent,
+        DirectUDPSocketCreatedEvent,
+        DirectUDPSocketJoinedMulticastGroupEvent,
+        DirectUDPSocketLeftMulticastGroupEvent,
+        DirectUDPSocketOpenedEvent,
+        EventSourceMessageReceivedEvent,
+        LoadingFailedEvent,
+        LoadingFinishedEvent,
+        PolicyUpdatedEvent,
+        ReportingApiEndpointsChangedForOriginEvent,
+        ReportingApiReportAddedEvent,
+        ReportingApiReportUpdatedEvent,
+        RequestInterceptedEvent,
+        RequestServedFromCacheEvent,
+        RequestWillBeSentEvent,
+        RequestWillBeSentExtraInfoEvent,
+        ResourceChangedPriorityEvent,
+        ResponseReceivedEarlyHintsEvent,
+        ResponseReceivedEvent,
+        ResponseReceivedExtraInfoEvent,
+        SignedExchangeReceivedEvent,
+        TrustTokenOperationDoneEvent,
+        WebSocketClosedEvent,
+        WebSocketCreatedEvent,
+        WebSocketFrameErrorEvent,
+        WebSocketFrameReceivedEvent,
+        WebSocketFrameSentEvent,
+        WebSocketHandshakeResponseReceivedEvent,
+        WebSocketWillSendHandshakeRequestEvent,
+        WebTransportClosedEvent,
+        WebTransportConnectionEstablishedEvent,
+        WebTransportCreatedEvent,
+    )
+
 
 class NetworkRegistration:
     """Event registration interface for Network domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Network"
 
     def dataReceived(
         self,
-        callback: Callable[['DataReceivedEvent', Optional[str]], None],
+        callback: Callable[["DataReceivedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for dataReceived events.
-        
+
         Fired when data chunk was received over the network.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -81,13 +80,13 @@ class NetworkRegistration:
 
     def eventSourceMessageReceived(
         self,
-        callback: Callable[['EventSourceMessageReceivedEvent', Optional[str]], None],
+        callback: Callable[["EventSourceMessageReceivedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for eventSourceMessageReceived events.
-        
+
         Fired when EventSource message is received.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -96,13 +95,13 @@ class NetworkRegistration:
 
     def loadingFailed(
         self,
-        callback: Callable[['LoadingFailedEvent', Optional[str]], None],
+        callback: Callable[["LoadingFailedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for loadingFailed events.
-        
+
         Fired when HTTP request has failed to load.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -111,13 +110,13 @@ class NetworkRegistration:
 
     def loadingFinished(
         self,
-        callback: Callable[['LoadingFinishedEvent', Optional[str]], None],
+        callback: Callable[["LoadingFinishedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for loadingFinished events.
-        
+
         Fired when HTTP request has finished loading.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -126,30 +125,30 @@ class NetworkRegistration:
 
     def requestIntercepted(
         self,
-        callback: Callable[['RequestInterceptedEvent', Optional[str]], None],
+        callback: Callable[["RequestInterceptedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for requestIntercepted events.
-        
-        Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
-mocked.
-Deprecated, use Fetch.requestPaused instead.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for requestIntercepted events.
+
+                Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
+        mocked.
+        Deprecated, use Fetch.requestPaused instead.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Network.requestIntercepted", callback)
 
     def requestServedFromCache(
         self,
-        callback: Callable[['RequestServedFromCacheEvent', Optional[str]], None],
+        callback: Callable[["RequestServedFromCacheEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for requestServedFromCache events.
-        
+
         Fired if request ended up loading from cache.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -158,13 +157,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def requestWillBeSent(
         self,
-        callback: Callable[['RequestWillBeSentEvent', Optional[str]], None],
+        callback: Callable[["RequestWillBeSentEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for requestWillBeSent events.
-        
+
         Fired when page is about to send HTTP request.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -173,13 +172,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def resourceChangedPriority(
         self,
-        callback: Callable[['ResourceChangedPriorityEvent', Optional[str]], None],
+        callback: Callable[["ResourceChangedPriorityEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for resourceChangedPriority events.
-        
+
         Fired when resource loading priority is changed
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -188,13 +187,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def signedExchangeReceived(
         self,
-        callback: Callable[['SignedExchangeReceivedEvent', Optional[str]], None],
+        callback: Callable[["SignedExchangeReceivedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for signedExchangeReceived events.
-        
+
         Fired when a signed exchange was received over the network
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -203,13 +202,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def responseReceived(
         self,
-        callback: Callable[['ResponseReceivedEvent', Optional[str]], None],
+        callback: Callable[["ResponseReceivedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for responseReceived events.
-        
+
         Fired when HTTP response is available.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -218,13 +217,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webSocketClosed(
         self,
-        callback: Callable[['WebSocketClosedEvent', Optional[str]], None],
+        callback: Callable[["WebSocketClosedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for webSocketClosed events.
-        
+
         Fired when WebSocket is closed.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -233,13 +232,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webSocketCreated(
         self,
-        callback: Callable[['WebSocketCreatedEvent', Optional[str]], None],
+        callback: Callable[["WebSocketCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for webSocketCreated events.
-        
+
         Fired upon WebSocket creation.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -248,13 +247,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webSocketFrameError(
         self,
-        callback: Callable[['WebSocketFrameErrorEvent', Optional[str]], None],
+        callback: Callable[["WebSocketFrameErrorEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for webSocketFrameError events.
-        
+
         Fired when WebSocket message error occurs.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -263,13 +262,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webSocketFrameReceived(
         self,
-        callback: Callable[['WebSocketFrameReceivedEvent', Optional[str]], None],
+        callback: Callable[["WebSocketFrameReceivedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for webSocketFrameReceived events.
-        
+
         Fired when WebSocket message is received.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -278,13 +277,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webSocketFrameSent(
         self,
-        callback: Callable[['WebSocketFrameSentEvent', Optional[str]], None],
+        callback: Callable[["WebSocketFrameSentEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for webSocketFrameSent events.
-        
+
         Fired when WebSocket message is sent.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -293,13 +292,15 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webSocketHandshakeResponseReceived(
         self,
-        callback: Callable[['WebSocketHandshakeResponseReceivedEvent', Optional[str]], None],
+        callback: Callable[
+            ["WebSocketHandshakeResponseReceivedEvent", Optional[str]], None
+        ],
     ) -> None:
         """
         Register a callback for webSocketHandshakeResponseReceived events.
-        
+
         Fired when WebSocket handshake response becomes available.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -308,13 +309,15 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webSocketWillSendHandshakeRequest(
         self,
-        callback: Callable[['WebSocketWillSendHandshakeRequestEvent', Optional[str]], None],
+        callback: Callable[
+            ["WebSocketWillSendHandshakeRequestEvent", Optional[str]], None
+        ],
     ) -> None:
         """
         Register a callback for webSocketWillSendHandshakeRequest events.
-        
+
         Fired when WebSocket is about to initiate handshake.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -323,13 +326,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webTransportCreated(
         self,
-        callback: Callable[['WebTransportCreatedEvent', Optional[str]], None],
+        callback: Callable[["WebTransportCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for webTransportCreated events.
-        
+
         Fired upon WebTransport creation.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -338,13 +341,15 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webTransportConnectionEstablished(
         self,
-        callback: Callable[['WebTransportConnectionEstablishedEvent', Optional[str]], None],
+        callback: Callable[
+            ["WebTransportConnectionEstablishedEvent", Optional[str]], None
+        ],
     ) -> None:
         """
         Register a callback for webTransportConnectionEstablished events.
-        
+
         Fired when WebTransport handshake is finished.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -353,13 +358,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def webTransportClosed(
         self,
-        callback: Callable[['WebTransportClosedEvent', Optional[str]], None],
+        callback: Callable[["WebTransportClosedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for webTransportClosed events.
-        
+
         Fired when WebTransport is disposed.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -368,13 +373,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directTCPSocketCreated(
         self,
-        callback: Callable[['DirectTCPSocketCreatedEvent', Optional[str]], None],
+        callback: Callable[["DirectTCPSocketCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directTCPSocketCreated events.
-        
+
         Fired upon direct_socket.TCPSocket creation.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -383,13 +388,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directTCPSocketOpened(
         self,
-        callback: Callable[['DirectTCPSocketOpenedEvent', Optional[str]], None],
+        callback: Callable[["DirectTCPSocketOpenedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directTCPSocketOpened events.
-        
+
         Fired when direct_socket.TCPSocket connection is opened.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -398,13 +403,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directTCPSocketAborted(
         self,
-        callback: Callable[['DirectTCPSocketAbortedEvent', Optional[str]], None],
+        callback: Callable[["DirectTCPSocketAbortedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directTCPSocketAborted events.
-        
+
         Fired when direct_socket.TCPSocket is aborted.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -413,13 +418,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directTCPSocketClosed(
         self,
-        callback: Callable[['DirectTCPSocketClosedEvent', Optional[str]], None],
+        callback: Callable[["DirectTCPSocketClosedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directTCPSocketClosed events.
-        
+
         Fired when direct_socket.TCPSocket is closed.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -428,13 +433,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directTCPSocketChunkSent(
         self,
-        callback: Callable[['DirectTCPSocketChunkSentEvent', Optional[str]], None],
+        callback: Callable[["DirectTCPSocketChunkSentEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directTCPSocketChunkSent events.
-        
+
         Fired when data is sent to tcp direct socket stream.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -443,28 +448,58 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directTCPSocketChunkReceived(
         self,
-        callback: Callable[['DirectTCPSocketChunkReceivedEvent', Optional[str]], None],
+        callback: Callable[["DirectTCPSocketChunkReceivedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directTCPSocketChunkReceived events.
-        
+
         Fired when data is received from tcp direct socket stream.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Network.directTCPSocketChunkReceived", callback)
 
+    def directUDPSocketJoinedMulticastGroup(
+        self,
+        callback: Callable[
+            ["DirectUDPSocketJoinedMulticastGroupEvent", Optional[str]], None
+        ],
+    ) -> None:
+        """
+        Register a callback for directUDPSocketJoinedMulticastGroup events.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Network.directUDPSocketJoinedMulticastGroup", callback)
+
+    def directUDPSocketLeftMulticastGroup(
+        self,
+        callback: Callable[
+            ["DirectUDPSocketLeftMulticastGroupEvent", Optional[str]], None
+        ],
+    ) -> None:
+        """
+        Register a callback for directUDPSocketLeftMulticastGroup events.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Network.directUDPSocketLeftMulticastGroup", callback)
+
     def directUDPSocketCreated(
         self,
-        callback: Callable[['DirectUDPSocketCreatedEvent', Optional[str]], None],
+        callback: Callable[["DirectUDPSocketCreatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directUDPSocketCreated events.
-        
+
         Fired upon direct_socket.UDPSocket creation.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -473,13 +508,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directUDPSocketOpened(
         self,
-        callback: Callable[['DirectUDPSocketOpenedEvent', Optional[str]], None],
+        callback: Callable[["DirectUDPSocketOpenedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directUDPSocketOpened events.
-        
+
         Fired when direct_socket.UDPSocket connection is opened.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -488,13 +523,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directUDPSocketAborted(
         self,
-        callback: Callable[['DirectUDPSocketAbortedEvent', Optional[str]], None],
+        callback: Callable[["DirectUDPSocketAbortedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directUDPSocketAborted events.
-        
+
         Fired when direct_socket.UDPSocket is aborted.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -503,13 +538,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directUDPSocketClosed(
         self,
-        callback: Callable[['DirectUDPSocketClosedEvent', Optional[str]], None],
+        callback: Callable[["DirectUDPSocketClosedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directUDPSocketClosed events.
-        
+
         Fired when direct_socket.UDPSocket is closed.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -518,13 +553,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directUDPSocketChunkSent(
         self,
-        callback: Callable[['DirectUDPSocketChunkSentEvent', Optional[str]], None],
+        callback: Callable[["DirectUDPSocketChunkSentEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directUDPSocketChunkSent events.
-        
+
         Fired when message is sent to udp direct socket stream.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -533,13 +568,13 @@ Deprecated, use Fetch.requestPaused instead.
 
     def directUDPSocketChunkReceived(
         self,
-        callback: Callable[['DirectUDPSocketChunkReceivedEvent', Optional[str]], None],
+        callback: Callable[["DirectUDPSocketChunkReceivedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for directUDPSocketChunkReceived events.
-        
+
         Fired when message is received from udp direct socket stream.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -548,174 +583,112 @@ Deprecated, use Fetch.requestPaused instead.
 
     def requestWillBeSentExtraInfo(
         self,
-        callback: Callable[['RequestWillBeSentExtraInfoEvent', Optional[str]], None],
+        callback: Callable[["RequestWillBeSentExtraInfoEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for requestWillBeSentExtraInfo events.
-        
-        Fired when additional information about a requestWillBeSent event is available from the
-network stack. Not every requestWillBeSent event will have an additional
-requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
-or requestWillBeSentExtraInfo will be fired first for the same request.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for requestWillBeSentExtraInfo events.
+
+                Fired when additional information about a requestWillBeSent event is available from the
+        network stack. Not every requestWillBeSent event will have an additional
+        requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
+        or requestWillBeSentExtraInfo will be fired first for the same request.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Network.requestWillBeSentExtraInfo", callback)
 
     def responseReceivedExtraInfo(
         self,
-        callback: Callable[['ResponseReceivedExtraInfoEvent', Optional[str]], None],
+        callback: Callable[["ResponseReceivedExtraInfoEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for responseReceivedExtraInfo events.
-        
-        Fired when additional information about a responseReceived event is available from the network
-stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
-it, and responseReceivedExtraInfo may be fired before or after responseReceived.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for responseReceivedExtraInfo events.
+
+                Fired when additional information about a responseReceived event is available from the network
+        stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
+        it, and responseReceivedExtraInfo may be fired before or after responseReceived.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Network.responseReceivedExtraInfo", callback)
 
     def responseReceivedEarlyHints(
         self,
-        callback: Callable[['ResponseReceivedEarlyHintsEvent', Optional[str]], None],
+        callback: Callable[["ResponseReceivedEarlyHintsEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for responseReceivedEarlyHints events.
-        
-        Fired when 103 Early Hints headers is received in addition to the common response.
-Not every responseReceived event will have an responseReceivedEarlyHints fired.
-Only one responseReceivedEarlyHints may be fired for eached responseReceived event.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for responseReceivedEarlyHints events.
+
+                Fired when 103 Early Hints headers is received in addition to the common response.
+        Not every responseReceived event will have an responseReceivedEarlyHints fired.
+        Only one responseReceivedEarlyHints may be fired for eached responseReceived event.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Network.responseReceivedEarlyHints", callback)
 
     def trustTokenOperationDone(
         self,
-        callback: Callable[['TrustTokenOperationDoneEvent', Optional[str]], None],
+        callback: Callable[["TrustTokenOperationDoneEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for trustTokenOperationDone events.
-        
-        Fired exactly once for each Trust Token operation. Depending on
-the type of the operation and whether the operation succeeded or
-failed, the event is fired before the corresponding request was sent
-or after the response was received.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for trustTokenOperationDone events.
+
+                Fired exactly once for each Trust Token operation. Depending on
+        the type of the operation and whether the operation succeeded or
+        failed, the event is fired before the corresponding request was sent
+        or after the response was received.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Network.trustTokenOperationDone", callback)
 
     def policyUpdated(
         self,
-        callback: Callable[['PolicyUpdatedEvent', Optional[str]], None],
+        callback: Callable[["PolicyUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for policyUpdated events.
-        
+
         Fired once security policy has been updated.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Network.policyUpdated", callback)
 
-    def subresourceWebBundleMetadataReceived(
-        self,
-        callback: Callable[['SubresourceWebBundleMetadataReceivedEvent', Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for subresourceWebBundleMetadataReceived events.
-        
-        Fired once when parsing the .wbn file has succeeded.
-The event contains the information about the web bundle contents.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Network.subresourceWebBundleMetadataReceived", callback)
-
-    def subresourceWebBundleMetadataError(
-        self,
-        callback: Callable[['SubresourceWebBundleMetadataErrorEvent', Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for subresourceWebBundleMetadataError events.
-        
-        Fired once when parsing the .wbn file has failed.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Network.subresourceWebBundleMetadataError", callback)
-
-    def subresourceWebBundleInnerResponseParsed(
-        self,
-        callback: Callable[['SubresourceWebBundleInnerResponseParsedEvent', Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for subresourceWebBundleInnerResponseParsed events.
-        
-        Fired when handling requests for resources within a .wbn file.
-Note: this will only be fired for resources that are requested by the webpage.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Network.subresourceWebBundleInnerResponseParsed", callback)
-
-    def subresourceWebBundleInnerResponseError(
-        self,
-        callback: Callable[['SubresourceWebBundleInnerResponseErrorEvent', Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for subresourceWebBundleInnerResponseError events.
-        
-        Fired when request for resources within a .wbn file failed.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Network.subresourceWebBundleInnerResponseError", callback)
-
     def reportingApiReportAdded(
         self,
-        callback: Callable[['ReportingApiReportAddedEvent', Optional[str]], None],
+        callback: Callable[["ReportingApiReportAddedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for reportingApiReportAdded events.
-        
-        Is sent whenever a new report is added.
-And after 'enableReportingApi' for all existing reports.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for reportingApiReportAdded events.
+
+                Is sent whenever a new report is added.
+        And after 'enableReportingApi' for all existing reports.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Network.reportingApiReportAdded", callback)
 
     def reportingApiReportUpdated(
         self,
-        callback: Callable[['ReportingApiReportUpdatedEvent', Optional[str]], None],
+        callback: Callable[["ReportingApiReportUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for reportingApiReportUpdated events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -724,14 +697,17 @@ And after 'enableReportingApi' for all existing reports.
 
     def reportingApiEndpointsChangedForOrigin(
         self,
-        callback: Callable[['ReportingApiEndpointsChangedForOriginEvent', Optional[str]], None],
+        callback: Callable[
+            ["ReportingApiEndpointsChangedForOriginEvent", Optional[str]], None
+        ],
     ) -> None:
         """
         Register a callback for reportingApiEndpointsChangedForOrigin events.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("Network.reportingApiEndpointsChangedForOrigin", callback)
-
+        self._registry.register(
+            "Network.reportingApiEndpointsChangedForOrigin", callback
+        )

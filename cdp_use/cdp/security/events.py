@@ -19,6 +19,8 @@ if TYPE_CHECKING:
 handled with the `handleCertificateError` command. Note: this event does not fire if the
 certificate error has been allowed internally. Only one client per target should override
 certificate errors at the same time."""
+
+
 class CertificateErrorEvent(TypedDict):
     eventId: "int"
     """The ID of the event."""
@@ -28,15 +30,17 @@ class CertificateErrorEvent(TypedDict):
     """The url that was requested."""
 
 
-
 """The security state of the page changed."""
+
+
 class VisibleSecurityStateChangedEvent(TypedDict):
     visibleSecurityState: "VisibleSecurityState"
     """Security state information about the page."""
 
 
-
 """The security state of the page changed. No longer being sent."""
+
+
 class SecurityStateChangedEvent(TypedDict):
     securityState: "SecurityState"
     """Security state."""

@@ -14,11 +14,17 @@ if TYPE_CHECKING:
     from ..network.types import TimeSinceEpoch
     from ..serviceworker.types import RegistrationID
 
-ServiceName = Literal["backgroundFetch", "backgroundSync", "pushMessaging", "notifications", "paymentHandler", "periodicBackgroundSync"]
+ServiceName = Literal[
+    "backgroundFetch",
+    "backgroundSync",
+    "pushMessaging",
+    "notifications",
+    "paymentHandler",
+    "periodicBackgroundSync",
+]
 """The Background Service that will be associated with the commands/events.
 Every Background Service operates independently, but they share the same
 API."""
-
 
 
 class EventMetadata(TypedDict):
@@ -26,7 +32,6 @@ class EventMetadata(TypedDict):
 
     key: "str"
     value: "str"
-
 
 
 class BackgroundServiceEvent(TypedDict):

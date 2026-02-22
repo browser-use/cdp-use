@@ -10,17 +10,13 @@ from typing_extensions import NotRequired, TypedDict
 AuthenticatorId = str
 
 
-
 AuthenticatorProtocol = Literal["u2f", "ctap2"]
-
 
 
 Ctap2Version = Literal["ctap2_0", "ctap2_1"]
 
 
-
 AuthenticatorTransport = Literal["usb", "nfc", "ble", "cable", "internal"]
-
 
 
 class VirtualAuthenticatorOptions(TypedDict):
@@ -62,7 +58,6 @@ https://w3c.github.io/webauthn/#sctn-credential-backup"""
     """Credentials created by this authenticator will have the backup state
 (BS) flag set to this value. Defaults to false.
 https://w3c.github.io/webauthn/#sctn-credential-backup"""
-
 
 
 class Credential(TypedDict):

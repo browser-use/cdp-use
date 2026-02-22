@@ -12,12 +12,10 @@ if TYPE_CHECKING:
     from ..runtime.types import RemoteObjectId
     from .types import StreamHandle
 
+
 class CloseParameters(TypedDict):
     handle: "StreamHandle"
     """Handle of the stream to close."""
-
-
-
 
 
 class ReadParameters(TypedDict):
@@ -37,7 +35,6 @@ class ReadReturns(TypedDict):
     """Data that were read."""
     eof: "bool"
     """Set if the end-of-file condition occurred while reading."""
-
 
 
 class ResolveBlobParameters(TypedDict):

@@ -12,26 +12,26 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import DeviceRequestPromptedEvent
 
+
 class DeviceAccessRegistration:
     """Event registration interface for DeviceAccess domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "DeviceAccess"
 
     def deviceRequestPrompted(
         self,
-        callback: Callable[['DeviceRequestPromptedEvent', Optional[str]], None],
+        callback: Callable[["DeviceRequestPromptedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for deviceRequestPrompted events.
-        
-        A device request opened a user prompt to select a device. Respond with the
-selectPrompt or cancelPrompt command.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for deviceRequestPrompted events.
+
+                A device request opened a user prompt to select a device. Respond with the
+        selectPrompt or cancelPrompt command.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("DeviceAccess.deviceRequestPrompted", callback)
-

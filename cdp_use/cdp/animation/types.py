@@ -13,6 +13,7 @@ if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
     from ..dom.types import ScrollOrientation
 
+
 class Animation(TypedDict):
     """Animation instance."""
 
@@ -44,7 +45,6 @@ animation/transition."""
     """View or scroll timeline"""
 
 
-
 class ViewOrScrollTimeline(TypedDict):
     """Timeline instance"""
 
@@ -64,7 +64,6 @@ Does not exist for animations with ScrollTimeline"""
     """Orientation of the scroll"""
 
 
-
 class AnimationEffect(TypedDict):
     """AnimationEffect instance"""
 
@@ -74,8 +73,8 @@ class AnimationEffect(TypedDict):
     """`AnimationEffect`'s end delay."""
     iterationStart: "float"
     """`AnimationEffect`'s iteration start."""
-    iterations: "float"
-    """`AnimationEffect`'s iterations."""
+    iterations: "NotRequired[float]"
+    """`AnimationEffect`'s iterations. Omitted if the value is infinite."""
     duration: "float"
     """`AnimationEffect`'s iteration duration.
 Milliseconds for time based animations and
@@ -93,7 +92,6 @@ percentage [0 - 100] for scroll driven animations
     """`AnimationEffect`'s timing function."""
 
 
-
 class KeyframesRule(TypedDict):
     """Keyframes Rule"""
 
@@ -101,7 +99,6 @@ class KeyframesRule(TypedDict):
     """CSS keyframed animation's name."""
     keyframes: "List[KeyframeStyle]"
     """List of animation keyframes."""
-
 
 
 class KeyframeStyle(TypedDict):

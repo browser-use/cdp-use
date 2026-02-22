@@ -18,20 +18,47 @@ AXNodeId = str
 """Unique accessibility node identifier."""
 
 
-
-AXValueType = Literal["boolean", "tristate", "booleanOrUndefined", "idref", "idrefList", "integer", "node", "nodeList", "number", "string", "computedString", "token", "tokenList", "domRelation", "role", "internalRole", "valueUndefined"]
+AXValueType = Literal[
+    "boolean",
+    "tristate",
+    "booleanOrUndefined",
+    "idref",
+    "idrefList",
+    "integer",
+    "node",
+    "nodeList",
+    "number",
+    "string",
+    "computedString",
+    "token",
+    "tokenList",
+    "domRelation",
+    "role",
+    "internalRole",
+    "valueUndefined",
+]
 """Enum of possible property types."""
 
 
-
-AXValueSourceType = Literal["attribute", "implicit", "style", "contents", "placeholder", "relatedElement"]
+AXValueSourceType = Literal[
+    "attribute", "implicit", "style", "contents", "placeholder", "relatedElement"
+]
 """Enum of possible property sources."""
 
 
-
-AXValueNativeSourceType = Literal["description", "figcaption", "label", "labelfor", "labelwrapped", "legend", "rubyannotation", "tablecaption", "title", "other"]
+AXValueNativeSourceType = Literal[
+    "description",
+    "figcaption",
+    "label",
+    "labelfor",
+    "labelwrapped",
+    "legend",
+    "rubyannotation",
+    "tablecaption",
+    "title",
+    "other",
+]
 """Enum of possible native property sources (as a subtype of a particular AXValueSourceType)."""
-
 
 
 class AXValueSource(TypedDict):
@@ -57,7 +84,6 @@ class AXValueSource(TypedDict):
     """Reason for the value being invalid, if it is."""
 
 
-
 class AXRelatedNode(TypedDict):
     backendDOMNodeId: "BackendNodeId"
     """The BackendNodeId of the related DOM node."""
@@ -67,13 +93,11 @@ class AXRelatedNode(TypedDict):
     """The text alternative of this node in the current context."""
 
 
-
 class AXProperty(TypedDict):
     name: "AXPropertyName"
     """The name of this property."""
     value: "AXValue"
     """The value of this property."""
-
 
 
 class AXValue(TypedDict):
@@ -89,15 +113,73 @@ class AXValue(TypedDict):
     """The sources which contributed to the computation of this property."""
 
 
-
-AXPropertyName = Literal["actions", "busy", "disabled", "editable", "focusable", "focused", "hidden", "hiddenRoot", "invalid", "keyshortcuts", "settable", "roledescription", "live", "atomic", "relevant", "root", "autocomplete", "hasPopup", "level", "multiselectable", "orientation", "multiline", "readonly", "required", "valuemin", "valuemax", "valuetext", "checked", "expanded", "modal", "pressed", "selected", "activedescendant", "controls", "describedby", "details", "errormessage", "flowto", "labelledby", "owns", "url"]
+AXPropertyName = Literal[
+    "actions",
+    "busy",
+    "disabled",
+    "editable",
+    "focusable",
+    "focused",
+    "hidden",
+    "hiddenRoot",
+    "invalid",
+    "keyshortcuts",
+    "settable",
+    "roledescription",
+    "live",
+    "atomic",
+    "relevant",
+    "root",
+    "autocomplete",
+    "hasPopup",
+    "level",
+    "multiselectable",
+    "orientation",
+    "multiline",
+    "readonly",
+    "required",
+    "valuemin",
+    "valuemax",
+    "valuetext",
+    "checked",
+    "expanded",
+    "modal",
+    "pressed",
+    "selected",
+    "activedescendant",
+    "controls",
+    "describedby",
+    "details",
+    "errormessage",
+    "flowto",
+    "labelledby",
+    "owns",
+    "url",
+    "activeFullscreenElement",
+    "activeModalDialog",
+    "activeAriaModalDialog",
+    "ariaHiddenElement",
+    "ariaHiddenSubtree",
+    "emptyAlt",
+    "emptyText",
+    "inertElement",
+    "inertSubtree",
+    "labelContainer",
+    "labelFor",
+    "notRendered",
+    "notVisible",
+    "presentationalRole",
+    "probablyPresentational",
+    "inactiveCarouselTabContent",
+    "uninteresting",
+]
 """Values of AXProperty name:
 - from 'busy' to 'roledescription': states which apply to every AX node
 - from 'live' to 'root': attributes which apply to nodes in live regions
 - from 'autocomplete' to 'valuetext': attributes which apply to widgets
 - from 'checked' to 'selected': states which apply to widgets
-- from 'activedescendant' to 'owns' - relationships between elements other than parent/child/sibling."""
-
+- from 'activedescendant' to 'owns': relationships between elements other than parent/child/sibling
+- from 'activeFullscreenElement' to 'uninteresting': reasons why this noode is hidden"""
 
 
 class AXNode(TypedDict):

@@ -12,25 +12,25 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import AddressFormFilledEvent
 
+
 class AutofillRegistration:
     """Event registration interface for Autofill domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Autofill"
 
     def addressFormFilled(
         self,
-        callback: Callable[['AddressFormFilledEvent', Optional[str]], None],
+        callback: Callable[["AddressFormFilledEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for addressFormFilled events.
-        
+
         Emitted when an address form is filled.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Autofill.addressFormFilled", callback)
-

@@ -12,10 +12,11 @@ if TYPE_CHECKING:
     from ...client import CDPClient
     from .commands import SetDeviceOrientationOverrideParameters
 
+
 class DeviceOrientationClient:
     """Client for DeviceOrientation domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def clearDeviceOrientationOverride(
@@ -24,11 +25,14 @@ class DeviceOrientationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Clears the overridden Device Orientation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="DeviceOrientation.clearDeviceOrientationOverride",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="DeviceOrientation.clearDeviceOrientationOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setDeviceOrientationOverride(
         self,
@@ -36,10 +40,11 @@ class DeviceOrientationClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Overrides the Device Orientation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="DeviceOrientation.setDeviceOrientationOverride",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="DeviceOrientation.setDeviceOrientationOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )

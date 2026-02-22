@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from .types import PictureTile
     from .types import SnapshotId
 
+
 class CompositingReasonsParameters(TypedDict):
     layerId: "LayerId"
     """The id of the layer for which we want to get the reasons it was composited."""
@@ -28,7 +29,6 @@ class CompositingReasonsReturns(TypedDict):
     """A list of strings specifying reason IDs for the given layer to become composited."""
 
 
-
 class LoadSnapshotParameters(TypedDict):
     tiles: "List[PictureTile]"
     """An array of tiles composing the snapshot."""
@@ -39,7 +39,6 @@ class LoadSnapshotReturns(TypedDict):
     """The id of the snapshot."""
 
 
-
 class MakeSnapshotParameters(TypedDict):
     layerId: "LayerId"
     """The id of the layer."""
@@ -48,7 +47,6 @@ class MakeSnapshotParameters(TypedDict):
 class MakeSnapshotReturns(TypedDict):
     snapshotId: "SnapshotId"
     """The id of the layer snapshot."""
-
 
 
 class ProfileSnapshotParameters(TypedDict):
@@ -67,13 +65,9 @@ class ProfileSnapshotReturns(TypedDict):
     """The array of paint profiles, one per run."""
 
 
-
 class ReleaseSnapshotParameters(TypedDict):
     snapshotId: "SnapshotId"
     """The id of the layer snapshot."""
-
-
-
 
 
 class ReplaySnapshotParameters(TypedDict):
@@ -90,7 +84,6 @@ class ReplaySnapshotParameters(TypedDict):
 class ReplaySnapshotReturns(TypedDict):
     dataURL: "str"
     """A data: URL for resulting image."""
-
 
 
 class SnapshotCommandLogParameters(TypedDict):

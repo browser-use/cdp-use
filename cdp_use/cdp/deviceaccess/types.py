@@ -10,10 +10,8 @@ RequestId = str
 """Device request id."""
 
 
-
 DeviceId = str
 """A device id."""
-
 
 
 class PromptDevice(TypedDict):

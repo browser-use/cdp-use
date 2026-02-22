@@ -19,7 +19,6 @@ RuleSetId = str
 """Unique id"""
 
 
-
 class RuleSet(TypedDict):
     """Corresponds to SpeculationRuleSet"""
 
@@ -52,18 +51,20 @@ See also:
 `errorMessage` is null iff `errorType` is null."""
     errorMessage: "NotRequired[str]"
     """TODO(https://crbug.com/1425354): Replace this property with structured error."""
+    tag: "NotRequired[str]"
+    """For more details, see:
+https://github.com/WICG/nav-speculation/blob/main/speculation-rules-tags.md"""
 
 
+RuleSetErrorType = Literal[
+    "SourceIsNotJsonObject", "InvalidRulesSkipped", "InvalidRulesetLevelTag"
+]
 
-RuleSetErrorType = Literal["SourceIsNotJsonObject", "InvalidRulesSkipped"]
 
-
-
-SpeculationAction = Literal["Prefetch", "Prerender"]
+SpeculationAction = Literal["Prefetch", "Prerender", "PrerenderUntilScript"]
 """The type of preloading attempted. It corresponds to
 mojom::SpeculationAction (although PrefetchWithSubresources is omitted as it
 isn't being used by clients)."""
-
 
 
 SpeculationTargetHint = Literal["Blank", "Self"]
@@ -71,14 +72,13 @@ SpeculationTargetHint = Literal["Blank", "Self"]
 See https://github.com/WICG/nav-speculation/blob/main/triggers.md#window-name-targeting-hints"""
 
 
-
 class PreloadingAttemptKey(TypedDict):
     """A key that identifies a preloading attempt.
 
-The url used is the url specified by the trigger (i.e. the initial URL), and
-not the final url that is navigated to. For example, prerendering allows
-same-origin main frame navigations during the attempt, but the attempt is
-still keyed with the initial URL."""
+    The url used is the url specified by the trigger (i.e. the initial URL), and
+    not the final url that is navigated to. For example, prerendering allows
+    same-origin main frame navigations during the attempt, but the attempt is
+    still keyed with the initial URL."""
 
     loaderId: "LoaderId"
     action: "SpeculationAction"
@@ -86,18 +86,16 @@ still keyed with the initial URL."""
     targetHint: "NotRequired[SpeculationTargetHint]"
 
 
-
 class PreloadingAttemptSource(TypedDict):
     """Lists sources for a preloading attempt, specifically the ids of rule sets
-that had a speculation rule that triggered the attempt, and the
-BackendNodeIds of <a href> or <area href> elements that triggered the
-attempt (in the case of attempts triggered by a document rule). It is
-possible for multiple rule sets and links to trigger a single attempt."""
+    that had a speculation rule that triggered the attempt, and the
+    BackendNodeIds of <a href> or <area href> elements that triggered the
+    attempt (in the case of attempts triggered by a document rule). It is
+    possible for multiple rule sets and links to trigger a single attempt."""
 
     key: "PreloadingAttemptKey"
     ruleSetIds: "List[RuleSetId]"
     nodeIds: "List[BackendNodeId]"
-
 
 
 PreloadPipelineId = str
@@ -110,22 +108,130 @@ CDP events for them are emitted separately but they share
 `PreloadPipelineId`."""
 
 
-
-PrerenderFinalStatus = Literal["Activated", "Destroyed", "LowEndDevice", "InvalidSchemeRedirect", "InvalidSchemeNavigation", "NavigationRequestBlockedByCsp", "MojoBinderPolicy", "RendererProcessCrashed", "RendererProcessKilled", "Download", "TriggerDestroyed", "NavigationNotCommitted", "NavigationBadHttpStatus", "ClientCertRequested", "NavigationRequestNetworkError", "CancelAllHostsForTesting", "DidFailLoad", "Stop", "SslCertificateError", "LoginAuthRequested", "UaChangeRequiresReload", "BlockedByClient", "AudioOutputDeviceRequested", "MixedContent", "TriggerBackgrounded", "MemoryLimitExceeded", "DataSaverEnabled", "TriggerUrlHasEffectiveUrl", "ActivatedBeforeStarted", "InactivePageRestriction", "StartFailed", "TimeoutBackgrounded", "CrossSiteRedirectInInitialNavigation", "CrossSiteNavigationInInitialNavigation", "SameSiteCrossOriginRedirectNotOptInInInitialNavigation", "SameSiteCrossOriginNavigationNotOptInInInitialNavigation", "ActivationNavigationParameterMismatch", "ActivatedInBackground", "EmbedderHostDisallowed", "ActivationNavigationDestroyedBeforeSuccess", "TabClosedByUserGesture", "TabClosedWithoutUserGesture", "PrimaryMainFrameRendererProcessCrashed", "PrimaryMainFrameRendererProcessKilled", "ActivationFramePolicyNotCompatible", "PreloadingDisabled", "BatterySaverEnabled", "ActivatedDuringMainFrameNavigation", "PreloadingUnsupportedByWebContents", "CrossSiteRedirectInMainFrameNavigation", "CrossSiteNavigationInMainFrameNavigation", "SameSiteCrossOriginRedirectNotOptInInMainFrameNavigation", "SameSiteCrossOriginNavigationNotOptInInMainFrameNavigation", "MemoryPressureOnTrigger", "MemoryPressureAfterTriggered", "PrerenderingDisabledByDevTools", "SpeculationRuleRemoved", "ActivatedWithAuxiliaryBrowsingContexts", "MaxNumOfRunningEagerPrerendersExceeded", "MaxNumOfRunningNonEagerPrerendersExceeded", "MaxNumOfRunningEmbedderPrerendersExceeded", "PrerenderingUrlHasEffectiveUrl", "RedirectedPrerenderingUrlHasEffectiveUrl", "ActivationUrlHasEffectiveUrl", "JavaScriptInterfaceAdded", "JavaScriptInterfaceRemoved", "AllPrerenderingCanceled", "WindowClosed", "SlowNetwork", "OtherPrerenderedPageActivated", "V8OptimizerDisabled", "PrerenderFailedDuringPrefetch", "BrowsingDataRemoved"]
+PrerenderFinalStatus = Literal[
+    "Activated",
+    "Destroyed",
+    "LowEndDevice",
+    "InvalidSchemeRedirect",
+    "InvalidSchemeNavigation",
+    "NavigationRequestBlockedByCsp",
+    "MojoBinderPolicy",
+    "RendererProcessCrashed",
+    "RendererProcessKilled",
+    "Download",
+    "TriggerDestroyed",
+    "NavigationNotCommitted",
+    "NavigationBadHttpStatus",
+    "ClientCertRequested",
+    "NavigationRequestNetworkError",
+    "CancelAllHostsForTesting",
+    "DidFailLoad",
+    "Stop",
+    "SslCertificateError",
+    "LoginAuthRequested",
+    "UaChangeRequiresReload",
+    "BlockedByClient",
+    "AudioOutputDeviceRequested",
+    "MixedContent",
+    "TriggerBackgrounded",
+    "MemoryLimitExceeded",
+    "DataSaverEnabled",
+    "TriggerUrlHasEffectiveUrl",
+    "ActivatedBeforeStarted",
+    "InactivePageRestriction",
+    "StartFailed",
+    "TimeoutBackgrounded",
+    "CrossSiteRedirectInInitialNavigation",
+    "CrossSiteNavigationInInitialNavigation",
+    "SameSiteCrossOriginRedirectNotOptInInInitialNavigation",
+    "SameSiteCrossOriginNavigationNotOptInInInitialNavigation",
+    "ActivationNavigationParameterMismatch",
+    "ActivatedInBackground",
+    "EmbedderHostDisallowed",
+    "ActivationNavigationDestroyedBeforeSuccess",
+    "TabClosedByUserGesture",
+    "TabClosedWithoutUserGesture",
+    "PrimaryMainFrameRendererProcessCrashed",
+    "PrimaryMainFrameRendererProcessKilled",
+    "ActivationFramePolicyNotCompatible",
+    "PreloadingDisabled",
+    "BatterySaverEnabled",
+    "ActivatedDuringMainFrameNavigation",
+    "PreloadingUnsupportedByWebContents",
+    "CrossSiteRedirectInMainFrameNavigation",
+    "CrossSiteNavigationInMainFrameNavigation",
+    "SameSiteCrossOriginRedirectNotOptInInMainFrameNavigation",
+    "SameSiteCrossOriginNavigationNotOptInInMainFrameNavigation",
+    "MemoryPressureOnTrigger",
+    "MemoryPressureAfterTriggered",
+    "PrerenderingDisabledByDevTools",
+    "SpeculationRuleRemoved",
+    "ActivatedWithAuxiliaryBrowsingContexts",
+    "MaxNumOfRunningEagerPrerendersExceeded",
+    "MaxNumOfRunningNonEagerPrerendersExceeded",
+    "MaxNumOfRunningEmbedderPrerendersExceeded",
+    "PrerenderingUrlHasEffectiveUrl",
+    "RedirectedPrerenderingUrlHasEffectiveUrl",
+    "ActivationUrlHasEffectiveUrl",
+    "JavaScriptInterfaceAdded",
+    "JavaScriptInterfaceRemoved",
+    "AllPrerenderingCanceled",
+    "WindowClosed",
+    "SlowNetwork",
+    "OtherPrerenderedPageActivated",
+    "V8OptimizerDisabled",
+    "PrerenderFailedDuringPrefetch",
+    "BrowsingDataRemoved",
+    "PrerenderHostReused",
+]
 """List of FinalStatus reasons for Prerender2."""
 
 
-
-PreloadingStatus = Literal["Pending", "Running", "Ready", "Success", "Failure", "NotSupported"]
+PreloadingStatus = Literal[
+    "Pending", "Running", "Ready", "Success", "Failure", "NotSupported"
+]
 """Preloading status values, see also PreloadingTriggeringOutcome. This
 status is shared by prefetchStatusUpdated and prerenderStatusUpdated."""
 
 
-
-PrefetchStatus = Literal["PrefetchAllowed", "PrefetchFailedIneligibleRedirect", "PrefetchFailedInvalidRedirect", "PrefetchFailedMIMENotSupported", "PrefetchFailedNetError", "PrefetchFailedNon2XX", "PrefetchEvictedAfterBrowsingDataRemoved", "PrefetchEvictedAfterCandidateRemoved", "PrefetchEvictedForNewerPrefetch", "PrefetchHeldback", "PrefetchIneligibleRetryAfter", "PrefetchIsPrivacyDecoy", "PrefetchIsStale", "PrefetchNotEligibleBrowserContextOffTheRecord", "PrefetchNotEligibleDataSaverEnabled", "PrefetchNotEligibleExistingProxy", "PrefetchNotEligibleHostIsNonUnique", "PrefetchNotEligibleNonDefaultStoragePartition", "PrefetchNotEligibleSameSiteCrossOriginPrefetchRequiredProxy", "PrefetchNotEligibleSchemeIsNotHttps", "PrefetchNotEligibleUserHasCookies", "PrefetchNotEligibleUserHasServiceWorker", "PrefetchNotEligibleUserHasServiceWorkerNoFetchHandler", "PrefetchNotEligibleRedirectFromServiceWorker", "PrefetchNotEligibleRedirectToServiceWorker", "PrefetchNotEligibleBatterySaverEnabled", "PrefetchNotEligiblePreloadingDisabled", "PrefetchNotFinishedInTime", "PrefetchNotStarted", "PrefetchNotUsedCookiesChanged", "PrefetchProxyNotAvailable", "PrefetchResponseUsed", "PrefetchSuccessfulButNotUsed", "PrefetchNotUsedProbeFailed"]
+PrefetchStatus = Literal[
+    "PrefetchAllowed",
+    "PrefetchFailedIneligibleRedirect",
+    "PrefetchFailedInvalidRedirect",
+    "PrefetchFailedMIMENotSupported",
+    "PrefetchFailedNetError",
+    "PrefetchFailedNon2XX",
+    "PrefetchEvictedAfterBrowsingDataRemoved",
+    "PrefetchEvictedAfterCandidateRemoved",
+    "PrefetchEvictedForNewerPrefetch",
+    "PrefetchHeldback",
+    "PrefetchIneligibleRetryAfter",
+    "PrefetchIsPrivacyDecoy",
+    "PrefetchIsStale",
+    "PrefetchNotEligibleBrowserContextOffTheRecord",
+    "PrefetchNotEligibleDataSaverEnabled",
+    "PrefetchNotEligibleExistingProxy",
+    "PrefetchNotEligibleHostIsNonUnique",
+    "PrefetchNotEligibleNonDefaultStoragePartition",
+    "PrefetchNotEligibleSameSiteCrossOriginPrefetchRequiredProxy",
+    "PrefetchNotEligibleSchemeIsNotHttps",
+    "PrefetchNotEligibleUserHasCookies",
+    "PrefetchNotEligibleUserHasServiceWorker",
+    "PrefetchNotEligibleUserHasServiceWorkerNoFetchHandler",
+    "PrefetchNotEligibleRedirectFromServiceWorker",
+    "PrefetchNotEligibleRedirectToServiceWorker",
+    "PrefetchNotEligibleBatterySaverEnabled",
+    "PrefetchNotEligiblePreloadingDisabled",
+    "PrefetchNotFinishedInTime",
+    "PrefetchNotStarted",
+    "PrefetchNotUsedCookiesChanged",
+    "PrefetchProxyNotAvailable",
+    "PrefetchResponseUsed",
+    "PrefetchSuccessfulButNotUsed",
+    "PrefetchNotUsedProbeFailed",
+]
 """TODO(https://crbug.com/1384419): revisit the list of PrefetchStatus and
 filter out the ones that aren't necessary to the developers."""
-
 
 
 class PrerenderMismatchedHeaders(TypedDict):

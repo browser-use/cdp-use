@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .types import ScreenshotParams
 
+
 class BeginFrameParameters(TypedDict, total=False):
     frameTimeTicks: "float"
     """Timestamp of this BeginFrame in Renderer TimeTicks (milliseconds of uptime). If not set,

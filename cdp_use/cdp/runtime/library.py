@@ -38,10 +38,11 @@ if TYPE_CHECKING:
     from .commands import SetCustomObjectFormatterEnabledParameters
     from .commands import SetMaxCallStackSizeToCaptureParameters
 
+
 class RuntimeClient:
     """Client for Runtime domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def awaitPromise(
@@ -50,11 +51,14 @@ class RuntimeClient:
         session_id: Optional[str] = None,
     ) -> "AwaitPromiseReturns":
         """Add handler to promise with given promise object id."""
-        return cast("AwaitPromiseReturns", await self._client.send_raw(
-            method="Runtime.awaitPromise",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "AwaitPromiseReturns",
+            await self._client.send_raw(
+                method="Runtime.awaitPromise",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def callFunctionOn(
         self,
@@ -62,12 +66,15 @@ class RuntimeClient:
         session_id: Optional[str] = None,
     ) -> "CallFunctionOnReturns":
         """Calls function with given declaration on the given object. Object group of the result is
-inherited from the target object."""
-        return cast("CallFunctionOnReturns", await self._client.send_raw(
-            method="Runtime.callFunctionOn",
-            params=params,
-            session_id=session_id,
-        ))
+        inherited from the target object."""
+        return cast(
+            "CallFunctionOnReturns",
+            await self._client.send_raw(
+                method="Runtime.callFunctionOn",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def compileScript(
         self,
@@ -75,11 +82,14 @@ inherited from the target object."""
         session_id: Optional[str] = None,
     ) -> "CompileScriptReturns":
         """Compiles expression."""
-        return cast("CompileScriptReturns", await self._client.send_raw(
-            method="Runtime.compileScript",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "CompileScriptReturns",
+            await self._client.send_raw(
+                method="Runtime.compileScript",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
@@ -87,11 +97,14 @@ inherited from the target object."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Disables reporting of execution contexts creation."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def discardConsoleEntries(
         self,
@@ -99,11 +112,14 @@ inherited from the target object."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Discards collected exceptions and console API calls."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.discardConsoleEntries",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.discardConsoleEntries",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def enable(
         self,
@@ -111,13 +127,16 @@ inherited from the target object."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables reporting of execution contexts creation by means of `executionContextCreated` event.
-When the reporting gets enabled the event will be sent immediately for each existing execution
-context."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.enable",
-            params=params,
-            session_id=session_id,
-        ))
+        When the reporting gets enabled the event will be sent immediately for each existing execution
+        context."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def evaluate(
         self,
@@ -125,11 +144,14 @@ context."""
         session_id: Optional[str] = None,
     ) -> "EvaluateReturns":
         """Evaluates expression on global object."""
-        return cast("EvaluateReturns", await self._client.send_raw(
-            method="Runtime.evaluate",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "EvaluateReturns",
+            await self._client.send_raw(
+                method="Runtime.evaluate",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getIsolateId(
         self,
@@ -137,11 +159,14 @@ context."""
         session_id: Optional[str] = None,
     ) -> "GetIsolateIdReturns":
         """Returns the isolate id."""
-        return cast("GetIsolateIdReturns", await self._client.send_raw(
-            method="Runtime.getIsolateId",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GetIsolateIdReturns",
+            await self._client.send_raw(
+                method="Runtime.getIsolateId",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getHeapUsage(
         self,
@@ -149,12 +174,15 @@ context."""
         session_id: Optional[str] = None,
     ) -> "GetHeapUsageReturns":
         """Returns the JavaScript heap usage.
-It is the total usage of the corresponding isolate not scoped to a particular Runtime."""
-        return cast("GetHeapUsageReturns", await self._client.send_raw(
-            method="Runtime.getHeapUsage",
-            params=params,
-            session_id=session_id,
-        ))
+        It is the total usage of the corresponding isolate not scoped to a particular Runtime."""
+        return cast(
+            "GetHeapUsageReturns",
+            await self._client.send_raw(
+                method="Runtime.getHeapUsage",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getProperties(
         self,
@@ -162,12 +190,15 @@ It is the total usage of the corresponding isolate not scoped to a particular Ru
         session_id: Optional[str] = None,
     ) -> "GetPropertiesReturns":
         """Returns properties of a given object. Object group of the result is inherited from the target
-object."""
-        return cast("GetPropertiesReturns", await self._client.send_raw(
-            method="Runtime.getProperties",
-            params=params,
-            session_id=session_id,
-        ))
+        object."""
+        return cast(
+            "GetPropertiesReturns",
+            await self._client.send_raw(
+                method="Runtime.getProperties",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def globalLexicalScopeNames(
         self,
@@ -175,22 +206,28 @@ object."""
         session_id: Optional[str] = None,
     ) -> "GlobalLexicalScopeNamesReturns":
         """Returns all let, const and class variables from global scope."""
-        return cast("GlobalLexicalScopeNamesReturns", await self._client.send_raw(
-            method="Runtime.globalLexicalScopeNames",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "GlobalLexicalScopeNamesReturns",
+            await self._client.send_raw(
+                method="Runtime.globalLexicalScopeNames",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def queryObjects(
         self,
         params: "QueryObjectsParameters",
         session_id: Optional[str] = None,
     ) -> "QueryObjectsReturns":
-        return cast("QueryObjectsReturns", await self._client.send_raw(
-            method="Runtime.queryObjects",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "QueryObjectsReturns",
+            await self._client.send_raw(
+                method="Runtime.queryObjects",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def releaseObject(
         self,
@@ -198,11 +235,14 @@ object."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Releases remote object with given id."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.releaseObject",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.releaseObject",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def releaseObjectGroup(
         self,
@@ -210,11 +250,14 @@ object."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Releases all remote objects that belong to a given group."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.releaseObjectGroup",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.releaseObjectGroup",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def runIfWaitingForDebugger(
         self,
@@ -222,11 +265,14 @@ object."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Tells inspected instance to run if it was waiting for debugger to attach."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.runIfWaitingForDebugger",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.runIfWaitingForDebugger",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def runScript(
         self,
@@ -234,11 +280,14 @@ object."""
         session_id: Optional[str] = None,
     ) -> "RunScriptReturns":
         """Runs script with given id in a given context."""
-        return cast("RunScriptReturns", await self._client.send_raw(
-            method="Runtime.runScript",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "RunScriptReturns",
+            await self._client.send_raw(
+                method="Runtime.runScript",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setAsyncCallStackDepth(
         self,
@@ -246,33 +295,42 @@ object."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enables or disables async call stacks tracking."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.setAsyncCallStackDepth",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.setAsyncCallStackDepth",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setCustomObjectFormatterEnabled(
         self,
         params: "SetCustomObjectFormatterEnabledParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.setCustomObjectFormatterEnabled",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.setCustomObjectFormatterEnabled",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setMaxCallStackSizeToCapture(
         self,
         params: "SetMaxCallStackSizeToCaptureParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.setMaxCallStackSizeToCapture",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.setMaxCallStackSizeToCapture",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def terminateExecution(
         self,
@@ -280,12 +338,15 @@ object."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Terminate current or next JavaScript execution.
-Will cancel the termination when the outer-most script execution ends."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.terminateExecution",
-            params=params,
-            session_id=session_id,
-        ))
+        Will cancel the termination when the outer-most script execution ends."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.terminateExecution",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def addBinding(
         self,
@@ -293,16 +354,19 @@ Will cancel the termination when the outer-most script execution ends."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """If executionContextId is empty, adds binding with the given name on the
-global objects of all inspected contexts, including those created later,
-bindings survive reloads.
-Binding function takes exactly one argument, this argument should be string,
-in case of any other input, function throws an exception.
-Each binding function call produces Runtime.bindingCalled notification."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.addBinding",
-            params=params,
-            session_id=session_id,
-        ))
+        global objects of all inspected contexts, including those created later,
+        bindings survive reloads.
+        Binding function takes exactly one argument, this argument should be string,
+        in case of any other input, function throws an exception.
+        Each binding function call produces Runtime.bindingCalled notification."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.addBinding",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def removeBinding(
         self,
@@ -310,12 +374,15 @@ Each binding function call produces Runtime.bindingCalled notification."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """This method does not remove binding function from global object but
-unsubscribes current runtime agent from Runtime.bindingCalled notifications."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Runtime.removeBinding",
-            params=params,
-            session_id=session_id,
-        ))
+        unsubscribes current runtime agent from Runtime.bindingCalled notifications."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Runtime.removeBinding",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def getExceptionDetails(
         self,
@@ -323,14 +390,15 @@ unsubscribes current runtime agent from Runtime.bindingCalled notifications."""
         session_id: Optional[str] = None,
     ) -> "GetExceptionDetailsReturns":
         """This method tries to lookup and populate exception details for a
-JavaScript Error object.
-Note that the stackTrace portion of the resulting exceptionDetails will
-only be populated if the Runtime domain was enabled at the time when the
-Error was thrown."""
-        return cast("GetExceptionDetailsReturns", await self._client.send_raw(
-            method="Runtime.getExceptionDetails",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        JavaScript Error object.
+        Note that the stackTrace portion of the resulting exceptionDetails will
+        only be populated if the Runtime domain was enabled at the time when the
+        Error was thrown."""
+        return cast(
+            "GetExceptionDetailsReturns",
+            await self._client.send_raw(
+                method="Runtime.getExceptionDetails",
+                params=params,
+                session_id=session_id,
+            ),
+        )

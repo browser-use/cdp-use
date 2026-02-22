@@ -54,7 +54,7 @@ class WebSocketLogFilter(logging.Filter):
                         )
 
                 try:
-                    loop = asyncio.get_event_loop()
+                    loop = asyncio.get_running_loop()
                     self.ping_timeout_tasks[ping_data] = loop.create_task(
                         check_timeout()
                     )
@@ -240,7 +240,6 @@ class CDPClient:
         self.msg_id: int = 0
         self.pending_requests: Dict[int, asyncio.Future] = {}
         self._message_handler_task = None
-        # self.event_handlers: Dict[str, Callable] = {}
 
         # Initialize the type-safe CDP library
         from cdp_use.cdp.library import CDPLibrary
@@ -261,10 +260,6 @@ class CDPClient:
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         """Async context manager exit"""
         await self.stop()
-
-    # def on_event(self, method: str, handler: Callable):
-    #     """Register an event handler for CDP events"""
-    #     self.event_handlers[method] = handler
 
     async def start(self):
         """Start the WebSocket connection and message handler task"""
@@ -337,14 +332,11 @@ class CDPClient:
                     params = data.get("params", {})
                     session_id = data.get("sessionId")
 
-                    # logger.debug(f"Received event: {method} (session: {session_id})")
-
                     # Call registered event handler if available
                     handled = await self._event_registry.handle_event(
                         method, params, session_id
                     )
                     if not handled:
-                        # logger.debug(f"No handler registered for event: {method}")
                         pass
 
                 # Handle unexpected messages
@@ -391,8 +383,20 @@ class CDPClient:
         future = asyncio.Future()
         self.pending_requests[self.msg_id] = future
 
-        # logger.debug(f"Sending: {method} (id: {self.msg_id}, session: {session_id})")
         await self.ws.send(json.dumps(msg))
 
         # Wait for the response
         return await future
+
+    async def emit_event(
+        self,
+        method: str,
+        params: Optional[Any] = None,
+        session_id: Optional[str] = None,
+    ) -> bool:
+        """Emit a synthetic/custom event through the registry.
+
+        Useful for custom domains (e.g., BrowserUse) where events are
+        produced by your application rather than the browser.
+        """
+        return await self._event_registry.handle_event(method, params or {}, session_id)

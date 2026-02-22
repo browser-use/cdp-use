@@ -8,6 +8,7 @@ from typing import Any, Dict, List
 from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
+
 class GPUDevice(TypedDict):
     """Describes a single graphics processor (GPU)."""
 
@@ -29,7 +30,6 @@ class GPUDevice(TypedDict):
     """String description of the GPU driver version."""
 
 
-
 class Size(TypedDict):
     """Describes the width and height dimensions of an entity."""
 
@@ -39,10 +39,9 @@ class Size(TypedDict):
     """Height in pixels."""
 
 
-
 class VideoDecodeAcceleratorCapability(TypedDict):
     """Describes a supported video decoding profile with its associated minimum and
-maximum resolutions."""
+    maximum resolutions."""
 
     profile: "str"
     """Video codec profile that is supported, e.g. VP9 Profile 2."""
@@ -52,10 +51,9 @@ maximum resolutions."""
     """Minimum video dimensions in pixels supported for this |profile|."""
 
 
-
 class VideoEncodeAcceleratorCapability(TypedDict):
     """Describes a supported video encoding profile with its associated maximum
-resolution and maximum framerate."""
+    resolution and maximum framerate."""
 
     profile: "str"
     """Video codec profile that is supported, e.g H264 Main."""
@@ -68,30 +66,12 @@ resolution and maximum framerate."""
     maxFramerateDenominator: "int"
 
 
-
 SubsamplingFormat = Literal["yuv420", "yuv422", "yuv444"]
 """YUV subsampling type of the pixels of a given image."""
 
 
-
 ImageType = Literal["jpeg", "webp", "unknown"]
 """Image format of a given image."""
-
-
-
-class ImageDecodeAcceleratorCapability(TypedDict):
-    """Describes a supported image decoding profile with its associated minimum and
-maximum resolutions and subsampling."""
-
-    imageType: "ImageType"
-    """Image coded, e.g. Jpeg."""
-    maxDimensions: "Size"
-    """Maximum supported dimensions of the image in pixels."""
-    minDimensions: "Size"
-    """Minimum supported dimensions of the image in pixels."""
-    subsamplings: "List[SubsamplingFormat]"
-    """Optional array of supported subsampling formats, e.g. 4:2:0, if known."""
-
 
 
 class GPUInfo(TypedDict):
@@ -109,9 +89,6 @@ class GPUInfo(TypedDict):
     """Supported accelerated video decoding capabilities."""
     videoEncoding: "List[VideoEncodeAcceleratorCapability]"
     """Supported accelerated video encoding capabilities."""
-    imageDecoding: "List[ImageDecodeAcceleratorCapability]"
-    """Supported accelerated image decoding capabilities."""
-
 
 
 class ProcessInfo(TypedDict):

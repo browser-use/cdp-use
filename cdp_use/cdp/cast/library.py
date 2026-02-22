@@ -16,10 +16,11 @@ if TYPE_CHECKING:
     from .commands import StartTabMirroringParameters
     from .commands import StopCastingParameters
 
+
 class CastClient:
     """Client for Cast domain commands."""
 
-    def __init__(self, client: 'CDPClient'):
+    def __init__(self, client: "CDPClient"):
         self._client = client
 
     async def enable(
@@ -28,15 +29,18 @@ class CastClient:
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Starts observing for sinks that can be used for tab mirroring, and if set,
-sinks compatible with |presentationUrl| as well. When sinks are found, a
-|sinksUpdated| event is fired.
-Also starts observing for issue messages. When an issue is added or removed,
-an |issueUpdated| event is fired."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Cast.enable",
-            params=params,
-            session_id=session_id,
-        ))
+        sinks compatible with |presentationUrl| as well. When sinks are found, a
+        |sinksUpdated| event is fired.
+        Also starts observing for issue messages. When an issue is added or removed,
+        an |issueUpdated| event is fired."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Cast.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def disable(
         self,
@@ -44,11 +48,14 @@ an |issueUpdated| event is fired."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Stops observing for sinks and issues."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Cast.disable",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Cast.disable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def setSinkToUse(
         self,
@@ -56,12 +63,15 @@ an |issueUpdated| event is fired."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Sets a sink to be used when the web page requests the browser to choose a
-sink via Presentation API, Remote Playback API, or Cast SDK."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Cast.setSinkToUse",
-            params=params,
-            session_id=session_id,
-        ))
+        sink via Presentation API, Remote Playback API, or Cast SDK."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Cast.setSinkToUse",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def startDesktopMirroring(
         self,
@@ -69,11 +79,14 @@ sink via Presentation API, Remote Playback API, or Cast SDK."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Starts mirroring the desktop to the sink."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Cast.startDesktopMirroring",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Cast.startDesktopMirroring",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def startTabMirroring(
         self,
@@ -81,11 +94,14 @@ sink via Presentation API, Remote Playback API, or Cast SDK."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Starts mirroring the tab to the sink."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Cast.startTabMirroring",
-            params=params,
-            session_id=session_id,
-        ))
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Cast.startTabMirroring",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def stopCasting(
         self,
@@ -93,10 +109,11 @@ sink via Presentation API, Remote Playback API, or Cast SDK."""
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Stops the active Cast session on the sink."""
-        return cast("Dict[str, Any]", await self._client.send_raw(
-            method="Cast.stopCasting",
-            params=params,
-            session_id=session_id,
-        ))
-
-
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Cast.stopCasting",
+                params=params,
+                session_id=session_id,
+            ),
+        )

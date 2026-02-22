@@ -29,13 +29,11 @@ if TYPE_CHECKING:
     from .types import SearchMatch
     from .types import WasmDisassemblyChunk
 
+
 class ContinueToLocationParameters(TypedDict):
     location: "Location"
     """Location to continue to."""
     targetCallFrames: "NotRequired[str]"
-
-
-
 
 
 class EnableParameters(TypedDict, total=False):
@@ -47,7 +45,6 @@ the debugger can hold. Puts no limit if parameter is omitted."""
 class EnableReturns(TypedDict):
     debuggerId: "UniqueDebuggerId"
     """Unique identifier of the debugger."""
-
 
 
 class EvaluateOnCallFrameParameters(TypedDict):
@@ -81,7 +78,6 @@ class EvaluateOnCallFrameReturns(TypedDict):
     """Exception details."""
 
 
-
 class GetPossibleBreakpointsParameters(TypedDict):
     start: "Location"
     """Start of range to search possible breakpoint locations in."""
@@ -97,7 +93,6 @@ class GetPossibleBreakpointsReturns(TypedDict):
     """List of the possible breakpoint locations."""
 
 
-
 class GetScriptSourceParameters(TypedDict):
     scriptId: "ScriptId"
     """Id of the script to get source for."""
@@ -108,7 +103,6 @@ class GetScriptSourceReturns(TypedDict):
     """Script source (empty in case of Wasm bytecode)."""
     bytecode: "str"
     """Wasm bytecode. (Encoded as a base64 string when passed over JSON)"""
-
 
 
 class DisassembleWasmModuleParameters(TypedDict):
@@ -129,7 +123,6 @@ start2, end2, ...] where all ends are exclusive."""
     """The first chunk of disassembly."""
 
 
-
 class NextWasmDisassemblyChunkParameters(TypedDict):
     streamId: "str"
 
@@ -137,7 +130,6 @@ class NextWasmDisassemblyChunkParameters(TypedDict):
 class NextWasmDisassemblyChunkReturns(TypedDict):
     chunk: "WasmDisassemblyChunk"
     """The next chunk of disassembly."""
-
 
 
 class GetWasmBytecodeParameters(TypedDict):
@@ -150,7 +142,6 @@ class GetWasmBytecodeReturns(TypedDict):
     """Script source. (Encoded as a base64 string when passed over JSON)"""
 
 
-
 class GetStackTraceParameters(TypedDict):
     stackTraceId: "StackTraceId"
 
@@ -159,20 +150,13 @@ class GetStackTraceReturns(TypedDict):
     stackTrace: "StackTrace"
 
 
-
 class PauseOnAsyncCallParameters(TypedDict):
     parentStackTraceId: "StackTraceId"
     """Debugger will pause when async call with given stack trace is started."""
 
 
-
-
-
 class RemoveBreakpointParameters(TypedDict):
     breakpointId: "BreakpointId"
-
-
-
 
 
 class RestartFrameParameters(TypedDict):
@@ -192,7 +176,6 @@ class RestartFrameReturns(TypedDict):
     """Async stack trace, if any."""
 
 
-
 class ResumeParameters(TypedDict, total=False):
     terminateOnResume: "bool"
     """Set to true to terminate execution upon resuming execution. In contrast
@@ -200,9 +183,6 @@ to Runtime.terminateExecution, this will allows to execute further
 JavaScript (i.e. via evaluation) until execution of the paused code
 is actually resumed, at which point termination is triggered.
 If execution is currently not paused, this parameter has no effect."""
-
-
-
 
 
 class SearchInContentParameters(TypedDict):
@@ -221,22 +201,15 @@ class SearchInContentReturns(TypedDict):
     """List of search matches."""
 
 
-
 class SetAsyncCallStackDepthParameters(TypedDict):
     maxDepth: "int"
     """Maximum depth of async call stacks. Setting to `0` will effectively disable collecting async
 call stacks (default)."""
 
 
-
-
-
 class SetBlackboxExecutionContextsParameters(TypedDict):
     uniqueIds: "List[str]"
     """Array of execution context unique ids for the debugger to ignore."""
-
-
-
 
 
 class SetBlackboxPatternsParameters(TypedDict):
@@ -246,16 +219,10 @@ class SetBlackboxPatternsParameters(TypedDict):
     """If true, also ignore scripts with no source url."""
 
 
-
-
-
 class SetBlackboxedRangesParameters(TypedDict):
     scriptId: "ScriptId"
     """Id of the script."""
     positions: "List[ScriptPosition]"
-
-
-
 
 
 class SetBreakpointParameters(TypedDict):
@@ -273,7 +240,6 @@ class SetBreakpointReturns(TypedDict):
     """Location this breakpoint resolved into."""
 
 
-
 class SetInstrumentationBreakpointParameters(TypedDict):
     instrumentation: "str"
     """Instrumentation name."""
@@ -282,7 +248,6 @@ class SetInstrumentationBreakpointParameters(TypedDict):
 class SetInstrumentationBreakpointReturns(TypedDict):
     breakpointId: "BreakpointId"
     """Id of the created breakpoint for further reference."""
-
 
 
 class SetBreakpointByUrlParameters(TypedDict):
@@ -309,7 +274,6 @@ class SetBreakpointByUrlReturns(TypedDict):
     """List of the locations this breakpoint resolved into upon addition."""
 
 
-
 class SetBreakpointOnFunctionCallParameters(TypedDict):
     objectId: "RemoteObjectId"
     """Function object id."""
@@ -323,13 +287,9 @@ class SetBreakpointOnFunctionCallReturns(TypedDict):
     """Id of the created breakpoint for further reference."""
 
 
-
 class SetBreakpointsActiveParameters(TypedDict):
     active: "bool"
     """New value for breakpoints active state."""
-
-
-
 
 
 class SetPauseOnExceptionsParameters(TypedDict):
@@ -337,15 +297,9 @@ class SetPauseOnExceptionsParameters(TypedDict):
     """Pause on exceptions mode."""
 
 
-
-
-
 class SetReturnValueParameters(TypedDict):
     newValue: "CallArgument"
     """New return value."""
-
-
-
 
 
 class SetScriptSourceParameters(TypedDict):
@@ -378,13 +332,9 @@ the live edit failed."""
     """Exception details if any. Only present when `status` is `CompileError`."""
 
 
-
 class SetSkipAllPausesParameters(TypedDict):
     skip: "bool"
     """New value for skip pauses state."""
-
-
-
 
 
 class SetVariableValueParameters(TypedDict):
@@ -399,9 +349,6 @@ scope types are allowed. Other scopes could be manipulated manually."""
     """Id of callframe that holds variable."""
 
 
-
-
-
 class StepIntoParameters(TypedDict, total=False):
     breakOnAsyncCall: "bool"
     """Debugger will pause on the execution of the first async task which was scheduled
@@ -410,11 +357,6 @@ before next pause."""
     """The skipList specifies location ranges that should be skipped on step into."""
 
 
-
-
-
 class StepOverParameters(TypedDict, total=False):
     skipList: "List[LocationRange]"
     """The skipList specifies location ranges that should be skipped on step over."""
-
-

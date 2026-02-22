@@ -12,25 +12,25 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import EntryAddedEvent
 
+
 class LogRegistration:
     """Event registration interface for Log domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Log"
 
     def entryAdded(
         self,
-        callback: Callable[['EntryAddedEvent', Optional[str]], None],
+        callback: Callable[["EntryAddedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for entryAdded events.
-        
+
         Issued when new message was logged.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Log.entryAdded", callback)
-

@@ -10,56 +10,63 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import PlayerErrorsRaisedEvent, PlayerEventsAddedEvent, PlayerMessagesLoggedEvent, PlayerPropertiesChangedEvent, PlayersCreatedEvent
+    from .events import (
+        PlayerCreatedEvent,
+        PlayerErrorsRaisedEvent,
+        PlayerEventsAddedEvent,
+        PlayerMessagesLoggedEvent,
+        PlayerPropertiesChangedEvent,
+    )
+
 
 class MediaRegistration:
     """Event registration interface for Media domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Media"
 
     def playerPropertiesChanged(
         self,
-        callback: Callable[['PlayerPropertiesChangedEvent', Optional[str]], None],
+        callback: Callable[["PlayerPropertiesChangedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for playerPropertiesChanged events.
-        
-        This can be called multiple times, and can be used to set / override /
-remove player properties. A null propValue indicates removal.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for playerPropertiesChanged events.
+
+                This can be called multiple times, and can be used to set / override /
+        remove player properties. A null propValue indicates removal.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Media.playerPropertiesChanged", callback)
 
     def playerEventsAdded(
         self,
-        callback: Callable[['PlayerEventsAddedEvent', Optional[str]], None],
+        callback: Callable[["PlayerEventsAddedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for playerEventsAdded events.
-        
-        Send events as a list, allowing them to be batched on the browser for less
-congestion. If batched, events must ALWAYS be in chronological order.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for playerEventsAdded events.
+
+                Send events as a list, allowing them to be batched on the browser for less
+        congestion. If batched, events must ALWAYS be in chronological order.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Media.playerEventsAdded", callback)
 
     def playerMessagesLogged(
         self,
-        callback: Callable[['PlayerMessagesLoggedEvent', Optional[str]], None],
+        callback: Callable[["PlayerMessagesLoggedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for playerMessagesLogged events.
-        
+
         Send a list of any messages that need to be delivered.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -68,33 +75,32 @@ congestion. If batched, events must ALWAYS be in chronological order.
 
     def playerErrorsRaised(
         self,
-        callback: Callable[['PlayerErrorsRaisedEvent', Optional[str]], None],
+        callback: Callable[["PlayerErrorsRaisedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for playerErrorsRaised events.
-        
+
         Send a list of any errors that need to be delivered.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Media.playerErrorsRaised", callback)
 
-    def playersCreated(
+    def playerCreated(
         self,
-        callback: Callable[['PlayersCreatedEvent', Optional[str]], None],
+        callback: Callable[["PlayerCreatedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for playersCreated events.
-        
-        Called whenever a player is created, or when a new agent joins and receives
-a list of active players. If an agent is restored, it will receive the full
-list of player ids and all events again.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Media.playersCreated", callback)
+                Register a callback for playerCreated events.
 
+                Called whenever a player is created, or when a new agent joins and receives
+        a list of active players. If an agent is restored, it will receive one
+        event for each active player.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Media.playerCreated", callback)

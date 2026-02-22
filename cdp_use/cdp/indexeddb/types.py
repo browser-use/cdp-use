@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
 
+
 class DatabaseWithObjectStores(TypedDict):
     """Database with an array of object stores."""
 
@@ -22,7 +23,6 @@ class DatabaseWithObjectStores(TypedDict):
 requires the version number to be 'unsigned long long')"""
     objectStores: "List[ObjectStore]"
     """Object stores in this database."""
-
 
 
 class ObjectStore(TypedDict):
@@ -38,7 +38,6 @@ class ObjectStore(TypedDict):
     """Indexes in this object store."""
 
 
-
 class ObjectStoreIndex(TypedDict):
     """Object store index."""
 
@@ -50,7 +49,6 @@ class ObjectStoreIndex(TypedDict):
     """If true, index is unique."""
     multiEntry: "bool"
     """If true, index allows multiple entries for a key."""
-
 
 
 class Key(TypedDict):
@@ -68,7 +66,6 @@ class Key(TypedDict):
     """Array value."""
 
 
-
 class KeyRange(TypedDict):
     """Key range."""
 
@@ -82,7 +79,6 @@ class KeyRange(TypedDict):
     """If true upper bound is open."""
 
 
-
 class DataEntry(TypedDict):
     """Data entry."""
 
@@ -92,7 +88,6 @@ class DataEntry(TypedDict):
     """Primary key object."""
     value: "RemoteObject"
     """Value object."""
-
 
 
 class KeyPath(TypedDict):

@@ -23,7 +23,7 @@ class RegistrationLibraryGenerator:
             domain_name = domain["domain"]
             domain_lower = domain_name.lower()
             registration_class_name = f"{domain_name}Registration"
-            
+
             # Only include domains that have events
             events = domain.get("events", [])
             if events:
@@ -74,10 +74,10 @@ class RegistrationLibraryGenerator:
             registration_class_name = domain_info["class_name"]
 
             content += f"\n        # {domain_name} domain registration\n"
+            content += f"        from .{domain_lower}.registration import {registration_class_name}\n"
             content += (
-                f"        from .{domain_lower}.registration import {registration_class_name}\n"
+                f"        self.{domain_name} = {registration_class_name}(registry)\n"
             )
-            content += f"        self.{domain_name} = {registration_class_name}(registry)\n"
 
         content += "\n"
 

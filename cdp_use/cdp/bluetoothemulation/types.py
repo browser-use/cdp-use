@@ -12,25 +12,24 @@ CentralState = Literal["absent", "powered-off", "powered-on"]
 """Indicates the various states of Central."""
 
 
-
 GATTOperationType = Literal["connection", "discovery"]
 """Indicates the various types of GATT event."""
 
 
-
-CharacteristicWriteType = Literal["write-default-deprecated", "write-with-response", "write-without-response"]
+CharacteristicWriteType = Literal[
+    "write-default-deprecated", "write-with-response", "write-without-response"
+]
 """Indicates the various types of characteristic write."""
 
 
-
-CharacteristicOperationType = Literal["read", "write", "subscribe-to-notifications", "unsubscribe-from-notifications"]
+CharacteristicOperationType = Literal[
+    "read", "write", "subscribe-to-notifications", "unsubscribe-from-notifications"
+]
 """Indicates the various types of characteristic operation."""
-
 
 
 DescriptorOperationType = Literal["read", "write"]
 """Indicates the various types of descriptor operation."""
-
 
 
 class ManufacturerData(TypedDict):
@@ -42,7 +41,6 @@ https://bitbucket.org/bluetooth-SIG/public/src/main/assigned_numbers/company_ide
 https://usb.org/developers"""
     data: "str"
     """Manufacturer-specific data (Encoded as a base64 string when passed over JSON)"""
-
 
 
 class ScanRecord(TypedDict, total=False):
@@ -59,7 +57,6 @@ class ScanRecord(TypedDict, total=False):
 manufacturer specific data."""
 
 
-
 class ScanEntry(TypedDict):
     """Stores the advertisement packet information that is sent by a Bluetooth device."""
 
@@ -68,10 +65,9 @@ class ScanEntry(TypedDict):
     scanRecord: "ScanRecord"
 
 
-
 class CharacteristicProperties(TypedDict, total=False):
     """Describes the properties of a characteristic. This follows Bluetooth Core
-Specification BT 4.2 Vol 3 Part G 3.3.1. Characteristic Properties."""
+    Specification BT 4.2 Vol 3 Part G 3.3.1. Characteristic Properties."""
 
     broadcast: "bool"
     read: "bool"

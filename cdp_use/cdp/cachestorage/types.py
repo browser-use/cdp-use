@@ -17,10 +17,10 @@ CacheId = str
 """Unique identifier of the Cache object."""
 
 
-
-CachedResponseType = Literal["basic", "cors", "default", "error", "opaqueResponse", "opaqueRedirect"]
+CachedResponseType = Literal[
+    "basic", "cors", "default", "error", "opaqueResponse", "opaqueRedirect"
+]
 """type of HTTP response cached"""
-
 
 
 class DataEntry(TypedDict):
@@ -44,7 +44,6 @@ class DataEntry(TypedDict):
     """Response headers"""
 
 
-
 class Cache(TypedDict):
     """Cache identifier."""
 
@@ -60,11 +59,9 @@ class Cache(TypedDict):
     """The name of the cache."""
 
 
-
 class Header(TypedDict):
     name: "str"
     value: "str"
-
 
 
 class CachedResponse(TypedDict):

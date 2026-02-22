@@ -7,6 +7,7 @@
 from typing import List
 from typing_extensions import TypedDict
 
+
 class EnableParameters(TypedDict):
     eventTypes: "List[str]"
     """The types of event to report, as specified in
@@ -14,5 +15,3 @@ https://w3c.github.io/performance-timeline/#dom-performanceentry-entrytype
 The specified filter overrides any previous filters, passing empty
 filter disables recording.
 Note that not all types exposed to the web platform are currently supported."""
-
-

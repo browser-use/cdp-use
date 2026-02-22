@@ -12,20 +12,16 @@ LoginState = Literal["SignIn", "SignUp"]
 whether this account has ever been used to sign in to this RP before."""
 
 
-
 DialogType = Literal["AccountChooser", "AutoReauthn", "ConfirmIdpLogin", "Error"]
 """The types of FedCM dialogs."""
-
 
 
 DialogButton = Literal["ConfirmIdpLoginContinue", "ErrorGotIt", "ErrorMoreDetails"]
 """The buttons on the FedCM dialog."""
 
 
-
 AccountUrlType = Literal["TermsOfService", "PrivacyPolicy"]
 """The URLs that each account has"""
-
 
 
 class Account(TypedDict):

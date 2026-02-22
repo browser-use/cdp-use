@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from .types import StorageArea
 
+
 class LoadUnpackedParameters(TypedDict):
     path: "str"
     """Absolute file path."""
@@ -22,13 +23,9 @@ class LoadUnpackedReturns(TypedDict):
     """Extension id."""
 
 
-
 class UninstallParameters(TypedDict):
     id: "str"
     """Extension id."""
-
-
-
 
 
 class GetStorageItemsParameters(TypedDict):
@@ -44,7 +41,6 @@ class GetStorageItemsReturns(TypedDict):
     data: "Dict[str, Any]"
 
 
-
 class RemoveStorageItemsParameters(TypedDict):
     id: "str"
     """ID of extension."""
@@ -54,17 +50,11 @@ class RemoveStorageItemsParameters(TypedDict):
     """Keys to remove."""
 
 
-
-
-
 class ClearStorageItemsParameters(TypedDict):
     id: "str"
     """ID of extension."""
     storageArea: "StorageArea"
     """StorageArea to remove data from."""
-
-
-
 
 
 class SetStorageItemsParameters(TypedDict):
@@ -74,5 +64,3 @@ class SetStorageItemsParameters(TypedDict):
     """StorageArea to set data in."""
     values: "Dict[str, Any]"
     """Values to set."""
-
-

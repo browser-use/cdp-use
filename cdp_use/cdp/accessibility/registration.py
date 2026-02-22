@@ -12,41 +12,41 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import LoadCompleteEvent, NodesUpdatedEvent
 
+
 class AccessibilityRegistration:
     """Event registration interface for Accessibility domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Accessibility"
 
     def loadComplete(
         self,
-        callback: Callable[['LoadCompleteEvent', Optional[str]], None],
+        callback: Callable[["LoadCompleteEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for loadComplete events.
-        
-        The loadComplete event mirrors the load complete event sent by the browser to assistive
-technology when the web page has finished loading.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
+                Register a callback for loadComplete events.
+
+                The loadComplete event mirrors the load complete event sent by the browser to assistive
+        technology when the web page has finished loading.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Accessibility.loadComplete", callback)
 
     def nodesUpdated(
         self,
-        callback: Callable[['NodesUpdatedEvent', Optional[str]], None],
+        callback: Callable[["NodesUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for nodesUpdated events.
-        
+
         The nodesUpdated event is sent every time a previously requested node has changed the in tree.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Accessibility.nodesUpdated", callback)
-

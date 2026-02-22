@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from ..dom.types import RGBA
     from ..dom.types import Rect
 
+
 class SourceOrderConfig(TypedDict):
     """Configuration data for drawing the source order of an elements children."""
 
@@ -21,7 +22,6 @@ class SourceOrderConfig(TypedDict):
     """the color to outline the given element in."""
     childOutlineColor: "RGBA"
     """the color to outline the child elements in."""
-
 
 
 class GridHighlightConfig(TypedDict, total=False):
@@ -69,7 +69,6 @@ class GridHighlightConfig(TypedDict, total=False):
     """The grid container background color (Default: transparent)."""
 
 
-
 class FlexContainerHighlightConfig(TypedDict, total=False):
     """Configuration data for the highlighting of Flex container elements."""
 
@@ -91,7 +90,6 @@ class FlexContainerHighlightConfig(TypedDict, total=False):
     """Style of the self-alignment line (align-items)."""
 
 
-
 class FlexItemHighlightConfig(TypedDict, total=False):
     """Configuration data for the highlighting of Flex item elements."""
 
@@ -103,7 +101,6 @@ class FlexItemHighlightConfig(TypedDict, total=False):
     """Style of the arrow representing if the item grew or shrank"""
 
 
-
 class LineStyle(TypedDict, total=False):
     """Style information for drawing a line."""
 
@@ -111,7 +108,6 @@ class LineStyle(TypedDict, total=False):
     """The color of the line (default: transparent)"""
     pattern: "str"
     """The line pattern (default: solid)"""
-
 
 
 class BoxStyle(TypedDict, total=False):
@@ -123,9 +119,7 @@ class BoxStyle(TypedDict, total=False):
     """The hatching color for the box (default: transparent)"""
 
 
-
 ContrastAlgorithm = Literal["aa", "aaa", "apca"]
-
 
 
 class HighlightConfig(TypedDict, total=False):
@@ -171,9 +165,7 @@ class HighlightConfig(TypedDict, total=False):
     """The container query container highlight configuration (default: all transparent)."""
 
 
-
 ColorFormat = Literal["rgb", "hsl", "hwb", "hex"]
-
 
 
 class GridNodeHighlightConfig(TypedDict):
@@ -185,13 +177,11 @@ class GridNodeHighlightConfig(TypedDict):
     """Identifier of the node to highlight."""
 
 
-
 class FlexNodeHighlightConfig(TypedDict):
     flexContainerHighlightConfig: "FlexContainerHighlightConfig"
     """A descriptor for the highlight appearance of flex containers."""
     nodeId: "NodeId"
     """Identifier of the node to highlight."""
-
 
 
 class ScrollSnapContainerHighlightConfig(TypedDict, total=False):
@@ -205,13 +195,11 @@ class ScrollSnapContainerHighlightConfig(TypedDict, total=False):
     """The padding highlight fill color (default: transparent)."""
 
 
-
 class ScrollSnapHighlightConfig(TypedDict):
     scrollSnapContainerHighlightConfig: "ScrollSnapContainerHighlightConfig"
     """A descriptor for the highlight appearance of scroll snap containers."""
     nodeId: "NodeId"
     """Identifier of the node to highlight."""
-
 
 
 class HingeConfig(TypedDict):
@@ -225,7 +213,6 @@ class HingeConfig(TypedDict):
     """The content box highlight outline color (default: transparent)."""
 
 
-
 class WindowControlsOverlayConfig(TypedDict):
     """Configuration for Window Controls Overlay"""
 
@@ -237,13 +224,11 @@ class WindowControlsOverlayConfig(TypedDict):
     """The theme color defined in app manifest."""
 
 
-
 class ContainerQueryHighlightConfig(TypedDict):
     containerQueryContainerHighlightConfig: "ContainerQueryContainerHighlightConfig"
     """A descriptor for the highlight appearance of container query containers."""
     nodeId: "NodeId"
     """Identifier of the container node to highlight."""
-
 
 
 class ContainerQueryContainerHighlightConfig(TypedDict, total=False):
@@ -253,13 +238,11 @@ class ContainerQueryContainerHighlightConfig(TypedDict, total=False):
     """The style of the descendants' borders."""
 
 
-
 class IsolatedElementHighlightConfig(TypedDict):
     isolationModeHighlightConfig: "IsolationModeHighlightConfig"
     """A descriptor for the highlight appearance of an element in isolation mode."""
     nodeId: "NodeId"
     """Identifier of the isolated element to highlight."""
-
 
 
 class IsolationModeHighlightConfig(TypedDict, total=False):
@@ -271,5 +254,6 @@ class IsolationModeHighlightConfig(TypedDict, total=False):
     """The fill color for the mask covering non-isolated elements (default: transparent)."""
 
 
-
-InspectMode = Literal["searchForNode", "searchForUAShadowDOM", "captureAreaScreenshot", "none"]
+InspectMode = Literal[
+    "searchForNode", "searchForUAShadowDOM", "captureAreaScreenshot", "none"
+]

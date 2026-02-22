@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from .types import BucketFileSystemLocator
     from .types import Directory
 
+
 class GetDirectoryParameters(TypedDict):
     bucketFileSystemLocator: "BucketFileSystemLocator"
 

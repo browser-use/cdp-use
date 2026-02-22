@@ -18,10 +18,8 @@ DOMBreakpointType = Literal["subtree-modified", "attribute-modified", "node-remo
 """DOM breakpoint type."""
 
 
-
 CSPViolationType = Literal["trustedtype-sink-violation", "trustedtype-policy-violation"]
 """CSP Violation type."""
-
 
 
 class EventListener(TypedDict):

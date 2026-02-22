@@ -14,12 +14,10 @@ if TYPE_CHECKING:
     from .types import HeapSnapshotObjectId
     from .types import SamplingHeapProfile
 
+
 class AddInspectedHeapObjectParameters(TypedDict):
     heapObjectId: "HeapSnapshotObjectId"
     """Heap snapshot object id to be accessible by means of $x command line API."""
-
-
-
 
 
 class GetHeapObjectIdParameters(TypedDict):
@@ -30,7 +28,6 @@ class GetHeapObjectIdParameters(TypedDict):
 class GetHeapObjectIdReturns(TypedDict):
     heapSnapshotObjectId: "HeapSnapshotObjectId"
     """Id of the heap snapshot object corresponding to the passed remote object id."""
-
 
 
 class GetObjectByHeapObjectIdParameters(TypedDict):
@@ -44,17 +41,17 @@ class GetObjectByHeapObjectIdReturns(TypedDict):
     """Evaluation result."""
 
 
-
 class GetSamplingProfileReturns(TypedDict):
     profile: "SamplingHeapProfile"
     """Return the sampling profile being collected."""
-
 
 
 class StartSamplingParameters(TypedDict, total=False):
     samplingInterval: "float"
     """Average sample interval in bytes. Poisson distribution is used for the intervals. The
 default value is 32768 bytes."""
+    stackDepth: "float"
+    """Maximum stack depth. The default value is 128."""
     includeObjectsCollectedByMajorGC: "bool"
     """By default, the sampling heap profiler reports only objects which are
 still alive when the profile is returned via getSamplingProfile or
@@ -73,20 +70,13 @@ minor GC, which is useful when tuning a latency-sensitive application
 for minimal GC activity."""
 
 
-
-
-
 class StartTrackingHeapObjectsParameters(TypedDict, total=False):
     trackAllocations: "bool"
-
-
-
 
 
 class StopSamplingReturns(TypedDict):
     profile: "SamplingHeapProfile"
     """Recorded sampling heap profile."""
-
 
 
 class StopTrackingHeapObjectsParameters(TypedDict, total=False):
@@ -101,9 +91,6 @@ when the tracking is stopped."""
     """If true, exposes internals of the snapshot."""
 
 
-
-
-
 class TakeHeapSnapshotParameters(TypedDict, total=False):
     reportProgress: "bool"
     """If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken."""
@@ -114,5 +101,3 @@ Deprecated in favor of `exposeInternals`."""
     """If true, numerical values are included in the snapshot"""
     exposeInternals: "bool"
     """If true, exposes internals of the snapshot."""
-
-

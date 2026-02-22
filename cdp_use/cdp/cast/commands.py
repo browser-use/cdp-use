@@ -6,35 +6,22 @@
 
 from typing_extensions import TypedDict
 
+
 class EnableParameters(TypedDict, total=False):
     presentationUrl: "str"
-
-
-
 
 
 class SetSinkToUseParameters(TypedDict):
     sinkName: "str"
 
 
-
-
-
 class StartDesktopMirroringParameters(TypedDict):
     sinkName: "str"
-
-
-
 
 
 class StartTabMirroringParameters(TypedDict):
     sinkName: "str"
 
 
-
-
-
 class StopCastingParameters(TypedDict):
     sinkName: "str"
-
-

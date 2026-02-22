@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from .types import Credential
     from .types import VirtualAuthenticatorOptions
 
+
 class EnableParameters(TypedDict, total=False):
     enableUI: "bool"
     """Whether to enable the WebAuthn user interface. Enabling the UI is
@@ -23,16 +24,12 @@ Supported at the embedder's discretion if UI is available.
 Defaults to false."""
 
 
-
-
-
 class AddVirtualAuthenticatorParameters(TypedDict):
     options: "VirtualAuthenticatorOptions"
 
 
 class AddVirtualAuthenticatorReturns(TypedDict):
     authenticatorId: "AuthenticatorId"
-
 
 
 class SetResponseOverrideBitsParameters(TypedDict):
@@ -48,22 +45,13 @@ be zero. Defaults to false."""
 be zero. Defaults to false."""
 
 
-
-
-
 class RemoveVirtualAuthenticatorParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
-
-
-
 
 
 class AddCredentialParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
     credential: "Credential"
-
-
-
 
 
 class GetCredentialParameters(TypedDict):
@@ -75,7 +63,6 @@ class GetCredentialReturns(TypedDict):
     credential: "Credential"
 
 
-
 class GetCredentialsParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
 
@@ -84,20 +71,13 @@ class GetCredentialsReturns(TypedDict):
     credentials: "List[Credential]"
 
 
-
 class RemoveCredentialParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
     credentialId: "str"
 
 
-
-
-
 class ClearCredentialsParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
-
-
-
 
 
 class SetUserVerifiedParameters(TypedDict):
@@ -105,15 +85,9 @@ class SetUserVerifiedParameters(TypedDict):
     isUserVerified: "bool"
 
 
-
-
-
 class SetAutomaticPresenceSimulationParameters(TypedDict):
     authenticatorId: "AuthenticatorId"
     enabled: "bool"
-
-
-
 
 
 class SetCredentialPropertiesParameters(TypedDict):
@@ -121,5 +95,3 @@ class SetCredentialPropertiesParameters(TypedDict):
     credentialId: "str"
     backupEligibility: "NotRequired[bool]"
     backupState: "NotRequired[bool]"
-
-

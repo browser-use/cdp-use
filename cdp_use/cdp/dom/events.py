@@ -14,8 +14,11 @@ if TYPE_CHECKING:
     from .types import BackendNode
     from .types import Node
     from .types import NodeId
+    from .types import StyleSheetId
 
 """Fired when `Element`'s attribute is modified."""
+
+
 class AttributeModifiedEvent(TypedDict):
     nodeId: "NodeId"
     """Id of the node that has changed."""
@@ -25,8 +28,19 @@ class AttributeModifiedEvent(TypedDict):
     """Attribute value."""
 
 
+"""Fired when `Element`'s adoptedStyleSheets are modified."""
+
+
+class AdoptedStyleSheetsModifiedEvent(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node that has changed."""
+    adoptedStyleSheets: "List[StyleSheetId]"
+    """New adoptedStyleSheets array."""
+
 
 """Fired when `Element`'s attribute is removed."""
+
+
 class AttributeRemovedEvent(TypedDict):
     nodeId: "NodeId"
     """Id of the node that has changed."""
@@ -34,8 +48,9 @@ class AttributeRemovedEvent(TypedDict):
     """A ttribute name."""
 
 
-
 """Mirrors `DOMCharacterDataModified` event."""
+
+
 class CharacterDataModifiedEvent(TypedDict):
     nodeId: "NodeId"
     """Id of the node that has changed."""
@@ -43,8 +58,9 @@ class CharacterDataModifiedEvent(TypedDict):
     """New text value."""
 
 
-
 """Fired when `Container`'s child node count has changed."""
+
+
 class ChildNodeCountUpdatedEvent(TypedDict):
     nodeId: "NodeId"
     """Id of the node that has changed."""
@@ -52,8 +68,9 @@ class ChildNodeCountUpdatedEvent(TypedDict):
     """New node count."""
 
 
-
 """Mirrors `DOMNodeInserted` event."""
+
+
 class ChildNodeInsertedEvent(TypedDict):
     parentNodeId: "NodeId"
     """Id of the node that has changed."""
@@ -63,8 +80,9 @@ class ChildNodeInsertedEvent(TypedDict):
     """Inserted node data."""
 
 
-
 """Mirrors `DOMNodeRemoved` event."""
+
+
 class ChildNodeRemovedEvent(TypedDict):
     parentNodeId: "NodeId"
     """Parent id."""
@@ -72,8 +90,9 @@ class ChildNodeRemovedEvent(TypedDict):
     """Id of the node that has been removed."""
 
 
-
 """Called when distribution is changed."""
+
+
 class DistributedNodesUpdatedEvent(TypedDict):
     insertionPointId: "NodeId"
     """Insertion point where distributed nodes were updated."""
@@ -81,21 +100,24 @@ class DistributedNodesUpdatedEvent(TypedDict):
     """Distributed nodes for given insertion point."""
 
 
-
 """Fired when `Document` has been totally updated. Node ids are no longer valid."""
+
+
 class DocumentUpdatedEvent(TypedDict):
     pass
 
 
-
 """Fired when `Element`'s inline style is modified via a CSS property modification."""
+
+
 class InlineStyleInvalidatedEvent(TypedDict):
     nodeIds: "List[NodeId]"
     """Ids of the nodes for which the inline styles have been invalidated."""
 
 
-
 """Called when a pseudo element is added to an element."""
+
+
 class PseudoElementAddedEvent(TypedDict):
     parentId: "NodeId"
     """Pseudo element's parent element id."""
@@ -103,14 +125,16 @@ class PseudoElementAddedEvent(TypedDict):
     """The added pseudo element."""
 
 
-
 """Called when top layer elements are changed."""
+
+
 class TopLayerElementsUpdatedEvent(TypedDict):
     pass
 
 
-
 """Fired when a node's scrollability state changes."""
+
+
 class ScrollableFlagUpdatedEvent(TypedDict):
     nodeId: "NodeId"
     """The id of the node."""
@@ -118,8 +142,19 @@ class ScrollableFlagUpdatedEvent(TypedDict):
     """If the node is scrollable."""
 
 
+"""Fired when a node's starting styles changes."""
+
+
+class AffectedByStartingStylesFlagUpdatedEvent(TypedDict):
+    nodeId: "NodeId"
+    """The id of the node."""
+    affectedByStartingStyles: "bool"
+    """If the node has starting styles."""
+
 
 """Called when a pseudo element is removed from an element."""
+
+
 class PseudoElementRemovedEvent(TypedDict):
     parentId: "NodeId"
     """Pseudo element's parent element id."""
@@ -127,9 +162,10 @@ class PseudoElementRemovedEvent(TypedDict):
     """The removed pseudo element id."""
 
 
-
 """Fired when backend wants to provide client with the missing DOM structure. This happens upon
 most of the calls requesting node ids."""
+
+
 class SetChildNodesEvent(TypedDict):
     parentId: "NodeId"
     """Parent node id to populate with children."""
@@ -137,8 +173,9 @@ class SetChildNodesEvent(TypedDict):
     """Child nodes array."""
 
 
-
 """Called when shadow root is popped from the element."""
+
+
 class ShadowRootPoppedEvent(TypedDict):
     hostId: "NodeId"
     """Host element id."""
@@ -146,8 +183,9 @@ class ShadowRootPoppedEvent(TypedDict):
     """Shadow root id."""
 
 
-
 """Called when shadow root is pushed into the element."""
+
+
 class ShadowRootPushedEvent(TypedDict):
     hostId: "NodeId"
     """Host element id."""

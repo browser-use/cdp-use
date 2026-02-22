@@ -27,6 +27,7 @@ if TYPE_CHECKING:
     from .types import Quad
     from .types import Rect
 
+
 class CollectClassNamesFromSubtreeParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node to collect class names."""
@@ -35,7 +36,6 @@ class CollectClassNamesFromSubtreeParameters(TypedDict):
 class CollectClassNamesFromSubtreeReturns(TypedDict):
     classNames: "List[str]"
     """Class name list."""
-
 
 
 class CopyToParameters(TypedDict):
@@ -51,7 +51,6 @@ class CopyToParameters(TypedDict):
 class CopyToReturns(TypedDict):
     nodeId: "NodeId"
     """Id of the node clone."""
-
 
 
 class DescribeNodeParameters(TypedDict, total=False):
@@ -74,7 +73,6 @@ class DescribeNodeReturns(TypedDict):
     """Node description."""
 
 
-
 class ScrollIntoViewIfNeededParameters(TypedDict, total=False):
     nodeId: "NodeId"
     """Identifier of the node."""
@@ -87,23 +85,14 @@ class ScrollIntoViewIfNeededParameters(TypedDict, total=False):
 When omitted, center of the node will be used, similar to Element.scrollIntoView."""
 
 
-
-
-
 class DiscardSearchResultsParameters(TypedDict):
     searchId: "str"
     """Unique search session identifier."""
 
 
-
-
-
 class EnableParameters(TypedDict, total=False):
     includeWhitespace: "str"
     """Whether to include whitespaces in the children array of returned Nodes."""
-
-
-
 
 
 class FocusParameters(TypedDict, total=False):
@@ -115,9 +104,6 @@ class FocusParameters(TypedDict, total=False):
     """JavaScript object id of the node wrapper."""
 
 
-
-
-
 class GetAttributesParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node to retrieve attributes for."""
@@ -126,7 +112,6 @@ class GetAttributesParameters(TypedDict):
 class GetAttributesReturns(TypedDict):
     attributes: "List[str]"
     """An interleaved array of node attribute names and values."""
-
 
 
 class GetBoxModelParameters(TypedDict, total=False):
@@ -143,7 +128,6 @@ class GetBoxModelReturns(TypedDict):
     """Box model for the node."""
 
 
-
 class GetContentQuadsParameters(TypedDict, total=False):
     nodeId: "NodeId"
     """Identifier of the node."""
@@ -156,7 +140,6 @@ class GetContentQuadsParameters(TypedDict, total=False):
 class GetContentQuadsReturns(TypedDict):
     quads: "List[Quad]"
     """Quads that describe node layout relative to viewport."""
-
 
 
 class GetDocumentParameters(TypedDict, total=False):
@@ -173,7 +156,6 @@ class GetDocumentReturns(TypedDict):
     """Resulting node."""
 
 
-
 class GetFlattenedDocumentParameters(TypedDict, total=False):
     depth: "int"
     """The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
@@ -186,7 +168,6 @@ entire subtree or provide an integer larger than 0."""
 class GetFlattenedDocumentReturns(TypedDict):
     nodes: "List[Node]"
     """Resulting node."""
-
 
 
 class GetNodesForSubtreeByStyleParameters(TypedDict):
@@ -202,7 +183,6 @@ results (default is false)."""
 class GetNodesForSubtreeByStyleReturns(TypedDict):
     nodeIds: "List[NodeId]"
     """Resulting nodes."""
-
 
 
 class GetNodeForLocationParameters(TypedDict):
@@ -225,7 +205,6 @@ class GetNodeForLocationReturns(TypedDict):
     """Id of the node at given coordinates, only when enabled and requested document."""
 
 
-
 class GetOuterHTMLParameters(TypedDict, total=False):
     nodeId: "NodeId"
     """Identifier of the node."""
@@ -242,7 +221,6 @@ class GetOuterHTMLReturns(TypedDict):
     """Outer HTML markup."""
 
 
-
 class GetRelayoutBoundaryParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node."""
@@ -251,7 +229,6 @@ class GetRelayoutBoundaryParameters(TypedDict):
 class GetRelayoutBoundaryReturns(TypedDict):
     nodeId: "NodeId"
     """Relayout boundary node id for the given node."""
-
 
 
 class GetSearchResultsParameters(TypedDict):
@@ -266,7 +243,6 @@ class GetSearchResultsParameters(TypedDict):
 class GetSearchResultsReturns(TypedDict):
     nodeIds: "List[NodeId]"
     """Ids of the search result nodes."""
-
 
 
 class MoveToParameters(TypedDict):
@@ -284,7 +260,6 @@ class MoveToReturns(TypedDict):
     """New id of the moved node."""
 
 
-
 class PerformSearchParameters(TypedDict):
     query: "str"
     """Plain text or query selector or XPath search query."""
@@ -299,7 +274,6 @@ class PerformSearchReturns(TypedDict):
     """Number of search results."""
 
 
-
 class PushNodeByPathToFrontendParameters(TypedDict):
     path: "str"
     """Path to node in the proprietary format."""
@@ -308,7 +282,6 @@ class PushNodeByPathToFrontendParameters(TypedDict):
 class PushNodeByPathToFrontendReturns(TypedDict):
     nodeId: "NodeId"
     """Id of the node for given path."""
-
 
 
 class PushNodesByBackendIdsToFrontendParameters(TypedDict):
@@ -320,7 +293,6 @@ class PushNodesByBackendIdsToFrontendReturns(TypedDict):
     nodeIds: "List[NodeId]"
     """The array of ids of pushed nodes that correspond to the backend ids specified in
 backendNodeIds."""
-
 
 
 class QuerySelectorParameters(TypedDict):
@@ -335,7 +307,6 @@ class QuerySelectorReturns(TypedDict):
     """Query selector result."""
 
 
-
 class QuerySelectorAllParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node to query upon."""
@@ -348,11 +319,9 @@ class QuerySelectorAllReturns(TypedDict):
     """Query selector result."""
 
 
-
 class GetTopLayerElementsReturns(TypedDict):
     nodeIds: "List[NodeId]"
     """NodeIds of top layer elements"""
-
 
 
 class GetElementByRelationParameters(TypedDict):
@@ -367,7 +336,6 @@ class GetElementByRelationReturns(TypedDict):
     """NodeId of the element matching the queried relation."""
 
 
-
 class RemoveAttributeParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the element to remove attribute from."""
@@ -375,15 +343,9 @@ class RemoveAttributeParameters(TypedDict):
     """Name of the attribute to remove."""
 
 
-
-
-
 class RemoveNodeParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node to remove."""
-
-
-
 
 
 class RequestChildNodesParameters(TypedDict):
@@ -397,9 +359,6 @@ entire subtree or provide an integer larger than 0."""
 (default is false)."""
 
 
-
-
-
 class RequestNodeParameters(TypedDict):
     objectId: "RemoteObjectId"
     """JavaScript object id to convert into node."""
@@ -408,7 +367,6 @@ class RequestNodeParameters(TypedDict):
 class RequestNodeReturns(TypedDict):
     nodeId: "NodeId"
     """Node id for given object."""
-
 
 
 class ResolveNodeParameters(TypedDict, total=False):
@@ -427,7 +385,6 @@ class ResolveNodeReturns(TypedDict):
     """JavaScript object wrapper for given node."""
 
 
-
 class SetAttributeValueParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the element to set attribute for."""
@@ -435,9 +392,6 @@ class SetAttributeValueParameters(TypedDict):
     """Attribute name."""
     value: "str"
     """Attribute value."""
-
-
-
 
 
 class SetAttributesAsTextParameters(TypedDict):
@@ -448,9 +402,6 @@ class SetAttributesAsTextParameters(TypedDict):
     name: "NotRequired[str]"
     """Attribute name to replace with new attributes derived from text in case text parsed
 successfully."""
-
-
-
 
 
 class SetFileInputFilesParameters(TypedDict):
@@ -464,15 +415,9 @@ class SetFileInputFilesParameters(TypedDict):
     """JavaScript object id of the node wrapper."""
 
 
-
-
-
 class SetNodeStackTracesEnabledParameters(TypedDict):
     enable: "bool"
     """Enable or disable."""
-
-
-
 
 
 class GetNodeStackTracesParameters(TypedDict):
@@ -485,7 +430,6 @@ class GetNodeStackTracesReturns(TypedDict):
     """Creation stack trace, if available."""
 
 
-
 class GetFileInfoParameters(TypedDict):
     objectId: "RemoteObjectId"
     """JavaScript object id of the node wrapper."""
@@ -495,19 +439,14 @@ class GetFileInfoReturns(TypedDict):
     path: "str"
 
 
-
 class GetDetachedDomNodesReturns(TypedDict):
     detachedNodes: "List[DetachedElementInfo]"
     """The list of detached nodes"""
 
 
-
 class SetInspectedNodeParameters(TypedDict):
     nodeId: "NodeId"
     """DOM node id to be accessible by means of $x command line API."""
-
-
-
 
 
 class SetNodeNameParameters(TypedDict):
@@ -522,7 +461,6 @@ class SetNodeNameReturns(TypedDict):
     """New node's id."""
 
 
-
 class SetNodeValueParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node to set value for."""
@@ -530,17 +468,11 @@ class SetNodeValueParameters(TypedDict):
     """New node's value."""
 
 
-
-
-
 class SetOuterHTMLParameters(TypedDict):
     nodeId: "NodeId"
     """Id of the node to set markup for."""
     outerHTML: "str"
     """Outer HTML markup to set."""
-
-
-
 
 
 class GetFrameOwnerParameters(TypedDict):
@@ -554,19 +486,18 @@ class GetFrameOwnerReturns(TypedDict):
     """Id of the node at given coordinates, only when enabled and requested document."""
 
 
-
 class GetContainerForNodeParameters(TypedDict):
     nodeId: "NodeId"
     containerName: "NotRequired[str]"
     physicalAxes: "NotRequired[PhysicalAxes]"
     logicalAxes: "NotRequired[LogicalAxes]"
     queriesScrollState: "NotRequired[bool]"
+    queriesAnchored: "NotRequired[bool]"
 
 
 class GetContainerForNodeReturns(TypedDict):
     nodeId: "NodeId"
     """The container node for the given node, or null if not found."""
-
 
 
 class GetQueryingDescendantsForContainerParameters(TypedDict):
@@ -577,7 +508,6 @@ class GetQueryingDescendantsForContainerParameters(TypedDict):
 class GetQueryingDescendantsForContainerReturns(TypedDict):
     nodeIds: "List[NodeId]"
     """Descendant nodes with container queries against the given container."""
-
 
 
 class GetAnchorElementParameters(TypedDict):
@@ -593,3 +523,16 @@ the given positioned element."""
 class GetAnchorElementReturns(TypedDict):
     nodeId: "NodeId"
     """The anchor element of the given anchor query."""
+
+
+class ForceShowPopoverParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the popover HTMLElement"""
+    enable: "bool"
+    """If true, opens the popover and keeps it open. If false, closes the
+popover if it was previously force-opened."""
+
+
+class ForceShowPopoverReturns(TypedDict):
+    nodeIds: "List[NodeId]"
+    """List of popovers that were closed in order to respect popover stacking order."""

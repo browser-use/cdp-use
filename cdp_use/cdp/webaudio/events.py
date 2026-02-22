@@ -16,64 +16,75 @@ if TYPE_CHECKING:
     from .types import GraphObjectId
 
 """Notifies that a new BaseAudioContext has been created."""
+
+
 class ContextCreatedEvent(TypedDict):
     context: "BaseAudioContext"
 
 
-
 """Notifies that an existing BaseAudioContext will be destroyed."""
+
+
 class ContextWillBeDestroyedEvent(TypedDict):
     contextId: "GraphObjectId"
 
 
-
 """Notifies that existing BaseAudioContext has changed some properties (id stays the same).."""
+
+
 class ContextChangedEvent(TypedDict):
     context: "BaseAudioContext"
 
 
-
 """Notifies that the construction of an AudioListener has finished."""
+
+
 class AudioListenerCreatedEvent(TypedDict):
     listener: "AudioListener"
 
 
-
 """Notifies that a new AudioListener has been created."""
+
+
 class AudioListenerWillBeDestroyedEvent(TypedDict):
     contextId: "GraphObjectId"
     listenerId: "GraphObjectId"
 
 
-
 """Notifies that a new AudioNode has been created."""
+
+
 class AudioNodeCreatedEvent(TypedDict):
     node: "AudioNode"
 
 
-
 """Notifies that an existing AudioNode has been destroyed."""
+
+
 class AudioNodeWillBeDestroyedEvent(TypedDict):
     contextId: "GraphObjectId"
     nodeId: "GraphObjectId"
 
 
-
 """Notifies that a new AudioParam has been created."""
+
+
 class AudioParamCreatedEvent(TypedDict):
     param: "AudioParam"
 
 
-
 """Notifies that an existing AudioParam has been destroyed."""
+
+
 class AudioParamWillBeDestroyedEvent(TypedDict):
     contextId: "GraphObjectId"
     nodeId: "GraphObjectId"
     paramId: "GraphObjectId"
 
 
-
 """Notifies that two AudioNodes are connected."""
+
+
 class NodesConnectedEvent(TypedDict):
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
@@ -82,8 +93,9 @@ class NodesConnectedEvent(TypedDict):
     destinationInputIndex: "NotRequired[float]"
 
 
-
 """Notifies that AudioNodes are disconnected. The destination can be null, and it means all the outgoing connections from the source are disconnected."""
+
+
 class NodesDisconnectedEvent(TypedDict):
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
@@ -92,8 +104,9 @@ class NodesDisconnectedEvent(TypedDict):
     destinationInputIndex: "NotRequired[float]"
 
 
-
 """Notifies that an AudioNode is connected to an AudioParam."""
+
+
 class NodeParamConnectedEvent(TypedDict):
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"
@@ -101,8 +114,9 @@ class NodeParamConnectedEvent(TypedDict):
     sourceOutputIndex: "NotRequired[float]"
 
 
-
 """Notifies that an AudioNode is disconnected to an AudioParam."""
+
+
 class NodeParamDisconnectedEvent(TypedDict):
     contextId: "GraphObjectId"
     sourceId: "GraphObjectId"

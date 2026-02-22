@@ -12,22 +12,23 @@ if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import BackgroundServiceEventReceivedEvent, RecordingStateChangedEvent
 
+
 class BackgroundServiceRegistration:
     """Event registration interface for BackgroundService domain."""
 
-    def __init__(self, registry: 'EventRegistry'):
+    def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "BackgroundService"
 
     def recordingStateChanged(
         self,
-        callback: Callable[['RecordingStateChangedEvent', Optional[str]], None],
+        callback: Callable[["RecordingStateChangedEvent", Optional[str]], None],
     ) -> None:
         """
         Register a callback for recordingStateChanged events.
-        
+
         Called when the recording state for the service has been updated.
-        
+
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
@@ -36,17 +37,20 @@ class BackgroundServiceRegistration:
 
     def backgroundServiceEventReceived(
         self,
-        callback: Callable[['BackgroundServiceEventReceivedEvent', Optional[str]], None],
+        callback: Callable[
+            ["BackgroundServiceEventReceivedEvent", Optional[str]], None
+        ],
     ) -> None:
         """
-        Register a callback for backgroundServiceEventReceived events.
-        
-        Called with all existing backgroundServiceEvents when enabled, and all new
-events afterwards if enabled and recording.
-        
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("BackgroundService.backgroundServiceEventReceived", callback)
+                Register a callback for backgroundServiceEventReceived events.
 
+                Called with all existing backgroundServiceEvents when enabled, and all new
+        events afterwards if enabled and recording.
+
+                Args:
+                    callback: Function to call when event occurs.
+                             Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register(
+            "BackgroundService.backgroundServiceEventReceived", callback
+        )
