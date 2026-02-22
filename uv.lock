@@ -32,10 +32,11 @@ wheels = [
 
 [[package]]
 name = "cdp-use"
-version = "1.4.0"
+version = "1.4.5"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
+    { name = "typing-extensions" },
     { name = "websockets" },
 ]
 
@@ -48,6 +49,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "typing-extensions", specifier = ">=4.12.2" },
     { name = "websockets", specifier = ">=15.0.1" },
 ]
 

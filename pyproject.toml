@@ -1,10 +1,24 @@
 [project]
 name = "cdp-use"
-version = "1.4.0"
+version = "1.4.5"
 description = "Type safe generator/client library for CDP"
+authors = [{ name = "Browser Use" }]
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["httpx>=0.28.1", "websockets>=15.0.1"]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "httpx>=0.28.1",
+    "typing-extensions>=4.12.2",
+    "websockets>=15.0.1",
+]
+
+[project.urls]
+Repository = "https://github.com/browser-use/cdp-use"
 
 [build-system]
 requires = ["hatchling"]
@@ -14,7 +28,7 @@ build-backend = "hatchling.build"
 dev = ["build>=1.2.2.post1", "ruff>=0.12.2"]
 
 [tool.hatch.build]
-include = ["cdp_use/**/*.py"]
+include = ["cdp_use/**/*.py", "cdp_use/py.typed"]
 exclude = ["cdp_use/generator/*.py"]
 
 [tool.ruff]
