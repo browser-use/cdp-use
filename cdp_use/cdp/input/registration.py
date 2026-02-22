@@ -4,34 +4,5 @@
 
 """CDP Input Domain Event Registration"""
 
-from typing import Callable, Optional
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ..registry import EventRegistry
-    from .events import DragInterceptedEvent
-
-
-class InputRegistration:
-    """Event registration interface for Input domain."""
-
-    def __init__(self, registry: "EventRegistry"):
-        self._registry = registry
-        self._domain = "Input"
-
-    def dragIntercepted(
-        self,
-        callback: Callable[["DragInterceptedEvent", Optional[str]], None],
-    ) -> None:
-        """
-                Register a callback for dragIntercepted events.
-
-                Emitted only when `Input.setInterceptDrags` is enabled. Use this data with `Input.dispatchDragEvent` to
-        restore normal drag and drop behavior.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Input.dragIntercepted", callback)
+# No events defined for this domain

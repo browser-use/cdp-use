@@ -4,34 +4,19 @@
 
 """CDP CSS Domain Commands"""
 
-from typing import Any, Dict, List
-from typing_extensions import NotRequired, TypedDict
+from typing import List
+from typing_extensions import TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..dom.types import NodeId
-    from ..dom.types import PseudoType
     from ..page.types import FrameId
-    from .types import CSSAnimationStyle
-    from .types import CSSAtRule
     from .types import CSSComputedStyleProperty
-    from .types import CSSContainerQuery
-    from .types import CSSFunctionRule
     from .types import CSSKeyframesRule
-    from .types import CSSLayerData
     from .types import CSSMedia
-    from .types import CSSPositionTryRule
-    from .types import CSSProperty
-    from .types import CSSPropertyRegistration
-    from .types import CSSPropertyRule
     from .types import CSSRule
-    from .types import CSSScope
     from .types import CSSStyle
-    from .types import CSSSupports
-    from .types import ComputedStyleExtraFields
-    from .types import InheritedAnimatedStyleEntry
-    from .types import InheritedPseudoElementMatches
     from .types import InheritedStyleEntry
     from .types import PlatformFontUsage
     from .types import PseudoElementMatches
@@ -42,145 +27,6 @@ if TYPE_CHECKING:
     from .types import StyleDeclarationEdit
     from .types import StyleSheetId
     from .types import Value
-
-
-class AddRuleParameters(TypedDict):
-    styleSheetId: "StyleSheetId"
-    """The css style sheet identifier where a new rule should be inserted."""
-    ruleText: "str"
-    """The text of a new rule."""
-    location: "SourceRange"
-    """Text position of a new rule in the target style sheet."""
-    nodeForPropertySyntaxValidation: "NotRequired[NodeId]"
-    """NodeId for the DOM node in whose context custom property declarations for registered properties should be
-validated. If omitted, declarations in the new rule text can only be validated statically, which may produce
-incorrect results if the declaration contains a var() for example."""
-
-
-class AddRuleReturns(TypedDict):
-    rule: "CSSRule"
-    """The newly created rule."""
-
-
-class CollectClassNamesParameters(TypedDict):
-    styleSheetId: "StyleSheetId"
-
-
-class CollectClassNamesReturns(TypedDict):
-    classNames: "List[str]"
-    """Class name list."""
-
-
-class CreateStyleSheetParameters(TypedDict):
-    frameId: "FrameId"
-    """Identifier of the frame where \"via-inspector\" stylesheet should be created."""
-    force: "NotRequired[bool]"
-    """If true, creates a new stylesheet for every call. If false,
-returns a stylesheet previously created by a call with force=false
-for the frame's document if it exists or creates a new stylesheet
-(default: false)."""
-
-
-class CreateStyleSheetReturns(TypedDict):
-    styleSheetId: "StyleSheetId"
-    """Identifier of the created \"via-inspector\" stylesheet."""
-
-
-class ForcePseudoStateParameters(TypedDict):
-    nodeId: "NodeId"
-    """The element id for which to force the pseudo state."""
-    forcedPseudoClasses: "List[str]"
-    """Element pseudo classes to force when computing the element's style."""
-
-
-class ForceStartingStyleParameters(TypedDict):
-    nodeId: "NodeId"
-    """The element id for which to force the starting-style state."""
-    forced: "bool"
-    """Boolean indicating if this is on or off."""
-
-
-class GetBackgroundColorsParameters(TypedDict):
-    nodeId: "NodeId"
-    """Id of the node to get background colors for."""
-
-
-class GetBackgroundColorsReturns(TypedDict):
-    backgroundColors: "List[str]"
-    """The range of background colors behind this element, if it contains any visible text. If no
-visible text is present, this will be undefined. In the case of a flat background color,
-this will consist of simply that color. In the case of a gradient, this will consist of each
-of the color stops. For anything more complicated, this will be an empty array. Images will
-be ignored (as if the image had failed to load)."""
-    computedFontSize: "str"
-    """The computed font size for this node, as a CSS computed value string (e.g. '12px')."""
-    computedFontWeight: "str"
-    """The computed font weight for this node, as a CSS computed value string (e.g. 'normal' or
-'100')."""
-
-
-class GetComputedStyleForNodeParameters(TypedDict):
-    nodeId: "NodeId"
-
-
-class GetComputedStyleForNodeReturns(TypedDict):
-    computedStyle: "List[CSSComputedStyleProperty]"
-    """Computed style for the specified DOM node."""
-    extraFields: "ComputedStyleExtraFields"
-    """A list of non-standard \"extra fields\" which blink stores alongside each
-computed style."""
-
-
-class ResolveValuesParameters(TypedDict):
-    values: "List[str]"
-    """Cascade-dependent keywords (revert/revert-layer) do not work."""
-    nodeId: "NodeId"
-    """Id of the node in whose context the expression is evaluated"""
-    propertyName: "NotRequired[str]"
-    """Only longhands and custom property names are accepted."""
-    pseudoType: "NotRequired[PseudoType]"
-    """Pseudo element type, only works for pseudo elements that generate
-elements in the tree, such as ::before and ::after."""
-    pseudoIdentifier: "NotRequired[str]"
-    """Pseudo element custom ident."""
-
-
-class ResolveValuesReturns(TypedDict):
-    results: "List[str]"
-
-
-class GetLonghandPropertiesParameters(TypedDict):
-    shorthandName: "str"
-    value: "str"
-
-
-class GetLonghandPropertiesReturns(TypedDict):
-    longhandProperties: "List[CSSProperty]"
-
-
-class GetInlineStylesForNodeParameters(TypedDict):
-    nodeId: "NodeId"
-
-
-class GetInlineStylesForNodeReturns(TypedDict):
-    inlineStyle: "CSSStyle"
-    """Inline style for the specified DOM node."""
-    attributesStyle: "CSSStyle"
-    """Attribute-defined element style (e.g. resulting from \"width=20 height=100%\")."""
-
-
-class GetAnimatedStylesForNodeParameters(TypedDict):
-    nodeId: "NodeId"
-
-
-class GetAnimatedStylesForNodeReturns(TypedDict):
-    animationStyles: "List[CSSAnimationStyle]"
-    """Styles coming from animations."""
-    transitionsStyle: "CSSStyle"
-    """Style coming from transitions."""
-    inherited: "List[InheritedAnimatedStyleEntry]"
-    """Inherited style entries for animationsStyle and transitionsStyle from
-the inheritance chain of the element."""
 
 
 class GetMatchedStylesForNodeParameters(TypedDict):
@@ -198,33 +44,28 @@ class GetMatchedStylesForNodeReturns(TypedDict):
     """Pseudo style matches for this node."""
     inherited: "List[InheritedStyleEntry]"
     """A chain of inherited styles (from the immediate node parent up to the DOM tree root)."""
-    inheritedPseudoElements: "List[InheritedPseudoElementMatches]"
-    """A chain of inherited pseudo element styles (from the immediate node parent up to the DOM tree root)."""
     cssKeyframesRules: "List[CSSKeyframesRule]"
     """A list of CSS keyframed animations matching this node."""
-    cssPositionTryRules: "List[CSSPositionTryRule]"
-    """A list of CSS @position-try rules matching this node, based on the position-try-fallbacks property."""
-    activePositionFallbackIndex: "int"
-    """Index of the active fallback in the applied position-try-fallback property,
-will not be set if there is no active position-try fallback."""
-    cssPropertyRules: "List[CSSPropertyRule]"
-    """A list of CSS at-property rules matching this node."""
-    cssPropertyRegistrations: "List[CSSPropertyRegistration]"
-    """A list of CSS property registrations matching this node."""
-    cssAtRules: "List[CSSAtRule]"
-    """A list of simple @rules matching this node or its pseudo-elements."""
-    parentLayoutNodeId: "NodeId"
-    """Id of the first parent element that does not have display: contents."""
-    cssFunctionRules: "List[CSSFunctionRule]"
-    """A list of CSS at-function rules referenced by styles of this node."""
 
 
-class GetEnvironmentVariablesReturns(TypedDict):
-    environmentVariables: "Dict[str, Any]"
+class GetInlineStylesForNodeParameters(TypedDict):
+    nodeId: "NodeId"
 
 
-class GetMediaQueriesReturns(TypedDict):
-    medias: "List[CSSMedia]"
+class GetInlineStylesForNodeReturns(TypedDict):
+    inlineStyle: "CSSStyle"
+    """Inline style for the specified DOM node."""
+    attributesStyle: "CSSStyle"
+    """Attribute-defined element style (e.g. resulting from \"width=20 height=100%\")."""
+
+
+class GetComputedStyleForNodeParameters(TypedDict):
+    nodeId: "NodeId"
+
+
+class GetComputedStyleForNodeReturns(TypedDict):
+    computedStyle: "List[CSSComputedStyleProperty]"
+    """Computed style for the specified DOM node."""
 
 
 class GetPlatformFontsForNodeParameters(TypedDict):
@@ -245,107 +86,23 @@ class GetStyleSheetTextReturns(TypedDict):
     """The stylesheet text."""
 
 
-class GetLayersForNodeParameters(TypedDict):
-    nodeId: "NodeId"
-
-
-class GetLayersForNodeReturns(TypedDict):
-    rootLayer: "CSSLayerData"
-
-
-class GetLocationForSelectorParameters(TypedDict):
+class CollectClassNamesParameters(TypedDict):
     styleSheetId: "StyleSheetId"
-    selectorText: "str"
 
 
-class GetLocationForSelectorReturns(TypedDict):
-    ranges: "List[SourceRange]"
+class CollectClassNamesReturns(TypedDict):
+    classNames: "List[str]"
+    """Class name list."""
 
 
-class TrackComputedStyleUpdatesForNodeParameters(TypedDict, total=False):
-    nodeId: "NodeId"
-
-
-class TrackComputedStyleUpdatesParameters(TypedDict):
-    propertiesToTrack: "List[CSSComputedStyleProperty]"
-
-
-class TakeComputedStyleUpdatesReturns(TypedDict):
-    nodeIds: "List[NodeId]"
-    """The list of node Ids that have their tracked computed styles updated."""
-
-
-class SetEffectivePropertyValueForNodeParameters(TypedDict):
-    nodeId: "NodeId"
-    """The element id for which to set property."""
-    propertyName: "str"
-    value: "str"
-
-
-class SetPropertyRulePropertyNameParameters(TypedDict):
+class SetStyleSheetTextParameters(TypedDict):
     styleSheetId: "StyleSheetId"
-    range: "SourceRange"
-    propertyName: "str"
-
-
-class SetPropertyRulePropertyNameReturns(TypedDict):
-    propertyName: "Value"
-    """The resulting key text after modification."""
-
-
-class SetKeyframeKeyParameters(TypedDict):
-    styleSheetId: "StyleSheetId"
-    range: "SourceRange"
-    keyText: "str"
-
-
-class SetKeyframeKeyReturns(TypedDict):
-    keyText: "Value"
-    """The resulting key text after modification."""
-
-
-class SetMediaTextParameters(TypedDict):
-    styleSheetId: "StyleSheetId"
-    range: "SourceRange"
     text: "str"
 
 
-class SetMediaTextReturns(TypedDict):
-    media: "CSSMedia"
-    """The resulting CSS media rule after modification."""
-
-
-class SetContainerQueryTextParameters(TypedDict):
-    styleSheetId: "StyleSheetId"
-    range: "SourceRange"
-    text: "str"
-
-
-class SetContainerQueryTextReturns(TypedDict):
-    containerQuery: "CSSContainerQuery"
-    """The resulting CSS container query rule after modification."""
-
-
-class SetSupportsTextParameters(TypedDict):
-    styleSheetId: "StyleSheetId"
-    range: "SourceRange"
-    text: "str"
-
-
-class SetSupportsTextReturns(TypedDict):
-    supports: "CSSSupports"
-    """The resulting CSS Supports rule after modification."""
-
-
-class SetScopeTextParameters(TypedDict):
-    styleSheetId: "StyleSheetId"
-    range: "SourceRange"
-    text: "str"
-
-
-class SetScopeTextReturns(TypedDict):
-    scope: "CSSScope"
-    """The resulting CSS Scope rule after modification."""
+class SetStyleSheetTextReturns(TypedDict):
+    sourceMapURL: "str"
+    """URL of source map associated with script (if any)."""
 
 
 class SetRuleSelectorParameters(TypedDict):
@@ -359,22 +116,19 @@ class SetRuleSelectorReturns(TypedDict):
     """The resulting selector list after modification."""
 
 
-class SetStyleSheetTextParameters(TypedDict):
+class SetKeyframeKeyParameters(TypedDict):
     styleSheetId: "StyleSheetId"
-    text: "str"
+    range: "SourceRange"
+    keyText: "str"
 
 
-class SetStyleSheetTextReturns(TypedDict):
-    sourceMapURL: "str"
-    """URL of source map associated with script (if any)."""
+class SetKeyframeKeyReturns(TypedDict):
+    keyText: "Value"
+    """The resulting key text after modification."""
 
 
 class SetStyleTextsParameters(TypedDict):
     edits: "List[StyleDeclarationEdit]"
-    nodeForPropertySyntaxValidation: "NotRequired[NodeId]"
-    """NodeId for the DOM node in whose context custom property declarations for registered properties should be
-validated. If omitted, declarations in the new rule text can only be validated statically, which may produce
-incorrect results if the declaration contains a var() for example."""
 
 
 class SetStyleTextsReturns(TypedDict):
@@ -382,16 +136,78 @@ class SetStyleTextsReturns(TypedDict):
     """The resulting styles after modification."""
 
 
-class StopRuleUsageTrackingReturns(TypedDict):
-    ruleUsage: "List[RuleUsage]"
+class SetMediaTextParameters(TypedDict):
+    styleSheetId: "StyleSheetId"
+    range: "SourceRange"
+    text: "str"
+
+
+class SetMediaTextReturns(TypedDict):
+    media: "CSSMedia"
+    """The resulting CSS media rule after modification."""
+
+
+class CreateStyleSheetParameters(TypedDict):
+    frameId: "FrameId"
+    """Identifier of the frame where \"via-inspector\" stylesheet should be created."""
+
+
+class CreateStyleSheetReturns(TypedDict):
+    styleSheetId: "StyleSheetId"
+    """Identifier of the created \"via-inspector\" stylesheet."""
+
+
+class AddRuleParameters(TypedDict):
+    styleSheetId: "StyleSheetId"
+    """The css style sheet identifier where a new rule should be inserted."""
+    ruleText: "str"
+    """The text of a new rule."""
+    location: "SourceRange"
+    """Text position of a new rule in the target style sheet."""
+
+
+class AddRuleReturns(TypedDict):
+    rule: "CSSRule"
+    """The newly created rule."""
+
+
+class ForcePseudoStateParameters(TypedDict):
+    nodeId: "NodeId"
+    """The element id for which to force the pseudo state."""
+    forcedPseudoClasses: "List[str]"
+    """Element pseudo classes to force when computing the element's style."""
+
+
+class GetMediaQueriesReturns(TypedDict):
+    medias: "List[CSSMedia]"
+
+
+class SetEffectivePropertyValueForNodeParameters(TypedDict):
+    nodeId: "NodeId"
+    """The element id for which to set property."""
+    propertyName: "str"
+    value: "str"
+
+
+class GetBackgroundColorsParameters(TypedDict):
+    nodeId: "NodeId"
+    """Id of the node to get background colors for."""
+
+
+class GetBackgroundColorsReturns(TypedDict):
+    backgroundColors: "List[str]"
+    """The range of background colors behind this element, if it contains any visible text. If no visible text is present, this will be undefined. In the case of a flat background color, this will consist of simply that color. In the case of a gradient, this will consist of each of the color stops. For anything more complicated, this will be an empty array. Images will be ignored (as if the image had failed to load)."""
+    computedFontSize: "str"
+    """The computed font size for this node, as a CSS computed value string (e.g. '12px')."""
+    computedFontWeight: "str"
+    """The computed font weight for this node, as a CSS computed value string (e.g. 'normal' or '100')."""
+    computedBodyFontSize: "str"
+    """The computed font size for the document body, as a computed CSS value string (e.g. '16px')."""
 
 
 class TakeCoverageDeltaReturns(TypedDict):
     coverage: "List[RuleUsage]"
-    timestamp: "float"
-    """Monotonically increasing time, in seconds."""
 
 
-class SetLocalFontsEnabledParameters(TypedDict):
-    enabled: "bool"
-    """Whether rendering of local fonts is enabled."""
+class StopRuleUsageTrackingReturns(TypedDict):
+    ruleUsage: "List[RuleUsage]"

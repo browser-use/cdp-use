@@ -26,8 +26,7 @@ class ProfileNode(TypedDict):
     children: "NotRequired[List[int]]"
     """Child node ids."""
     deoptReason: "NotRequired[str]"
-    """The reason of being not optimized. The function may be deoptimized or marked as don't
-optimize."""
+    """The reason of being not optimized. The function may be deoptimized or marked as don't optimize."""
     positionTicks: "NotRequired[List[PositionTickInfo]]"
     """An array of source position ticks."""
 
@@ -44,8 +43,7 @@ class Profile(TypedDict):
     samples: "NotRequired[List[int]]"
     """Ids of samples top nodes."""
     timeDeltas: "NotRequired[List[int]]"
-    """Time intervals between adjacent samples in microseconds. The first delta is relative to the
-profile startTime."""
+    """Time intervals between adjacent samples in microseconds. The first delta is relative to the profile startTime."""
 
 
 class PositionTickInfo(TypedDict):

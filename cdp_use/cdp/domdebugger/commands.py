@@ -12,54 +12,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..dom.types import NodeId
     from ..runtime.types import RemoteObjectId
-    from .types import CSPViolationType
     from .types import DOMBreakpointType
     from .types import EventListener
-
-
-class GetEventListenersParameters(TypedDict):
-    objectId: "RemoteObjectId"
-    """Identifier of the object to return listeners for."""
-    depth: "NotRequired[int]"
-    """The maximum depth at which Node children should be retrieved, defaults to 1. Use -1 for the
-entire subtree or provide an integer larger than 0."""
-    pierce: "NotRequired[bool]"
-    """Whether or not iframes and shadow roots should be traversed when returning the subtree
-(default is false). Reports listeners for all contexts if pierce is enabled."""
-
-
-class GetEventListenersReturns(TypedDict):
-    listeners: "List[EventListener]"
-    """Array of relevant listeners."""
-
-
-class RemoveDOMBreakpointParameters(TypedDict):
-    nodeId: "NodeId"
-    """Identifier of the node to remove breakpoint from."""
-    type: "DOMBreakpointType"
-    """Type of the breakpoint to remove."""
-
-
-class RemoveEventListenerBreakpointParameters(TypedDict):
-    eventName: "str"
-    """Event name."""
-    targetName: "NotRequired[str]"
-    """EventTarget interface name."""
-
-
-class RemoveInstrumentationBreakpointParameters(TypedDict):
-    eventName: "str"
-    """Instrumentation name to stop on."""
-
-
-class RemoveXHRBreakpointParameters(TypedDict):
-    url: "str"
-    """Resource URL substring."""
-
-
-class SetBreakOnCSPViolationParameters(TypedDict):
-    violationTypes: "List[CSPViolationType]"
-    """CSP Violations to stop upon."""
 
 
 class SetDOMBreakpointParameters(TypedDict):
@@ -69,12 +23,25 @@ class SetDOMBreakpointParameters(TypedDict):
     """Type of the operation to stop upon."""
 
 
+class RemoveDOMBreakpointParameters(TypedDict):
+    nodeId: "NodeId"
+    """Identifier of the node to remove breakpoint from."""
+    type: "DOMBreakpointType"
+    """Type of the breakpoint to remove."""
+
+
 class SetEventListenerBreakpointParameters(TypedDict):
     eventName: "str"
     """DOM Event name to stop on (any DOM event will do)."""
     targetName: "NotRequired[str]"
-    """EventTarget interface name to stop on. If equal to `\"*\"` or not provided, will stop on any
-EventTarget."""
+    """EventTarget interface name to stop on. If equal to <code>\"*\"</code> or not provided, will stop on any EventTarget."""
+
+
+class RemoveEventListenerBreakpointParameters(TypedDict):
+    eventName: "str"
+    """Event name."""
+    targetName: "NotRequired[str]"
+    """EventTarget interface name."""
 
 
 class SetInstrumentationBreakpointParameters(TypedDict):
@@ -82,6 +49,30 @@ class SetInstrumentationBreakpointParameters(TypedDict):
     """Instrumentation name to stop on."""
 
 
+class RemoveInstrumentationBreakpointParameters(TypedDict):
+    eventName: "str"
+    """Instrumentation name to stop on."""
+
+
 class SetXHRBreakpointParameters(TypedDict):
     url: "str"
     """Resource URL substring. All XHRs having this substring in the URL will get stopped upon."""
+
+
+class RemoveXHRBreakpointParameters(TypedDict):
+    url: "str"
+    """Resource URL substring."""
+
+
+class GetEventListenersParameters(TypedDict):
+    objectId: "RemoteObjectId"
+    """Identifier of the object to return listeners for."""
+    depth: "NotRequired[int]"
+    """The maximum depth at which Node children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0."""
+    pierce: "NotRequired[bool]"
+    """Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false). Reports listeners for all contexts if pierce is enabled."""
+
+
+class GetEventListenersReturns(TypedDict):
+    listeners: "List[EventListener]"
+    """Array of relevant listeners."""

@@ -10,12 +10,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import (
-        DetachedEvent,
-        TargetCrashedEvent,
-        TargetReloadedAfterCrashEvent,
-        WorkerScriptLoadedEvent,
-    )
+    from .events import DetachedEvent, TargetCrashedEvent
 
 
 class InspectorRegistration:
@@ -54,33 +49,3 @@ class InspectorRegistration:
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Inspector.targetCrashed", callback)
-
-    def targetReloadedAfterCrash(
-        self,
-        callback: Callable[["TargetReloadedAfterCrashEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for targetReloadedAfterCrash events.
-
-        Fired when debugging target has reloaded after crash
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Inspector.targetReloadedAfterCrash", callback)
-
-    def workerScriptLoaded(
-        self,
-        callback: Callable[["WorkerScriptLoadedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for workerScriptLoaded events.
-
-        Fired on worker targets when main worker script and any imported scripts have been evaluated.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Inspector.workerScriptLoaded", callback)

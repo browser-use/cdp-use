@@ -18,21 +18,6 @@ class InspectorClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def disable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Disables inspector domain notifications."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Inspector.disable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def enable(
         self,
         params: None = None,
@@ -43,6 +28,21 @@ class InspectorClient:
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="Inspector.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def disable(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Disables inspector domain notifications."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Inspector.disable",
                 params=params,
                 session_id=session_id,
             ),

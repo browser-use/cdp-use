@@ -25,7 +25,6 @@ class LogEntry(TypedDict):
     """Log entry severity."""
     text: "str"
     """Logged text."""
-    category: "NotRequired[str]"
     timestamp: "Timestamp"
     """Timestamp when this entry was added."""
     url: "NotRequired[str]"

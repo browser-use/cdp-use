@@ -19,16 +19,16 @@ class LogClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def clear(
+    async def enable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Clears the log."""
+        """Enables log domain, sends the entries collected so far to the client by means of the <code>entryAdded</code> notification."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Log.clear",
+                method="Log.enable",
                 params=params,
                 session_id=session_id,
             ),
@@ -49,17 +49,16 @@ class LogClient:
             ),
         )
 
-    async def enable(
+    async def clear(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Enables log domain, sends the entries collected so far to the client by means of the
-        `entryAdded` notification."""
+        """Clears the log."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Log.enable",
+                method="Log.clear",
                 params=params,
                 session_id=session_id,
             ),

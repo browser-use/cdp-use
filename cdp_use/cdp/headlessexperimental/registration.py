@@ -4,5 +4,52 @@
 
 """CDP HeadlessExperimental Domain Event Registration"""
 
+from typing import Callable, Optional
 
-# No events defined for this domain
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..registry import EventRegistry
+    from .events import MainFrameReadyForScreenshotsEvent, NeedsBeginFramesChangedEvent
+
+
+class HeadlessExperimentalRegistration:
+    """Event registration interface for HeadlessExperimental domain."""
+
+    def __init__(self, registry: "EventRegistry"):
+        self._registry = registry
+        self._domain = "HeadlessExperimental"
+
+    def needsBeginFramesChanged(
+        self,
+        callback: Callable[["NeedsBeginFramesChangedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for needsBeginFramesChanged events.
+
+        Issued when the target starts or stops needing BeginFrames.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register(
+            "HeadlessExperimental.needsBeginFramesChanged", callback
+        )
+
+    def mainFrameReadyForScreenshots(
+        self,
+        callback: Callable[["MainFrameReadyForScreenshotsEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for mainFrameReadyForScreenshots events.
+
+        Issued when the main frame has first submitted a frame to the browser. May only be fired while a BeginFrame is in flight. Before this event, screenshotting requests may fail.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register(
+            "HeadlessExperimental.mainFrameReadyForScreenshots", callback
+        )

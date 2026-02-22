@@ -18,9 +18,8 @@ class DatabaseWithObjectStores(TypedDict):
 
     name: "str"
     """Database name."""
-    version: "float"
-    """Database version (type is not 'integer', as the standard
-requires the version number to be 'unsigned long long')"""
+    version: "int"
+    """Database version."""
     objectStores: "List[ObjectStore]"
     """Object stores in this database."""
 

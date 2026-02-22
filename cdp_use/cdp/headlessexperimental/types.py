@@ -13,6 +13,4 @@ class ScreenshotParams(TypedDict, total=False):
     format: "str"
     """Image compression format (defaults to png)."""
     quality: "int"
-    """Compression quality from range [0..100] (jpeg and webp only)."""
-    optimizeForSpeed: "bool"
-    """Optimize image encoding for speed, not for resulting size (defaults to false)"""
+    """Compression quality from range [0..100] (jpeg only)."""

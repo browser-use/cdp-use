@@ -10,18 +10,12 @@ from typing_extensions import NotRequired, TypedDict
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ..dom.types import BackendNodeId
     from ..network.types import LoaderId
     from ..network.types import MonotonicTime
     from ..runtime.types import StackTrace
-    from .types import BackForwardCacheNotRestoredExplanation
-    from .types import BackForwardCacheNotRestoredExplanationTree
-    from .types import ClientNavigationDisposition
-    from .types import ClientNavigationReason
     from .types import DialogType
     from .types import Frame
     from .types import FrameId
-    from .types import NavigationType
     from .types import ScreencastFrameMetadata
 
 
@@ -29,16 +23,20 @@ class DomContentEventFiredEvent(TypedDict):
     timestamp: "MonotonicTime"
 
 
-"""Emitted only when `page.interceptFileChooser` is enabled."""
+class LoadEventFiredEvent(TypedDict):
+    timestamp: "MonotonicTime"
 
 
-class FileChooserOpenedEvent(TypedDict):
+"""Fired for top level page lifecycle events such as navigation, load, paint, etc."""
+
+
+class LifecycleEventEvent(TypedDict):
     frameId: "FrameId"
-    """Id of the frame containing input node."""
-    mode: "str"
-    """Input mode."""
-    backendNodeId: "NotRequired[BackendNodeId]"
-    """Input node id. Only present for file choosers opened via an `<input type=\"file\">` element."""
+    """Id of the frame."""
+    loaderId: "LoaderId"
+    """Loader identifier. Empty string if the request is fetched from worker."""
+    name: "str"
+    timestamp: "MonotonicTime"
 
 
 """Fired when frame has been attached to its parent."""
@@ -53,12 +51,12 @@ class FrameAttachedEvent(TypedDict):
     """JavaScript stack trace of when frame was attached, only set if frame initiated from script."""
 
 
-"""Fired when frame no longer has a scheduled navigation."""
+"""Fired once navigation of the frame has completed. Frame is now associated with the new loader."""
 
 
-class FrameClearedScheduledNavigationEvent(TypedDict):
-    frameId: "FrameId"
-    """Id of the frame that has cleared its scheduled navigation."""
+class FrameNavigatedEvent(TypedDict):
+    frame: "Frame"
+    """Frame object."""
 
 
 """Fired when frame has been detached from its parent."""
@@ -67,89 +65,6 @@ class FrameClearedScheduledNavigationEvent(TypedDict):
 class FrameDetachedEvent(TypedDict):
     frameId: "FrameId"
     """Id of the frame that has been detached."""
-    reason: "str"
-
-
-"""Fired before frame subtree is detached. Emitted before any frame of the
-subtree is actually detached."""
-
-
-class FrameSubtreeWillBeDetachedEvent(TypedDict):
-    frameId: "FrameId"
-    """Id of the frame that is the root of the subtree that will be detached."""
-
-
-"""Fired once navigation of the frame has completed. Frame is now associated with the new loader."""
-
-
-class FrameNavigatedEvent(TypedDict):
-    frame: "Frame"
-    """Frame object."""
-    type: "NavigationType"
-
-
-"""Fired when opening document to write to."""
-
-
-class DocumentOpenedEvent(TypedDict):
-    frame: "Frame"
-    """Frame object."""
-
-
-class FrameResizedEvent(TypedDict):
-    pass
-
-
-"""Fired when a navigation starts. This event is fired for both
-renderer-initiated and browser-initiated navigations. For renderer-initiated
-navigations, the event is fired after `frameRequestedNavigation`.
-Navigation may still be cancelled after the event is issued. Multiple events
-can be fired for a single navigation, for example, when a same-document
-navigation becomes a cross-document navigation (such as in the case of a
-frameset)."""
-
-
-class FrameStartedNavigatingEvent(TypedDict):
-    frameId: "FrameId"
-    """ID of the frame that is being navigated."""
-    url: "str"
-    """The URL the navigation started with. The final URL can be different."""
-    loaderId: "LoaderId"
-    """Loader identifier. Even though it is present in case of same-document
-navigation, the previously committed loaderId would not change unless
-the navigation changes from a same-document to a cross-document
-navigation."""
-    navigationType: "str"
-
-
-"""Fired when a renderer-initiated navigation is requested.
-Navigation may still be cancelled after the event is issued."""
-
-
-class FrameRequestedNavigationEvent(TypedDict):
-    frameId: "FrameId"
-    """Id of the frame that is being navigated."""
-    reason: "ClientNavigationReason"
-    """The reason for the navigation."""
-    url: "str"
-    """The destination URL for the requested navigation."""
-    disposition: "ClientNavigationDisposition"
-    """The disposition for the navigation."""
-
-
-"""Fired when frame schedules a potential navigation."""
-
-
-class FrameScheduledNavigationEvent(TypedDict):
-    frameId: "FrameId"
-    """Id of the frame that has scheduled a navigation."""
-    delay: "float"
-    """Delay (in seconds) until the navigation is scheduled to begin. The navigation is not
-guaranteed to start."""
-    reason: "ClientNavigationReason"
-    """The reason for the navigation."""
-    url: "str"
-    """The destination URL for the scheduled navigation."""
 
 
 """Fired when frame has started loading."""
@@ -168,41 +83,74 @@ class FrameStoppedLoadingEvent(TypedDict):
     """Id of the frame that has stopped loading."""
 
 
-"""Fired when page is about to start a download.
-Deprecated. Use Browser.downloadWillBegin instead."""
+"""Fired when frame schedules a potential navigation."""
 
 
-class DownloadWillBeginEvent(TypedDict):
+class FrameScheduledNavigationEvent(TypedDict):
     frameId: "FrameId"
-    """Id of the frame that caused download to begin."""
-    guid: "str"
-    """Global unique identifier of the download."""
+    """Id of the frame that has scheduled a navigation."""
+    delay: "float"
+    """Delay (in seconds) until the navigation is scheduled to begin. The navigation is not guaranteed to start."""
+    reason: "str"
+    """The reason for the navigation."""
     url: "str"
-    """URL of the resource being downloaded."""
-    suggestedFilename: "str"
-    """Suggested file name of the resource (the actual name of the file saved on disk may differ)."""
+    """The destination URL for the scheduled navigation."""
 
 
-"""Fired when download makes progress. Last call has |done| == true.
-Deprecated. Use Browser.downloadProgress instead."""
+"""Fired when frame no longer has a scheduled navigation."""
 
 
-class DownloadProgressEvent(TypedDict):
-    guid: "str"
-    """Global unique identifier of the download."""
-    totalBytes: "float"
-    """Total expected bytes to download."""
-    receivedBytes: "float"
-    """Total bytes received."""
-    state: "str"
-    """Download status."""
+class FrameClearedScheduledNavigationEvent(TypedDict):
+    frameId: "FrameId"
+    """Id of the frame that has cleared its scheduled navigation."""
 
 
-"""Fired when interstitial page was hidden"""
-
-
-class InterstitialHiddenEvent(TypedDict):
+class FrameResizedEvent(TypedDict):
     pass
+
+
+"""Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to open."""
+
+
+class JavascriptDialogOpeningEvent(TypedDict):
+    url: "str"
+    """Frame url."""
+    message: "str"
+    """Message that will be displayed by the dialog."""
+    type: "DialogType"
+    """Dialog type."""
+    defaultPrompt: "NotRequired[str]"
+    """Default dialog prompt."""
+
+
+"""Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been closed."""
+
+
+class JavascriptDialogClosedEvent(TypedDict):
+    result: "bool"
+    """Whether dialog was confirmed."""
+    userInput: "str"
+    """User input in case of prompt."""
+
+
+"""Compressed image data requested by the <code>startScreencast</code>."""
+
+
+class ScreencastFrameEvent(TypedDict):
+    data: "str"
+    """Base64-encoded compressed image."""
+    metadata: "ScreencastFrameMetadata"
+    """Screencast frame metadata."""
+    sessionId: "int"
+    """Frame number."""
+
+
+"""Fired when the page with currently enabled screencast was shown or hidden </code>."""
+
+
+class ScreencastVisibilityChangedEvent(TypedDict):
+    visible: "bool"
+    """True if the page is visible."""
 
 
 """Fired when interstitial page was shown"""
@@ -212,110 +160,14 @@ class InterstitialShownEvent(TypedDict):
     pass
 
 
-"""Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
-closed."""
+"""Fired when interstitial page was hidden"""
 
 
-class JavascriptDialogClosedEvent(TypedDict):
-    frameId: "FrameId"
-    """Frame id."""
-    result: "bool"
-    """Whether dialog was confirmed."""
-    userInput: "str"
-    """User input in case of prompt."""
+class InterstitialHiddenEvent(TypedDict):
+    pass
 
 
-"""Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
-open."""
-
-
-class JavascriptDialogOpeningEvent(TypedDict):
-    url: "str"
-    """Frame url."""
-    frameId: "FrameId"
-    """Frame id."""
-    message: "str"
-    """Message that will be displayed by the dialog."""
-    type: "DialogType"
-    """Dialog type."""
-    hasBrowserHandler: "bool"
-    """True iff browser is capable showing or acting on the given dialog. When browser has no
-dialog handler for given target, calling alert while Page domain is engaged will stall
-the page execution. Execution can be resumed via calling Page.handleJavaScriptDialog."""
-    defaultPrompt: "NotRequired[str]"
-    """Default dialog prompt."""
-
-
-"""Fired for lifecycle events (navigation, load, paint, etc) in the current
-target (including local frames)."""
-
-
-class LifecycleEventEvent(TypedDict):
-    frameId: "FrameId"
-    """Id of the frame."""
-    loaderId: "LoaderId"
-    """Loader identifier. Empty string if the request is fetched from worker."""
-    name: "str"
-    timestamp: "MonotonicTime"
-
-
-"""Fired for failed bfcache history navigations if BackForwardCache feature is enabled. Do
-not assume any ordering with the Page.frameNavigated event. This event is fired only for
-main-frame history navigation where the document changes (non-same-document navigations),
-when bfcache navigation fails."""
-
-
-class BackForwardCacheNotUsedEvent(TypedDict):
-    loaderId: "LoaderId"
-    """The loader id for the associated navigation."""
-    frameId: "FrameId"
-    """The frame id of the associated frame."""
-    notRestoredExplanations: "List[BackForwardCacheNotRestoredExplanation]"
-    """Array of reasons why the page could not be cached. This must not be empty."""
-    notRestoredExplanationsTree: (
-        "NotRequired[BackForwardCacheNotRestoredExplanationTree]"
-    )
-    """Tree structure of reasons why the page could not be cached for each frame."""
-
-
-class LoadEventFiredEvent(TypedDict):
-    timestamp: "MonotonicTime"
-
-
-"""Fired when same-document navigation happens, e.g. due to history API usage or anchor navigation."""
-
-
-class NavigatedWithinDocumentEvent(TypedDict):
-    frameId: "FrameId"
-    """Id of the frame."""
-    url: "str"
-    """Frame's new url."""
-    navigationType: "str"
-    """Navigation type"""
-
-
-"""Compressed image data requested by the `startScreencast`."""
-
-
-class ScreencastFrameEvent(TypedDict):
-    data: "str"
-    """Base64-encoded compressed image. (Encoded as a base64 string when passed over JSON)"""
-    metadata: "ScreencastFrameMetadata"
-    """Screencast frame metadata."""
-    sessionId: "int"
-    """Frame number."""
-
-
-"""Fired when the page with currently enabled screencast was shown or hidden `."""
-
-
-class ScreencastVisibilityChangedEvent(TypedDict):
-    visible: "bool"
-    """True if the page is visible."""
-
-
-"""Fired when a new window is going to be opened, via window.open(), link click, form submission,
-etc."""
+"""Fired when a new window is going to be opened, via window.open(), link click, form submission, etc."""
 
 
 class WindowOpenEvent(TypedDict):
@@ -327,12 +179,3 @@ class WindowOpenEvent(TypedDict):
     """An array of enabled window features."""
     userGesture: "bool"
     """Whether or not it was triggered by user gesture."""
-
-
-"""Issued for every compilation cache generated."""
-
-
-class CompilationCacheProducedEvent(TypedDict):
-    url: "str"
-    data: "str"
-    """Base64-encoded data (Encoded as a base64 string when passed over JSON)"""

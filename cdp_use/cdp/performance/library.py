@@ -10,9 +10,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
-    from .commands import EnableParameters
     from .commands import GetMetricsReturns
-    from .commands import SetTimeDomainParameters
 
 
 class PerformanceClient:
@@ -21,24 +19,9 @@ class PerformanceClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def disable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Disable collecting and reporting metrics."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Performance.disable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def enable(
         self,
-        params: Optional["EnableParameters"] = None,
+        params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Enable collecting and reporting metrics."""
@@ -51,18 +34,16 @@ class PerformanceClient:
             ),
         )
 
-    async def setTimeDomain(
+    async def disable(
         self,
-        params: "SetTimeDomainParameters",
+        params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Sets time domain to use for collecting and reporting duration metrics.
-        Note that this must be called before enabling metrics collection. Calling
-        this method while metrics collection is enabled returns an error."""
+        """Disable collecting and reporting metrics."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Performance.setTimeDomain",
+                method="Performance.disable",
                 params=params,
                 session_id=session_id,
             ),

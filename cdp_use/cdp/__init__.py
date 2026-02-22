@@ -4,59 +4,45 @@
 
 """CDP Type-Safe Client"""
 
-from . import console
-from . import debugger
-from . import heapprofiler
-from . import profiler
-from . import runtime
 from . import schema
-from . import accessibility
-from . import animation
-from . import audits
-from . import autofill
-from . import backgroundservice
-from . import bluetoothemulation
-from . import browser
-from . import css
-from . import cachestorage
-from . import cast
-from . import dom
-from . import domdebugger
-from . import domsnapshot
-from . import domstorage
-from . import deviceaccess
-from . import deviceorientation
-from . import emulation
-from . import eventbreakpoints
-from . import extensions
-from . import fedcm
-from . import fetch
-from . import filesystem
-from . import headlessexperimental
-from . import io
-from . import indexeddb
-from . import input
+from . import runtime
+from . import debugger
+from . import console
+from . import profiler
+from . import heapprofiler
 from . import inspector
-from . import layertree
-from . import log
-from . import media
 from . import memory
-from . import network
-from . import overlay
-from . import pwa
-from . import page
 from . import performance
-from . import performancetimeline
-from . import preload
+from . import page
+from . import overlay
+from . import emulation
 from . import security
-from . import serviceworker
-from . import storage
-from . import systeminfo
+from . import audits
+from . import network
+from . import database
+from . import indexeddb
+from . import cachestorage
+from . import domstorage
+from . import applicationcache
+from . import dom
+from . import css
+from . import domsnapshot
+from . import io
+from . import domdebugger
 from . import target
-from . import tethering
+from . import headlessexperimental
+from . import serviceworker
+from . import input
+from . import layertree
+from . import deviceorientation
 from . import tracing
-from . import webaudio
-from . import webauthn
+from . import animation
+from . import accessibility
+from . import storage
+from . import log
+from . import systeminfo
+from . import tethering
+from . import browser
 from . import browseruse
 
 from .library import CDPLibrary
@@ -64,59 +50,45 @@ from .registry import EventRegistry
 from .registration_library import CDPRegistrationLibrary
 
 __all__ = [
-    "console",
-    "debugger",
-    "heapprofiler",
-    "profiler",
-    "runtime",
     "schema",
-    "accessibility",
-    "animation",
-    "audits",
-    "autofill",
-    "backgroundservice",
-    "bluetoothemulation",
-    "browser",
-    "css",
-    "cachestorage",
-    "cast",
-    "dom",
-    "domdebugger",
-    "domsnapshot",
-    "domstorage",
-    "deviceaccess",
-    "deviceorientation",
-    "emulation",
-    "eventbreakpoints",
-    "extensions",
-    "fedcm",
-    "fetch",
-    "filesystem",
-    "headlessexperimental",
-    "io",
-    "indexeddb",
-    "input",
+    "runtime",
+    "debugger",
+    "console",
+    "profiler",
+    "heapprofiler",
     "inspector",
-    "layertree",
-    "log",
-    "media",
     "memory",
-    "network",
-    "overlay",
-    "pwa",
-    "page",
     "performance",
-    "performancetimeline",
-    "preload",
+    "page",
+    "overlay",
+    "emulation",
     "security",
-    "serviceworker",
-    "storage",
-    "systeminfo",
+    "audits",
+    "network",
+    "database",
+    "indexeddb",
+    "cachestorage",
+    "domstorage",
+    "applicationcache",
+    "dom",
+    "css",
+    "domsnapshot",
+    "io",
+    "domdebugger",
     "target",
-    "tethering",
+    "headlessexperimental",
+    "serviceworker",
+    "input",
+    "layertree",
+    "deviceorientation",
     "tracing",
-    "webaudio",
-    "webauthn",
+    "animation",
+    "accessibility",
+    "storage",
+    "log",
+    "systeminfo",
+    "tethering",
+    "browser",
     "browseruse",
     "CDPLibrary",
     "EventRegistry",

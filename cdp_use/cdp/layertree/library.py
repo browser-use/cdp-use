@@ -31,16 +31,16 @@ class LayerTreeClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def compositingReasons(
+    async def enable(
         self,
-        params: "CompositingReasonsParameters",
+        params: None = None,
         session_id: Optional[str] = None,
-    ) -> "CompositingReasonsReturns":
-        """Provides the reasons why the given layer was composited."""
+    ) -> "Dict[str, Any]":
+        """Enables compositing tree inspection."""
         return cast(
-            "CompositingReasonsReturns",
+            "Dict[str, Any]",
             await self._client.send_raw(
-                method="LayerTree.compositingReasons",
+                method="LayerTree.enable",
                 params=params,
                 session_id=session_id,
             ),
@@ -61,31 +61,16 @@ class LayerTreeClient:
             ),
         )
 
-    async def enable(
+    async def compositingReasons(
         self,
-        params: None = None,
+        params: "CompositingReasonsParameters",
         session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Enables compositing tree inspection."""
+    ) -> "CompositingReasonsReturns":
+        """Provides the reasons why the given layer was composited."""
         return cast(
-            "Dict[str, Any]",
+            "CompositingReasonsReturns",
             await self._client.send_raw(
-                method="LayerTree.enable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def loadSnapshot(
-        self,
-        params: "LoadSnapshotParameters",
-        session_id: Optional[str] = None,
-    ) -> "LoadSnapshotReturns":
-        """Returns the snapshot identifier."""
-        return cast(
-            "LoadSnapshotReturns",
-            await self._client.send_raw(
-                method="LayerTree.loadSnapshot",
+                method="LayerTree.compositingReasons",
                 params=params,
                 session_id=session_id,
             ),
@@ -106,15 +91,16 @@ class LayerTreeClient:
             ),
         )
 
-    async def profileSnapshot(
+    async def loadSnapshot(
         self,
-        params: "ProfileSnapshotParameters",
+        params: "LoadSnapshotParameters",
         session_id: Optional[str] = None,
-    ) -> "ProfileSnapshotReturns":
+    ) -> "LoadSnapshotReturns":
+        """Returns the snapshot identifier."""
         return cast(
-            "ProfileSnapshotReturns",
+            "LoadSnapshotReturns",
             await self._client.send_raw(
-                method="LayerTree.profileSnapshot",
+                method="LayerTree.loadSnapshot",
                 params=params,
                 session_id=session_id,
             ),
@@ -130,6 +116,20 @@ class LayerTreeClient:
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="LayerTree.releaseSnapshot",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def profileSnapshot(
+        self,
+        params: "ProfileSnapshotParameters",
+        session_id: Optional[str] = None,
+    ) -> "ProfileSnapshotReturns":
+        return cast(
+            "ProfileSnapshotReturns",
+            await self._client.send_raw(
+                method="LayerTree.profileSnapshot",
                 params=params,
                 session_id=session_id,
             ),

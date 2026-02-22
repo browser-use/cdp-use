@@ -26,19 +26,48 @@ class DebuggerRegistration:
         self._registry = registry
         self._domain = "Debugger"
 
+    def scriptParsed(
+        self,
+        callback: Callable[["ScriptParsedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for scriptParsed events.
+
+        Fired when virtual machine parses script. This event is also fired for all known and uncollected scripts upon enabling debugger.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Debugger.scriptParsed", callback)
+
+    def scriptFailedToParse(
+        self,
+        callback: Callable[["ScriptFailedToParseEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for scriptFailedToParse events.
+
+        Fired when virtual machine fails to parse the script.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Debugger.scriptFailedToParse", callback)
+
     def breakpointResolved(
         self,
         callback: Callable[["BreakpointResolvedEvent", Optional[str]], None],
     ) -> None:
         """
-                Register a callback for breakpointResolved events.
+        Register a callback for breakpointResolved events.
 
-                Fired when breakpoint is resolved to an actual script and location.
-        Deprecated in favor of `resolvedBreakpoints` in the `scriptParsed` event.
+        Fired when breakpoint is resolved to an actual script and location.
 
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Debugger.breakpointResolved", callback)
 
@@ -71,34 +100,3 @@ class DebuggerRegistration:
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Debugger.resumed", callback)
-
-    def scriptFailedToParse(
-        self,
-        callback: Callable[["ScriptFailedToParseEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for scriptFailedToParse events.
-
-        Fired when virtual machine fails to parse the script.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Debugger.scriptFailedToParse", callback)
-
-    def scriptParsed(
-        self,
-        callback: Callable[["ScriptParsedEvent", Optional[str]], None],
-    ) -> None:
-        """
-                Register a callback for scriptParsed events.
-
-                Fired when virtual machine parses script. This event is also fired for all known and uncollected
-        scripts upon enabling debugger.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Debugger.scriptParsed", callback)

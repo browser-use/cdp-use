@@ -15,13 +15,13 @@ if TYPE_CHECKING:
     from .types import LayerId
 
 
+class LayerTreeDidChangeEvent(TypedDict, total=False):
+    layers: "List[Layer]"
+    """Layer tree, absent if not in the comspositing mode."""
+
+
 class LayerPaintedEvent(TypedDict):
     layerId: "LayerId"
     """The id of the painted layer."""
     clip: "Rect"
     """Clip rectangle."""
-
-
-class LayerTreeDidChangeEvent(TypedDict, total=False):
-    layers: "List[Layer]"
-    """Layer tree, absent if not in the compositing mode."""

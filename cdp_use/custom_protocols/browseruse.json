@@ -60,6 +60,11 @@
               "description": "Unix millis"
             },
             {
+              "name": "success",
+              "type": "boolean",
+              "description": "Whether the captcha was solved successfully"
+            },
+            {
               "name": "eventTimeout",
               "type": "number",
               "optional": true

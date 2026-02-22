@@ -10,11 +10,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import (
-        ConsoleProfileFinishedEvent,
-        ConsoleProfileStartedEvent,
-        PreciseCoverageDeltaUpdateEvent,
-    )
+    from .events import ConsoleProfileFinishedEvent, ConsoleProfileStartedEvent
 
 
 class ProfilerRegistration:
@@ -23,19 +19,6 @@ class ProfilerRegistration:
     def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Profiler"
-
-    def consoleProfileFinished(
-        self,
-        callback: Callable[["ConsoleProfileFinishedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for consoleProfileFinished events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Profiler.consoleProfileFinished", callback)
 
     def consoleProfileStarted(
         self,
@@ -52,20 +35,15 @@ class ProfilerRegistration:
         """
         self._registry.register("Profiler.consoleProfileStarted", callback)
 
-    def preciseCoverageDeltaUpdate(
+    def consoleProfileFinished(
         self,
-        callback: Callable[["PreciseCoverageDeltaUpdateEvent", Optional[str]], None],
+        callback: Callable[["ConsoleProfileFinishedEvent", Optional[str]], None],
     ) -> None:
         """
-                Register a callback for preciseCoverageDeltaUpdate events.
+        Register a callback for consoleProfileFinished events.
 
-                Reports coverage delta since the last poll (either from an event like this, or from
-        `takePreciseCoverage` for the current isolate. May only be sent if precise code
-        coverage has been started. This event can be trigged by the embedder to, for example,
-        trigger collection of coverage data immediately at a certain point in time.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("Profiler.preciseCoverageDeltaUpdate", callback)
+        self._registry.register("Profiler.consoleProfileFinished", callback)

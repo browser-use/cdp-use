@@ -4,48 +4,5 @@
 
 """CDP Browser Domain Event Registration"""
 
-from typing import Callable, Optional
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ..registry import EventRegistry
-    from .events import DownloadProgressEvent, DownloadWillBeginEvent
-
-
-class BrowserRegistration:
-    """Event registration interface for Browser domain."""
-
-    def __init__(self, registry: "EventRegistry"):
-        self._registry = registry
-        self._domain = "Browser"
-
-    def downloadWillBegin(
-        self,
-        callback: Callable[["DownloadWillBeginEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for downloadWillBegin events.
-
-        Fired when page is about to start a download.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Browser.downloadWillBegin", callback)
-
-    def downloadProgress(
-        self,
-        callback: Callable[["DownloadProgressEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for downloadProgress events.
-
-        Fired when download makes progress. Last call has |done| == true.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Browser.downloadProgress", callback)
+# No events defined for this domain

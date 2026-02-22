@@ -33,6 +33,8 @@ class CaptchaSolverFinishedEvent(TypedDict):
     durationMs: "int"
     finishedAt: "int"
     """Unix millis"""
+    success: "bool"
+    """Whether the captcha was solved successfully"""
     eventTimeout: "NotRequired[float]"
 
 

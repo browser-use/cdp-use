@@ -13,6 +13,16 @@ if TYPE_CHECKING:
     from ..runtime.types import RemoteObject
 
 
+class GetPlaybackRateReturns(TypedDict):
+    playbackRate: "float"
+    """Playback rate for animations on page."""
+
+
+class SetPlaybackRateParameters(TypedDict):
+    playbackRate: "float"
+    """Playback rate for animations on page"""
+
+
 class GetCurrentTimeParameters(TypedDict):
     id: "str"
     """Id of animation."""
@@ -23,9 +33,27 @@ class GetCurrentTimeReturns(TypedDict):
     """Current time of the page."""
 
 
-class GetPlaybackRateReturns(TypedDict):
-    playbackRate: "float"
-    """Playback rate for animations on page."""
+class SetPausedParameters(TypedDict):
+    animations: "List[str]"
+    """Animations to set the pause state of."""
+    paused: "bool"
+    """Paused state to set to."""
+
+
+class SetTimingParameters(TypedDict):
+    animationId: "str"
+    """Animation id."""
+    duration: "float"
+    """Duration of the animation."""
+    delay: "float"
+    """Delay of the animation."""
+
+
+class SeekAnimationsParameters(TypedDict):
+    animations: "List[str]"
+    """List of animation ids to seek."""
+    currentTime: "float"
+    """Set the current time of each animation."""
 
 
 class ReleaseAnimationsParameters(TypedDict):
@@ -41,31 +69,3 @@ class ResolveAnimationParameters(TypedDict):
 class ResolveAnimationReturns(TypedDict):
     remoteObject: "RemoteObject"
     """Corresponding remote object."""
-
-
-class SeekAnimationsParameters(TypedDict):
-    animations: "List[str]"
-    """List of animation ids to seek."""
-    currentTime: "float"
-    """Set the current time of each animation."""
-
-
-class SetPausedParameters(TypedDict):
-    animations: "List[str]"
-    """Animations to set the pause state of."""
-    paused: "bool"
-    """Paused state to set to."""
-
-
-class SetPlaybackRateParameters(TypedDict):
-    playbackRate: "float"
-    """Playback rate for animations on page"""
-
-
-class SetTimingParameters(TypedDict):
-    animationId: "str"
-    """Animation id."""
-    duration: "float"
-    """Duration of the animation."""
-    delay: "float"
-    """Delay of the animation."""

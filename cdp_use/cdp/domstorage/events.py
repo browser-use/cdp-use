@@ -12,10 +12,8 @@ if TYPE_CHECKING:
     from .types import StorageId
 
 
-class DomStorageItemAddedEvent(TypedDict):
+class DomStorageItemsClearedEvent(TypedDict):
     storageId: "StorageId"
-    key: "str"
-    newValue: "str"
 
 
 class DomStorageItemRemovedEvent(TypedDict):
@@ -23,12 +21,14 @@ class DomStorageItemRemovedEvent(TypedDict):
     key: "str"
 
 
+class DomStorageItemAddedEvent(TypedDict):
+    storageId: "StorageId"
+    key: "str"
+    newValue: "str"
+
+
 class DomStorageItemUpdatedEvent(TypedDict):
     storageId: "StorageId"
     key: "str"
     oldValue: "str"
     newValue: "str"
-
-
-class DomStorageItemsClearedEvent(TypedDict):
-    storageId: "StorageId"

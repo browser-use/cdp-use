@@ -11,7 +11,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import (
-        AffectedByStartingStylesFlagUpdatedEvent,
         AttributeModifiedEvent,
         AttributeRemovedEvent,
         CharacterDataModifiedEvent,
@@ -23,11 +22,9 @@ if TYPE_CHECKING:
         InlineStyleInvalidatedEvent,
         PseudoElementAddedEvent,
         PseudoElementRemovedEvent,
-        ScrollableFlagUpdatedEvent,
         SetChildNodesEvent,
         ShadowRootPoppedEvent,
         ShadowRootPushedEvent,
-        TopLayerElementsUpdatedEvent,
     )
 
 
@@ -38,6 +35,36 @@ class DOMRegistration:
         self._registry = registry
         self._domain = "DOM"
 
+    def documentUpdated(
+        self,
+        callback: Callable[["DocumentUpdatedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for documentUpdated events.
+
+        Fired when <code>Document</code> has been totally updated. Node ids are no longer valid.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("DOM.documentUpdated", callback)
+
+    def setChildNodes(
+        self,
+        callback: Callable[["SetChildNodesEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for setChildNodes events.
+
+        Fired when backend wants to provide client with the missing DOM structure. This happens upon most of the calls requesting node ids.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("DOM.setChildNodes", callback)
+
     def attributeModified(
         self,
         callback: Callable[["AttributeModifiedEvent", Optional[str]], None],
@@ -45,7 +72,7 @@ class DOMRegistration:
         """
         Register a callback for attributeModified events.
 
-        Fired when `Element`'s attribute is modified.
+        Fired when <code>Element</code>'s attribute is modified.
 
         Args:
             callback: Function to call when event occurs.
@@ -60,13 +87,28 @@ class DOMRegistration:
         """
         Register a callback for attributeRemoved events.
 
-        Fired when `Element`'s attribute is removed.
+        Fired when <code>Element</code>'s attribute is removed.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("DOM.attributeRemoved", callback)
+
+    def inlineStyleInvalidated(
+        self,
+        callback: Callable[["InlineStyleInvalidatedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for inlineStyleInvalidated events.
+
+        Fired when <code>Element</code>'s inline style is modified via a CSS property modification.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("DOM.inlineStyleInvalidated", callback)
 
     def characterDataModified(
         self,
@@ -75,7 +117,7 @@ class DOMRegistration:
         """
         Register a callback for characterDataModified events.
 
-        Mirrors `DOMCharacterDataModified` event.
+        Mirrors <code>DOMCharacterDataModified</code> event.
 
         Args:
             callback: Function to call when event occurs.
@@ -90,7 +132,7 @@ class DOMRegistration:
         """
         Register a callback for childNodeCountUpdated events.
 
-        Fired when `Container`'s child node count has changed.
+        Fired when <code>Container</code>'s child node count has changed.
 
         Args:
             callback: Function to call when event occurs.
@@ -105,7 +147,7 @@ class DOMRegistration:
         """
         Register a callback for childNodeInserted events.
 
-        Mirrors `DOMNodeInserted` event.
+        Mirrors <code>DOMNodeInserted</code> event.
 
         Args:
             callback: Function to call when event occurs.
@@ -120,7 +162,7 @@ class DOMRegistration:
         """
         Register a callback for childNodeRemoved events.
 
-        Mirrors `DOMNodeRemoved` event.
+        Mirrors <code>DOMNodeRemoved</code> event.
 
         Args:
             callback: Function to call when event occurs.
@@ -128,143 +170,20 @@ class DOMRegistration:
         """
         self._registry.register("DOM.childNodeRemoved", callback)
 
-    def distributedNodesUpdated(
+    def shadowRootPushed(
         self,
-        callback: Callable[["DistributedNodesUpdatedEvent", Optional[str]], None],
+        callback: Callable[["ShadowRootPushedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for distributedNodesUpdated events.
+        Register a callback for shadowRootPushed events.
 
-        Called when distribution is changed.
+        Called when shadow root is pushed into the element.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("DOM.distributedNodesUpdated", callback)
-
-    def documentUpdated(
-        self,
-        callback: Callable[["DocumentUpdatedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for documentUpdated events.
-
-        Fired when `Document` has been totally updated. Node ids are no longer valid.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("DOM.documentUpdated", callback)
-
-    def inlineStyleInvalidated(
-        self,
-        callback: Callable[["InlineStyleInvalidatedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for inlineStyleInvalidated events.
-
-        Fired when `Element`'s inline style is modified via a CSS property modification.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("DOM.inlineStyleInvalidated", callback)
-
-    def pseudoElementAdded(
-        self,
-        callback: Callable[["PseudoElementAddedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for pseudoElementAdded events.
-
-        Called when a pseudo element is added to an element.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("DOM.pseudoElementAdded", callback)
-
-    def topLayerElementsUpdated(
-        self,
-        callback: Callable[["TopLayerElementsUpdatedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for topLayerElementsUpdated events.
-
-        Called when top layer elements are changed.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("DOM.topLayerElementsUpdated", callback)
-
-    def scrollableFlagUpdated(
-        self,
-        callback: Callable[["ScrollableFlagUpdatedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for scrollableFlagUpdated events.
-
-        Fired when a node's scrollability state changes.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("DOM.scrollableFlagUpdated", callback)
-
-    def affectedByStartingStylesFlagUpdated(
-        self,
-        callback: Callable[
-            ["AffectedByStartingStylesFlagUpdatedEvent", Optional[str]], None
-        ],
-    ) -> None:
-        """
-        Register a callback for affectedByStartingStylesFlagUpdated events.
-
-        Fired when a node's starting styles changes.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("DOM.affectedByStartingStylesFlagUpdated", callback)
-
-    def pseudoElementRemoved(
-        self,
-        callback: Callable[["PseudoElementRemovedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for pseudoElementRemoved events.
-
-        Called when a pseudo element is removed from an element.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("DOM.pseudoElementRemoved", callback)
-
-    def setChildNodes(
-        self,
-        callback: Callable[["SetChildNodesEvent", Optional[str]], None],
-    ) -> None:
-        """
-                Register a callback for setChildNodes events.
-
-                Fired when backend wants to provide client with the missing DOM structure. This happens upon
-        most of the calls requesting node ids.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("DOM.setChildNodes", callback)
+        self._registry.register("DOM.shadowRootPushed", callback)
 
     def shadowRootPopped(
         self,
@@ -281,17 +200,47 @@ class DOMRegistration:
         """
         self._registry.register("DOM.shadowRootPopped", callback)
 
-    def shadowRootPushed(
+    def pseudoElementAdded(
         self,
-        callback: Callable[["ShadowRootPushedEvent", Optional[str]], None],
+        callback: Callable[["PseudoElementAddedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for shadowRootPushed events.
+        Register a callback for pseudoElementAdded events.
 
-        Called when shadow root is pushed into the element.
+        Called when a pseudo element is added to an element.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("DOM.shadowRootPushed", callback)
+        self._registry.register("DOM.pseudoElementAdded", callback)
+
+    def pseudoElementRemoved(
+        self,
+        callback: Callable[["PseudoElementRemovedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for pseudoElementRemoved events.
+
+        Called when a pseudo element is removed from an element.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("DOM.pseudoElementRemoved", callback)
+
+    def distributedNodesUpdated(
+        self,
+        callback: Callable[["DistributedNodesUpdatedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for distributedNodesUpdated events.
+
+        Called when distrubution is changed.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("DOM.distributedNodesUpdated", callback)

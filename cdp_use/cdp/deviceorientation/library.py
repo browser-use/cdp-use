@@ -19,21 +19,6 @@ class DeviceOrientationClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def clearDeviceOrientationOverride(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Clears the overridden Device Orientation."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="DeviceOrientation.clearDeviceOrientationOverride",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def setDeviceOrientationOverride(
         self,
         params: "SetDeviceOrientationOverrideParameters",
@@ -44,6 +29,21 @@ class DeviceOrientationClient:
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="DeviceOrientation.setDeviceOrientationOverride",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def clearDeviceOrientationOverride(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Clears the overridden Device Orientation."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="DeviceOrientation.clearDeviceOrientationOverride",
                 params=params,
                 session_id=session_id,
             ),

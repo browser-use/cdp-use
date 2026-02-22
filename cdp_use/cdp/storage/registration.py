@@ -11,21 +11,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import (
-        AttributionReportingReportSentEvent,
-        AttributionReportingSourceRegisteredEvent,
-        AttributionReportingTriggerRegisteredEvent,
-        AttributionReportingVerboseDebugReportSentEvent,
         CacheStorageContentUpdatedEvent,
         CacheStorageListUpdatedEvent,
         IndexedDBContentUpdatedEvent,
         IndexedDBListUpdatedEvent,
-        InterestGroupAccessedEvent,
-        InterestGroupAuctionEventOccurredEvent,
-        InterestGroupAuctionNetworkRequestCreatedEvent,
-        SharedStorageAccessedEvent,
-        SharedStorageWorkletOperationExecutionFinishedEvent,
-        StorageBucketCreatedOrUpdatedEvent,
-        StorageBucketDeletedEvent,
     )
 
 
@@ -35,21 +24,6 @@ class StorageRegistration:
     def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Storage"
-
-    def cacheStorageContentUpdated(
-        self,
-        callback: Callable[["CacheStorageContentUpdatedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for cacheStorageContentUpdated events.
-
-        A cache's contents have been modified.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Storage.cacheStorageContentUpdated", callback)
 
     def cacheStorageListUpdated(
         self,
@@ -66,20 +40,20 @@ class StorageRegistration:
         """
         self._registry.register("Storage.cacheStorageListUpdated", callback)
 
-    def indexedDBContentUpdated(
+    def cacheStorageContentUpdated(
         self,
-        callback: Callable[["IndexedDBContentUpdatedEvent", Optional[str]], None],
+        callback: Callable[["CacheStorageContentUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for indexedDBContentUpdated events.
+        Register a callback for cacheStorageContentUpdated events.
 
-        The origin's IndexedDB object store has been modified.
+        A cache's contents have been modified.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("Storage.indexedDBContentUpdated", callback)
+        self._registry.register("Storage.cacheStorageContentUpdated", callback)
 
     def indexedDBListUpdated(
         self,
@@ -96,186 +70,17 @@ class StorageRegistration:
         """
         self._registry.register("Storage.indexedDBListUpdated", callback)
 
-    def interestGroupAccessed(
+    def indexedDBContentUpdated(
         self,
-        callback: Callable[["InterestGroupAccessedEvent", Optional[str]], None],
+        callback: Callable[["IndexedDBContentUpdatedEvent", Optional[str]], None],
     ) -> None:
         """
-                Register a callback for interestGroupAccessed events.
+        Register a callback for indexedDBContentUpdated events.
 
-                One of the interest groups was accessed. Note that these events are global
-        to all targets sharing an interest group store.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Storage.interestGroupAccessed", callback)
-
-    def interestGroupAuctionEventOccurred(
-        self,
-        callback: Callable[
-            ["InterestGroupAuctionEventOccurredEvent", Optional[str]], None
-        ],
-    ) -> None:
-        """
-                Register a callback for interestGroupAuctionEventOccurred events.
-
-                An auction involving interest groups is taking place. These events are
-        target-specific.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Storage.interestGroupAuctionEventOccurred", callback)
-
-    def interestGroupAuctionNetworkRequestCreated(
-        self,
-        callback: Callable[
-            ["InterestGroupAuctionNetworkRequestCreatedEvent", Optional[str]], None
-        ],
-    ) -> None:
-        """
-                Register a callback for interestGroupAuctionNetworkRequestCreated events.
-
-                Specifies which auctions a particular network fetch may be related to, and
-        in what role. Note that it is not ordered with respect to
-        Network.requestWillBeSent (but will happen before loadingFinished
-        loadingFailed).
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register(
-            "Storage.interestGroupAuctionNetworkRequestCreated", callback
-        )
-
-    def sharedStorageAccessed(
-        self,
-        callback: Callable[["SharedStorageAccessedEvent", Optional[str]], None],
-    ) -> None:
-        """
-                Register a callback for sharedStorageAccessed events.
-
-                Shared storage was accessed by the associated page.
-        The following parameters are included in all events.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Storage.sharedStorageAccessed", callback)
-
-    def sharedStorageWorkletOperationExecutionFinished(
-        self,
-        callback: Callable[
-            ["SharedStorageWorkletOperationExecutionFinishedEvent", Optional[str]], None
-        ],
-    ) -> None:
-        """
-                Register a callback for sharedStorageWorkletOperationExecutionFinished events.
-
-                A shared storage run or selectURL operation finished its execution.
-        The following parameters are included in all events.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register(
-            "Storage.sharedStorageWorkletOperationExecutionFinished", callback
-        )
-
-    def storageBucketCreatedOrUpdated(
-        self,
-        callback: Callable[["StorageBucketCreatedOrUpdatedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for storageBucketCreatedOrUpdated events.
+        The origin's IndexedDB object store has been modified.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("Storage.storageBucketCreatedOrUpdated", callback)
-
-    def storageBucketDeleted(
-        self,
-        callback: Callable[["StorageBucketDeletedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for storageBucketDeleted events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Storage.storageBucketDeleted", callback)
-
-    def attributionReportingSourceRegistered(
-        self,
-        callback: Callable[
-            ["AttributionReportingSourceRegisteredEvent", Optional[str]], None
-        ],
-    ) -> None:
-        """
-        Register a callback for attributionReportingSourceRegistered events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register(
-            "Storage.attributionReportingSourceRegistered", callback
-        )
-
-    def attributionReportingTriggerRegistered(
-        self,
-        callback: Callable[
-            ["AttributionReportingTriggerRegisteredEvent", Optional[str]], None
-        ],
-    ) -> None:
-        """
-        Register a callback for attributionReportingTriggerRegistered events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register(
-            "Storage.attributionReportingTriggerRegistered", callback
-        )
-
-    def attributionReportingReportSent(
-        self,
-        callback: Callable[
-            ["AttributionReportingReportSentEvent", Optional[str]], None
-        ],
-    ) -> None:
-        """
-        Register a callback for attributionReportingReportSent events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Storage.attributionReportingReportSent", callback)
-
-    def attributionReportingVerboseDebugReportSent(
-        self,
-        callback: Callable[
-            ["AttributionReportingVerboseDebugReportSentEvent", Optional[str]], None
-        ],
-    ) -> None:
-        """
-        Register a callback for attributionReportingVerboseDebugReportSent events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register(
-            "Storage.attributionReportingVerboseDebugReportSent", callback
-        )
+        self._registry.register("Storage.indexedDBContentUpdated", callback)

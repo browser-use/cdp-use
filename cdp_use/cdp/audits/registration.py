@@ -4,31 +4,5 @@
 
 """CDP Audits Domain Event Registration"""
 
-from typing import Callable, Optional
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ..registry import EventRegistry
-    from .events import IssueAddedEvent
-
-
-class AuditsRegistration:
-    """Event registration interface for Audits domain."""
-
-    def __init__(self, registry: "EventRegistry"):
-        self._registry = registry
-        self._domain = "Audits"
-
-    def issueAdded(
-        self,
-        callback: Callable[["IssueAddedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for issueAdded events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Audits.issueAdded", callback)
+# No events defined for this domain

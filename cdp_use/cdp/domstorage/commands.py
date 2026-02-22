@@ -26,12 +26,12 @@ class GetDOMStorageItemsReturns(TypedDict):
     entries: "List[Item]"
 
 
-class RemoveDOMStorageItemParameters(TypedDict):
-    storageId: "StorageId"
-    key: "str"
-
-
 class SetDOMStorageItemParameters(TypedDict):
     storageId: "StorageId"
     key: "str"
     value: "str"
+
+
+class RemoveDOMStorageItemParameters(TypedDict):
+    storageId: "StorageId"
+    key: "str"

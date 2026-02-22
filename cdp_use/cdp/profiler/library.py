@@ -13,7 +13,6 @@ if TYPE_CHECKING:
     from .commands import GetBestEffortCoverageReturns
     from .commands import SetSamplingIntervalParameters
     from .commands import StartPreciseCoverageParameters
-    from .commands import StartPreciseCoverageReturns
     from .commands import StopReturns
     from .commands import TakePreciseCoverageReturns
 
@@ -23,20 +22,6 @@ class ProfilerClient:
 
     def __init__(self, client: "CDPClient"):
         self._client = client
-
-    async def disable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Profiler.disable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
 
     async def enable(
         self,
@@ -52,17 +37,15 @@ class ProfilerClient:
             ),
         )
 
-    async def getBestEffortCoverage(
+    async def disable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
-    ) -> "GetBestEffortCoverageReturns":
-        """Collect coverage data for the current isolate. The coverage data may be incomplete due to
-        garbage collection."""
+    ) -> "Dict[str, Any]":
         return cast(
-            "GetBestEffortCoverageReturns",
+            "Dict[str, Any]",
             await self._client.send_raw(
-                method="Profiler.getBestEffortCoverage",
+                method="Profiler.disable",
                 params=params,
                 session_id=session_id,
             ),
@@ -97,23 +80,6 @@ class ProfilerClient:
             ),
         )
 
-    async def startPreciseCoverage(
-        self,
-        params: Optional["StartPreciseCoverageParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "StartPreciseCoverageReturns":
-        """Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code
-        coverage may be incomplete. Enabling prevents running optimized code and resets execution
-        counters."""
-        return cast(
-            "StartPreciseCoverageReturns",
-            await self._client.send_raw(
-                method="Profiler.startPreciseCoverage",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def stop(
         self,
         params: None = None,
@@ -128,13 +94,27 @@ class ProfilerClient:
             ),
         )
 
+    async def startPreciseCoverage(
+        self,
+        params: Optional["StartPreciseCoverageParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code coverage may be incomplete. Enabling prevents running optimized code and resets execution counters."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Profiler.startPreciseCoverage",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
     async def stopPreciseCoverage(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Disable precise code coverage. Disabling releases unnecessary execution count records and allows
-        executing optimized code."""
+        """Disable precise code coverage. Disabling releases unnecessary execution count records and allows executing optimized code."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
@@ -149,12 +129,26 @@ class ProfilerClient:
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "TakePreciseCoverageReturns":
-        """Collect coverage data for the current isolate, and resets execution counters. Precise code
-        coverage needs to have started."""
+        """Collect coverage data for the current isolate, and resets execution counters. Precise code coverage needs to have started."""
         return cast(
             "TakePreciseCoverageReturns",
             await self._client.send_raw(
                 method="Profiler.takePreciseCoverage",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getBestEffortCoverage(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "GetBestEffortCoverageReturns":
+        """Collect coverage data for the current isolate. The coverage data may be incomplete due to garbage collection."""
+        return cast(
+            "GetBestEffortCoverageReturns",
+            await self._client.send_raw(
+                method="Profiler.getBestEffortCoverage",
                 params=params,
                 session_id=session_id,
             ),

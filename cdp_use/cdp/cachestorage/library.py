@@ -26,6 +26,36 @@ class CacheStorageClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
+    async def requestCacheNames(
+        self,
+        params: "RequestCacheNamesParameters",
+        session_id: Optional[str] = None,
+    ) -> "RequestCacheNamesReturns":
+        """Requests cache names."""
+        return cast(
+            "RequestCacheNamesReturns",
+            await self._client.send_raw(
+                method="CacheStorage.requestCacheNames",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def requestEntries(
+        self,
+        params: "RequestEntriesParameters",
+        session_id: Optional[str] = None,
+    ) -> "RequestEntriesReturns":
+        """Requests data from cache."""
+        return cast(
+            "RequestEntriesReturns",
+            await self._client.send_raw(
+                method="CacheStorage.requestEntries",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
     async def deleteCache(
         self,
         params: "DeleteCacheParameters",
@@ -56,21 +86,6 @@ class CacheStorageClient:
             ),
         )
 
-    async def requestCacheNames(
-        self,
-        params: Optional["RequestCacheNamesParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "RequestCacheNamesReturns":
-        """Requests cache names."""
-        return cast(
-            "RequestCacheNamesReturns",
-            await self._client.send_raw(
-                method="CacheStorage.requestCacheNames",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def requestCachedResponse(
         self,
         params: "RequestCachedResponseParameters",
@@ -81,21 +96,6 @@ class CacheStorageClient:
             "RequestCachedResponseReturns",
             await self._client.send_raw(
                 method="CacheStorage.requestCachedResponse",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def requestEntries(
-        self,
-        params: "RequestEntriesParameters",
-        session_id: Optional[str] = None,
-    ) -> "RequestEntriesReturns":
-        """Requests data from cache."""
-        return cast(
-            "RequestEntriesReturns",
-            await self._client.send_raw(
-                method="CacheStorage.requestEntries",
                 params=params,
                 session_id=session_id,
             ),

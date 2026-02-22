@@ -25,18 +25,18 @@ class DOMStorageRegistration:
         self._registry = registry
         self._domain = "DOMStorage"
 
-    def domStorageItemAdded(
+    def domStorageItemsCleared(
         self,
-        callback: Callable[["DomStorageItemAddedEvent", Optional[str]], None],
+        callback: Callable[["DomStorageItemsClearedEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for domStorageItemAdded events.
+        Register a callback for domStorageItemsCleared events.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("DOMStorage.domStorageItemAdded", callback)
+        self._registry.register("DOMStorage.domStorageItemsCleared", callback)
 
     def domStorageItemRemoved(
         self,
@@ -51,6 +51,19 @@ class DOMStorageRegistration:
         """
         self._registry.register("DOMStorage.domStorageItemRemoved", callback)
 
+    def domStorageItemAdded(
+        self,
+        callback: Callable[["DomStorageItemAddedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for domStorageItemAdded events.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("DOMStorage.domStorageItemAdded", callback)
+
     def domStorageItemUpdated(
         self,
         callback: Callable[["DomStorageItemUpdatedEvent", Optional[str]], None],
@@ -63,16 +76,3 @@ class DOMStorageRegistration:
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("DOMStorage.domStorageItemUpdated", callback)
-
-    def domStorageItemsCleared(
-        self,
-        callback: Callable[["DomStorageItemsClearedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for domStorageItemsCleared events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("DOMStorage.domStorageItemsCleared", callback)

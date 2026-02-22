@@ -29,23 +29,7 @@ class HeapProfilerClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def addInspectedHeapObject(
-        self,
-        params: "AddInspectedHeapObjectParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Enables console to refer to the node with given id via $x (see Command Line API for more details
-        $x functions)."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="HeapProfiler.addInspectedHeapObject",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def collectGarbage(
+    async def enable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
@@ -53,7 +37,7 @@ class HeapProfilerClient:
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="HeapProfiler.collectGarbage",
+                method="HeapProfiler.enable",
                 params=params,
                 session_id=session_id,
             ),
@@ -73,76 +57,6 @@ class HeapProfilerClient:
             ),
         )
 
-    async def enable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="HeapProfiler.enable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getHeapObjectId(
-        self,
-        params: "GetHeapObjectIdParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetHeapObjectIdReturns":
-        return cast(
-            "GetHeapObjectIdReturns",
-            await self._client.send_raw(
-                method="HeapProfiler.getHeapObjectId",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getObjectByHeapObjectId(
-        self,
-        params: "GetObjectByHeapObjectIdParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetObjectByHeapObjectIdReturns":
-        return cast(
-            "GetObjectByHeapObjectIdReturns",
-            await self._client.send_raw(
-                method="HeapProfiler.getObjectByHeapObjectId",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getSamplingProfile(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "GetSamplingProfileReturns":
-        return cast(
-            "GetSamplingProfileReturns",
-            await self._client.send_raw(
-                method="HeapProfiler.getSamplingProfile",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def startSampling(
-        self,
-        params: Optional["StartSamplingParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="HeapProfiler.startSampling",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def startTrackingHeapObjects(
         self,
         params: Optional["StartTrackingHeapObjectsParameters"] = None,
@@ -152,20 +66,6 @@ class HeapProfilerClient:
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="HeapProfiler.startTrackingHeapObjects",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def stopSampling(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "StopSamplingReturns":
-        return cast(
-            "StopSamplingReturns",
-            await self._client.send_raw(
-                method="HeapProfiler.stopSampling",
                 params=params,
                 session_id=session_id,
             ),
@@ -194,6 +94,105 @@ class HeapProfilerClient:
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="HeapProfiler.takeHeapSnapshot",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def collectGarbage(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="HeapProfiler.collectGarbage",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getObjectByHeapObjectId(
+        self,
+        params: "GetObjectByHeapObjectIdParameters",
+        session_id: Optional[str] = None,
+    ) -> "GetObjectByHeapObjectIdReturns":
+        return cast(
+            "GetObjectByHeapObjectIdReturns",
+            await self._client.send_raw(
+                method="HeapProfiler.getObjectByHeapObjectId",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def addInspectedHeapObject(
+        self,
+        params: "AddInspectedHeapObjectParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Enables console to refer to the node with given id via $x (see Command Line API for more details $x functions)."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="HeapProfiler.addInspectedHeapObject",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getHeapObjectId(
+        self,
+        params: "GetHeapObjectIdParameters",
+        session_id: Optional[str] = None,
+    ) -> "GetHeapObjectIdReturns":
+        return cast(
+            "GetHeapObjectIdReturns",
+            await self._client.send_raw(
+                method="HeapProfiler.getHeapObjectId",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def startSampling(
+        self,
+        params: Optional["StartSamplingParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="HeapProfiler.startSampling",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def stopSampling(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "StopSamplingReturns":
+        return cast(
+            "StopSamplingReturns",
+            await self._client.send_raw(
+                method="HeapProfiler.stopSampling",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getSamplingProfile(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "GetSamplingProfileReturns":
+        return cast(
+            "GetSamplingProfileReturns",
+            await self._client.send_raw(
+                method="HeapProfiler.getSamplingProfile",
                 params=params,
                 session_id=session_id,
             ),

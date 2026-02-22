@@ -28,6 +28,21 @@ class AnimationClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
+    async def enable(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Enables animation domain notifications."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.enable",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
     async def disable(
         self,
         params: None = None,
@@ -43,16 +58,31 @@ class AnimationClient:
             ),
         )
 
-    async def enable(
+    async def getPlaybackRate(
         self,
         params: None = None,
         session_id: Optional[str] = None,
+    ) -> "GetPlaybackRateReturns":
+        """Gets the playback rate of the document timeline."""
+        return cast(
+            "GetPlaybackRateReturns",
+            await self._client.send_raw(
+                method="Animation.getPlaybackRate",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def setPlaybackRate(
+        self,
+        params: "SetPlaybackRateParameters",
+        session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Enables animation domain notifications."""
+        """Sets the playback rate of the document timeline."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Animation.enable",
+                method="Animation.setPlaybackRate",
                 params=params,
                 session_id=session_id,
             ),
@@ -73,16 +103,46 @@ class AnimationClient:
             ),
         )
 
-    async def getPlaybackRate(
+    async def setPaused(
         self,
-        params: None = None,
+        params: "SetPausedParameters",
         session_id: Optional[str] = None,
-    ) -> "GetPlaybackRateReturns":
-        """Gets the playback rate of the document timeline."""
+    ) -> "Dict[str, Any]":
+        """Sets the paused state of a set of animations."""
         return cast(
-            "GetPlaybackRateReturns",
+            "Dict[str, Any]",
             await self._client.send_raw(
-                method="Animation.getPlaybackRate",
+                method="Animation.setPaused",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def setTiming(
+        self,
+        params: "SetTimingParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Sets the timing of an animation node."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.setTiming",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def seekAnimations(
+        self,
+        params: "SeekAnimationsParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Seek a set of animations to a particular time within each animation."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Animation.seekAnimations",
                 params=params,
                 session_id=session_id,
             ),
@@ -113,66 +173,6 @@ class AnimationClient:
             "ResolveAnimationReturns",
             await self._client.send_raw(
                 method="Animation.resolveAnimation",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def seekAnimations(
-        self,
-        params: "SeekAnimationsParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Seek a set of animations to a particular time within each animation."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Animation.seekAnimations",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setPaused(
-        self,
-        params: "SetPausedParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Sets the paused state of a set of animations."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Animation.setPaused",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setPlaybackRate(
-        self,
-        params: "SetPlaybackRateParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Sets the playback rate of the document timeline."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Animation.setPlaybackRate",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setTiming(
-        self,
-        params: "SetTimingParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Sets the timing of an animation node."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Animation.setTiming",
                 params=params,
                 session_id=session_id,
             ),

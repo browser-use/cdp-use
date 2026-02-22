@@ -16,7 +16,6 @@ if TYPE_CHECKING:
     from .commands import RemoveEventListenerBreakpointParameters
     from .commands import RemoveInstrumentationBreakpointParameters
     from .commands import RemoveXHRBreakpointParameters
-    from .commands import SetBreakOnCSPViolationParameters
     from .commands import SetDOMBreakpointParameters
     from .commands import SetEventListenerBreakpointParameters
     from .commands import SetInstrumentationBreakpointParameters
@@ -29,96 +28,6 @@ class DOMDebuggerClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def getEventListeners(
-        self,
-        params: "GetEventListenersParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetEventListenersReturns":
-        """Returns event listeners of the given object."""
-        return cast(
-            "GetEventListenersReturns",
-            await self._client.send_raw(
-                method="DOMDebugger.getEventListeners",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def removeDOMBreakpoint(
-        self,
-        params: "RemoveDOMBreakpointParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Removes DOM breakpoint that was set using `setDOMBreakpoint`."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="DOMDebugger.removeDOMBreakpoint",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def removeEventListenerBreakpoint(
-        self,
-        params: "RemoveEventListenerBreakpointParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Removes breakpoint on particular DOM event."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="DOMDebugger.removeEventListenerBreakpoint",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def removeInstrumentationBreakpoint(
-        self,
-        params: "RemoveInstrumentationBreakpointParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Removes breakpoint on particular native event."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="DOMDebugger.removeInstrumentationBreakpoint",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def removeXHRBreakpoint(
-        self,
-        params: "RemoveXHRBreakpointParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Removes breakpoint from XMLHttpRequest."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="DOMDebugger.removeXHRBreakpoint",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setBreakOnCSPViolation(
-        self,
-        params: "SetBreakOnCSPViolationParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Sets breakpoint on particular CSP violations."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="DOMDebugger.setBreakOnCSPViolation",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def setDOMBreakpoint(
         self,
         params: "SetDOMBreakpointParameters",
@@ -129,6 +38,21 @@ class DOMDebuggerClient:
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="DOMDebugger.setDOMBreakpoint",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def removeDOMBreakpoint(
+        self,
+        params: "RemoveDOMBreakpointParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Removes DOM breakpoint that was set using <code>setDOMBreakpoint</code>."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="DOMDebugger.removeDOMBreakpoint",
                 params=params,
                 session_id=session_id,
             ),
@@ -149,6 +73,21 @@ class DOMDebuggerClient:
             ),
         )
 
+    async def removeEventListenerBreakpoint(
+        self,
+        params: "RemoveEventListenerBreakpointParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Removes breakpoint on particular DOM event."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="DOMDebugger.removeEventListenerBreakpoint",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
     async def setInstrumentationBreakpoint(
         self,
         params: "SetInstrumentationBreakpointParameters",
@@ -164,6 +103,21 @@ class DOMDebuggerClient:
             ),
         )
 
+    async def removeInstrumentationBreakpoint(
+        self,
+        params: "RemoveInstrumentationBreakpointParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Removes breakpoint on particular native event."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="DOMDebugger.removeInstrumentationBreakpoint",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
     async def setXHRBreakpoint(
         self,
         params: "SetXHRBreakpointParameters",
@@ -174,6 +128,36 @@ class DOMDebuggerClient:
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="DOMDebugger.setXHRBreakpoint",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def removeXHRBreakpoint(
+        self,
+        params: "RemoveXHRBreakpointParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Removes breakpoint from XMLHttpRequest."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="DOMDebugger.removeXHRBreakpoint",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getEventListeners(
+        self,
+        params: "GetEventListenersParameters",
+        session_id: Optional[str] = None,
+    ) -> "GetEventListenersReturns":
+        """Returns event listeners of the given object."""
+        return cast(
+            "GetEventListenersReturns",
+            await self._client.send_raw(
+                method="DOMDebugger.getEventListeners",
                 params=params,
                 session_id=session_id,
             ),

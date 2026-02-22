@@ -11,7 +11,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ..registry import EventRegistry
     from .events import (
-        ComputedStyleUpdatedEvent,
         FontsUpdatedEvent,
         MediaQueryResultChangedEvent,
         StyleSheetAddedEvent,
@@ -27,52 +26,35 @@ class CSSRegistration:
         self._registry = registry
         self._domain = "CSS"
 
-    def fontsUpdated(
-        self,
-        callback: Callable[["FontsUpdatedEvent", Optional[str]], None],
-    ) -> None:
-        """
-                Register a callback for fontsUpdated events.
-
-                Fires whenever a web font is updated.  A non-empty font parameter indicates a successfully loaded
-        web font.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("CSS.fontsUpdated", callback)
-
     def mediaQueryResultChanged(
         self,
         callback: Callable[["MediaQueryResultChangedEvent", Optional[str]], None],
     ) -> None:
         """
-                Register a callback for mediaQueryResultChanged events.
+        Register a callback for mediaQueryResultChanged events.
 
-                Fires whenever a MediaQuery result changes (for example, after a browser window has been
-        resized.) The current implementation considers only viewport-dependent media features.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("CSS.mediaQueryResultChanged", callback)
-
-    def styleSheetAdded(
-        self,
-        callback: Callable[["StyleSheetAddedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for styleSheetAdded events.
-
-        Fired whenever an active document stylesheet is added.
+        Fires whenever a MediaQuery result changes (for example, after a browser window has been resized.) The current implementation considers only viewport-dependent media features.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("CSS.styleSheetAdded", callback)
+        self._registry.register("CSS.mediaQueryResultChanged", callback)
+
+    def fontsUpdated(
+        self,
+        callback: Callable[["FontsUpdatedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for fontsUpdated events.
+
+        Fires whenever a web font gets loaded.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("CSS.fontsUpdated", callback)
 
     def styleSheetChanged(
         self,
@@ -89,6 +71,21 @@ class CSSRegistration:
         """
         self._registry.register("CSS.styleSheetChanged", callback)
 
+    def styleSheetAdded(
+        self,
+        callback: Callable[["StyleSheetAddedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for styleSheetAdded events.
+
+        Fired whenever an active document stylesheet is added.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("CSS.styleSheetAdded", callback)
+
     def styleSheetRemoved(
         self,
         callback: Callable[["StyleSheetRemovedEvent", Optional[str]], None],
@@ -103,16 +100,3 @@ class CSSRegistration:
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("CSS.styleSheetRemoved", callback)
-
-    def computedStyleUpdated(
-        self,
-        callback: Callable[["ComputedStyleUpdatedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for computedStyleUpdated events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("CSS.computedStyleUpdated", callback)

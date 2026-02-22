@@ -4,13 +4,5 @@
 
 """CDP Audits Domain Events"""
 
-from typing_extensions import TypedDict
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from .types import InspectorIssue
-
-
-class IssueAddedEvent(TypedDict):
-    issue: "InspectorIssue"
+# No events defined for this domain

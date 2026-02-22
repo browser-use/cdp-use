@@ -12,303 +12,49 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..network.types import LoaderId
-    from ..network.types import ResourceType
     from ..network.types import TimeSinceEpoch
-    from ..runtime.types import ScriptId
-    from ..runtime.types import UniqueDebuggerId
+
+ResourceType = Literal[
+    "Document",
+    "Stylesheet",
+    "Image",
+    "Media",
+    "Font",
+    "Script",
+    "TextTrack",
+    "XHR",
+    "Fetch",
+    "EventSource",
+    "WebSocket",
+    "Manifest",
+    "Other",
+]
+"""Resource type as it was perceived by the rendering engine."""
+
 
 FrameId = str
 """Unique frame identifier."""
 
 
-AdFrameType = Literal["none", "child", "root"]
-"""Indicates whether a frame has been identified as an ad."""
-
-
-AdFrameExplanation = Literal["ParentIsAd", "CreatedByAdScript", "MatchedBlockingRule"]
-
-
-class AdFrameStatus(TypedDict):
-    """Indicates whether a frame has been identified as an ad and why."""
-
-    adFrameType: "AdFrameType"
-    explanations: "NotRequired[List[AdFrameExplanation]]"
-
-
-class AdScriptId(TypedDict):
-    """Identifies the script which caused a script or frame to be labelled as an
-    ad."""
-
-    scriptId: "ScriptId"
-    """Script Id of the script which caused a script or frame to be labelled as
-an ad."""
-    debuggerId: "UniqueDebuggerId"
-    """Id of scriptId's debugger."""
-
-
-class AdScriptAncestry(TypedDict):
-    """Encapsulates the script ancestry and the root script filterlist rule that
-    caused the frame to be labelled as an ad. Only created when `ancestryChain`
-    is not empty."""
-
-    ancestryChain: "List[AdScriptId]"
-    """A chain of `AdScriptId`s representing the ancestry of an ad script that
-led to the creation of a frame. The chain is ordered from the script
-itself (lower level) up to its root ancestor that was flagged by
-filterlist."""
-    rootScriptFilterlistRule: "NotRequired[str]"
-    """The filterlist rule that caused the root (last) script in
-`ancestryChain` to be ad-tagged. Only populated if the rule is
-available."""
-
-
-SecureContextType = Literal[
-    "Secure", "SecureLocalhost", "InsecureScheme", "InsecureAncestor"
-]
-"""Indicates whether the frame is a secure context and why it is the case."""
-
-
-CrossOriginIsolatedContextType = Literal[
-    "Isolated", "NotIsolated", "NotIsolatedFeatureDisabled"
-]
-"""Indicates whether the frame is cross-origin isolated and why it is the case."""
-
-
-GatedAPIFeatures = Literal[
-    "SharedArrayBuffers",
-    "SharedArrayBuffersTransferAllowed",
-    "PerformanceMeasureMemory",
-    "PerformanceProfile",
-]
-
-
-PermissionsPolicyFeature = Literal[
-    "accelerometer",
-    "all-screens-capture",
-    "ambient-light-sensor",
-    "aria-notify",
-    "attribution-reporting",
-    "autofill",
-    "autoplay",
-    "bluetooth",
-    "browsing-topics",
-    "camera",
-    "captured-surface-control",
-    "ch-dpr",
-    "ch-device-memory",
-    "ch-downlink",
-    "ch-ect",
-    "ch-prefers-color-scheme",
-    "ch-prefers-reduced-motion",
-    "ch-prefers-reduced-transparency",
-    "ch-rtt",
-    "ch-save-data",
-    "ch-ua",
-    "ch-ua-arch",
-    "ch-ua-bitness",
-    "ch-ua-high-entropy-values",
-    "ch-ua-platform",
-    "ch-ua-model",
-    "ch-ua-mobile",
-    "ch-ua-form-factors",
-    "ch-ua-full-version",
-    "ch-ua-full-version-list",
-    "ch-ua-platform-version",
-    "ch-ua-wow64",
-    "ch-viewport-height",
-    "ch-viewport-width",
-    "ch-width",
-    "clipboard-read",
-    "clipboard-write",
-    "compute-pressure",
-    "controlled-frame",
-    "cross-origin-isolated",
-    "deferred-fetch",
-    "deferred-fetch-minimal",
-    "device-attributes",
-    "digital-credentials-create",
-    "digital-credentials-get",
-    "direct-sockets",
-    "direct-sockets-multicast",
-    "direct-sockets-private",
-    "display-capture",
-    "document-domain",
-    "encrypted-media",
-    "execution-while-out-of-viewport",
-    "execution-while-not-rendered",
-    "fenced-unpartitioned-storage-read",
-    "focus-without-user-activation",
-    "fullscreen",
-    "frobulate",
-    "gamepad",
-    "geolocation",
-    "gyroscope",
-    "hid",
-    "identity-credentials-get",
-    "idle-detection",
-    "interest-cohort",
-    "join-ad-interest-group",
-    "keyboard-map",
-    "language-detector",
-    "language-model",
-    "local-fonts",
-    "local-network-access",
-    "magnetometer",
-    "manual-text",
-    "media-playback-while-not-visible",
-    "microphone",
-    "midi",
-    "on-device-speech-recognition",
-    "otp-credentials",
-    "payment",
-    "picture-in-picture",
-    "private-aggregation",
-    "private-state-token-issuance",
-    "private-state-token-redemption",
-    "publickey-credentials-create",
-    "publickey-credentials-get",
-    "record-ad-auction-events",
-    "rewriter",
-    "run-ad-auction",
-    "screen-wake-lock",
-    "serial",
-    "shared-storage",
-    "shared-storage-select-url",
-    "smart-card",
-    "speaker-selection",
-    "storage-access",
-    "sub-apps",
-    "summarizer",
-    "sync-xhr",
-    "translator",
-    "unload",
-    "usb",
-    "usb-unrestricted",
-    "vertical-scroll",
-    "web-app-installation",
-    "web-printing",
-    "web-share",
-    "window-management",
-    "writer",
-    "xr-spatial-tracking",
-]
-"""All Permissions Policy features. This enum should match the one defined
-in services/network/public/cpp/permissions_policy/permissions_policy_features.json5.
-LINT.IfChange(PermissionsPolicyFeature)"""
-
-
-PermissionsPolicyBlockReason = Literal[
-    "Header", "IframeAttribute", "InFencedFrameTree", "InIsolatedApp"
-]
-"""Reason for a permissions policy feature to be disabled."""
-
-
-class PermissionsPolicyBlockLocator(TypedDict):
-    frameId: "FrameId"
-    blockReason: "PermissionsPolicyBlockReason"
-
-
-class PermissionsPolicyFeatureState(TypedDict):
-    feature: "PermissionsPolicyFeature"
-    allowed: "bool"
-    locator: "NotRequired[PermissionsPolicyBlockLocator]"
-
-
-OriginTrialTokenStatus = Literal[
-    "Success",
-    "NotSupported",
-    "Insecure",
-    "Expired",
-    "WrongOrigin",
-    "InvalidSignature",
-    "Malformed",
-    "WrongVersion",
-    "FeatureDisabled",
-    "TokenDisabled",
-    "FeatureDisabledForUser",
-    "UnknownTrial",
-]
-"""Origin Trial(https://www.chromium.org/blink/origin-trials) support.
-Status for an Origin Trial token."""
-
-
-OriginTrialStatus = Literal[
-    "Enabled", "ValidTokenNotProvided", "OSNotSupported", "TrialNotAllowed"
-]
-"""Status for an Origin Trial."""
-
-
-OriginTrialUsageRestriction = Literal["None", "Subset"]
-
-
-class OriginTrialToken(TypedDict):
-    origin: "str"
-    matchSubDomains: "bool"
-    trialName: "str"
-    expiryTime: "TimeSinceEpoch"
-    isThirdParty: "bool"
-    usageRestriction: "OriginTrialUsageRestriction"
-
-
-class OriginTrialTokenWithStatus(TypedDict):
-    rawTokenText: "str"
-    parsedToken: "NotRequired[OriginTrialToken]"
-    """`parsedToken` is present only when the token is extractable and
-parsable."""
-    status: "OriginTrialTokenStatus"
-
-
-class OriginTrial(TypedDict):
-    trialName: "str"
-    status: "OriginTrialStatus"
-    tokensWithStatus: "List[OriginTrialTokenWithStatus]"
-
-
-class SecurityOriginDetails(TypedDict):
-    """Additional information about the frame document's security origin."""
-
-    isLocalhost: "bool"
-    """Indicates whether the frame document's security origin is one
-of the local hostnames (e.g. \"localhost\") or IP addresses (IPv4
-127.0.0.0/8 or IPv6 ::1)."""
-
-
 class Frame(TypedDict):
     """Information about the Frame on the page."""
 
-    id: "FrameId"
+    id: "str"
     """Frame unique identifier."""
-    parentId: "NotRequired[FrameId]"
+    parentId: "NotRequired[str]"
     """Parent frame identifier."""
     loaderId: "LoaderId"
     """Identifier of the loader associated with this frame."""
     name: "NotRequired[str]"
     """Frame's name as specified in the tag."""
     url: "str"
-    """Frame document's URL without fragment."""
-    urlFragment: "NotRequired[str]"
-    """Frame document's URL fragment including the '#'."""
-    domainAndRegistry: "str"
-    """Frame document's registered domain, taking the public suffixes list into account.
-Extracted from the Frame's url.
-Example URLs: http://www.google.com/file.html -> \"google.com\"
-              http://a.b.co.uk/file.html      -> \"b.co.uk\""""
+    """Frame document's URL."""
     securityOrigin: "str"
     """Frame document's security origin."""
-    securityOriginDetails: "NotRequired[SecurityOriginDetails]"
-    """Additional details about the frame document's security origin."""
     mimeType: "str"
     """Frame document's mimeType as determined by the browser."""
     unreachableUrl: "NotRequired[str]"
-    """If the frame failed to load, this contains the URL that could not be loaded. Note that unlike url above, this URL may contain a fragment."""
-    adFrameStatus: "NotRequired[AdFrameStatus]"
-    """Indicates whether this frame was tagged as an ad and why."""
-    secureContextType: "SecureContextType"
-    """Indicates whether the main document is a secure context and explains why that is the case."""
-    crossOriginIsolatedContextType: "CrossOriginIsolatedContextType"
-    """Indicates whether this is a cross origin isolated context."""
-    gatedAPIFeatures: "List[GatedAPIFeatures]"
-    """Indicated which gated APIs / features are available."""
+    """If the frame failed to load, this contains the URL that could not be loaded."""
 
 
 class FrameResource(TypedDict):
@@ -357,7 +103,6 @@ ScriptIdentifier = str
 TransitionType = Literal[
     "link",
     "typed",
-    "address_bar",
     "auto_bookmark",
     "auto_subframe",
     "manual_subframe",
@@ -416,18 +161,11 @@ class AppManifestError(TypedDict):
     message: "str"
     """Error message."""
     critical: "int"
-    """If critical, this is a non-recoverable parse error."""
+    """If criticial, this is a non-recoverable parse error."""
     line: "int"
     """Error line."""
     column: "int"
     """Error column."""
-
-
-class AppManifestParsedProperties(TypedDict):
-    """Parsed app manifest properties."""
-
-    scope: "str"
-    """Computed scope value"""
 
 
 class LayoutViewport(TypedDict):
@@ -460,410 +198,18 @@ class VisualViewport(TypedDict):
     """Height (CSS pixels), excludes scrollbar if present."""
     scale: "float"
     """Scale relative to the ideal viewport (size at width=device-width)."""
-    zoom: "NotRequired[float]"
-    """Page zoom factor (CSS to device independent pixels ratio)."""
 
 
 class Viewport(TypedDict):
     """Viewport for capturing screenshot."""
 
     x: "float"
-    """X offset in device independent pixels (dip)."""
+    """X offset in CSS pixels."""
     y: "float"
-    """Y offset in device independent pixels (dip)."""
+    """Y offset in CSS pixels"""
     width: "float"
-    """Rectangle width in device independent pixels (dip)."""
+    """Rectangle width in CSS pixels"""
     height: "float"
-    """Rectangle height in device independent pixels (dip)."""
+    """Rectangle height in CSS pixels"""
     scale: "float"
     """Page scale factor."""
-
-
-class FontFamilies(TypedDict, total=False):
-    """Generic font families collection."""
-
-    standard: "str"
-    """The standard font-family."""
-    fixed: "str"
-    """The fixed font-family."""
-    serif: "str"
-    """The serif font-family."""
-    sansSerif: "str"
-    """The sansSerif font-family."""
-    cursive: "str"
-    """The cursive font-family."""
-    fantasy: "str"
-    """The fantasy font-family."""
-    math: "str"
-    """The math font-family."""
-
-
-class ScriptFontFamilies(TypedDict):
-    """Font families collection for a script."""
-
-    script: "str"
-    """Name of the script which these font families are defined for."""
-    fontFamilies: "FontFamilies"
-    """Generic font families collection for the script."""
-
-
-class FontSizes(TypedDict, total=False):
-    """Default font sizes."""
-
-    standard: "int"
-    """Default standard font size."""
-    fixed: "int"
-    """Default fixed font size."""
-
-
-ClientNavigationReason = Literal[
-    "anchorClick",
-    "formSubmissionGet",
-    "formSubmissionPost",
-    "httpHeaderRefresh",
-    "initialFrameNavigation",
-    "metaTagRefresh",
-    "other",
-    "pageBlockInterstitial",
-    "reload",
-    "scriptInitiated",
-]
-
-
-ClientNavigationDisposition = Literal["currentTab", "newTab", "newWindow", "download"]
-
-
-class InstallabilityErrorArgument(TypedDict):
-    name: "str"
-    """Argument name (e.g. name:'minimum-icon-size-in-pixels')."""
-    value: "str"
-    """Argument value (e.g. value:'64')."""
-
-
-class InstallabilityError(TypedDict):
-    """The installability error"""
-
-    errorId: "str"
-    """The error id (e.g. 'manifest-missing-suitable-icon')."""
-    errorArguments: "List[InstallabilityErrorArgument]"
-    """The list of error arguments (e.g. {name:'minimum-icon-size-in-pixels', value:'64'})."""
-
-
-ReferrerPolicy = Literal[
-    "noReferrer",
-    "noReferrerWhenDowngrade",
-    "origin",
-    "originWhenCrossOrigin",
-    "sameOrigin",
-    "strictOrigin",
-    "strictOriginWhenCrossOrigin",
-    "unsafeUrl",
-]
-"""The referring-policy used for the navigation."""
-
-
-class CompilationCacheParams(TypedDict):
-    """Per-script compilation cache parameters for `Page.produceCompilationCache`"""
-
-    url: "str"
-    """The URL of the script to produce a compilation cache entry for."""
-    eager: "NotRequired[bool]"
-    """A hint to the backend whether eager compilation is recommended.
-(the actual compilation mode used is upon backend discretion)."""
-
-
-class FileFilter(TypedDict, total=False):
-    name: "str"
-    accepts: "List[str]"
-
-
-class FileHandler(TypedDict):
-    action: "str"
-    name: "str"
-    icons: "NotRequired[List[ImageResource]]"
-    accepts: "NotRequired[List[FileFilter]]"
-    """Mimic a map, name is the key, accepts is the value."""
-    launchType: "str"
-    """Won't repeat the enums, using string for easy comparison. Same as the
-other enums below."""
-
-
-class ImageResource(TypedDict):
-    """The image definition used in both icon and screenshot."""
-
-    url: "str"
-    """The src field in the definition, but changing to url in favor of
-consistency."""
-    sizes: "NotRequired[str]"
-    type: "NotRequired[str]"
-
-
-class LaunchHandler(TypedDict):
-    clientMode: "str"
-
-
-class ProtocolHandler(TypedDict):
-    protocol: "str"
-    url: "str"
-
-
-class RelatedApplication(TypedDict):
-    id: "NotRequired[str]"
-    url: "str"
-
-
-class ScopeExtension(TypedDict):
-    origin: "str"
-    """Instead of using tuple, this field always returns the serialized string
-for easy understanding and comparison."""
-    hasOriginWildcard: "bool"
-
-
-class Screenshot(TypedDict):
-    image: "ImageResource"
-    formFactor: "str"
-    label: "NotRequired[str]"
-
-
-class ShareTarget(TypedDict):
-    action: "str"
-    method: "str"
-    enctype: "str"
-    title: "NotRequired[str]"
-    """Embed the ShareTargetParams"""
-    text: "NotRequired[str]"
-    url: "NotRequired[str]"
-    files: "NotRequired[List[FileFilter]]"
-
-
-class Shortcut(TypedDict):
-    name: "str"
-    url: "str"
-
-
-class WebAppManifest(TypedDict, total=False):
-    backgroundColor: "str"
-    description: "str"
-    """The extra description provided by the manifest."""
-    dir: "str"
-    display: "str"
-    displayOverrides: "List[str]"
-    """The overrided display mode controlled by the user."""
-    fileHandlers: "List[FileHandler]"
-    """The handlers to open files."""
-    icons: "List[ImageResource]"
-    id: "str"
-    lang: "str"
-    launchHandler: "LaunchHandler"
-    """TODO(crbug.com/1231886): This field is non-standard and part of a Chrome
-experiment. See:
-https://github.com/WICG/web-app-launch/blob/main/launch_handler.md"""
-    name: "str"
-    orientation: "str"
-    preferRelatedApplications: "bool"
-    protocolHandlers: "List[ProtocolHandler]"
-    """The handlers to open protocols."""
-    relatedApplications: "List[RelatedApplication]"
-    scope: "str"
-    scopeExtensions: "List[ScopeExtension]"
-    """Non-standard, see
-https://github.com/WICG/manifest-incubations/blob/gh-pages/scope_extensions-explainer.md"""
-    screenshots: "List[Screenshot]"
-    """The screenshots used by chromium."""
-    shareTarget: "ShareTarget"
-    shortName: "str"
-    shortcuts: "List[Shortcut]"
-    startUrl: "str"
-    themeColor: "str"
-
-
-NavigationType = Literal["Navigation", "BackForwardCacheRestore"]
-"""The type of a frameNavigated event."""
-
-
-BackForwardCacheNotRestoredReason = Literal[
-    "NotPrimaryMainFrame",
-    "BackForwardCacheDisabled",
-    "RelatedActiveContentsExist",
-    "HTTPStatusNotOK",
-    "SchemeNotHTTPOrHTTPS",
-    "Loading",
-    "WasGrantedMediaAccess",
-    "DisableForRenderFrameHostCalled",
-    "DomainNotAllowed",
-    "HTTPMethodNotGET",
-    "SubframeIsNavigating",
-    "Timeout",
-    "CacheLimit",
-    "JavaScriptExecution",
-    "RendererProcessKilled",
-    "RendererProcessCrashed",
-    "SchedulerTrackedFeatureUsed",
-    "ConflictingBrowsingInstance",
-    "CacheFlushed",
-    "ServiceWorkerVersionActivation",
-    "SessionRestored",
-    "ServiceWorkerPostMessage",
-    "EnteredBackForwardCacheBeforeServiceWorkerHostAdded",
-    "RenderFrameHostReused_SameSite",
-    "RenderFrameHostReused_CrossSite",
-    "ServiceWorkerClaim",
-    "IgnoreEventAndEvict",
-    "HaveInnerContents",
-    "TimeoutPuttingInCache",
-    "BackForwardCacheDisabledByLowMemory",
-    "BackForwardCacheDisabledByCommandLine",
-    "NetworkRequestDatapipeDrainedAsBytesConsumer",
-    "NetworkRequestRedirected",
-    "NetworkRequestTimeout",
-    "NetworkExceedsBufferLimit",
-    "NavigationCancelledWhileRestoring",
-    "NotMostRecentNavigationEntry",
-    "BackForwardCacheDisabledForPrerender",
-    "UserAgentOverrideDiffers",
-    "ForegroundCacheLimit",
-    "BrowsingInstanceNotSwapped",
-    "BackForwardCacheDisabledForDelegate",
-    "UnloadHandlerExistsInMainFrame",
-    "UnloadHandlerExistsInSubFrame",
-    "ServiceWorkerUnregistration",
-    "CacheControlNoStore",
-    "CacheControlNoStoreCookieModified",
-    "CacheControlNoStoreHTTPOnlyCookieModified",
-    "NoResponseHead",
-    "Unknown",
-    "ActivationNavigationsDisallowedForBug1234857",
-    "ErrorDocument",
-    "FencedFramesEmbedder",
-    "CookieDisabled",
-    "HTTPAuthRequired",
-    "CookieFlushed",
-    "BroadcastChannelOnMessage",
-    "WebViewSettingsChanged",
-    "WebViewJavaScriptObjectChanged",
-    "WebViewMessageListenerInjected",
-    "WebViewSafeBrowsingAllowlistChanged",
-    "WebViewDocumentStartJavascriptChanged",
-    "WebSocket",
-    "WebTransport",
-    "WebRTC",
-    "MainResourceHasCacheControlNoStore",
-    "MainResourceHasCacheControlNoCache",
-    "SubresourceHasCacheControlNoStore",
-    "SubresourceHasCacheControlNoCache",
-    "ContainsPlugins",
-    "DocumentLoaded",
-    "OutstandingNetworkRequestOthers",
-    "RequestedMIDIPermission",
-    "RequestedAudioCapturePermission",
-    "RequestedVideoCapturePermission",
-    "RequestedBackForwardCacheBlockedSensors",
-    "RequestedBackgroundWorkPermission",
-    "BroadcastChannel",
-    "WebXR",
-    "SharedWorker",
-    "SharedWorkerMessage",
-    "SharedWorkerWithNoActiveClient",
-    "WebLocks",
-    "WebHID",
-    "WebBluetooth",
-    "WebShare",
-    "RequestedStorageAccessGrant",
-    "WebNfc",
-    "OutstandingNetworkRequestFetch",
-    "OutstandingNetworkRequestXHR",
-    "AppBanner",
-    "Printing",
-    "WebDatabase",
-    "PictureInPicture",
-    "SpeechRecognizer",
-    "IdleManager",
-    "PaymentManager",
-    "SpeechSynthesis",
-    "KeyboardLock",
-    "WebOTPService",
-    "OutstandingNetworkRequestDirectSocket",
-    "InjectedJavascript",
-    "InjectedStyleSheet",
-    "KeepaliveRequest",
-    "IndexedDBEvent",
-    "Dummy",
-    "JsNetworkRequestReceivedCacheControlNoStoreResource",
-    "WebRTCUsedWithCCNS",
-    "WebTransportUsedWithCCNS",
-    "WebSocketUsedWithCCNS",
-    "SmartCard",
-    "LiveMediaStreamTrack",
-    "UnloadHandler",
-    "ParserAborted",
-    "ContentSecurityHandler",
-    "ContentWebAuthenticationAPI",
-    "ContentFileChooser",
-    "ContentSerial",
-    "ContentFileSystemAccess",
-    "ContentMediaDevicesDispatcherHost",
-    "ContentWebBluetooth",
-    "ContentWebUSB",
-    "ContentMediaSessionService",
-    "ContentScreenReader",
-    "ContentDiscarded",
-    "EmbedderPopupBlockerTabHelper",
-    "EmbedderSafeBrowsingTriggeredPopupBlocker",
-    "EmbedderSafeBrowsingThreatDetails",
-    "EmbedderAppBannerManager",
-    "EmbedderDomDistillerViewerSource",
-    "EmbedderDomDistillerSelfDeletingRequestDelegate",
-    "EmbedderOomInterventionTabHelper",
-    "EmbedderOfflinePage",
-    "EmbedderChromePasswordManagerClientBindCredentialManager",
-    "EmbedderPermissionRequestManager",
-    "EmbedderModalDialog",
-    "EmbedderExtensions",
-    "EmbedderExtensionMessaging",
-    "EmbedderExtensionMessagingForOpenPort",
-    "EmbedderExtensionSentMessageToCachedFrame",
-    "RequestedByWebViewClient",
-    "PostMessageByWebViewClient",
-    "CacheControlNoStoreDeviceBoundSessionTerminated",
-    "CacheLimitPrunedOnModerateMemoryPressure",
-    "CacheLimitPrunedOnCriticalMemoryPressure",
-]
-"""List of not restored reasons for back-forward cache."""
-
-
-BackForwardCacheNotRestoredReasonType = Literal[
-    "SupportPending", "PageSupportNeeded", "Circumstantial"
-]
-"""Types of not restored reasons for back-forward cache."""
-
-
-class BackForwardCacheBlockingDetails(TypedDict):
-    url: "NotRequired[str]"
-    """Url of the file where blockage happened. Optional because of tests."""
-    function: "NotRequired[str]"
-    """Function name where blockage happened. Optional because of anonymous functions and tests."""
-    lineNumber: "int"
-    """Line number in the script (0-based)."""
-    columnNumber: "int"
-    """Column number in the script (0-based)."""
-
-
-class BackForwardCacheNotRestoredExplanation(TypedDict):
-    type: "BackForwardCacheNotRestoredReasonType"
-    """Type of the reason"""
-    reason: "BackForwardCacheNotRestoredReason"
-    """Not restored reason"""
-    context: "NotRequired[str]"
-    """Context associated with the reason. The meaning of this context is
-dependent on the reason:
-- EmbedderExtensionSentMessageToCachedFrame: the extension ID."""
-    details: "NotRequired[List[BackForwardCacheBlockingDetails]]"
-
-
-class BackForwardCacheNotRestoredExplanationTree(TypedDict):
-    url: "str"
-    """URL of each frame"""
-    explanations: "List[BackForwardCacheNotRestoredExplanation]"
-    """Not restored reasons of each frame"""
-    children: "List[BackForwardCacheNotRestoredExplanationTree]"
-    """Array of children frame"""

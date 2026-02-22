@@ -10,10 +10,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
-    from .commands import GetFeatureStateParameters
-    from .commands import GetFeatureStateReturns
     from .commands import GetInfoReturns
-    from .commands import GetProcessInfoReturns
 
 
 class SystemInfoClient:
@@ -32,36 +29,6 @@ class SystemInfoClient:
             "GetInfoReturns",
             await self._client.send_raw(
                 method="SystemInfo.getInfo",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getFeatureState(
-        self,
-        params: "GetFeatureStateParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetFeatureStateReturns":
-        """Returns information about the feature state."""
-        return cast(
-            "GetFeatureStateReturns",
-            await self._client.send_raw(
-                method="SystemInfo.getFeatureState",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getProcessInfo(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "GetProcessInfoReturns":
-        """Returns information about all running processes."""
-        return cast(
-            "GetProcessInfoReturns",
-            await self._client.send_raw(
-                method="SystemInfo.getProcessInfo",
                 params=params,
                 session_id=session_id,
             ),

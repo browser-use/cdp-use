@@ -15,46 +15,30 @@ if TYPE_CHECKING:
     from .commands import CanEmulateNetworkConditionsReturns
     from .commands import ContinueInterceptedRequestParameters
     from .commands import DeleteCookiesParameters
-    from .commands import EmulateNetworkConditionsByRuleParameters
-    from .commands import EmulateNetworkConditionsByRuleReturns
     from .commands import EmulateNetworkConditionsParameters
     from .commands import EnableParameters
-    from .commands import EnableReportingApiParameters
     from .commands import GetAllCookiesReturns
     from .commands import GetCertificateParameters
     from .commands import GetCertificateReturns
     from .commands import GetCookiesParameters
     from .commands import GetCookiesReturns
-    from .commands import GetRequestPostDataParameters
-    from .commands import GetRequestPostDataReturns
     from .commands import GetResponseBodyForInterceptionParameters
     from .commands import GetResponseBodyForInterceptionReturns
     from .commands import GetResponseBodyParameters
     from .commands import GetResponseBodyReturns
-    from .commands import GetSecurityIsolationStatusParameters
-    from .commands import GetSecurityIsolationStatusReturns
-    from .commands import LoadNetworkResourceParameters
-    from .commands import LoadNetworkResourceReturns
-    from .commands import OverrideNetworkStateParameters
     from .commands import ReplayXHRParameters
     from .commands import SearchInResponseBodyParameters
     from .commands import SearchInResponseBodyReturns
-    from .commands import SetAcceptedEncodingsParameters
-    from .commands import SetAttachDebugStackParameters
     from .commands import SetBlockedURLsParameters
     from .commands import SetBypassServiceWorkerParameters
     from .commands import SetCacheDisabledParameters
-    from .commands import SetCookieControlsParameters
     from .commands import SetCookieParameters
     from .commands import SetCookieReturns
     from .commands import SetCookiesParameters
+    from .commands import SetDataSizeLimitsForTestParameters
     from .commands import SetExtraHTTPHeadersParameters
     from .commands import SetRequestInterceptionParameters
     from .commands import SetUserAgentOverrideParameters
-    from .commands import StreamResourceContentParameters
-    from .commands import StreamResourceContentReturns
-    from .commands import TakeResponseBodyForInterceptionAsStreamParameters
-    from .commands import TakeResponseBodyForInterceptionAsStreamReturns
 
 
 class NetworkClient:
@@ -63,140 +47,16 @@ class NetworkClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def setAcceptedEncodings(
+    async def enable(
         self,
-        params: "SetAcceptedEncodingsParameters",
+        params: Optional["EnableParameters"] = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Sets a list of content encodings that will be accepted. Empty list means no encoding is accepted."""
+        """Enables network tracking, network events will now be delivered to the client."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Network.setAcceptedEncodings",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def clearAcceptedEncodingsOverride(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Clears accepted encodings set by setAcceptedEncodings"""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.clearAcceptedEncodingsOverride",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def canClearBrowserCache(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "CanClearBrowserCacheReturns":
-        """Tells whether clearing browser cache is supported."""
-        return cast(
-            "CanClearBrowserCacheReturns",
-            await self._client.send_raw(
-                method="Network.canClearBrowserCache",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def canClearBrowserCookies(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "CanClearBrowserCookiesReturns":
-        """Tells whether clearing browser cookies is supported."""
-        return cast(
-            "CanClearBrowserCookiesReturns",
-            await self._client.send_raw(
-                method="Network.canClearBrowserCookies",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def canEmulateNetworkConditions(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "CanEmulateNetworkConditionsReturns":
-        """Tells whether emulation of network conditions is supported."""
-        return cast(
-            "CanEmulateNetworkConditionsReturns",
-            await self._client.send_raw(
-                method="Network.canEmulateNetworkConditions",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def clearBrowserCache(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Clears browser cache."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.clearBrowserCache",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def clearBrowserCookies(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Clears browser cookies."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.clearBrowserCookies",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def continueInterceptedRequest(
-        self,
-        params: "ContinueInterceptedRequestParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Response to Network.requestIntercepted which either modifies the request to continue with any
-        modifications, or blocks it, or completes it with the provided response bytes. If a network
-        fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted
-        event will be sent with the same InterceptionId.
-        Deprecated, use Fetch.continueRequest, Fetch.fulfillRequest and Fetch.failRequest instead."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.continueInterceptedRequest",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def deleteCookies(
-        self,
-        params: "DeleteCookiesParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Deletes browser cookies with matching name and url or domain/path/partitionKey pair."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.deleteCookies",
+                method="Network.enable",
                 params=params,
                 session_id=session_id,
             ),
@@ -217,192 +77,16 @@ class NetworkClient:
             ),
         )
 
-    async def emulateNetworkConditions(
+    async def setUserAgentOverride(
         self,
-        params: "EmulateNetworkConditionsParameters",
+        params: "SetUserAgentOverrideParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Activates emulation of network conditions. This command is deprecated in favor of the emulateNetworkConditionsByRule
-        and overrideNetworkState commands, which can be used together to the same effect."""
+        """Allows overriding user agent with the given string."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Network.emulateNetworkConditions",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def emulateNetworkConditionsByRule(
-        self,
-        params: "EmulateNetworkConditionsByRuleParameters",
-        session_id: Optional[str] = None,
-    ) -> "EmulateNetworkConditionsByRuleReturns":
-        """Activates emulation of network conditions for individual requests using URL match patterns. Unlike the deprecated
-        Network.emulateNetworkConditions this method does not affect `navigator` state. Use Network.overrideNetworkState to
-        explicitly modify `navigator` behavior."""
-        return cast(
-            "EmulateNetworkConditionsByRuleReturns",
-            await self._client.send_raw(
-                method="Network.emulateNetworkConditionsByRule",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def overrideNetworkState(
-        self,
-        params: "OverrideNetworkStateParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Override the state of navigator.onLine and navigator.connection."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.overrideNetworkState",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def enable(
-        self,
-        params: Optional["EnableParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Enables network tracking, network events will now be delivered to the client."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.enable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getAllCookies(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "GetAllCookiesReturns":
-        """Returns all browser cookies. Depending on the backend support, will return detailed cookie
-        information in the `cookies` field.
-        Deprecated. Use Storage.getCookies instead."""
-        return cast(
-            "GetAllCookiesReturns",
-            await self._client.send_raw(
-                method="Network.getAllCookies",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getCertificate(
-        self,
-        params: "GetCertificateParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetCertificateReturns":
-        """Returns the DER-encoded certificate."""
-        return cast(
-            "GetCertificateReturns",
-            await self._client.send_raw(
-                method="Network.getCertificate",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getCookies(
-        self,
-        params: Optional["GetCookiesParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "GetCookiesReturns":
-        """Returns all browser cookies for the current URL. Depending on the backend support, will return
-        detailed cookie information in the `cookies` field."""
-        return cast(
-            "GetCookiesReturns",
-            await self._client.send_raw(
-                method="Network.getCookies",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getResponseBody(
-        self,
-        params: "GetResponseBodyParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetResponseBodyReturns":
-        """Returns content served for the given request."""
-        return cast(
-            "GetResponseBodyReturns",
-            await self._client.send_raw(
-                method="Network.getResponseBody",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getRequestPostData(
-        self,
-        params: "GetRequestPostDataParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetRequestPostDataReturns":
-        """Returns post data sent with the request. Returns an error when no data was sent with the request."""
-        return cast(
-            "GetRequestPostDataReturns",
-            await self._client.send_raw(
-                method="Network.getRequestPostData",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getResponseBodyForInterception(
-        self,
-        params: "GetResponseBodyForInterceptionParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetResponseBodyForInterceptionReturns":
-        """Returns content served for the given currently intercepted request."""
-        return cast(
-            "GetResponseBodyForInterceptionReturns",
-            await self._client.send_raw(
-                method="Network.getResponseBodyForInterception",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def takeResponseBodyForInterceptionAsStream(
-        self,
-        params: "TakeResponseBodyForInterceptionAsStreamParameters",
-        session_id: Optional[str] = None,
-    ) -> "TakeResponseBodyForInterceptionAsStreamReturns":
-        """Returns a handle to the stream representing the response body. Note that after this command,
-        the intercepted request can't be continued as is -- you either need to cancel it or to provide
-        the response body. The stream only supports sequential read, IO.read will fail if the position
-        is specified."""
-        return cast(
-            "TakeResponseBodyForInterceptionAsStreamReturns",
-            await self._client.send_raw(
-                method="Network.takeResponseBodyForInterceptionAsStream",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def replayXHR(
-        self,
-        params: "ReplayXHRParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """This method sends a new XMLHttpRequest which is identical to the original one. The following
-        parameters should be identical: method, url, async, request body, extra headers, withCredentials
-        attribute, user, password."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.replayXHR",
+                method="Network.setUserAgentOverride",
                 params=params,
                 session_id=session_id,
             ),
@@ -423,9 +107,39 @@ class NetworkClient:
             ),
         )
 
+    async def setExtraHTTPHeaders(
+        self,
+        params: "SetExtraHTTPHeadersParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Specifies whether to always send extra HTTP headers with the requests from this page."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Network.setExtraHTTPHeaders",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getResponseBody(
+        self,
+        params: "GetResponseBodyParameters",
+        session_id: Optional[str] = None,
+    ) -> "GetResponseBodyReturns":
+        """Returns content served for the given request."""
+        return cast(
+            "GetResponseBodyReturns",
+            await self._client.send_raw(
+                method="Network.getResponseBody",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
     async def setBlockedURLs(
         self,
-        params: Optional["SetBlockedURLsParameters"] = None,
+        params: "SetBlockedURLsParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
         """Blocks URLs from loading."""
@@ -438,31 +152,121 @@ class NetworkClient:
             ),
         )
 
-    async def setBypassServiceWorker(
+    async def replayXHR(
         self,
-        params: "SetBypassServiceWorkerParameters",
+        params: "ReplayXHRParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Toggles ignoring of service worker for each request."""
+        """This method sends a new XMLHttpRequest which is identical to the original one. The following parameters should be identical: method, url, async, request body, extra headers, withCredentials attribute, user, password."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Network.setBypassServiceWorker",
+                method="Network.replayXHR",
                 params=params,
                 session_id=session_id,
             ),
         )
 
-    async def setCacheDisabled(
+    async def canClearBrowserCache(
         self,
-        params: "SetCacheDisabledParameters",
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "CanClearBrowserCacheReturns":
+        """Tells whether clearing browser cache is supported."""
+        return cast(
+            "CanClearBrowserCacheReturns",
+            await self._client.send_raw(
+                method="Network.canClearBrowserCache",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def clearBrowserCache(
+        self,
+        params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Toggles ignoring cache for each request. If `true`, cache will not be used."""
+        """Clears browser cache."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Network.setCacheDisabled",
+                method="Network.clearBrowserCache",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def canClearBrowserCookies(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "CanClearBrowserCookiesReturns":
+        """Tells whether clearing browser cookies is supported."""
+        return cast(
+            "CanClearBrowserCookiesReturns",
+            await self._client.send_raw(
+                method="Network.canClearBrowserCookies",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def clearBrowserCookies(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Clears browser cookies."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Network.clearBrowserCookies",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getCookies(
+        self,
+        params: Optional["GetCookiesParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "GetCookiesReturns":
+        """Returns all browser cookies for the current URL. Depending on the backend support, will return detailed cookie information in the <code>cookies</code> field."""
+        return cast(
+            "GetCookiesReturns",
+            await self._client.send_raw(
+                method="Network.getCookies",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getAllCookies(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "GetAllCookiesReturns":
+        """Returns all browser cookies. Depending on the backend support, will return detailed cookie information in the <code>cookies</code> field."""
+        return cast(
+            "GetAllCookiesReturns",
+            await self._client.send_raw(
+                method="Network.getAllCookies",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def deleteCookies(
+        self,
+        params: "DeleteCookiesParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Deletes browser cookies with matching name and url or domain/path pair."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Network.deleteCookies",
                 params=params,
                 session_id=session_id,
             ),
@@ -498,31 +302,91 @@ class NetworkClient:
             ),
         )
 
-    async def setExtraHTTPHeaders(
+    async def canEmulateNetworkConditions(
         self,
-        params: "SetExtraHTTPHeadersParameters",
+        params: None = None,
         session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Specifies whether to always send extra HTTP headers with the requests from this page."""
+    ) -> "CanEmulateNetworkConditionsReturns":
+        """Tells whether emulation of network conditions is supported."""
         return cast(
-            "Dict[str, Any]",
+            "CanEmulateNetworkConditionsReturns",
             await self._client.send_raw(
-                method="Network.setExtraHTTPHeaders",
+                method="Network.canEmulateNetworkConditions",
                 params=params,
                 session_id=session_id,
             ),
         )
 
-    async def setAttachDebugStack(
+    async def emulateNetworkConditions(
         self,
-        params: "SetAttachDebugStackParameters",
+        params: "EmulateNetworkConditionsParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Specifies whether to attach a page script stack id in requests"""
+        """Activates emulation of network conditions."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Network.setAttachDebugStack",
+                method="Network.emulateNetworkConditions",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def setCacheDisabled(
+        self,
+        params: "SetCacheDisabledParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Toggles ignoring cache for each request. If <code>true</code>, cache will not be used."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Network.setCacheDisabled",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def setBypassServiceWorker(
+        self,
+        params: "SetBypassServiceWorkerParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Toggles ignoring of service worker for each request."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Network.setBypassServiceWorker",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def setDataSizeLimitsForTest(
+        self,
+        params: "SetDataSizeLimitsForTestParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """For testing."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Network.setDataSizeLimitsForTest",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getCertificate(
+        self,
+        params: "GetCertificateParameters",
+        session_id: Optional[str] = None,
+    ) -> "GetCertificateReturns":
+        """Returns the DER-encoded certificate."""
+        return cast(
+            "GetCertificateReturns",
+            await self._client.send_raw(
+                method="Network.getCertificate",
                 params=params,
                 session_id=session_id,
             ),
@@ -533,8 +397,7 @@ class NetworkClient:
         params: "SetRequestInterceptionParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Sets the requests to intercept that match the provided patterns and optionally resource types.
-        Deprecated, please use Fetch.enable instead."""
+        """Sets the requests to intercept that match the provided patterns and optionally resource types."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
@@ -544,94 +407,31 @@ class NetworkClient:
             ),
         )
 
-    async def setUserAgentOverride(
+    async def continueInterceptedRequest(
         self,
-        params: "SetUserAgentOverrideParameters",
+        params: "ContinueInterceptedRequestParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Allows overriding user agent with the given string."""
+        """Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Network.setUserAgentOverride",
+                method="Network.continueInterceptedRequest",
                 params=params,
                 session_id=session_id,
             ),
         )
 
-    async def streamResourceContent(
+    async def getResponseBodyForInterception(
         self,
-        params: "StreamResourceContentParameters",
+        params: "GetResponseBodyForInterceptionParameters",
         session_id: Optional[str] = None,
-    ) -> "StreamResourceContentReturns":
-        """Enables streaming of the response for the given requestId.
-        If enabled, the dataReceived event contains the data that was received during streaming."""
+    ) -> "GetResponseBodyForInterceptionReturns":
+        """Returns content served for the given currently intercepted request."""
         return cast(
-            "StreamResourceContentReturns",
+            "GetResponseBodyForInterceptionReturns",
             await self._client.send_raw(
-                method="Network.streamResourceContent",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getSecurityIsolationStatus(
-        self,
-        params: Optional["GetSecurityIsolationStatusParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "GetSecurityIsolationStatusReturns":
-        """Returns information about the COEP/COOP isolation status."""
-        return cast(
-            "GetSecurityIsolationStatusReturns",
-            await self._client.send_raw(
-                method="Network.getSecurityIsolationStatus",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def enableReportingApi(
-        self,
-        params: "EnableReportingApiParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Enables tracking for the Reporting API, events generated by the Reporting API will now be delivered to the client.
-        Enabling triggers 'reportingApiReportAdded' for all existing reports."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.enableReportingApi",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def loadNetworkResource(
-        self,
-        params: "LoadNetworkResourceParameters",
-        session_id: Optional[str] = None,
-    ) -> "LoadNetworkResourceReturns":
-        """Fetches the resource and returns the content."""
-        return cast(
-            "LoadNetworkResourceReturns",
-            await self._client.send_raw(
-                method="Network.loadNetworkResource",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setCookieControls(
-        self,
-        params: "SetCookieControlsParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Sets Controls for third-party cookie access
-        Page reload is required before the new cookie behavior will be observed"""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Network.setCookieControls",
+                method="Network.getResponseBodyForInterception",
                 params=params,
                 session_id=session_id,
             ),

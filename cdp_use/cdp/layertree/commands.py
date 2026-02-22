@@ -25,8 +25,16 @@ class CompositingReasonsParameters(TypedDict):
 class CompositingReasonsReturns(TypedDict):
     compositingReasons: "List[str]"
     """A list of strings specifying reasons for the given layer to become composited."""
-    compositingReasonIds: "List[str]"
-    """A list of strings specifying reason IDs for the given layer to become composited."""
+
+
+class MakeSnapshotParameters(TypedDict):
+    layerId: "LayerId"
+    """The id of the layer."""
+
+
+class MakeSnapshotReturns(TypedDict):
+    snapshotId: "SnapshotId"
+    """The id of the layer snapshot."""
 
 
 class LoadSnapshotParameters(TypedDict):
@@ -39,12 +47,7 @@ class LoadSnapshotReturns(TypedDict):
     """The id of the snapshot."""
 
 
-class MakeSnapshotParameters(TypedDict):
-    layerId: "LayerId"
-    """The id of the layer."""
-
-
-class MakeSnapshotReturns(TypedDict):
+class ReleaseSnapshotParameters(TypedDict):
     snapshotId: "SnapshotId"
     """The id of the layer snapshot."""
 
@@ -63,11 +66,6 @@ class ProfileSnapshotParameters(TypedDict):
 class ProfileSnapshotReturns(TypedDict):
     timings: "List[PaintProfile]"
     """The array of paint profiles, one per run."""
-
-
-class ReleaseSnapshotParameters(TypedDict):
-    snapshotId: "SnapshotId"
-    """The id of the layer snapshot."""
 
 
 class ReplaySnapshotParameters(TypedDict):

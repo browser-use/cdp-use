@@ -4,14 +4,12 @@
 
 """CDP Audits Domain Commands"""
 
-from typing import List
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..network.types import RequestId
-    from .types import GenericIssueDetails
 
 
 class GetEncodedResponseParameters(TypedDict):
@@ -27,17 +25,8 @@ class GetEncodedResponseParameters(TypedDict):
 
 class GetEncodedResponseReturns(TypedDict):
     body: "str"
-    """The encoded body as a base64 string. Omitted if sizeOnly is true. (Encoded as a base64 string when passed over JSON)"""
+    """The encoded body as a base64 string. Omitted if sizeOnly is true."""
     originalSize: "int"
     """Size before re-encoding."""
     encodedSize: "int"
     """Size after re-encoding."""
-
-
-class CheckContrastParameters(TypedDict, total=False):
-    reportAAA: "bool"
-    """Whether to report WCAG AAA level issues. Default is false."""
-
-
-class CheckFormsIssuesReturns(TypedDict):
-    formIssues: "List[GenericIssueDetails]"

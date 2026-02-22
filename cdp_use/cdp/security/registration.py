@@ -10,11 +10,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..registry import EventRegistry
-    from .events import (
-        CertificateErrorEvent,
-        SecurityStateChangedEvent,
-        VisibleSecurityStateChangedEvent,
-    )
+    from .events import CertificateErrorEvent, SecurityStateChangedEvent
 
 
 class SecurityRegistration:
@@ -24,39 +20,6 @@ class SecurityRegistration:
         self._registry = registry
         self._domain = "Security"
 
-    def certificateError(
-        self,
-        callback: Callable[["CertificateErrorEvent", Optional[str]], None],
-    ) -> None:
-        """
-                Register a callback for certificateError events.
-
-                There is a certificate error. If overriding certificate errors is enabled, then it should be
-        handled with the `handleCertificateError` command. Note: this event does not fire if the
-        certificate error has been allowed internally. Only one client per target should override
-        certificate errors at the same time.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Security.certificateError", callback)
-
-    def visibleSecurityStateChanged(
-        self,
-        callback: Callable[["VisibleSecurityStateChangedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for visibleSecurityStateChanged events.
-
-        The security state of the page changed.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Security.visibleSecurityStateChanged", callback)
-
     def securityStateChanged(
         self,
         callback: Callable[["SecurityStateChangedEvent", Optional[str]], None],
@@ -64,10 +27,25 @@ class SecurityRegistration:
         """
         Register a callback for securityStateChanged events.
 
-        The security state of the page changed. No longer being sent.
+        The security state of the page changed.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("Security.securityStateChanged", callback)
+
+    def certificateError(
+        self,
+        callback: Callable[["CertificateErrorEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for certificateError events.
+
+        There is a certificate error. If overriding certificate errors is enabled, then it should be handled with the handleCertificateError command. Note: this event does not fire if the certificate error has been allowed internally.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Security.certificateError", callback)

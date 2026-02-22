@@ -11,85 +11,56 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..dom.types import BackendNodeId
-    from ..dom.types import ScrollOrientation
 
 
 class Animation(TypedDict):
     """Animation instance."""
 
     id: "str"
-    """`Animation`'s id."""
+    """<code>Animation</code>'s id."""
     name: "str"
-    """`Animation`'s name."""
+    """<code>Animation</code>'s name."""
     pausedState: "bool"
-    """`Animation`'s internal paused state."""
+    """<code>Animation</code>'s internal paused state."""
     playState: "str"
-    """`Animation`'s play state."""
+    """<code>Animation</code>'s play state."""
     playbackRate: "float"
-    """`Animation`'s playback rate."""
+    """<code>Animation</code>'s playback rate."""
     startTime: "float"
-    """`Animation`'s start time.
-Milliseconds for time based animations and
-percentage [0 - 100] for scroll driven animations
-(i.e. when viewOrScrollTimeline exists)."""
+    """<code>Animation</code>'s start time."""
     currentTime: "float"
-    """`Animation`'s current time."""
+    """<code>Animation</code>'s current time."""
     type: "str"
-    """Animation type of `Animation`."""
+    """Animation type of <code>Animation</code>."""
     source: "NotRequired[AnimationEffect]"
-    """`Animation`'s source animation node."""
+    """<code>Animation</code>'s source animation node."""
     cssId: "NotRequired[str]"
-    """A unique ID for `Animation` representing the sources that triggered this CSS
-animation/transition."""
-    viewOrScrollTimeline: "NotRequired[ViewOrScrollTimeline]"
-    """View or scroll timeline"""
-
-
-class ViewOrScrollTimeline(TypedDict):
-    """Timeline instance"""
-
-    sourceNodeId: "NotRequired[BackendNodeId]"
-    """Scroll container node"""
-    startOffset: "NotRequired[float]"
-    """Represents the starting scroll position of the timeline
-as a length offset in pixels from scroll origin."""
-    endOffset: "NotRequired[float]"
-    """Represents the ending scroll position of the timeline
-as a length offset in pixels from scroll origin."""
-    subjectNodeId: "NotRequired[BackendNodeId]"
-    """The element whose principal box's visibility in the
-scrollport defined the progress of the timeline.
-Does not exist for animations with ScrollTimeline"""
-    axis: "ScrollOrientation"
-    """Orientation of the scroll"""
+    """A unique ID for <code>Animation</code> representing the sources that triggered this CSS animation/transition."""
 
 
 class AnimationEffect(TypedDict):
     """AnimationEffect instance"""
 
     delay: "float"
-    """`AnimationEffect`'s delay."""
+    """<code>AnimationEffect</code>'s delay."""
     endDelay: "float"
-    """`AnimationEffect`'s end delay."""
+    """<code>AnimationEffect</code>'s end delay."""
     iterationStart: "float"
-    """`AnimationEffect`'s iteration start."""
-    iterations: "NotRequired[float]"
-    """`AnimationEffect`'s iterations. Omitted if the value is infinite."""
+    """<code>AnimationEffect</code>'s iteration start."""
+    iterations: "float"
+    """<code>AnimationEffect</code>'s iterations."""
     duration: "float"
-    """`AnimationEffect`'s iteration duration.
-Milliseconds for time based animations and
-percentage [0 - 100] for scroll driven animations
-(i.e. when viewOrScrollTimeline exists)."""
+    """<code>AnimationEffect</code>'s iteration duration."""
     direction: "str"
-    """`AnimationEffect`'s playback direction."""
+    """<code>AnimationEffect</code>'s playback direction."""
     fill: "str"
-    """`AnimationEffect`'s fill mode."""
+    """<code>AnimationEffect</code>'s fill mode."""
     backendNodeId: "NotRequired[BackendNodeId]"
-    """`AnimationEffect`'s target node."""
+    """<code>AnimationEffect</code>'s target node."""
     keyframesRule: "NotRequired[KeyframesRule]"
-    """`AnimationEffect`'s keyframes."""
+    """<code>AnimationEffect</code>'s keyframes."""
     easing: "str"
-    """`AnimationEffect`'s timing function."""
+    """<code>AnimationEffect</code>'s timing function."""
 
 
 class KeyframesRule(TypedDict):
@@ -107,4 +78,4 @@ class KeyframeStyle(TypedDict):
     offset: "str"
     """Keyframe's time offset."""
     easing: "str"
-    """`AnimationEffect`'s timing function."""
+    """<code>AnimationEffect</code>'s timing function."""

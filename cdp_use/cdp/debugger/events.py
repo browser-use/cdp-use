@@ -10,8 +10,6 @@ from typing_extensions import NotRequired, TypedDict
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ..debugger.types import DebugSymbols
-    from ..debugger.types import ScriptLanguage
     from ..runtime.types import ExecutionContextId
     from ..runtime.types import ScriptId
     from ..runtime.types import StackTrace
@@ -19,10 +17,78 @@ if TYPE_CHECKING:
     from .types import BreakpointId
     from .types import CallFrame
     from .types import Location
-    from .types import ResolvedBreakpoint
 
-"""Fired when breakpoint is resolved to an actual script and location.
-Deprecated in favor of `resolvedBreakpoints` in the `scriptParsed` event."""
+"""Fired when virtual machine parses script. This event is also fired for all known and uncollected scripts upon enabling debugger."""
+
+
+class ScriptParsedEvent(TypedDict):
+    scriptId: "ScriptId"
+    """Identifier of the script parsed."""
+    url: "str"
+    """URL or name of the script parsed (if any)."""
+    startLine: "int"
+    """Line offset of the script within the resource with given URL (for script tags)."""
+    startColumn: "int"
+    """Column offset of the script within the resource with given URL."""
+    endLine: "int"
+    """Last line of the script."""
+    endColumn: "int"
+    """Length of the last line of the script."""
+    executionContextId: "ExecutionContextId"
+    """Specifies script creation context."""
+    hash: "str"
+    """Content hash of the script."""
+    executionContextAuxData: "NotRequired[Dict[str, Any]]"
+    """Embedder-specific auxiliary data."""
+    isLiveEdit: "NotRequired[bool]"
+    """True, if this script is generated as a result of the live edit operation."""
+    sourceMapURL: "NotRequired[str]"
+    """URL of source map associated with script (if any)."""
+    hasSourceURL: "NotRequired[bool]"
+    """True, if this script has sourceURL."""
+    isModule: "NotRequired[bool]"
+    """True, if this script is ES6 module."""
+    length: "NotRequired[int]"
+    """This script length."""
+    stackTrace: "NotRequired[StackTrace]"
+    """JavaScript top stack frame of where the script parsed event was triggered if available."""
+
+
+"""Fired when virtual machine fails to parse the script."""
+
+
+class ScriptFailedToParseEvent(TypedDict):
+    scriptId: "ScriptId"
+    """Identifier of the script parsed."""
+    url: "str"
+    """URL or name of the script parsed (if any)."""
+    startLine: "int"
+    """Line offset of the script within the resource with given URL (for script tags)."""
+    startColumn: "int"
+    """Column offset of the script within the resource with given URL."""
+    endLine: "int"
+    """Last line of the script."""
+    endColumn: "int"
+    """Length of the last line of the script."""
+    executionContextId: "ExecutionContextId"
+    """Specifies script creation context."""
+    hash: "str"
+    """Content hash of the script."""
+    executionContextAuxData: "NotRequired[Dict[str, Any]]"
+    """Embedder-specific auxiliary data."""
+    sourceMapURL: "NotRequired[str]"
+    """URL of source map associated with script (if any)."""
+    hasSourceURL: "NotRequired[bool]"
+    """True, if this script has sourceURL."""
+    isModule: "NotRequired[bool]"
+    """True, if this script is ES6 module."""
+    length: "NotRequired[int]"
+    """This script length."""
+    stackTrace: "NotRequired[StackTrace]"
+    """JavaScript top stack frame of where the script parsed event was triggered if available."""
+
+
+"""Fired when breakpoint is resolved to an actual script and location."""
 
 
 class BreakpointResolvedEvent(TypedDict):
@@ -49,7 +115,7 @@ class PausedEvent(TypedDict):
     asyncStackTraceId: "NotRequired[StackTraceId]"
     """Async stack trace, if any."""
     asyncCallStackTraceId: "NotRequired[StackTraceId]"
-    """Never present, will be removed."""
+    """Just scheduled async call will have this stack trace as parent stack during async execution. This field is available only after <code>Debugger.stepInto</code> call with <code>breakOnAsynCall</code> flag."""
 
 
 """Fired when the virtual machine resumed execution."""
@@ -57,96 +123,3 @@ class PausedEvent(TypedDict):
 
 class ResumedEvent(TypedDict):
     pass
-
-
-"""Fired when virtual machine fails to parse the script."""
-
-
-class ScriptFailedToParseEvent(TypedDict):
-    scriptId: "ScriptId"
-    """Identifier of the script parsed."""
-    url: "str"
-    """URL or name of the script parsed (if any)."""
-    startLine: "int"
-    """Line offset of the script within the resource with given URL (for script tags)."""
-    startColumn: "int"
-    """Column offset of the script within the resource with given URL."""
-    endLine: "int"
-    """Last line of the script."""
-    endColumn: "int"
-    """Length of the last line of the script."""
-    executionContextId: "ExecutionContextId"
-    """Specifies script creation context."""
-    hash: "str"
-    """Content hash of the script, SHA-256."""
-    buildId: "str"
-    """For Wasm modules, the content of the `build_id` custom section. For JavaScript the `debugId` magic comment."""
-    executionContextAuxData: "NotRequired[Dict[str, Any]]"
-    """Embedder-specific auxiliary data likely matching {isDefault: boolean, type: 'default'|'isolated'|'worker', frameId: string}"""
-    sourceMapURL: "NotRequired[str]"
-    """URL of source map associated with script (if any)."""
-    hasSourceURL: "NotRequired[bool]"
-    """True, if this script has sourceURL."""
-    isModule: "NotRequired[bool]"
-    """True, if this script is ES6 module."""
-    length: "NotRequired[int]"
-    """This script length."""
-    stackTrace: "NotRequired[StackTrace]"
-    """JavaScript top stack frame of where the script parsed event was triggered if available."""
-    codeOffset: "NotRequired[int]"
-    """If the scriptLanguage is WebAssembly, the code section offset in the module."""
-    scriptLanguage: "NotRequired[ScriptLanguage]"
-    """The language of the script."""
-    embedderName: "NotRequired[str]"
-    """The name the embedder supplied for this script."""
-
-
-"""Fired when virtual machine parses script. This event is also fired for all known and uncollected
-scripts upon enabling debugger."""
-
-
-class ScriptParsedEvent(TypedDict):
-    scriptId: "ScriptId"
-    """Identifier of the script parsed."""
-    url: "str"
-    """URL or name of the script parsed (if any)."""
-    startLine: "int"
-    """Line offset of the script within the resource with given URL (for script tags)."""
-    startColumn: "int"
-    """Column offset of the script within the resource with given URL."""
-    endLine: "int"
-    """Last line of the script."""
-    endColumn: "int"
-    """Length of the last line of the script."""
-    executionContextId: "ExecutionContextId"
-    """Specifies script creation context."""
-    hash: "str"
-    """Content hash of the script, SHA-256."""
-    buildId: "str"
-    """For Wasm modules, the content of the `build_id` custom section. For JavaScript the `debugId` magic comment."""
-    executionContextAuxData: "NotRequired[Dict[str, Any]]"
-    """Embedder-specific auxiliary data likely matching {isDefault: boolean, type: 'default'|'isolated'|'worker', frameId: string}"""
-    isLiveEdit: "NotRequired[bool]"
-    """True, if this script is generated as a result of the live edit operation."""
-    sourceMapURL: "NotRequired[str]"
-    """URL of source map associated with script (if any)."""
-    hasSourceURL: "NotRequired[bool]"
-    """True, if this script has sourceURL."""
-    isModule: "NotRequired[bool]"
-    """True, if this script is ES6 module."""
-    length: "NotRequired[int]"
-    """This script length."""
-    stackTrace: "NotRequired[StackTrace]"
-    """JavaScript top stack frame of where the script parsed event was triggered if available."""
-    codeOffset: "NotRequired[int]"
-    """If the scriptLanguage is WebAssembly, the code section offset in the module."""
-    scriptLanguage: "NotRequired[ScriptLanguage]"
-    """The language of the script."""
-    debugSymbols: "NotRequired[List[DebugSymbols]]"
-    """If the scriptLanguage is WebAssembly, the source of debug symbols for the module."""
-    embedderName: "NotRequired[str]"
-    """The name the embedder supplied for this script."""
-    resolvedBreakpoints: "NotRequired[List[ResolvedBreakpoint]]"
-    """The list of set breakpoints in this script if calls to `setBreakpointByUrl`
-matches this script's URL or hash. Clients that use this list can ignore the
-`breakpointResolved` event. They are equivalent."""

@@ -18,21 +18,17 @@ DOMBreakpointType = Literal["subtree-modified", "attribute-modified", "node-remo
 """DOM breakpoint type."""
 
 
-CSPViolationType = Literal["trustedtype-sink-violation", "trustedtype-policy-violation"]
-"""CSP Violation type."""
-
-
 class EventListener(TypedDict):
     """Object event listener."""
 
     type: "str"
-    """`EventListener`'s type."""
+    """<code>EventListener</code>'s type."""
     useCapture: "bool"
-    """`EventListener`'s useCapture."""
+    """<code>EventListener</code>'s useCapture."""
     passive: "bool"
-    """`EventListener`'s passive flag."""
+    """<code>EventListener</code>'s passive flag."""
     once: "bool"
-    """`EventListener`'s once flag."""
+    """<code>EventListener</code>'s once flag."""
     scriptId: "ScriptId"
     """Script id of the handler code."""
     lineNumber: "int"

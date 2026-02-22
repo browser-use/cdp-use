@@ -4,12 +4,8 @@
 
 """CDP Browser Domain Types"""
 
-from typing import List
 from typing_extensions import Literal
-from typing_extensions import NotRequired, TypedDict
-
-BrowserContextID = str
-
+from typing_extensions import TypedDict
 
 WindowID = int
 
@@ -31,98 +27,3 @@ class Bounds(TypedDict, total=False):
     """The window height in pixels."""
     windowState: "WindowState"
     """The window state. Default to normal."""
-
-
-PermissionType = Literal[
-    "ar",
-    "audioCapture",
-    "automaticFullscreen",
-    "backgroundFetch",
-    "backgroundSync",
-    "cameraPanTiltZoom",
-    "capturedSurfaceControl",
-    "clipboardReadWrite",
-    "clipboardSanitizedWrite",
-    "displayCapture",
-    "durableStorage",
-    "geolocation",
-    "handTracking",
-    "idleDetection",
-    "keyboardLock",
-    "localFonts",
-    "localNetworkAccess",
-    "midi",
-    "midiSysex",
-    "nfc",
-    "notifications",
-    "paymentHandler",
-    "periodicBackgroundSync",
-    "pointerLock",
-    "protectedMediaIdentifier",
-    "sensors",
-    "smartCard",
-    "speakerSelection",
-    "storageAccess",
-    "topLevelStorageAccess",
-    "videoCapture",
-    "vr",
-    "wakeLockScreen",
-    "wakeLockSystem",
-    "webAppInstallation",
-    "webPrinting",
-    "windowManagement",
-]
-
-
-PermissionSetting = Literal["granted", "denied", "prompt"]
-
-
-class PermissionDescriptor(TypedDict):
-    """Definition of PermissionDescriptor defined in the Permissions API:
-    https://w3c.github.io/permissions/#dom-permissiondescriptor."""
-
-    name: "str"
-    """Name of permission.
-See https://cs.chromium.org/chromium/src/third_party/blink/renderer/modules/permissions/permission_descriptor.idl for valid permission names."""
-    sysex: "NotRequired[bool]"
-    """For \"midi\" permission, may also specify sysex control."""
-    userVisibleOnly: "NotRequired[bool]"
-    """For \"push\" permission, may specify userVisibleOnly.
-Note that userVisibleOnly = true is the only currently supported type."""
-    allowWithoutSanitization: "NotRequired[bool]"
-    """For \"clipboard\" permission, may specify allowWithoutSanitization."""
-    allowWithoutGesture: "NotRequired[bool]"
-    """For \"fullscreen\" permission, must specify allowWithoutGesture:true."""
-    panTiltZoom: "NotRequired[bool]"
-    """For \"camera\" permission, may specify panTiltZoom."""
-
-
-BrowserCommandId = Literal["openTabSearch", "closeTabSearch", "openGlic"]
-"""Browser command ids used by executeBrowserCommand."""
-
-
-class Bucket(TypedDict):
-    """Chrome histogram bucket."""
-
-    low: "int"
-    """Minimum value (inclusive)."""
-    high: "int"
-    """Maximum value (exclusive)."""
-    count: "int"
-    """Number of samples."""
-
-
-class Histogram(TypedDict):
-    """Chrome histogram."""
-
-    name: "str"
-    """Name."""
-    sum: "int"
-    """Sum of sample values."""
-    count: "int"
-    """Total number of samples."""
-    buckets: "List[Bucket]"
-    """Buckets."""
-
-
-PrivacySandboxAPI = Literal["BiddingAndAuctionServices", "TrustedKeyValue"]

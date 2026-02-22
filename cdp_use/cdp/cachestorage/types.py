@@ -5,22 +5,10 @@
 """CDP CacheStorage Domain Types"""
 
 from typing import List
-from typing_extensions import Literal
-from typing_extensions import NotRequired, TypedDict
-
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from ..storage.types import StorageBucket
+from typing_extensions import TypedDict
 
 CacheId = str
 """Unique identifier of the Cache object."""
-
-
-CachedResponseType = Literal[
-    "basic", "cors", "default", "error", "opaqueResponse", "opaqueRedirect"
-]
-"""type of HTTP response cached"""
 
 
 class DataEntry(TypedDict):
@@ -38,8 +26,6 @@ class DataEntry(TypedDict):
     """HTTP response status code."""
     responseStatusText: "str"
     """HTTP response status text."""
-    responseType: "CachedResponseType"
-    """HTTP response type"""
     responseHeaders: "List[Header]"
     """Response headers"""
 
@@ -51,10 +37,6 @@ class Cache(TypedDict):
     """An opaque unique id of the cache."""
     securityOrigin: "str"
     """Security origin of the cache."""
-    storageKey: "str"
-    """Storage key of the cache."""
-    storageBucket: "NotRequired[StorageBucket]"
-    """Storage bucket of the cache."""
     cacheName: "str"
     """The name of the cache."""
 
@@ -68,4 +50,4 @@ class CachedResponse(TypedDict):
     """Cached response"""
 
     body: "str"
-    """Entry content, base64-encoded. (Encoded as a base64 string when passed over JSON)"""
+    """Entry content, base64-encoded."""

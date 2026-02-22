@@ -10,14 +10,9 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
-    from .commands import GetAllTimeSamplingProfileReturns
-    from .commands import GetBrowserSamplingProfileReturns
-    from .commands import GetDOMCountersForLeakDetectionReturns
     from .commands import GetDOMCountersReturns
-    from .commands import GetSamplingProfileReturns
     from .commands import SetPressureNotificationsSuppressedParameters
     from .commands import SimulatePressureNotificationParameters
-    from .commands import StartSamplingParameters
 
 
 class MemoryClient:
@@ -31,26 +26,10 @@ class MemoryClient:
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "GetDOMCountersReturns":
-        """Retruns current DOM object counters."""
         return cast(
             "GetDOMCountersReturns",
             await self._client.send_raw(
                 method="Memory.getDOMCounters",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getDOMCountersForLeakDetection(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "GetDOMCountersForLeakDetectionReturns":
-        """Retruns DOM object counters after preparing renderer for leak detection."""
-        return cast(
-            "GetDOMCountersForLeakDetectionReturns",
-            await self._client.send_raw(
-                method="Memory.getDOMCountersForLeakDetection",
                 params=params,
                 session_id=session_id,
             ),
@@ -61,27 +40,10 @@ class MemoryClient:
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Prepares for leak detection by terminating workers, stopping spellcheckers,
-        dropping non-essential internal caches, running garbage collections, etc."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="Memory.prepareForLeakDetection",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def forciblyPurgeJavaScriptMemory(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Simulate OomIntervention by purging V8 memory."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Memory.forciblyPurgeJavaScriptMemory",
                 params=params,
                 session_id=session_id,
             ),
@@ -112,84 +74,6 @@ class MemoryClient:
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="Memory.simulatePressureNotification",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def startSampling(
-        self,
-        params: Optional["StartSamplingParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Start collecting native memory profile."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Memory.startSampling",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def stopSampling(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Stop collecting native memory profile."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Memory.stopSampling",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getAllTimeSamplingProfile(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "GetAllTimeSamplingProfileReturns":
-        """Retrieve native memory allocations profile
-        collected since renderer process startup."""
-        return cast(
-            "GetAllTimeSamplingProfileReturns",
-            await self._client.send_raw(
-                method="Memory.getAllTimeSamplingProfile",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getBrowserSamplingProfile(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "GetBrowserSamplingProfileReturns":
-        """Retrieve native memory allocations profile
-        collected since browser process startup."""
-        return cast(
-            "GetBrowserSamplingProfileReturns",
-            await self._client.send_raw(
-                method="Memory.getBrowserSamplingProfile",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getSamplingProfile(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "GetSamplingProfileReturns":
-        """Retrieve native memory allocations profile collected since last
-        `startSampling` call."""
-        return cast(
-            "GetSamplingProfileReturns",
-            await self._client.send_raw(
-                method="Memory.getSamplingProfile",
                 params=params,
                 session_id=session_id,
             ),

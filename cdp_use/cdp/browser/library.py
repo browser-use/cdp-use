@@ -10,26 +10,11 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
-    from .commands import AddPrivacySandboxCoordinatorKeyConfigParameters
-    from .commands import AddPrivacySandboxEnrollmentOverrideParameters
-    from .commands import CancelDownloadParameters
-    from .commands import ExecuteBrowserCommandParameters
-    from .commands import GetBrowserCommandLineReturns
-    from .commands import GetHistogramParameters
-    from .commands import GetHistogramReturns
-    from .commands import GetHistogramsParameters
-    from .commands import GetHistogramsReturns
     from .commands import GetVersionReturns
     from .commands import GetWindowBoundsParameters
     from .commands import GetWindowBoundsReturns
     from .commands import GetWindowForTargetParameters
     from .commands import GetWindowForTargetReturns
-    from .commands import GrantPermissionsParameters
-    from .commands import ResetPermissionsParameters
-    from .commands import SetContentsSizeParameters
-    from .commands import SetDockTileParameters
-    from .commands import SetDownloadBehaviorParameters
-    from .commands import SetPermissionParameters
     from .commands import SetWindowBoundsParameters
 
 
@@ -38,82 +23,6 @@ class BrowserClient:
 
     def __init__(self, client: "CDPClient"):
         self._client = client
-
-    async def setPermission(
-        self,
-        params: "SetPermissionParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Set permission settings for given embedding and embedded origins."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.setPermission",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def grantPermissions(
-        self,
-        params: "GrantPermissionsParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Grant specific permissions to the given origin and reject all others. Deprecated. Use
-        setPermission instead."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.grantPermissions",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def resetPermissions(
-        self,
-        params: Optional["ResetPermissionsParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Reset all permission management for all origins."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.resetPermissions",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setDownloadBehavior(
-        self,
-        params: "SetDownloadBehaviorParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Set the behavior when downloading a file."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.setDownloadBehavior",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def cancelDownload(
-        self,
-        params: "CancelDownloadParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Cancel a download if in progress"""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.cancelDownload",
-                params=params,
-                session_id=session_id,
-            ),
-        )
 
     async def close(
         self,
@@ -130,31 +39,16 @@ class BrowserClient:
             ),
         )
 
-    async def crash(
+    async def getWindowForTarget(
         self,
-        params: None = None,
+        params: "GetWindowForTargetParameters",
         session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Crashes browser on the main thread."""
+    ) -> "GetWindowForTargetReturns":
+        """Get the browser window that contains the devtools target."""
         return cast(
-            "Dict[str, Any]",
+            "GetWindowForTargetReturns",
             await self._client.send_raw(
-                method="Browser.crash",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def crashGpuProcess(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Crashes GPU process."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.crashGpuProcess",
+                method="Browser.getWindowForTarget",
                 params=params,
                 session_id=session_id,
             ),
@@ -175,82 +69,6 @@ class BrowserClient:
             ),
         )
 
-    async def getBrowserCommandLine(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "GetBrowserCommandLineReturns":
-        """Returns the command line switches for the browser process if, and only if
-        --enable-automation is on the commandline."""
-        return cast(
-            "GetBrowserCommandLineReturns",
-            await self._client.send_raw(
-                method="Browser.getBrowserCommandLine",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getHistograms(
-        self,
-        params: Optional["GetHistogramsParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "GetHistogramsReturns":
-        """Get Chrome histograms."""
-        return cast(
-            "GetHistogramsReturns",
-            await self._client.send_raw(
-                method="Browser.getHistograms",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getHistogram(
-        self,
-        params: "GetHistogramParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetHistogramReturns":
-        """Get a Chrome histogram by name."""
-        return cast(
-            "GetHistogramReturns",
-            await self._client.send_raw(
-                method="Browser.getHistogram",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getWindowBounds(
-        self,
-        params: "GetWindowBoundsParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetWindowBoundsReturns":
-        """Get position and size of the browser window."""
-        return cast(
-            "GetWindowBoundsReturns",
-            await self._client.send_raw(
-                method="Browser.getWindowBounds",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getWindowForTarget(
-        self,
-        params: Optional["GetWindowForTargetParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "GetWindowForTargetReturns":
-        """Get the browser window that contains the devtools target."""
-        return cast(
-            "GetWindowForTargetReturns",
-            await self._client.send_raw(
-                method="Browser.getWindowForTarget",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def setWindowBounds(
         self,
         params: "SetWindowBoundsParameters",
@@ -266,80 +84,16 @@ class BrowserClient:
             ),
         )
 
-    async def setContentsSize(
+    async def getWindowBounds(
         self,
-        params: "SetContentsSizeParameters",
+        params: "GetWindowBoundsParameters",
         session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Set size of the browser contents resizing browser window as necessary."""
+    ) -> "GetWindowBoundsReturns":
+        """Get position and size of the browser window."""
         return cast(
-            "Dict[str, Any]",
+            "GetWindowBoundsReturns",
             await self._client.send_raw(
-                method="Browser.setContentsSize",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setDockTile(
-        self,
-        params: Optional["SetDockTileParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Set dock tile details, platform-specific."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.setDockTile",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def executeBrowserCommand(
-        self,
-        params: "ExecuteBrowserCommandParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Invoke custom browser commands used by telemetry."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.executeBrowserCommand",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def addPrivacySandboxEnrollmentOverride(
-        self,
-        params: "AddPrivacySandboxEnrollmentOverrideParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Allows a site to use privacy sandbox features that require enrollment
-        without the site actually being enrolled. Only supported on page targets."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.addPrivacySandboxEnrollmentOverride",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def addPrivacySandboxCoordinatorKeyConfig(
-        self,
-        params: "AddPrivacySandboxCoordinatorKeyConfigParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Configures encryption keys used with a given privacy sandbox API to talk
-        to a trusted coordinator.  Since this is intended for test automation only,
-        coordinatorOrigin must be a .test domain. No existing coordinator
-        configuration for the origin may exist."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Browser.addPrivacySandboxCoordinatorKeyConfig",
+                method="Browser.getWindowBounds",
                 params=params,
                 session_id=session_id,
             ),

@@ -18,16 +18,16 @@ class ConsoleClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def clearMessages(
+    async def enable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Does nothing."""
+        """Enables console domain, sends the messages collected so far to the client by means of the <code>messageAdded</code> notification."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Console.clearMessages",
+                method="Console.enable",
                 params=params,
                 session_id=session_id,
             ),
@@ -48,17 +48,16 @@ class ConsoleClient:
             ),
         )
 
-    async def enable(
+    async def clearMessages(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Enables console domain, sends the messages collected so far to the client by means of the
-        `messageAdded` notification."""
+        """Does nothing."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Console.enable",
+                method="Console.clearMessages",
                 params=params,
                 session_id=session_id,
             ),

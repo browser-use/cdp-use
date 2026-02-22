@@ -11,7 +11,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from ...client import CDPClient
     from .commands import HandleCertificateErrorParameters
-    from .commands import SetIgnoreCertificateErrorsParameters
     from .commands import SetOverrideCertificateErrorsParameters
 
 
@@ -20,21 +19,6 @@ class SecurityClient:
 
     def __init__(self, client: "CDPClient"):
         self._client = client
-
-    async def disable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Disables tracking security state changes."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Security.disable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
 
     async def enable(
         self,
@@ -51,16 +35,16 @@ class SecurityClient:
             ),
         )
 
-    async def setIgnoreCertificateErrors(
+    async def disable(
         self,
-        params: "SetIgnoreCertificateErrorsParameters",
+        params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Enable/disable whether all certificate errors should be ignored."""
+        """Disables tracking security state changes."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Security.setIgnoreCertificateErrors",
+                method="Security.disable",
                 params=params,
                 session_id=session_id,
             ),
@@ -86,8 +70,7 @@ class SecurityClient:
         params: "SetOverrideCertificateErrorsParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Enable/disable overriding certificate errors. If enabled, all certificate error events need to
-        be handled by the DevTools client and should be answered with `handleCertificateError` commands."""
+        """Enable/disable overriding certificate errors. If enabled, all certificate error events need to be handled by the DevTools client and should be answered with handleCertificateError commands."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(

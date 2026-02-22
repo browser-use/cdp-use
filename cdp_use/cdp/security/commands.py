@@ -12,11 +12,6 @@ if TYPE_CHECKING:
     from .types import CertificateErrorAction
 
 
-class SetIgnoreCertificateErrorsParameters(TypedDict):
-    ignore: "bool"
-    """If true, all certificate errors will be ignored."""
-
-
 class HandleCertificateErrorParameters(TypedDict):
     eventId: "int"
     """The ID of the event."""

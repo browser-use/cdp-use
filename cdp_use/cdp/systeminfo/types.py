@@ -5,7 +5,6 @@
 """CDP SystemInfo Domain Types"""
 
 from typing import Any, Dict, List
-from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 
@@ -16,62 +15,10 @@ class GPUDevice(TypedDict):
     """PCI ID of the GPU vendor, if available; 0 otherwise."""
     deviceId: "float"
     """PCI ID of the GPU device, if available; 0 otherwise."""
-    subSysId: "NotRequired[float]"
-    """Sub sys ID of the GPU, only available on Windows."""
-    revision: "NotRequired[float]"
-    """Revision of the GPU, only available on Windows."""
     vendorString: "str"
     """String description of the GPU vendor, if the PCI ID is not available."""
     deviceString: "str"
     """String description of the GPU device, if the PCI ID is not available."""
-    driverVendor: "str"
-    """String description of the GPU driver vendor."""
-    driverVersion: "str"
-    """String description of the GPU driver version."""
-
-
-class Size(TypedDict):
-    """Describes the width and height dimensions of an entity."""
-
-    width: "int"
-    """Width in pixels."""
-    height: "int"
-    """Height in pixels."""
-
-
-class VideoDecodeAcceleratorCapability(TypedDict):
-    """Describes a supported video decoding profile with its associated minimum and
-    maximum resolutions."""
-
-    profile: "str"
-    """Video codec profile that is supported, e.g. VP9 Profile 2."""
-    maxResolution: "Size"
-    """Maximum video dimensions in pixels supported for this |profile|."""
-    minResolution: "Size"
-    """Minimum video dimensions in pixels supported for this |profile|."""
-
-
-class VideoEncodeAcceleratorCapability(TypedDict):
-    """Describes a supported video encoding profile with its associated maximum
-    resolution and maximum framerate."""
-
-    profile: "str"
-    """Video codec profile that is supported, e.g H264 Main."""
-    maxResolution: "Size"
-    """Maximum video dimensions in pixels supported for this |profile|."""
-    maxFramerateNumerator: "int"
-    """Maximum encoding framerate in frames per second supported for this
-|profile|, as fraction's numerator and denominator, e.g. 24/1 fps,
-24000/1001 fps, etc."""
-    maxFramerateDenominator: "int"
-
-
-SubsamplingFormat = Literal["yuv420", "yuv422", "yuv444"]
-"""YUV subsampling type of the pixels of a given image."""
-
-
-ImageType = Literal["jpeg", "webp", "unknown"]
-"""Image format of a given image."""
 
 
 class GPUInfo(TypedDict):
@@ -85,19 +32,3 @@ class GPUInfo(TypedDict):
     """An optional dictionary of graphics features and their status."""
     driverBugWorkarounds: "List[str]"
     """An optional array of GPU driver bug workarounds."""
-    videoDecoding: "List[VideoDecodeAcceleratorCapability]"
-    """Supported accelerated video decoding capabilities."""
-    videoEncoding: "List[VideoEncodeAcceleratorCapability]"
-    """Supported accelerated video encoding capabilities."""
-
-
-class ProcessInfo(TypedDict):
-    """Represents process info."""
-
-    type: "str"
-    """Specifies process type."""
-    id: "int"
-    """Specifies process id."""
-    cpuTime: "float"
-    """Specifies cumulative CPU usage in seconds across all threads of the
-process since the process start."""

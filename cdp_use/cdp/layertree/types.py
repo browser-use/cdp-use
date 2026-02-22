@@ -51,7 +51,7 @@ class PictureTile(TypedDict):
     y: "float"
     """Offset from owning layer top boundary"""
     picture: "str"
-    """Base64-encoded snapshot data. (Encoded as a base64 string when passed over JSON)"""
+    """Base64-encoded snapshot data."""
 
 
 class Layer(TypedDict):
@@ -82,8 +82,7 @@ class Layer(TypedDict):
     paintCount: "int"
     """Indicates how many time this layer has painted."""
     drawsContent: "bool"
-    """Indicates whether this layer hosts any content, rather than being used for
-transform/scrolling purposes only."""
+    """Indicates whether this layer hosts any content, rather than being used for transform/scrolling purposes only."""
     invisible: "NotRequired[bool]"
     """Set if layer is not visible."""
     scrollRects: "NotRequired[List[ScrollRect]]"

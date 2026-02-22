@@ -15,13 +15,13 @@ if TYPE_CHECKING:
     from .types import ServiceWorkerVersion
 
 
-class WorkerErrorReportedEvent(TypedDict):
-    errorMessage: "ServiceWorkerErrorMessage"
-
-
 class WorkerRegistrationUpdatedEvent(TypedDict):
     registrations: "List[ServiceWorkerRegistration]"
 
 
 class WorkerVersionUpdatedEvent(TypedDict):
     versions: "List[ServiceWorkerVersion]"
+
+
+class WorkerErrorReportedEvent(TypedDict):
+    errorMessage: "ServiceWorkerErrorMessage"

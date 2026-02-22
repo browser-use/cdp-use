@@ -13,16 +13,6 @@ if TYPE_CHECKING:
     from .types import Metric
 
 
-class EnableParameters(TypedDict, total=False):
-    timeDomain: "str"
-    """Time domain to use for collecting and reporting duration metrics."""
-
-
-class SetTimeDomainParameters(TypedDict):
-    timeDomain: "str"
-    """Time domain"""
-
-
 class GetMetricsReturns(TypedDict):
     metrics: "List[Metric]"
     """Current values for run-time metrics."""

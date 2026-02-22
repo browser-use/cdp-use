@@ -19,17 +19,3 @@ class DetachedEvent(TypedDict):
 
 class TargetCrashedEvent(TypedDict):
     pass
-
-
-"""Fired when debugging target has reloaded after crash"""
-
-
-class TargetReloadedAfterCrashEvent(TypedDict):
-    pass
-
-
-"""Fired on worker targets when main worker script and any imported scripts have been evaluated."""
-
-
-class WorkerScriptLoadedEvent(TypedDict):
-    pass

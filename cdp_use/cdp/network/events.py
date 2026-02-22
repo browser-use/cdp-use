@@ -4,155 +4,40 @@
 
 """CDP Network Domain Events"""
 
-from typing import List
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ..page.types import FrameId
-    from .types import AssociatedCookie
+    from ..page.types import ResourceType
     from .types import AuthChallenge
     from .types import BlockedReason
-    from .types import BlockedSetCookieWithReason
-    from .types import ClientSecurityState
-    from .types import ConnectTiming
-    from .types import CookiePartitionKey
-    from .types import CorsErrorStatus
-    from .types import DirectTCPSocketOptions
-    from .types import DirectUDPMessage
-    from .types import DirectUDPSocketOptions
     from .types import ErrorReason
-    from .types import ExemptedSetCookieWithReason
     from .types import Headers
-    from .types import IPAddressSpace
     from .types import Initiator
     from .types import InterceptionId
     from .types import LoaderId
     from .types import MonotonicTime
-    from .types import ReportingApiEndpoint
-    from .types import ReportingApiReport
     from .types import Request
     from .types import RequestId
     from .types import ResourcePriority
-    from .types import ResourceType
     from .types import Response
-    from .types import SignedExchangeInfo
     from .types import TimeSinceEpoch
-    from .types import TrustTokenOperationType
     from .types import WebSocketFrame
     from .types import WebSocketRequest
     from .types import WebSocketResponse
 
-"""Fired when data chunk was received over the network."""
+"""Fired when resource loading priority is changed"""
 
 
-class DataReceivedEvent(TypedDict):
+class ResourceChangedPriorityEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
+    newPriority: "ResourcePriority"
+    """New priority"""
     timestamp: "MonotonicTime"
     """Timestamp."""
-    dataLength: "int"
-    """Data chunk length."""
-    encodedDataLength: "int"
-    """Actual bytes received (might be less than dataLength for compressed encodings)."""
-    data: "NotRequired[str]"
-    """Data that was received. (Encoded as a base64 string when passed over JSON)"""
-
-
-"""Fired when EventSource message is received."""
-
-
-class EventSourceMessageReceivedEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier."""
-    timestamp: "MonotonicTime"
-    """Timestamp."""
-    eventName: "str"
-    """Message type."""
-    eventId: "str"
-    """Message identifier."""
-    data: "str"
-    """Message content."""
-
-
-"""Fired when HTTP request has failed to load."""
-
-
-class LoadingFailedEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier."""
-    timestamp: "MonotonicTime"
-    """Timestamp."""
-    type: "ResourceType"
-    """Resource type."""
-    errorText: "str"
-    """Error message. List of network errors: https://cs.chromium.org/chromium/src/net/base/net_error_list.h"""
-    canceled: "NotRequired[bool]"
-    """True if loading was canceled."""
-    blockedReason: "NotRequired[BlockedReason]"
-    """The reason why loading was blocked, if any."""
-    corsErrorStatus: "NotRequired[CorsErrorStatus]"
-    """The reason why loading was blocked by CORS, if any."""
-
-
-"""Fired when HTTP request has finished loading."""
-
-
-class LoadingFinishedEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier."""
-    timestamp: "MonotonicTime"
-    """Timestamp."""
-    encodedDataLength: "float"
-    """Total number of bytes received for this request."""
-
-
-"""Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
-mocked.
-Deprecated, use Fetch.requestPaused instead."""
-
-
-class RequestInterceptedEvent(TypedDict):
-    interceptionId: "InterceptionId"
-    """Each request the page makes will have a unique id, however if any redirects are encountered
-while processing that fetch, they will be reported with the same id as the original fetch.
-Likewise if HTTP authentication is needed then the same fetch id will be used."""
-    request: "Request"
-    frameId: "FrameId"
-    """The id of the frame that initiated the request."""
-    resourceType: "ResourceType"
-    """How the requested resource will be used."""
-    isNavigationRequest: "bool"
-    """Whether this is a navigation request, which can abort the navigation completely."""
-    isDownload: "NotRequired[bool]"
-    """Set if the request is a navigation that will result in a download.
-Only present after response is received from the server (i.e. HeadersReceived stage)."""
-    redirectUrl: "NotRequired[str]"
-    """Redirect location, only sent if a redirect was intercepted."""
-    authChallenge: "NotRequired[AuthChallenge]"
-    """Details of the Authorization Challenge encountered. If this is set then
-continueInterceptedRequest must contain an authChallengeResponse."""
-    responseErrorReason: "NotRequired[ErrorReason]"
-    """Response error if intercepted at response stage or if redirect occurred while intercepting
-request."""
-    responseStatusCode: "NotRequired[int]"
-    """Response code if intercepted at response stage or if redirect occurred while intercepting
-request or auth retry occurred."""
-    responseHeaders: "NotRequired[Headers]"
-    """Response headers if intercepted at the response stage or if redirect occurred while
-intercepting request or auth retry occurred."""
-    requestId: "NotRequired[RequestId]"
-    """If the intercepted request had a corresponding requestWillBeSent event fired for it, then
-this requestId will be the same as the requestId present in the requestWillBeSent event."""
-
-
-"""Fired if request ended up loading from cache."""
-
-
-class RequestServedFromCacheEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier."""
 
 
 """Fired when page is about to send HTTP request."""
@@ -173,40 +58,20 @@ class RequestWillBeSentEvent(TypedDict):
     """Timestamp."""
     initiator: "Initiator"
     """Request initiator."""
-    redirectHasExtraInfo: "bool"
-    """In the case that redirectResponse is populated, this flag indicates whether
-requestWillBeSentExtraInfo and responseReceivedExtraInfo events will be or were emitted
-for the request which was just redirected."""
     redirectResponse: "NotRequired[Response]"
     """Redirect response data."""
     type: "NotRequired[ResourceType]"
     """Type of this resource."""
     frameId: "NotRequired[FrameId]"
     """Frame identifier."""
-    hasUserGesture: "NotRequired[bool]"
-    """Whether the request is initiated by a user gesture. Defaults to false."""
 
 
-"""Fired when resource loading priority is changed"""
+"""Fired if request ended up loading from cache."""
 
 
-class ResourceChangedPriorityEvent(TypedDict):
+class RequestServedFromCacheEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
-    newPriority: "ResourcePriority"
-    """New priority"""
-    timestamp: "MonotonicTime"
-    """Timestamp."""
-
-
-"""Fired when a signed exchange was received over the network"""
-
-
-class SignedExchangeReceivedEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier."""
-    info: "SignedExchangeInfo"
-    """Information about the signed exchange response."""
 
 
 """Fired when HTTP response is available."""
@@ -223,81 +88,52 @@ class ResponseReceivedEvent(TypedDict):
     """Resource type."""
     response: "Response"
     """Response data."""
-    hasExtraInfo: "bool"
-    """Indicates whether requestWillBeSentExtraInfo and responseReceivedExtraInfo events will be
-or were emitted for this request."""
     frameId: "NotRequired[FrameId]"
     """Frame identifier."""
 
 
-"""Fired when WebSocket is closed."""
+"""Fired when data chunk was received over the network."""
 
 
-class WebSocketClosedEvent(TypedDict):
+class DataReceivedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
     timestamp: "MonotonicTime"
     """Timestamp."""
+    dataLength: "int"
+    """Data chunk length."""
+    encodedDataLength: "int"
+    """Actual bytes received (might be less than dataLength for compressed encodings)."""
 
 
-"""Fired upon WebSocket creation."""
+"""Fired when HTTP request has finished loading."""
 
 
-class WebSocketCreatedEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier."""
-    url: "str"
-    """WebSocket request URL."""
-    initiator: "NotRequired[Initiator]"
-    """Request initiator."""
-
-
-"""Fired when WebSocket message error occurs."""
-
-
-class WebSocketFrameErrorEvent(TypedDict):
+class LoadingFinishedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
     timestamp: "MonotonicTime"
     """Timestamp."""
-    errorMessage: "str"
-    """WebSocket error message."""
+    encodedDataLength: "float"
+    """Total number of bytes received for this request."""
 
 
-"""Fired when WebSocket message is received."""
+"""Fired when HTTP request has failed to load."""
 
 
-class WebSocketFrameReceivedEvent(TypedDict):
+class LoadingFailedEvent(TypedDict):
     requestId: "RequestId"
     """Request identifier."""
     timestamp: "MonotonicTime"
     """Timestamp."""
-    response: "WebSocketFrame"
-    """WebSocket response data."""
-
-
-"""Fired when WebSocket message is sent."""
-
-
-class WebSocketFrameSentEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier."""
-    timestamp: "MonotonicTime"
-    """Timestamp."""
-    response: "WebSocketFrame"
-    """WebSocket response data."""
-
-
-"""Fired when WebSocket handshake response becomes available."""
-
-
-class WebSocketHandshakeResponseReceivedEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier."""
-    timestamp: "MonotonicTime"
-    """Timestamp."""
-    response: "WebSocketResponse"
-    """WebSocket response data."""
+    type: "ResourceType"
+    """Resource type."""
+    errorText: "str"
+    """User friendly error message."""
+    canceled: "NotRequired[bool]"
+    """True if loading was canceled."""
+    blockedReason: "NotRequired[BlockedReason]"
+    """The reason why loading was blocked, if any."""
 
 
 """Fired when WebSocket is about to initiate handshake."""
@@ -314,290 +150,112 @@ class WebSocketWillSendHandshakeRequestEvent(TypedDict):
     """WebSocket request data."""
 
 
-"""Fired upon WebTransport creation."""
+"""Fired when WebSocket handshake response becomes available."""
 
 
-class WebTransportCreatedEvent(TypedDict):
-    transportId: "RequestId"
-    """WebTransport identifier."""
-    url: "str"
-    """WebTransport request URL."""
+class WebSocketHandshakeResponseReceivedEvent(TypedDict):
+    requestId: "RequestId"
+    """Request identifier."""
     timestamp: "MonotonicTime"
     """Timestamp."""
+    response: "WebSocketResponse"
+    """WebSocket response data."""
+
+
+"""Fired upon WebSocket creation."""
+
+
+class WebSocketCreatedEvent(TypedDict):
+    requestId: "RequestId"
+    """Request identifier."""
+    url: "str"
+    """WebSocket request URL."""
     initiator: "NotRequired[Initiator]"
     """Request initiator."""
 
 
-"""Fired when WebTransport handshake is finished."""
+"""Fired when WebSocket is closed."""
 
 
-class WebTransportConnectionEstablishedEvent(TypedDict):
-    transportId: "RequestId"
-    """WebTransport identifier."""
+class WebSocketClosedEvent(TypedDict):
+    requestId: "RequestId"
+    """Request identifier."""
     timestamp: "MonotonicTime"
     """Timestamp."""
 
 
-"""Fired when WebTransport is disposed."""
+"""Fired when WebSocket frame is received."""
 
 
-class WebTransportClosedEvent(TypedDict):
-    transportId: "RequestId"
-    """WebTransport identifier."""
+class WebSocketFrameReceivedEvent(TypedDict):
+    requestId: "RequestId"
+    """Request identifier."""
     timestamp: "MonotonicTime"
     """Timestamp."""
+    response: "WebSocketFrame"
+    """WebSocket response data."""
 
 
-"""Fired upon direct_socket.TCPSocket creation."""
+"""Fired when WebSocket frame error occurs."""
 
 
-class DirectTCPSocketCreatedEvent(TypedDict):
-    identifier: "RequestId"
-    remoteAddr: "str"
-    remotePort: "int"
-    """Unsigned int 16."""
-    options: "DirectTCPSocketOptions"
+class WebSocketFrameErrorEvent(TypedDict):
+    requestId: "RequestId"
+    """Request identifier."""
     timestamp: "MonotonicTime"
-    initiator: "NotRequired[Initiator]"
-
-
-"""Fired when direct_socket.TCPSocket connection is opened."""
-
-
-class DirectTCPSocketOpenedEvent(TypedDict):
-    identifier: "RequestId"
-    remoteAddr: "str"
-    remotePort: "int"
-    """Expected to be unsigned integer."""
-    timestamp: "MonotonicTime"
-    localAddr: "NotRequired[str]"
-    localPort: "NotRequired[int]"
-    """Expected to be unsigned integer."""
-
-
-"""Fired when direct_socket.TCPSocket is aborted."""
-
-
-class DirectTCPSocketAbortedEvent(TypedDict):
-    identifier: "RequestId"
+    """Timestamp."""
     errorMessage: "str"
+    """WebSocket frame error message."""
+
+
+"""Fired when WebSocket frame is sent."""
+
+
+class WebSocketFrameSentEvent(TypedDict):
+    requestId: "RequestId"
+    """Request identifier."""
     timestamp: "MonotonicTime"
+    """Timestamp."""
+    response: "WebSocketFrame"
+    """WebSocket response data."""
 
 
-"""Fired when direct_socket.TCPSocket is closed."""
+"""Fired when EventSource message is received."""
 
 
-class DirectTCPSocketClosedEvent(TypedDict):
-    identifier: "RequestId"
+class EventSourceMessageReceivedEvent(TypedDict):
+    requestId: "RequestId"
+    """Request identifier."""
     timestamp: "MonotonicTime"
-
-
-"""Fired when data is sent to tcp direct socket stream."""
-
-
-class DirectTCPSocketChunkSentEvent(TypedDict):
-    identifier: "RequestId"
+    """Timestamp."""
+    eventName: "str"
+    """Message type."""
+    eventId: "str"
+    """Message identifier."""
     data: "str"
-    timestamp: "MonotonicTime"
+    """Message content."""
 
 
-"""Fired when data is received from tcp direct socket stream."""
+"""Details of an intercepted HTTP request, which must be either allowed, blocked, modified or mocked."""
 
 
-class DirectTCPSocketChunkReceivedEvent(TypedDict):
-    identifier: "RequestId"
-    data: "str"
-    timestamp: "MonotonicTime"
-
-
-class DirectUDPSocketJoinedMulticastGroupEvent(TypedDict):
-    identifier: "RequestId"
-    IPAddress: "str"
-
-
-class DirectUDPSocketLeftMulticastGroupEvent(TypedDict):
-    identifier: "RequestId"
-    IPAddress: "str"
-
-
-"""Fired upon direct_socket.UDPSocket creation."""
-
-
-class DirectUDPSocketCreatedEvent(TypedDict):
-    identifier: "RequestId"
-    options: "DirectUDPSocketOptions"
-    timestamp: "MonotonicTime"
-    initiator: "NotRequired[Initiator]"
-
-
-"""Fired when direct_socket.UDPSocket connection is opened."""
-
-
-class DirectUDPSocketOpenedEvent(TypedDict):
-    identifier: "RequestId"
-    localAddr: "str"
-    localPort: "int"
-    """Expected to be unsigned integer."""
-    timestamp: "MonotonicTime"
-    remoteAddr: "NotRequired[str]"
-    remotePort: "NotRequired[int]"
-    """Expected to be unsigned integer."""
-
-
-"""Fired when direct_socket.UDPSocket is aborted."""
-
-
-class DirectUDPSocketAbortedEvent(TypedDict):
-    identifier: "RequestId"
-    errorMessage: "str"
-    timestamp: "MonotonicTime"
-
-
-"""Fired when direct_socket.UDPSocket is closed."""
-
-
-class DirectUDPSocketClosedEvent(TypedDict):
-    identifier: "RequestId"
-    timestamp: "MonotonicTime"
-
-
-"""Fired when message is sent to udp direct socket stream."""
-
-
-class DirectUDPSocketChunkSentEvent(TypedDict):
-    identifier: "RequestId"
-    message: "DirectUDPMessage"
-    timestamp: "MonotonicTime"
-
-
-"""Fired when message is received from udp direct socket stream."""
-
-
-class DirectUDPSocketChunkReceivedEvent(TypedDict):
-    identifier: "RequestId"
-    message: "DirectUDPMessage"
-    timestamp: "MonotonicTime"
-
-
-"""Fired when additional information about a requestWillBeSent event is available from the
-network stack. Not every requestWillBeSent event will have an additional
-requestWillBeSentExtraInfo fired for it, and there is no guarantee whether requestWillBeSent
-or requestWillBeSentExtraInfo will be fired first for the same request."""
-
-
-class RequestWillBeSentExtraInfoEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier. Used to match this information to an existing requestWillBeSent event."""
-    associatedCookies: "List[AssociatedCookie]"
-    """A list of cookies potentially associated to the requested URL. This includes both cookies sent with
-the request and the ones not sent; the latter are distinguished by having blockedReasons field set."""
-    headers: "Headers"
-    """Raw request headers as they will be sent over the wire."""
-    connectTiming: "ConnectTiming"
-    """Connection timing information for the request."""
-    clientSecurityState: "NotRequired[ClientSecurityState]"
-    """The client security state set for the request."""
-    siteHasCookieInOtherPartition: "NotRequired[bool]"
-    """Whether the site has partitioned cookies stored in a partition different than the current one."""
-    appliedNetworkConditionsId: "NotRequired[str]"
-    """The network conditions id if this request was affected by network conditions configured via
-emulateNetworkConditionsByRule."""
-
-
-"""Fired when additional information about a responseReceived event is available from the network
-stack. Not every responseReceived event will have an additional responseReceivedExtraInfo for
-it, and responseReceivedExtraInfo may be fired before or after responseReceived."""
-
-
-class ResponseReceivedExtraInfoEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier. Used to match this information to another responseReceived event."""
-    blockedCookies: "List[BlockedSetCookieWithReason]"
-    """A list of cookies which were not stored from the response along with the corresponding
-reasons for blocking. The cookies here may not be valid due to syntax errors, which
-are represented by the invalid cookie line string instead of a proper cookie."""
-    headers: "Headers"
-    """Raw response headers as they were received over the wire.
-Duplicate headers in the response are represented as a single key with their values
-concatentated using `\\n` as the separator.
-See also `headersText` that contains verbatim text for HTTP/1.*."""
-    resourceIPAddressSpace: "IPAddressSpace"
-    """The IP address space of the resource. The address space can only be determined once the transport
-established the connection, so we can't send it in `requestWillBeSentExtraInfo`."""
-    statusCode: "int"
-    """The status code of the response. This is useful in cases the request failed and no responseReceived
-event is triggered, which is the case for, e.g., CORS errors. This is also the correct status code
-for cached requests, where the status in responseReceived is a 200 and this will be 304."""
-    headersText: "NotRequired[str]"
-    """Raw response header text as it was received over the wire. The raw text may not always be
-available, such as in the case of HTTP/2 or QUIC."""
-    cookiePartitionKey: "NotRequired[CookiePartitionKey]"
-    """The cookie partition key that will be used to store partitioned cookies set in this response.
-Only sent when partitioned cookies are enabled."""
-    cookiePartitionKeyOpaque: "NotRequired[bool]"
-    """True if partitioned cookies are enabled, but the partition key is not serializable to string."""
-    exemptedCookies: "NotRequired[List[ExemptedSetCookieWithReason]]"
-    """A list of cookies which should have been blocked by 3PCD but are exempted and stored from
-the response with the corresponding reason."""
-
-
-"""Fired when 103 Early Hints headers is received in addition to the common response.
-Not every responseReceived event will have an responseReceivedEarlyHints fired.
-Only one responseReceivedEarlyHints may be fired for eached responseReceived event."""
-
-
-class ResponseReceivedEarlyHintsEvent(TypedDict):
-    requestId: "RequestId"
-    """Request identifier. Used to match this information to another responseReceived event."""
-    headers: "Headers"
-    """Raw response headers as they were received over the wire.
-Duplicate headers in the response are represented as a single key with their values
-concatentated using `\\n` as the separator.
-See also `headersText` that contains verbatim text for HTTP/1.*."""
-
-
-"""Fired exactly once for each Trust Token operation. Depending on
-the type of the operation and whether the operation succeeded or
-failed, the event is fired before the corresponding request was sent
-or after the response was received."""
-
-
-class TrustTokenOperationDoneEvent(TypedDict):
-    status: "str"
-    """Detailed success or error status of the operation.
-'AlreadyExists' also signifies a successful operation, as the result
-of the operation already exists und thus, the operation was abort
-preemptively (e.g. a cache hit)."""
-    type: "TrustTokenOperationType"
-    requestId: "RequestId"
-    topLevelOrigin: "NotRequired[str]"
-    """Top level origin. The context in which the operation was attempted."""
-    issuerOrigin: "NotRequired[str]"
-    """Origin of the issuer in case of a \"Issuance\" or \"Redemption\" operation."""
-    issuedTokenCount: "NotRequired[int]"
-    """The number of obtained Trust Tokens on a successful \"Issuance\" operation."""
-
-
-"""Fired once security policy has been updated."""
-
-
-class PolicyUpdatedEvent(TypedDict):
-    pass
-
-
-"""Is sent whenever a new report is added.
-And after 'enableReportingApi' for all existing reports."""
-
-
-class ReportingApiReportAddedEvent(TypedDict):
-    report: "ReportingApiReport"
-
-
-class ReportingApiReportUpdatedEvent(TypedDict):
-    report: "ReportingApiReport"
-
-
-class ReportingApiEndpointsChangedForOriginEvent(TypedDict):
-    origin: "str"
-    """Origin of the document(s) which configured the endpoints."""
-    endpoints: "List[ReportingApiEndpoint]"
+class RequestInterceptedEvent(TypedDict):
+    interceptionId: "InterceptionId"
+    """Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch. Likewise if HTTP authentication is needed then the same fetch id will be used."""
+    request: "Request"
+    frameId: "FrameId"
+    """The id of the frame that initiated the request."""
+    resourceType: "ResourceType"
+    """How the requested resource will be used."""
+    isNavigationRequest: "bool"
+    """Whether this is a navigation request, which can abort the navigation completely."""
+    redirectUrl: "NotRequired[str]"
+    """Redirect location, only sent if a redirect was intercepted."""
+    authChallenge: "NotRequired[AuthChallenge]"
+    """Details of the Authorization Challenge encountered. If this is set then continueInterceptedRequest must contain an authChallengeResponse."""
+    responseErrorReason: "NotRequired[ErrorReason]"
+    """Response error if intercepted at response stage or if redirect occurred while intercepting request."""
+    responseStatusCode: "NotRequired[int]"
+    """Response code if intercepted at response stage or if redirect occurred while intercepting request or auth retry occurred."""
+    responseHeaders: "NotRequired[Headers]"
+    """Response headers if intercepted at the response stage or if redirect occurred while intercepting request or auth retry occurred."""

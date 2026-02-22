@@ -23,21 +23,6 @@ class IOClient:
     def __init__(self, client: "CDPClient"):
         self._client = client
 
-    async def close(
-        self,
-        params: "CloseParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Close the stream, discard any temporary backing storage."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="IO.close",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def read(
         self,
         params: "ReadParameters",
@@ -48,6 +33,21 @@ class IOClient:
             "ReadReturns",
             await self._client.send_raw(
                 method="IO.read",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def close(
+        self,
+        params: "CloseParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Close the stream, discard any temporary backing storage."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="IO.close",
                 params=params,
                 session_id=session_id,
             ),

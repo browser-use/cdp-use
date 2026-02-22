@@ -5,7 +5,6 @@
 """CDP Debugger Domain Types"""
 
 from typing import List
-from typing_extensions import Literal
 from typing_extensions import NotRequired, TypedDict
 
 from typing import TYPE_CHECKING
@@ -26,7 +25,7 @@ class Location(TypedDict):
     """Location in the source code."""
 
     scriptId: "ScriptId"
-    """Script identifier as reported in the `Debugger.scriptParsed`."""
+    """Script identifier as reported in the <code>Debugger.scriptParsed</code>."""
     lineNumber: "int"
     """Line number in the script (0-based)."""
     columnNumber: "NotRequired[int]"
@@ -38,14 +37,6 @@ class ScriptPosition(TypedDict):
 
     lineNumber: "int"
     columnNumber: "int"
-
-
-class LocationRange(TypedDict):
-    """Location range within one script."""
-
-    scriptId: "ScriptId"
-    start: "ScriptPosition"
-    end: "ScriptPosition"
 
 
 class CallFrame(TypedDict):
@@ -60,20 +51,13 @@ class CallFrame(TypedDict):
     location: "Location"
     """Location in the source code."""
     url: "str"
-    """JavaScript script name or url.
-Deprecated in favor of using the `location.scriptId` to resolve the URL via a previously
-sent `Debugger.scriptParsed` event."""
+    """JavaScript script name or url."""
     scopeChain: "List[Scope]"
     """Scope chain for this call frame."""
     this: "RemoteObject"
-    """`this` object for this call frame."""
+    """<code>this</code> object for this call frame."""
     returnValue: "NotRequired[RemoteObject]"
     """The value being returned, if the function is at return point."""
-    canBeRestarted: "NotRequired[bool]"
-    """Valid only while the VM is paused and indicates whether this frame
-can be restarted or not. Note that a `true` value here does not
-guarantee that Debugger#restartFrame with this CallFrameId will be
-successful, but it is very likely."""
 
 
 class Scope(TypedDict):
@@ -82,9 +66,7 @@ class Scope(TypedDict):
     type: "str"
     """Scope type."""
     object: "RemoteObject"
-    """Object representing the scope. For `global` and `with` scopes it represents the actual
-object; for the rest of the scopes, it is artificial transient object enumerating scope
-variables as its properties."""
+    """Object representing the scope. For <code>global</code> and <code>with</code> scopes it represents the actual object; for the rest of the scopes, it is artificial transient object enumerating scope variables as its properties."""
     name: "NotRequired[str]"
     startLocation: "NotRequired[Location]"
     """Location in the source code where scope starts"""
@@ -103,36 +85,9 @@ class SearchMatch(TypedDict):
 
 class BreakLocation(TypedDict):
     scriptId: "ScriptId"
-    """Script identifier as reported in the `Debugger.scriptParsed`."""
+    """Script identifier as reported in the <code>Debugger.scriptParsed</code>."""
     lineNumber: "int"
     """Line number in the script (0-based)."""
     columnNumber: "NotRequired[int]"
     """Column number in the script (0-based)."""
     type: "NotRequired[str]"
-
-
-class WasmDisassemblyChunk(TypedDict):
-    lines: "List[str]"
-    """The next chunk of disassembled lines."""
-    bytecodeOffsets: "List[int]"
-    """The bytecode offsets describing the start of each line."""
-
-
-ScriptLanguage = Literal["JavaScript", "WebAssembly"]
-"""Enum of possible script languages."""
-
-
-class DebugSymbols(TypedDict):
-    """Debug symbols available for a wasm script."""
-
-    type: "str"
-    """Type of the debug symbols."""
-    externalURL: "NotRequired[str]"
-    """URL of the external symbol source."""
-
-
-class ResolvedBreakpoint(TypedDict):
-    breakpointId: "BreakpointId"
-    """Breakpoint unique identifier."""
-    location: "Location"
-    """Actual breakpoint location."""

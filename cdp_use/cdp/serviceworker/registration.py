@@ -24,19 +24,6 @@ class ServiceWorkerRegistration:
         self._registry = registry
         self._domain = "ServiceWorker"
 
-    def workerErrorReported(
-        self,
-        callback: Callable[["WorkerErrorReportedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for workerErrorReported events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("ServiceWorker.workerErrorReported", callback)
-
     def workerRegistrationUpdated(
         self,
         callback: Callable[["WorkerRegistrationUpdatedEvent", Optional[str]], None],
@@ -62,3 +49,16 @@ class ServiceWorkerRegistration:
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("ServiceWorker.workerVersionUpdated", callback)
+
+    def workerErrorReported(
+        self,
+        callback: Callable[["WorkerErrorReportedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for workerErrorReported events.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("ServiceWorker.workerErrorReported", callback)

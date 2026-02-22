@@ -15,6 +15,31 @@ if TYPE_CHECKING:
     from .types import SamplingHeapProfile
 
 
+class StartTrackingHeapObjectsParameters(TypedDict, total=False):
+    trackAllocations: "bool"
+
+
+class StopTrackingHeapObjectsParameters(TypedDict, total=False):
+    reportProgress: "bool"
+    """If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken when the tracking is stopped."""
+
+
+class TakeHeapSnapshotParameters(TypedDict, total=False):
+    reportProgress: "bool"
+    """If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken."""
+
+
+class GetObjectByHeapObjectIdParameters(TypedDict):
+    objectId: "HeapSnapshotObjectId"
+    objectGroup: "NotRequired[str]"
+    """Symbolic group name that can be used to release multiple objects."""
+
+
+class GetObjectByHeapObjectIdReturns(TypedDict):
+    result: "RemoteObject"
+    """Evaluation result."""
+
+
 class AddInspectedHeapObjectParameters(TypedDict):
     heapObjectId: "HeapSnapshotObjectId"
     """Heap snapshot object id to be accessible by means of $x command line API."""
@@ -30,48 +55,9 @@ class GetHeapObjectIdReturns(TypedDict):
     """Id of the heap snapshot object corresponding to the passed remote object id."""
 
 
-class GetObjectByHeapObjectIdParameters(TypedDict):
-    objectId: "HeapSnapshotObjectId"
-    objectGroup: "NotRequired[str]"
-    """Symbolic group name that can be used to release multiple objects."""
-
-
-class GetObjectByHeapObjectIdReturns(TypedDict):
-    result: "RemoteObject"
-    """Evaluation result."""
-
-
-class GetSamplingProfileReturns(TypedDict):
-    profile: "SamplingHeapProfile"
-    """Return the sampling profile being collected."""
-
-
 class StartSamplingParameters(TypedDict, total=False):
     samplingInterval: "float"
-    """Average sample interval in bytes. Poisson distribution is used for the intervals. The
-default value is 32768 bytes."""
-    stackDepth: "float"
-    """Maximum stack depth. The default value is 128."""
-    includeObjectsCollectedByMajorGC: "bool"
-    """By default, the sampling heap profiler reports only objects which are
-still alive when the profile is returned via getSamplingProfile or
-stopSampling, which is useful for determining what functions contribute
-the most to steady-state memory usage. This flag instructs the sampling
-heap profiler to also include information about objects discarded by
-major GC, which will show which functions cause large temporary memory
-usage or long GC pauses."""
-    includeObjectsCollectedByMinorGC: "bool"
-    """By default, the sampling heap profiler reports only objects which are
-still alive when the profile is returned via getSamplingProfile or
-stopSampling, which is useful for determining what functions contribute
-the most to steady-state memory usage. This flag instructs the sampling
-heap profiler to also include information about objects discarded by
-minor GC, which is useful when tuning a latency-sensitive application
-for minimal GC activity."""
-
-
-class StartTrackingHeapObjectsParameters(TypedDict, total=False):
-    trackAllocations: "bool"
+    """Average sample interval in bytes. Poisson distribution is used for the intervals. The default value is 32768 bytes."""
 
 
 class StopSamplingReturns(TypedDict):
@@ -79,25 +65,6 @@ class StopSamplingReturns(TypedDict):
     """Recorded sampling heap profile."""
 
 
-class StopTrackingHeapObjectsParameters(TypedDict, total=False):
-    reportProgress: "bool"
-    """If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken
-when the tracking is stopped."""
-    treatGlobalObjectsAsRoots: "bool"
-    """Deprecated in favor of `exposeInternals`."""
-    captureNumericValue: "bool"
-    """If true, numerical values are included in the snapshot"""
-    exposeInternals: "bool"
-    """If true, exposes internals of the snapshot."""
-
-
-class TakeHeapSnapshotParameters(TypedDict, total=False):
-    reportProgress: "bool"
-    """If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken."""
-    treatGlobalObjectsAsRoots: "bool"
-    """If true, a raw snapshot without artificial roots will be generated.
-Deprecated in favor of `exposeInternals`."""
-    captureNumericValue: "bool"
-    """If true, numerical values are included in the snapshot"""
-    exposeInternals: "bool"
-    """If true, exposes internals of the snapshot."""
+class GetSamplingProfileReturns(TypedDict):
+    profile: "SamplingHeapProfile"
+    """Return the sampling profile being collected."""

@@ -20,19 +20,6 @@ class LayerTreeRegistration:
         self._registry = registry
         self._domain = "LayerTree"
 
-    def layerPainted(
-        self,
-        callback: Callable[["LayerPaintedEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for layerPainted events.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("LayerTree.layerPainted", callback)
-
     def layerTreeDidChange(
         self,
         callback: Callable[["LayerTreeDidChangeEvent", Optional[str]], None],
@@ -45,3 +32,16 @@ class LayerTreeRegistration:
                      Receives (event_data, session_id) as parameters.
         """
         self._registry.register("LayerTree.layerTreeDidChange", callback)
+
+    def layerPainted(
+        self,
+        callback: Callable[["LayerPaintedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for layerPainted events.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("LayerTree.layerPainted", callback)

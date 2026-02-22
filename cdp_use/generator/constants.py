@@ -1,18 +1,37 @@
 """
 CDP Protocol Version Configuration
 
-Change CDP_VERSION to pin a specific version of the Chrome DevTools Protocol.
+Pin the protocol to a specific Chromium release tag so that the generated
+types exactly match the browser version being targeted.
 
-Examples:
-  - Latest master: "refs/heads/master"
-  - Specific commit: "4b0c3f2e8c5d6a7b9e1f2a3c4d5e6f7a8b9c0d1e"
-  - Tagged version: "refs/tags/v1.3"  (when available)
+The protocol JSON files are fetched directly from the Chromium and V8
+source repositories at the given tag.  Googlesource returns base64-encoded
+content when `?format=TEXT` is appended — the downloader handles decoding.
 
-To find commits: https://github.com/ChromeDevTools/devtools-protocol/commits/master
+To update:
+  1. Find the Chromium tag at https://chromium.googlesource.com/chromium/src/+refs
+  2. Look up the V8 sub-module commit for that tag:
+       https://chromium.googlesource.com/chromium/src/+/<tag>/v8?format=TEXT
+     (the response is the commit hash)
+  3. Update CHROMIUM_TAG and V8_COMMIT below.
+  4. Run `uv run python -m cdp_use.generator` to regenerate.
 """
 
-CDP_VERSION = "refs/heads/master"  # Change this to pin a specific version
+# ── Chromium TAG  ──
+CHROMIUM_TAG = "144.0.7559.109"
+V8_COMMIT = "d75d178c137447df1a3e8830eae86b0bd72b9ac6"
 
-JS_PROTOCOL_FILE = f"https://raw.githubusercontent.com/ChromeDevTools/devtools-protocol/{CDP_VERSION}/json/js_protocol.json"
+# Browser protocol (from Blink / Chromium source)
+BROWSER_PROTOCOL_FILE = (
+    f"https://chromium.googlesource.com/chromium/src/+/refs/tags/{CHROMIUM_TAG}"
+    f"/third_party/blink/public/devtools_protocol/browser_protocol-1.3.json?format=TEXT"
+)
 
-BROWSER_PROTOCOL_FILE = f"https://raw.githubusercontent.com/ChromeDevTools/devtools-protocol/{CDP_VERSION}/json/browser_protocol.json"
+# JS protocol (from V8 source, pinned to the commit embedded in this Chromium tag)
+JS_PROTOCOL_FILE = (
+    f"https://chromium.googlesource.com/v8/v8/+/{V8_COMMIT}"
+    f"/include/js_protocol-1.3.json?format=TEXT"
+)
+
+# Legacy alias used by generate.py log messages
+CDP_VERSION = f"chromium-{CHROMIUM_TAG}"

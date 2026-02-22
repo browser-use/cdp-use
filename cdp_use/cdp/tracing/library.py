@@ -12,7 +12,6 @@ if TYPE_CHECKING:
     from ...client import CDPClient
     from .commands import GetCategoriesReturns
     from .commands import RecordClockSyncMarkerParameters
-    from .commands import RequestMemoryDumpParameters
     from .commands import RequestMemoryDumpReturns
     from .commands import StartParameters
 
@@ -22,6 +21,21 @@ class TracingClient:
 
     def __init__(self, client: "CDPClient"):
         self._client = client
+
+    async def start(
+        self,
+        params: Optional["StartParameters"] = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Start trace events collection."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Tracing.start",
+                params=params,
+                session_id=session_id,
+            ),
+        )
 
     async def end(
         self,
@@ -53,24 +67,9 @@ class TracingClient:
             ),
         )
 
-    async def recordClockSyncMarker(
-        self,
-        params: "RecordClockSyncMarkerParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Record a clock sync marker in the trace."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Tracing.recordClockSyncMarker",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def requestMemoryDump(
         self,
-        params: Optional["RequestMemoryDumpParameters"] = None,
+        params: None = None,
         session_id: Optional[str] = None,
     ) -> "RequestMemoryDumpReturns":
         """Request a global memory dump."""
@@ -83,16 +82,16 @@ class TracingClient:
             ),
         )
 
-    async def start(
+    async def recordClockSyncMarker(
         self,
-        params: Optional["StartParameters"] = None,
+        params: "RecordClockSyncMarkerParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Start trace events collection."""
+        """Record a clock sync marker in the trace."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Tracing.start",
+                method="Tracing.recordClockSyncMarker",
                 params=params,
                 session_id=session_id,
             ),

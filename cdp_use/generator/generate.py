@@ -2,37 +2,48 @@
 """
 CDP Protocol Downloader and Generator
 
-Downloads the latest Chrome DevTools Protocol specifications and generates
-type-safe Python bindings.
+Downloads Chrome DevTools Protocol specifications from the Chromium /
+V8 source repositories and generates type-safe Python bindings.
+
+Googlesource URLs return base64-encoded content (when `?format=TEXT`
+is appended).  This module handles the decoding transparently.
 """
 
+import base64
 import tempfile
 from pathlib import Path
-from urllib.request import urlretrieve
+from urllib.request import Request, urlopen
 
 from .constants import BROWSER_PROTOCOL_FILE, CDP_VERSION, JS_PROTOCOL_FILE
 from .generator import CDPGenerator
 
 
+def _download_googlesource(url: str, dest: Path) -> None:
+    """Download a file from googlesource, decoding the base64 response."""
+    req = Request(url)
+    with urlopen(req) as resp:
+        raw = resp.read()
+    decoded = base64.b64decode(raw)
+    dest.write_bytes(decoded)
+
+
 def download_protocol_files() -> tuple[str, str]:
-    """Download the protocol files from the official repository."""
+    """Download the protocol files from the Chromium / V8 source."""
     temp_dir = Path(tempfile.mkdtemp())
 
-    print(
-        f"Downloading Chrome DevTools Protocol specifications (version: {CDP_VERSION})..."
-    )
+    print(f"Downloading Chrome DevTools Protocol specifications ({CDP_VERSION})...")
 
-    # Download JavaScript protocol
+    # Download JavaScript protocol (from V8)
     js_protocol_path = temp_dir / "js_protocol.json"
     print(f"  Downloading JS protocol from {JS_PROTOCOL_FILE}")
-    urlretrieve(JS_PROTOCOL_FILE, js_protocol_path)
+    _download_googlesource(JS_PROTOCOL_FILE, js_protocol_path)
 
-    # Download Browser protocol
+    # Download Browser protocol (from Blink / Chromium)
     browser_protocol_path = temp_dir / "browser_protocol.json"
     print(f"  Downloading Browser protocol from {BROWSER_PROTOCOL_FILE}")
-    urlretrieve(BROWSER_PROTOCOL_FILE, browser_protocol_path)
+    _download_googlesource(BROWSER_PROTOCOL_FILE, browser_protocol_path)
 
-    print("✅ Protocol files downloaded successfully")
+    print("Protocol files downloaded successfully")
 
     return str(js_protocol_path), str(browser_protocol_path)
 
@@ -58,14 +69,14 @@ def main():
             protocol_files=[js_file, browser_file, *custom_protocol_files]
         )
 
-        print("🎉 CDP type-safe client generation completed!")
+        print("CDP type-safe client generation completed!")
         print("")
-        print("📖 Usage:")
+        print("Usage:")
         print("   from cdp_use.client import CDPClient")
         print("   # cdp.send.Target.getTargets() - fully type safe!")
 
     except Exception as e:
-        print(f"❌ Error during generation: {e}")
+        print(f"Error during generation: {e}")
         raise
 
 

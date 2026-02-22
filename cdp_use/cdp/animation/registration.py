@@ -14,7 +14,6 @@ if TYPE_CHECKING:
         AnimationCanceledEvent,
         AnimationCreatedEvent,
         AnimationStartedEvent,
-        AnimationUpdatedEvent,
     )
 
 
@@ -24,21 +23,6 @@ class AnimationRegistration:
     def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Animation"
-
-    def animationCanceled(
-        self,
-        callback: Callable[["AnimationCanceledEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for animationCanceled events.
-
-        Event for when an animation has been cancelled.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Animation.animationCanceled", callback)
 
     def animationCreated(
         self,
@@ -70,17 +54,17 @@ class AnimationRegistration:
         """
         self._registry.register("Animation.animationStarted", callback)
 
-    def animationUpdated(
+    def animationCanceled(
         self,
-        callback: Callable[["AnimationUpdatedEvent", Optional[str]], None],
+        callback: Callable[["AnimationCanceledEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for animationUpdated events.
+        Register a callback for animationCanceled events.
 
-        Event for animation that has been updated.
+        Event for when an animation has been cancelled.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("Animation.animationUpdated", callback)
+        self._registry.register("Animation.animationCanceled", callback)

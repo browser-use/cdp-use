@@ -10,35 +10,20 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from ...client import CDPClient
-    from .commands import GetGridHighlightObjectsForTestParameters
-    from .commands import GetGridHighlightObjectsForTestReturns
     from .commands import GetHighlightObjectForTestParameters
     from .commands import GetHighlightObjectForTestReturns
-    from .commands import GetSourceOrderHighlightObjectForTestParameters
-    from .commands import GetSourceOrderHighlightObjectForTestReturns
     from .commands import HighlightFrameParameters
     from .commands import HighlightNodeParameters
     from .commands import HighlightQuadParameters
     from .commands import HighlightRectParameters
-    from .commands import HighlightSourceOrderParameters
     from .commands import SetInspectModeParameters
     from .commands import SetPausedInDebuggerMessageParameters
-    from .commands import SetShowAdHighlightsParameters
-    from .commands import SetShowContainerQueryOverlaysParameters
     from .commands import SetShowDebugBordersParameters
     from .commands import SetShowFPSCounterParameters
-    from .commands import SetShowFlexOverlaysParameters
-    from .commands import SetShowGridOverlaysParameters
-    from .commands import SetShowHingeParameters
-    from .commands import SetShowHitTestBordersParameters
-    from .commands import SetShowIsolatedElementsParameters
-    from .commands import SetShowLayoutShiftRegionsParameters
     from .commands import SetShowPaintRectsParameters
     from .commands import SetShowScrollBottleneckRectsParameters
-    from .commands import SetShowScrollSnapOverlaysParameters
     from .commands import SetShowViewportSizeOnResizeParameters
-    from .commands import SetShowWebVitalsParameters
-    from .commands import SetShowWindowControlsOverlayParameters
+    from .commands import SetSuspendedParameters
 
 
 class OverlayClient:
@@ -46,21 +31,6 @@ class OverlayClient:
 
     def __init__(self, client: "CDPClient"):
         self._client = client
-
-    async def disable(
-        self,
-        params: None = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Disables domain notifications."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.disable",
-                params=params,
-                session_id=session_id,
-            ),
-        )
 
     async def enable(
         self,
@@ -77,189 +47,31 @@ class OverlayClient:
             ),
         )
 
-    async def getHighlightObjectForTest(
-        self,
-        params: "GetHighlightObjectForTestParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetHighlightObjectForTestReturns":
-        """For testing."""
-        return cast(
-            "GetHighlightObjectForTestReturns",
-            await self._client.send_raw(
-                method="Overlay.getHighlightObjectForTest",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getGridHighlightObjectsForTest(
-        self,
-        params: "GetGridHighlightObjectsForTestParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetGridHighlightObjectsForTestReturns":
-        """For Persistent Grid testing."""
-        return cast(
-            "GetGridHighlightObjectsForTestReturns",
-            await self._client.send_raw(
-                method="Overlay.getGridHighlightObjectsForTest",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def getSourceOrderHighlightObjectForTest(
-        self,
-        params: "GetSourceOrderHighlightObjectForTestParameters",
-        session_id: Optional[str] = None,
-    ) -> "GetSourceOrderHighlightObjectForTestReturns":
-        """For Source Order Viewer testing."""
-        return cast(
-            "GetSourceOrderHighlightObjectForTestReturns",
-            await self._client.send_raw(
-                method="Overlay.getSourceOrderHighlightObjectForTest",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def hideHighlight(
+    async def disable(
         self,
         params: None = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Hides any highlight."""
+        """Disables domain notifications."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Overlay.hideHighlight",
+                method="Overlay.disable",
                 params=params,
                 session_id=session_id,
             ),
         )
 
-    async def highlightFrame(
+    async def setShowPaintRects(
         self,
-        params: "HighlightFrameParameters",
+        params: "SetShowPaintRectsParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Highlights owner element of the frame with given id.
-        Deprecated: Doesn't work reliably and cannot be fixed due to process
-        separation (the owner node might be in a different process). Determine
-        the owner node in the client and use highlightNode."""
+        """Requests that backend shows paint rectangles"""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Overlay.highlightFrame",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def highlightNode(
-        self,
-        params: "HighlightNodeParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or
-        objectId must be specified."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.highlightNode",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def highlightQuad(
-        self,
-        params: "HighlightQuadParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Highlights given quad. Coordinates are absolute with respect to the main frame viewport."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.highlightQuad",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def highlightRect(
-        self,
-        params: "HighlightRectParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Highlights given rectangle. Coordinates are absolute with respect to the main frame viewport.
-        Issue: the method does not handle device pixel ratio (DPR) correctly.
-        The coordinates currently have to be adjusted by the client
-        if DPR is not 1 (see crbug.com/437807128)."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.highlightRect",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def highlightSourceOrder(
-        self,
-        params: "HighlightSourceOrderParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Highlights the source order of the children of the DOM node with given id or with the given
-        JavaScript object wrapper. Either nodeId or objectId must be specified."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.highlightSourceOrder",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setInspectMode(
-        self,
-        params: "SetInspectModeParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Enters the 'inspect' mode. In this mode, elements that user is hovering over are highlighted.
-        Backend then generates 'inspectNodeRequested' event upon element selection."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setInspectMode",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setShowAdHighlights(
-        self,
-        params: "SetShowAdHighlightsParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Highlights owner element of all frames detected to be ads."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setShowAdHighlights",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setPausedInDebuggerMessage(
-        self,
-        params: Optional["SetPausedInDebuggerMessageParameters"] = None,
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setPausedInDebuggerMessage",
+                method="Overlay.setShowPaintRects",
                 params=params,
                 session_id=session_id,
             ),
@@ -295,93 +107,6 @@ class OverlayClient:
             ),
         )
 
-    async def setShowGridOverlays(
-        self,
-        params: "SetShowGridOverlaysParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Highlight multiple elements with the CSS Grid overlay."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setShowGridOverlays",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setShowFlexOverlays(
-        self,
-        params: "SetShowFlexOverlaysParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setShowFlexOverlays",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setShowScrollSnapOverlays(
-        self,
-        params: "SetShowScrollSnapOverlaysParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setShowScrollSnapOverlays",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setShowContainerQueryOverlays(
-        self,
-        params: "SetShowContainerQueryOverlaysParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setShowContainerQueryOverlays",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setShowPaintRects(
-        self,
-        params: "SetShowPaintRectsParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Requests that backend shows paint rectangles"""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setShowPaintRects",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setShowLayoutShiftRegions(
-        self,
-        params: "SetShowLayoutShiftRegionsParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Requests that backend shows layout shift regions"""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setShowLayoutShiftRegions",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
     async def setShowScrollBottleneckRects(
         self,
         params: "SetShowScrollBottleneckRectsParameters",
@@ -392,36 +117,6 @@ class OverlayClient:
             "Dict[str, Any]",
             await self._client.send_raw(
                 method="Overlay.setShowScrollBottleneckRects",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setShowHitTestBorders(
-        self,
-        params: "SetShowHitTestBordersParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Deprecated, no longer has any effect."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setShowHitTestBorders",
-                params=params,
-                session_id=session_id,
-            ),
-        )
-
-    async def setShowWebVitals(
-        self,
-        params: "SetShowWebVitalsParameters",
-        session_id: Optional[str] = None,
-    ) -> "Dict[str, Any]":
-        """Deprecated, no longer has any effect."""
-        return cast(
-            "Dict[str, Any]",
-            await self._client.send_raw(
-                method="Overlay.setShowWebVitals",
                 params=params,
                 session_id=session_id,
             ),
@@ -442,46 +137,134 @@ class OverlayClient:
             ),
         )
 
-    async def setShowHinge(
+    async def setPausedInDebuggerMessage(
         self,
-        params: Optional["SetShowHingeParameters"] = None,
+        params: Optional["SetPausedInDebuggerMessageParameters"] = None,
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Add a dual screen device hinge"""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Overlay.setShowHinge",
+                method="Overlay.setPausedInDebuggerMessage",
                 params=params,
                 session_id=session_id,
             ),
         )
 
-    async def setShowIsolatedElements(
+    async def setSuspended(
         self,
-        params: "SetShowIsolatedElementsParameters",
+        params: "SetSuspendedParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Show elements in isolation mode with overlays."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Overlay.setShowIsolatedElements",
+                method="Overlay.setSuspended",
                 params=params,
                 session_id=session_id,
             ),
         )
 
-    async def setShowWindowControlsOverlay(
+    async def setInspectMode(
         self,
-        params: Optional["SetShowWindowControlsOverlayParameters"] = None,
+        params: "SetInspectModeParameters",
         session_id: Optional[str] = None,
     ) -> "Dict[str, Any]":
-        """Show Window Controls Overlay for PWA"""
+        """Enters the 'inspect' mode. In this mode, elements that user is hovering over are highlighted. Backend then generates 'inspectNodeRequested' event upon element selection."""
         return cast(
             "Dict[str, Any]",
             await self._client.send_raw(
-                method="Overlay.setShowWindowControlsOverlay",
+                method="Overlay.setInspectMode",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def highlightRect(
+        self,
+        params: "HighlightRectParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Highlights given rectangle. Coordinates are absolute with respect to the main frame viewport."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Overlay.highlightRect",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def highlightQuad(
+        self,
+        params: "HighlightQuadParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Highlights given quad. Coordinates are absolute with respect to the main frame viewport."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Overlay.highlightQuad",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def highlightNode(
+        self,
+        params: "HighlightNodeParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or objectId must be specified."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Overlay.highlightNode",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def highlightFrame(
+        self,
+        params: "HighlightFrameParameters",
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Highlights owner element of the frame with given id."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Overlay.highlightFrame",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def hideHighlight(
+        self,
+        params: None = None,
+        session_id: Optional[str] = None,
+    ) -> "Dict[str, Any]":
+        """Hides any highlight."""
+        return cast(
+            "Dict[str, Any]",
+            await self._client.send_raw(
+                method="Overlay.hideHighlight",
+                params=params,
+                session_id=session_id,
+            ),
+        )
+
+    async def getHighlightObjectForTest(
+        self,
+        params: "GetHighlightObjectForTestParameters",
+        session_id: Optional[str] = None,
+    ) -> "GetHighlightObjectForTestReturns":
+        """For testing."""
+        return cast(
+            "GetHighlightObjectForTestReturns",
+            await self._client.send_raw(
+                method="Overlay.getHighlightObjectForTest",
                 params=params,
                 session_id=session_id,
             ),

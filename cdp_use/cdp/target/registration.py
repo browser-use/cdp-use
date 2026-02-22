@@ -14,7 +14,6 @@ if TYPE_CHECKING:
         AttachedToTargetEvent,
         DetachedFromTargetEvent,
         ReceivedMessageFromTargetEvent,
-        TargetCrashedEvent,
         TargetCreatedEvent,
         TargetDestroyedEvent,
         TargetInfoChangedEvent,
@@ -27,53 +26,6 @@ class TargetRegistration:
     def __init__(self, registry: "EventRegistry"):
         self._registry = registry
         self._domain = "Target"
-
-    def attachedToTarget(
-        self,
-        callback: Callable[["AttachedToTargetEvent", Optional[str]], None],
-    ) -> None:
-        """
-        Register a callback for attachedToTarget events.
-
-        Issued when attached to target because of auto-attach or `attachToTarget` command.
-
-        Args:
-            callback: Function to call when event occurs.
-                     Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Target.attachedToTarget", callback)
-
-    def detachedFromTarget(
-        self,
-        callback: Callable[["DetachedFromTargetEvent", Optional[str]], None],
-    ) -> None:
-        """
-                Register a callback for detachedFromTarget events.
-
-                Issued when detached from target for any reason (including `detachFromTarget` command). Can be
-        issued multiple times per target if multiple sessions have been attached to it.
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Target.detachedFromTarget", callback)
-
-    def receivedMessageFromTarget(
-        self,
-        callback: Callable[["ReceivedMessageFromTargetEvent", Optional[str]], None],
-    ) -> None:
-        """
-                Register a callback for receivedMessageFromTarget events.
-
-                Notifies about a new protocol message received from the session (as reported in
-        `attachedToTarget` event).
-
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
-        """
-        self._registry.register("Target.receivedMessageFromTarget", callback)
 
     def targetCreated(
         self,
@@ -90,6 +42,21 @@ class TargetRegistration:
         """
         self._registry.register("Target.targetCreated", callback)
 
+    def targetInfoChanged(
+        self,
+        callback: Callable[["TargetInfoChangedEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for targetInfoChanged events.
+
+        Issued when some information about a target has changed. This only happens between <code>targetCreated</code> and <code>targetDestroyed</code>.
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Target.targetInfoChanged", callback)
+
     def targetDestroyed(
         self,
         callback: Callable[["TargetDestroyedEvent", Optional[str]], None],
@@ -105,33 +72,47 @@ class TargetRegistration:
         """
         self._registry.register("Target.targetDestroyed", callback)
 
-    def targetCrashed(
+    def attachedToTarget(
         self,
-        callback: Callable[["TargetCrashedEvent", Optional[str]], None],
+        callback: Callable[["AttachedToTargetEvent", Optional[str]], None],
     ) -> None:
         """
-        Register a callback for targetCrashed events.
+        Register a callback for attachedToTarget events.
 
-        Issued when a target has crashed.
+        Issued when attached to target because of auto-attach or <code>attachToTarget</code> command.
 
         Args:
             callback: Function to call when event occurs.
                      Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("Target.targetCrashed", callback)
+        self._registry.register("Target.attachedToTarget", callback)
 
-    def targetInfoChanged(
+    def detachedFromTarget(
         self,
-        callback: Callable[["TargetInfoChangedEvent", Optional[str]], None],
+        callback: Callable[["DetachedFromTargetEvent", Optional[str]], None],
     ) -> None:
         """
-                Register a callback for targetInfoChanged events.
+        Register a callback for detachedFromTarget events.
 
-                Issued when some information about a target has changed. This only happens between
-        `targetCreated` and `targetDestroyed`.
+        Issued when detached from target for any reason (including <code>detachFromTarget</code> command). Can be issued multiple times per target if multiple sessions have been attached to it.
 
-                Args:
-                    callback: Function to call when event occurs.
-                             Receives (event_data, session_id) as parameters.
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
         """
-        self._registry.register("Target.targetInfoChanged", callback)
+        self._registry.register("Target.detachedFromTarget", callback)
+
+    def receivedMessageFromTarget(
+        self,
+        callback: Callable[["ReceivedMessageFromTargetEvent", Optional[str]], None],
+    ) -> None:
+        """
+        Register a callback for receivedMessageFromTarget events.
+
+        Notifies about a new protocol message received from the session (as reported in <code>attachedToTarget</code> event).
+
+        Args:
+            callback: Function to call when event occurs.
+                     Receives (event_data, session_id) as parameters.
+        """
+        self._registry.register("Target.receivedMessageFromTarget", callback)
