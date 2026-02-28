@@ -26,8 +26,7 @@ class TypeGenerator:
         types = domain.get("types", [])
 
         # Always add basic imports
-        self.imports.add("from typing import Any, Dict, List, Optional, Union")
-        self.imports.add("from typing_extensions import NotRequired, TypedDict")
+        self.imports.add("from typing import Any, Dict, List, NotRequired, Optional, TypedDict, Union")
 
         # First pass: collect all type names that will be defined in this domain
         for type_def in types:
@@ -109,7 +108,7 @@ class TypeGenerator:
         enum_values = type_def["enum"]
 
         # Add Literal import
-        self.imports.add("from typing_extensions import Literal")
+        self.imports.add("from typing import Literal")
 
         content = ""
 
