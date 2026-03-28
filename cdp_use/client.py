@@ -4,6 +4,7 @@ import logging
 import re
 import time
 from typing import TYPE_CHECKING, Any, Dict, Optional
+from cdp_use.recorder import Recorder
 
 import websockets
 
@@ -400,3 +401,14 @@ class CDPClient:
         produced by your application rather than the browser.
         """
         return await self._event_registry.handle_event(method, params or {}, session_id)
+    
+    async def start_recording(self, output_dir: str):
+        """
+        Start recording browser session frames.
+        
+        :param output_dir: Directory to save frames
+        :return: Recorder instance
+        """
+        recorder = Recorder(self, output_dir)
+        await recorder.start()
+        return recorder
