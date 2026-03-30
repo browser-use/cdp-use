@@ -4,6 +4,7 @@ import logging
 import re
 import time
 from typing import TYPE_CHECKING, Any, Dict, Optional
+from cdp_use.recorder import Recorder
 
 import websockets
 
@@ -240,6 +241,7 @@ class CDPClient:
         self.msg_id: int = 0
         self.pending_requests: Dict[int, asyncio.Future] = {}
         self._message_handler_task = None
+        self._recorder: Optional[Recorder] = None
 
         # Initialize the type-safe CDP library
         from cdp_use.cdp.library import CDPLibrary
@@ -279,6 +281,12 @@ class CDPClient:
 
     async def stop(self):
         """Stop the message handler and close the WebSocket connection"""
+        # Stop active recording before closing the WebSocket so screencastFrameAck
+        # calls in the recorder can still complete cleanly
+        if self._recorder is not None:
+            await self._recorder.stop()
+            self._recorder = None
+
         # Cancel the message handler task
         if self._message_handler_task:
             self._message_handler_task.cancel()
@@ -400,3 +408,18 @@ class CDPClient:
         produced by your application rather than the browser.
         """
         return await self._event_registry.handle_event(method, params or {}, session_id)
+    
+    async def start_recording(self, output_dir: str) -> "Recorder":
+        """
+        Start recording browser session frames.
+
+        :param output_dir: Directory to save frames
+        :return: Recorder instance
+        :raises RuntimeError: If recording is already in progress
+        """
+        if self._recorder is not None:
+            raise RuntimeError("Recording already in progress. Call recorder.stop() first.")
+        recorder = Recorder(self, output_dir)
+        await recorder.start()
+        self._recorder = recorder
+        return recorder
