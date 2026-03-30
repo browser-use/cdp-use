@@ -28,26 +28,27 @@ class Recorder:
             while self._running or not self._queue.empty():
                 event = await self._queue.get()
 
-                self.frame_count += 1
+                try:
+                    self.frame_count += 1
 
-                # Decode base64 frame into binary image
-                image_data = base64.b64decode(event["data"])
+                    # Decode base64 frame into binary image
+                    image_data = base64.b64decode(event["data"])
 
-                filename = os.path.join(
-                    self.output_dir, f"frame_{self.frame_count:04d}.jpg"
-                )
+                    filename = os.path.join(
+                        self.output_dir, f"frame_{self.frame_count:04d}.jpg"
+                    )
 
-                with open(filename, "wb") as f:
-                    f.write(image_data)
+                    with open(filename, "wb") as f:
+                        f.write(image_data)
 
-                print(f"Saved {filename}")
+                    print(f"Saved {filename}")
 
-                # Acknowledge frame so Chrome continues sending frames
-                await self.client.send.Page.screencastFrameAck({
-                    "sessionId": event["sessionId"]
-                })
-
-                self._queue.task_done()
+                    # Acknowledge frame so Chrome continues sending frames
+                    await self.client.send.Page.screencastFrameAck({
+                        "sessionId": event["sessionId"]
+                    })
+                finally:
+                    self._queue.task_done()
 
         def on_frame(event: dict, session_id: str) -> None:
             if self._running:
@@ -70,6 +71,10 @@ class Recorder:
         Stop recording and finalize frame saving.
         """
         self._running = False
+
+        # Clear the client's back-reference so start_recording() can be called again
+        if self.client._recorder is self:
+            self.client._recorder = None
 
         await self.client.send.Page.stopScreencast()
 
