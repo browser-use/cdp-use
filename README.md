@@ -50,6 +50,8 @@ async def main():
 asyncio.run(main())
 ```
 
+Need a ready long-lived Browser Use Cloud browser to connect to from your own VPS? See [Browser Use Box](https://browser-use.com/bux) and the [15-second demo](https://www.tiktok.com/@browser_use/video/7639824093721758989).
+
 ### Type Safety in Action
 
 ```python
