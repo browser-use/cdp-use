@@ -72,7 +72,11 @@ tasks:
           else: parts[2]+=1
           print('.'.join(str(p) for p in parts))
           ")
-          sed -i '' "s/^version = \".*\"/version = \"${NEW_VERSION}\"/" pyproject.toml
+          uv run python -c "
+          import re, pathlib
+          p = pathlib.Path('pyproject.toml')
+          p.write_text(re.sub(r'^version = \".*\"', f'version = \"${NEW_VERSION}\"', p.read_text(), count=1, flags=re.MULTILINE))
+          "
           echo "cdp-use version bumped to ${NEW_VERSION}"
       - task: version
 
