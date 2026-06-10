@@ -1,0 +1,222 @@
+name: auto-release-on-version-bump
+
+# Watches main for version bumps in pyproject.toml. If the version moved to a
+# new value and no Release for that version exists yet, creates a GitHub Release
+# at the bump commit, then directly invokes publish.yml via workflow_call.
+# publish.yml runs preflight + the release env approval gate before actually
+# publishing to PyPI.
+#
+# Rerunning this workflow on the same commit is a no-op: if the Release or tag
+# already exists, we detect it and exit cleanly. Never fail loud just because
+# a previous run partially succeeded.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pyproject.toml'
+
+permissions:
+  contents: read
+
+concurrency:
+  # Serialize bump-detection per branch so two simultaneous merges can't race
+  # to create duplicate Releases. cancel-in-progress is false so a long-running
+  # detector isn't killed by a follow-up push.
+  group: auto-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  detect-and-release:
+    name: Detect version bump and create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # required to create the Release/tag
+    outputs:
+      should_release: ${{ steps.detect.outputs.should_release }}
+      version: ${{ steps.detect.outputs.version }}
+      tag: v${{ steps.detect.outputs.version }}
+
+    steps:
+      - name: Checkout (full history for range-aware diff)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve push range
+        id: range
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          # github.event.before is the SHA at HEAD before this push.
+          # For a first push to a new branch it's "0000000000000000000000000000000000000000"
+          # (the all-zero ref); fall back to HEAD~1 in that edge case so the
+          # detector still works. On main with branch protection in place,
+          # before should always be a real commit.
+          ZERO="0000000000000000000000000000000000000000"
+          if [ -n "${BEFORE:-}" ] && [ "$BEFORE" != "$ZERO" ]; then
+            BASE="$BEFORE"
+            SOURCE="github.event.before"
+          else
+            BASE="HEAD~1"
+            SOURCE="HEAD~1 (fallback; github.event.before was empty or zero-sha)"
+          fi
+          # Resolve to a real SHA for downstream use; HEAD~1 isn't a SHA literal.
+          BASE_SHA="$(git rev-parse "$BASE")"
+          echo "Using base: ${BASE_SHA} (from ${SOURCE})"
+          echo "::notice::Comparing ${BASE_SHA}..HEAD (source: ${SOURCE})"
+          echo "base_sha=${BASE_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Detect version bump
+        id: detect
+        env:
+          BASE_SHA: ${{ steps.range.outputs.base_sha }}
+        run: |
+          set -euo pipefail
+
+          # Fast path: if the manifest didn't change across the push range, skip.
+          # This catches every non-release push (most pushes) before any parsing.
+          CHANGED=$(git diff --name-only "${BASE_SHA}..HEAD" -- 'pyproject.toml' || true)
+          if [ -z "${CHANGED}" ]; then
+            echo "::notice::pyproject.toml not changed across ${BASE_SHA}..HEAD. Skipping."
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "Manifest path touched in this push:"
+          echo "${CHANGED}"
+
+          # Read previous (at BASE_SHA) and current versions from pyproject.toml.
+          # If pyproject.toml didn't exist at BASE_SHA (brand-new file), the
+          # default "missing" lets the change-detect branch catch it.
+          PREV_VERSION=$(git show "${BASE_SHA}:pyproject.toml" 2>/dev/null | grep -E '^version = ' | head -1 | sed -E 's/version = "(.*)"/\1/' || echo "missing")
+          NEW_VERSION=$(grep -E '^version = ' pyproject.toml | head -1 | sed -E 's/version = "(.*)"/\1/')
+
+          echo "version:  $PREV_VERSION -> $NEW_VERSION"
+
+          # If the version didn't change across the range, this wasn't a bump.
+          if [ "$NEW_VERSION" = "$PREV_VERSION" ]; then
+            echo "::notice::No version bump detected ($NEW_VERSION unchanged across ${BASE_SHA}..HEAD). Skipping."
+            echo "should_release=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "::notice::Version bump detected: $PREV_VERSION -> $NEW_VERSION"
+          echo "should_release=true" >> "$GITHUB_OUTPUT"
+          echo "version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check if Release already exists for this version
+        id: existence
+        if: steps.detect.outputs.should_release == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.detect.outputs.version }}
+        run: |
+          set -euo pipefail
+          # Existence check is best-effort. We re-check at create time, so a
+          # race here is non-fatal.
+          if gh release view "v${VERSION}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            echo "::notice::Release v${VERSION} already exists. Will skip creation."
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check if tag already exists (separate from Release)
+        id: tag_existence
+        if: steps.detect.outputs.should_release == 'true' && steps.existence.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.detect.outputs.version }}
+        run: |
+          set -euo pipefail
+          # A tag may exist without a Release if someone pushed it manually
+          # (e.g., `git tag v1.4.6 && git push --tags`). gh release create
+          # against an existing tag attaches the Release to that tag rather
+          # than failing, so this is informational.
+          if gh api "repos/${GITHUB_REPOSITORY}/git/refs/tags/v${VERSION}" >/dev/null 2>&1; then
+            echo "::notice::Tag v${VERSION} already exists (no Release attached). Will create Release against existing tag."
+            echo "tag_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag_exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create GitHub Release (idempotent)
+        if: steps.detect.outputs.should_release == 'true' && steps.existence.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.detect.outputs.version }}
+          TAG_EXISTS: ${{ steps.tag_existence.outputs.tag_exists }}
+        run: |
+          set -euo pipefail
+
+          # If the tag already exists, --target is rejected ("can not be
+          # provided when tag already exists"). Use --target only on a fresh
+          # tag; attach to an existing tag without it.
+          if [ "${TAG_EXISTS}" = "true" ]; then
+            TARGET_ARG=""
+          else
+            TARGET_ARG="--target ${GITHUB_SHA}"
+          fi
+
+          # Idempotent create: tolerate "release already exists" / "tag already
+          # exists" errors that can happen if a concurrent run or manual action
+          # created the Release between our existence check and this step.
+          set +e
+          OUT="$(gh release create "v${VERSION}" \
+              --repo "${GITHUB_REPOSITORY}" \
+              --title "v${VERSION}" \
+              --generate-notes \
+              ${TARGET_ARG} 2>&1)"
+          STATUS=$?
+          set -e
+
+          if [ "${STATUS}" -eq 0 ]; then
+            echo "::notice::Created Release v${VERSION} at ${GITHUB_SHA}. publish.yml will fire on the 'release: published' event."
+            exit 0
+          fi
+
+          # Recognize the benign "already exists" outcomes and treat them as
+          # success. Anything else: bail loud with the original error.
+          if echo "${OUT}" | grep -qiE "release.*already.*exists|already_exists|HTTP 422.*Validation Failed"; then
+            # Re-confirm via the API rather than trusting the error string.
+            if gh release view "v${VERSION}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+              echo "::notice::Release v${VERSION} already exists (created concurrently or by a previous partial run). Treating as success."
+              exit 0
+            fi
+          fi
+
+          # Unrecognized failure mode. Surface the gh CLI output and fail.
+          echo "::error::gh release create failed for v${VERSION}:"
+          echo "${OUT}"
+          exit ${STATUS}
+
+      - name: Summarize
+        if: always()
+        env:
+          VERSION: ${{ steps.detect.outputs.version }}
+          SHOULD_RELEASE: ${{ steps.detect.outputs.should_release }}
+          ALREADY_EXISTS: ${{ steps.existence.outputs.exists }}
+        run: |
+          if [ "${SHOULD_RELEASE}" != "true" ]; then
+            echo "No version bump → nothing to do."
+            exit 0
+          fi
+          if [ "${ALREADY_EXISTS}" = "true" ]; then
+            echo "Release v${VERSION} already existed before this run → no-op."
+            exit 0
+          fi
+          echo "Created Release v${VERSION}. publish.yml takes over from here."
+
+  publish:
+    name: Publish (via release env approval gate)
+    needs: detect-and-release
+    if: needs.detect-and-release.outputs.should_release == 'true'
+    uses: ./.github/workflows/publish.yml
+    with:
+      tag: ${{ needs.detect-and-release.outputs.tag }}
+    secrets: inherit
+    permissions:
+      contents: read
+      id-token: write   # required for OIDC publishing (cascades to the called workflow)
+      actions: read     # required for the called workflow's approval job to read the approvals API

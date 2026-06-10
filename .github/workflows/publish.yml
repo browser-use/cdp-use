@@ -1,0 +1,153 @@
+name: publish
+
+# Cancel in-progress runs when a new commit is pushed to the same branch/PR.
+# Release runs are serialized via the concurrency group below so two simultaneous
+# release publishes can't race on registry uploads.
+concurrency:
+  group: publish-${{ inputs.tag || github.event.release.tag_name || github.run_id }}
+  cancel-in-progress: false
+
+on:
+  release:
+    types: [published]
+  workflow_call:
+    inputs:
+      tag:
+        description: 'Release tag to publish (e.g. v1.4.6)'
+        required: true
+        type: string
+
+# Default permissions: read-only. Individual jobs override what they need.
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    name: Preflight (verify env protection, version sanity)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.event.release.tag_name }}
+          fetch-depth: 0
+
+      - name: Verify release environment is protected (fail-closed)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          ENV_NAME="release"
+          if ! RESP="$(gh api -H 'Accept: application/vnd.github+json' \
+              "/repos/${GITHUB_REPOSITORY}/environments/${ENV_NAME}" 2>/dev/null)"; then
+            echo "::error::Environment '${ENV_NAME}' does not exist (or is inaccessible). Create it at https://github.com/${GITHUB_REPOSITORY}/settings/environments/new with required reviewers and prevent_self_review, then re-run."
+            exit 1
+          fi
+          HAS_REVIEWERS="$(echo "$RESP" | jq -r '[.protection_rules[]? | select(.type == "required_reviewers")] | length')"
+          if [ "${HAS_REVIEWERS:-0}" -lt 1 ]; then
+            echo "::error::Environment '${ENV_NAME}' exists but has no required-reviewers protection rule."
+            exit 1
+          fi
+          SELF_REVIEW_BLOCKED="$(echo "$RESP" | jq -r '[.protection_rules[]? | select(.type=="required_reviewers") | .prevent_self_review] | any')"
+          if [ "$SELF_REVIEW_BLOCKED" != "true" ]; then
+            echo "::error::Environment '${ENV_NAME}' must have prevent_self_review enabled. Without it, the gate collapses to one identity when the dispatcher is also a reviewer."
+            exit 1
+          fi
+          echo "::notice::Environment '${ENV_NAME}' is protected with prevent_self_review. OK."
+
+      - name: Extract release tag and verify version coherence
+        id: version
+        env:
+          RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          # Strip optional leading 'v'.
+          VERSION="${RELEASE_TAG#v}"
+          echo "Release tag: $RELEASE_TAG -> version: $VERSION"
+
+          # Verify Python pyproject.toml version matches. cdp-use is Python-only,
+          # so this is the single source of truth.
+          PY_VERSION="$(grep -E '^version = ' pyproject.toml | head -1 | sed -E 's/version = "(.*)"/\1/')"
+
+          echo "  pyproject.toml: $PY_VERSION"
+
+          if [ "$PY_VERSION" != "$VERSION" ]; then
+            echo "::error::Release tag version ($VERSION) does not match pyproject.toml ($PY_VERSION). Run 'task version:bump' and commit before tagging."
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Verify version not already published (PyPI)
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          # === PyPI ===
+          # Use HTTP HEAD against the version-specific JSON URL for an unambiguous result.
+          # 200 = exists, 404 = doesn't exist, anything else = lookup failed (fail closed).
+          PYPI_URL="https://pypi.org/pypi/cdp-use/${VERSION}/json"
+          PYPI_STATUS="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 --retry 3 --retry-delay 2 "$PYPI_URL" || echo "000")"
+          case "$PYPI_STATUS" in
+            200)
+              echo "::error::cdp-use==${VERSION} is already published to PyPI. Bump the version before creating a new release."
+              exit 1
+              ;;
+            404)
+              echo "::notice::PyPI: ${VERSION} not yet published. OK."
+              ;;
+            *)
+              echo "::error::PyPI lookup for cdp-use==${VERSION} returned unexpected HTTP ${PYPI_STATUS} (expected 200 or 404). Failing closed; retry the release once PyPI is healthy."
+              exit 1
+              ;;
+          esac
+
+          echo "::notice::PyPI confirms ${VERSION} is unpublished. Proceeding."
+
+  publish-py:
+    name: Publish Python package to PyPI
+    needs: [preflight]
+    environment: release
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write   # required for PyPI trusted publishing OIDC
+      contents: read
+      actions: read     # required for /actions/runs/{id}/approvals lookup
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.event.release.tag_name }}
+
+      - name: Record approver
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_TAG: ${{ inputs.tag || github.event.release.tag_name }}
+        run: |
+          set -euo pipefail
+          APPROVER="$(gh api \
+            "/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/approvals" \
+            --jq '[.[] | select(.environments[]?.name=="release") | .user.login] | last' \
+            2>/dev/null || echo "")"
+          if [ -z "$APPROVER" ] || [ "$APPROVER" = "null" ]; then
+            APPROVER="(approver lookup failed; check Actions UI)"
+          fi
+          echo "::notice::Release ${TARGET_TAG} of cdp-use approved by @${APPROVER}, triggered by @${GITHUB_ACTOR}, run ${GITHUB_RUN_ID}."
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: false  # no cache on release builds
+
+      - name: Build Python package
+        run: |
+          set -euo pipefail
+          rm -rf dist/
+          uv build
+
+      - name: Publish to PyPI (trusted publishing)
+        run: uv publish --trusted-publishing always

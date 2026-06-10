@@ -18,7 +18,9 @@ dependencies = [
 ]
 
 [project.urls]
+Homepage = "https://github.com/browser-use/cdp-use"
 Repository = "https://github.com/browser-use/cdp-use"
+Issues = "https://github.com/browser-use/cdp-use/issues"
 
 [build-system]
 requires = ["hatchling"]

@@ -45,3 +45,123 @@ tasks:
     cmds:
       - rm -rf dist/ build/ *.egg-info
       - find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+
+  # ── Version Management ────────────────────────────────────────
+  version:
+    desc: Show current version
+    cmds:
+      - echo "cdp-use:" $(uv run python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
+
+  version:bump:
+    desc: "Bump version (usage: task version:bump -- patch|minor|major)"
+    cmds:
+      - cmd: |
+          set -euo pipefail
+          BUMP="{{.CLI_ARGS}}"
+          if [ -z "$BUMP" ]; then BUMP="patch"; fi
+          if [ "$BUMP" != "patch" ] && [ "$BUMP" != "minor" ] && [ "$BUMP" != "major" ]; then
+            echo "ERROR: invalid bump '$BUMP'. Use patch, minor, or major." >&2
+            exit 1
+          fi
+          NEW_VERSION=$(uv run python -c "
+          import tomllib
+          v = tomllib.load(open('pyproject.toml','rb'))['project']['version']
+          parts = [int(x) for x in v.split('.')]
+          if '$BUMP' == 'major': parts[0]+=1; parts[1]=0; parts[2]=0
+          elif '$BUMP' == 'minor': parts[1]+=1; parts[2]=0
+          else: parts[2]+=1
+          print('.'.join(str(p) for p in parts))
+          ")
+          sed -i '' "s/^version = \".*\"/version = \"${NEW_VERSION}\"/" pyproject.toml
+          echo "cdp-use version bumped to ${NEW_VERSION}"
+      - task: version
+
+  release:
+    desc: "Cut a release: bump version, commit, push branch, open PR (usage: task release -- patch|minor|major)"
+    cmds:
+      - cmd: |
+          set -euo pipefail
+          BUMP="{{.CLI_ARGS}}"
+          if [ -z "$BUMP" ]; then BUMP="patch"; fi
+          if [ "$BUMP" != "patch" ] && [ "$BUMP" != "minor" ] && [ "$BUMP" != "major" ]; then
+            echo "ERROR: invalid bump '$BUMP'. Use patch, minor, or major." >&2
+            exit 1
+          fi
+
+          # Refuse to run on a dirty tree — too easy to ship unrelated WIP.
+          if ! git diff --quiet || ! git diff --cached --quiet; then
+            echo "ERROR: working tree is dirty. Commit or stash before releasing." >&2
+            git status --short >&2
+            exit 1
+          fi
+
+          # The task auto-creates the release branch from main, so it must be
+          # run FROM main. Refuse otherwise — running from a feature branch
+          # would surprise the user with a branch named off a non-main tip.
+          CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+          if [ "$CURRENT_BRANCH" != "main" ]; then
+            echo "ERROR: refusing to run. \`task release\` auto-creates a release branch off main, so it must be started from main." >&2
+            echo "Currently on: $CURRENT_BRANCH" >&2
+            echo "Switch first:" >&2
+            echo "  git checkout main" >&2
+            exit 1
+          fi
+
+          # Fast-forward main to origin/main so the new branch is based on the
+          # latest published main, not whatever stale state we have locally.
+          # --ff-only fails if local main has unpushed commits, which would be
+          # weird — bail loud so the user reconciles.
+          git fetch origin main --quiet
+          if ! git merge-base --is-ancestor origin/main HEAD; then
+            echo "ERROR: local main has commits not on origin/main. Reconcile before releasing." >&2
+            echo "  git log origin/main..HEAD --oneline" >&2
+            exit 1
+          fi
+          git pull --ff-only origin main --quiet
+
+          # Create the release branch. Date+time keeps it unique across
+          # multiple releases the same day; the branch auto-deletes on PR merge
+          # (squash + delete-on-merge), so the branch list stays clean.
+          NEW_BRANCH="release/$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$NEW_BRANCH"
+          echo "::notice::Created release branch $NEW_BRANCH from main."
+      - task: "version:bump"
+        vars: { CLI_ARGS: '{{.CLI_ARGS | default "patch"}}' }
+      - cmd: |
+          set -euo pipefail
+          BUMP="{{.CLI_ARGS}}"
+          if [ -z "$BUMP" ]; then BUMP="patch"; fi
+          NEW_VERSION="$(uv run python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")"
+          echo
+          echo "Releasing v${NEW_VERSION}."
+
+          # Stage the manifest update that version:bump touched.
+          git add pyproject.toml
+
+          # Commit. Conventional-ish message so it's obvious in main's history.
+          git commit -m "release: v${NEW_VERSION}" -m "Bumps pyproject.toml. Merging this PR will trigger auto-release-on-version-bump → publish.yml (gated by the release env)."
+
+          # Push the branch. -u so future pushes work without args.
+          BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+          git push -u origin "$BRANCH"
+
+          # Open the PR. If gh is logged in, this Just Works; otherwise prints
+          # the manual fallback URL.
+          if command -v gh >/dev/null 2>&1; then
+            gh pr create \
+              --repo browser-use/cdp-use \
+              --base main \
+              --head "$BRANCH" \
+              --title "release: v${NEW_VERSION}" \
+              --body "Bumps pyproject.toml to v${NEW_VERSION}.
+
+          Merging this PR triggers \`auto-release-on-version-bump\` → \`publish.yml\` (gated by the \`release\` env, requires a non-author approver, OIDC publish to PyPI).
+
+          Generated by \`task release -- $BUMP\`."
+          else
+            echo "gh CLI not found. Push succeeded; open the PR manually:"
+            echo "  https://github.com/browser-use/cdp-use/compare/main...$BRANCH?expand=1"
+          fi
+
+          echo
+          echo "Done. Merge the PR to trigger the release."
