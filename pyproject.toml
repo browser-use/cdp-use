@@ -12,10 +12,10 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "httpx>=0.28.1",
-    "idna>=3.15",
-    "typing-extensions>=4.12.2",
-    "websockets>=15.0.1",
+    "httpx==0.28.1",
+    "idna==3.18",
+    "typing-extensions==4.14.1",
+    "websockets==15.0.1",
 ]
 
 [project.urls]
@@ -24,11 +24,11 @@ Repository = "https://github.com/browser-use/cdp-use"
 Issues = "https://github.com/browser-use/cdp-use/issues"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling==1.31.0"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["build>=1.2.2.post1", "ruff>=0.12.2"]
+dev = ["build==1.2.2.post1", "ruff==0.12.2"]
 
 [tool.hatch.build]
 include = ["cdp_use/**/*.py", "cdp_use/py.typed"]
