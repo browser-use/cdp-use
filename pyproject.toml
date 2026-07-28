@@ -12,10 +12,10 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "httpx==0.28.1",
-    "idna==3.18",
-    "typing-extensions==4.14.1",
-    "websockets==15.0.1",
+    "httpx>=0.28.1",
+    "idna>=3.15",
+    "typing-extensions>=4.12.2",
+    "websockets>=15.0.1",
 ]
 
 [project.urls]
@@ -28,7 +28,7 @@ requires = ["hatchling==1.31.0"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["build==1.2.2.post1", "ruff==0.12.2"]
+dev = ["build==1.5.0", "ruff==0.16.0"]
 
 [tool.hatch.build]
 include = ["cdp_use/**/*.py", "cdp_use/py.typed"]
@@ -38,7 +38,8 @@ exclude = ["cdp_use/generator/*.py"]
 exclude = [".git", "__pycache__", "dist", "build"]
 
 [tool.ruff.lint]
-# Ignore wildcard imports (F403) and redefinition (F811) in generated code
+# Preserve the pre-0.16 default rule set instead of inheriting versioned defaults.
+select = ["E4", "E7", "E9", "F"]
 ignore = []
 
 [tool.ruff.lint.per-file-ignores]
