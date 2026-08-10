@@ -238,7 +238,7 @@ class CDPClient:
         self.max_ws_frame_size = max_ws_frame_size
         self.ws: Optional[websockets.ClientConnection] = None
         self.msg_id: int = 0
-        self.pending_requests: Dict[int, asyncio.Future] = {}
+        self.pending_requests: Dict[int, tuple[asyncio.Future, str]] = {}
         self._message_handler_task = None
 
         # Initialize the type-safe CDP library
@@ -311,14 +311,47 @@ class CDPClient:
 
                 # Handle response messages (with id)
                 if "id" in data and data["id"] in self.pending_requests:
-                    future = self.pending_requests.pop(data["id"])
+                    future, request_method = self.pending_requests.pop(data["id"])
                     # Check if future is already done to avoid InvalidStateError
                     if not future.done():
                         if "error" in data:
-                            logger.debug(
-                                f"CDP Error for request {data['id']}: {data['error']}"
-                            )
-                            future.set_exception(RuntimeError(data["error"]))
+                            error = data["error"]
+                            # Suppress CDP error -32000 "Browser window not found"
+                            # only for Browser.getWindowForTarget.
+                            # This error occurs during race conditions when
+                            # getWindowForTarget is called for a target that doesn't
+                            # yet have an associated window (e.g., during file uploads,
+                            # page transitions, or new tab creation). The target exists
+                            # in CDP but has no window binding yet, so
+                            # Browser.getWindowForTarget returns -32000. Returning a
+                            # default result prevents the event handler from crashing and
+                            # corrupting the session.
+                            if (
+                                isinstance(error, dict)
+                                and error.get("code") == -32000
+                                and request_method == "Browser.getWindowForTarget"
+                            ):
+                                logger.info(
+                                    f"CDP error {error.get('code')} suppressed for "
+                                    f"Browser.getWindowForTarget request {data['id']}: "
+                                    f"{error.get('message', 'unknown')} - "
+                                    f"returning default window result"
+                                )
+                                future.set_result({
+                                    "windowId": 0,
+                                    "bounds": {
+                                        "left": 0,
+                                        "top": 0,
+                                        "width": 1920,
+                                        "height": 1080,
+                                        "windowState": "normal",
+                                    },
+                                })
+                            else:
+                                logger.debug(
+                                    f"CDP Error for request {data['id']}: {error}"
+                                )
+                                future.set_exception(RuntimeError(error))
                         else:
                             future.set_result(data["result"])
                     else:
@@ -346,14 +379,14 @@ class CDPClient:
         except websockets.exceptions.ConnectionClosed as e:
             logger.debug(f"WebSocket connection closed: {e}")
             # Connection closed, resolve all pending futures with an exception
-            for future in self.pending_requests.values():
+            for future, _ in self.pending_requests.values():
                 if not future.done():
                     future.set_exception(ConnectionError("WebSocket connection closed"))
             self.pending_requests.clear()
         except Exception as e:
             logger.error(f"Error in message handler: {e}")
             # Handle other exceptions
-            for future in self.pending_requests.values():
+            for future, _ in self.pending_requests.values():
                 if not future.done():
                     future.set_exception(e)
             self.pending_requests.clear()
@@ -379,9 +412,9 @@ class CDPClient:
         if session_id:
             msg["sessionId"] = session_id
 
-        # Create a future for this request
+        # Create a future for this request, storing method for error handling
         future = asyncio.Future()
-        self.pending_requests[self.msg_id] = future
+        self.pending_requests[self.msg_id] = (future, method)
 
         await self.ws.send(json.dumps(msg))
 
