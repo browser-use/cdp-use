@@ -246,8 +246,9 @@ class CDPClient:
         # command, or added latency on a cloud/remote session) isn't
         # necessarily a dead connection; closing on it with code 1011 is
         # what produced an unexplained mid-session drop (e.g. #4688). This
-        # file's own PING/PONG logging above already tracks exactly that
-        # timeout window, a sign the failure mode has been hit before.
+        # file's own PING/PONG logging above already warns on a slow pong
+        # (a separate, hard-coded 3s check, not tied to `ping_timeout`'s
+        # actual value) -- a sign the failure mode has been hit before.
         # Keeping `ping_interval` enabled still sends periodic pings (useful
         # for NAT/proxy keepalive and as a liveness signal in logs); only
         # the forced close on a slow pong is disabled. A connection that
