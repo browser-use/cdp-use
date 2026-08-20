@@ -232,21 +232,32 @@ class CDPClient:
         url: str,
         additional_headers: Optional[Dict[str, str]] = None,
         max_ws_frame_size: int = 100 * 1024 * 1024,  # Default 100MB
-        ping_interval: Optional[float] = None,
+        ping_interval: Optional[float] = 20,
         ping_timeout: Optional[float] = None,
     ):
-        # `ping_interval`/`ping_timeout` default to None (disabled), not the
-        # `websockets` library's own defaults (20s/20s). CDP is a request/
-        # response protocol over this same socket, so its own traffic is
-        # already sufficient liveness detection; the library's independent
-        # keepalive ping can time out under real load (a browser busy
-        # servicing a heavy command, or added latency on a cloud/remote
-        # session) well before the connection has actually died, closing it
-        # with code 1011 and surfacing as an unexplained mid-session drop
-        # (e.g. #4688). This file's own PING/PONG logging above already
-        # tracks exactly that timeout window, which is a sign the failure
-        # mode has been hit before. Pass explicit values to restore the
-        # library defaults if you want transport-level liveness checks.
+        # `ping_timeout` defaults to None (disabled) while `ping_interval`
+        # keeps the `websockets` library's own default (20s). Per the
+        # library's own docs, `ping_interval=None` disables keepalive pings
+        # entirely, `ping_timeout=None` disables the timeout that would
+        # otherwise close the connection when a pong doesn't arrive in time
+        # -- the two are independent knobs, not a single on/off switch.
+        # CDP is a request/response protocol over this same socket, so a
+        # missed pong under real load (a browser busy servicing a heavy
+        # command, or added latency on a cloud/remote session) isn't
+        # necessarily a dead connection; closing on it with code 1011 is
+        # what produced an unexplained mid-session drop (e.g. #4688). This
+        # file's own PING/PONG logging above already tracks exactly that
+        # timeout window, a sign the failure mode has been hit before.
+        # Keeping `ping_interval` enabled still sends periodic pings (useful
+        # for NAT/proxy keepalive and as a liveness signal in logs); only
+        # the forced close on a slow pong is disabled. A connection that
+        # dies with no TCP-level signal (network partition, no RST) can
+        # still hang rather than error -- pass `ping_timeout` back to a
+        # real value, or add an application-level timeout around commands,
+        # if you need a hard upper bound on how long a dead socket can go
+        # undetected. Note `ping_timeout` only has an effect while
+        # `ping_interval` is not None; passing `ping_interval=None`
+        # disables pings altogether and `ping_timeout` is then moot.
         self.url = url
         self.additional_headers = additional_headers
         self.max_ws_frame_size = max_ws_frame_size
