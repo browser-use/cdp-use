@@ -232,10 +232,26 @@ class CDPClient:
         url: str,
         additional_headers: Optional[Dict[str, str]] = None,
         max_ws_frame_size: int = 100 * 1024 * 1024,  # Default 100MB
+        ping_interval: Optional[float] = None,
+        ping_timeout: Optional[float] = None,
     ):
+        # `ping_interval`/`ping_timeout` default to None (disabled), not the
+        # `websockets` library's own defaults (20s/20s). CDP is a request/
+        # response protocol over this same socket, so its own traffic is
+        # already sufficient liveness detection; the library's independent
+        # keepalive ping can time out under real load (a browser busy
+        # servicing a heavy command, or added latency on a cloud/remote
+        # session) well before the connection has actually died, closing it
+        # with code 1011 and surfacing as an unexplained mid-session drop
+        # (e.g. #4688). This file's own PING/PONG logging above already
+        # tracks exactly that timeout window, which is a sign the failure
+        # mode has been hit before. Pass explicit values to restore the
+        # library defaults if you want transport-level liveness checks.
         self.url = url
         self.additional_headers = additional_headers
         self.max_ws_frame_size = max_ws_frame_size
+        self.ping_interval = ping_interval
+        self.ping_timeout = ping_timeout
         self.ws: Optional[websockets.ClientConnection] = None
         self.msg_id: int = 0
         self.pending_requests: Dict[int, asyncio.Future] = {}
@@ -271,6 +287,8 @@ class CDPClient:
         )
         connect_kwargs = {
             "max_size": self.max_ws_frame_size,
+            "ping_interval": self.ping_interval,
+            "ping_timeout": self.ping_timeout,
         }
         if self.additional_headers:
             connect_kwargs["additional_headers"] = self.additional_headers
