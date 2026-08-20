@@ -232,10 +232,38 @@ class CDPClient:
         url: str,
         additional_headers: Optional[Dict[str, str]] = None,
         max_ws_frame_size: int = 100 * 1024 * 1024,  # Default 100MB
+        ping_interval: Optional[float] = 20,
+        ping_timeout: Optional[float] = None,
     ):
+        # `ping_timeout` defaults to None (disabled) while `ping_interval`
+        # keeps the `websockets` library's own default (20s). Per the
+        # library's own docs, `ping_interval=None` disables keepalive pings
+        # entirely, `ping_timeout=None` disables the timeout that would
+        # otherwise close the connection when a pong doesn't arrive in time
+        # -- the two are independent knobs, not a single on/off switch.
+        # CDP is a request/response protocol over this same socket, so a
+        # missed pong under real load (a browser busy servicing a heavy
+        # command, or added latency on a cloud/remote session) isn't
+        # necessarily a dead connection; closing on it with code 1011 is
+        # what produced an unexplained mid-session drop (e.g. #4688). This
+        # file's own PING/PONG logging above already warns on a slow pong
+        # (a separate, hard-coded 3s check, not tied to `ping_timeout`'s
+        # actual value) -- a sign the failure mode has been hit before.
+        # Keeping `ping_interval` enabled still sends periodic pings (useful
+        # for NAT/proxy keepalive and as a liveness signal in logs); only
+        # the forced close on a slow pong is disabled. A connection that
+        # dies with no TCP-level signal (network partition, no RST) can
+        # still hang rather than error -- pass `ping_timeout` back to a
+        # real value, or add an application-level timeout around commands,
+        # if you need a hard upper bound on how long a dead socket can go
+        # undetected. Note `ping_timeout` only has an effect while
+        # `ping_interval` is not None; passing `ping_interval=None`
+        # disables pings altogether and `ping_timeout` is then moot.
         self.url = url
         self.additional_headers = additional_headers
         self.max_ws_frame_size = max_ws_frame_size
+        self.ping_interval = ping_interval
+        self.ping_timeout = ping_timeout
         self.ws: Optional[websockets.ClientConnection] = None
         self.msg_id: int = 0
         self.pending_requests: Dict[int, asyncio.Future] = {}
@@ -271,6 +299,8 @@ class CDPClient:
         )
         connect_kwargs = {
             "max_size": self.max_ws_frame_size,
+            "ping_interval": self.ping_interval,
+            "ping_timeout": self.ping_timeout,
         }
         if self.additional_headers:
             connect_kwargs["additional_headers"] = self.additional_headers
