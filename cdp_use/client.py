@@ -321,6 +321,10 @@ class CDPClient:
                             future.set_exception(RuntimeError(data["error"]))
                         else:
                             future.set_result(data["result"])
+                    elif future.cancelled():
+                        logger.debug(
+                            f"Received response for cancelled request {data['id']} - ignoring"
+                        )
                     else:
                         logger.warning(
                             f"Received duplicate response for request {data['id']} - ignoring"
