@@ -4,6 +4,7 @@
 
 """CDP Event Registry"""
 
+import asyncio
 import logging
 import inspect
 from typing import Any, Callable, Dict, Optional
@@ -16,6 +17,7 @@ class EventRegistry:
 
     def __init__(self):
         self._handlers: Dict[str, Callable[[Any, Optional[str]], None]] = {}
+        self._tasks: set[asyncio.Task] = set()
 
     def register(
         self,
@@ -65,12 +67,27 @@ class EventRegistry:
                 handler = self._handlers[method]
                 result = handler(params, session_id)
                 if inspect.isawaitable(result):
-                    await result
+                    # A task, so a handler awaiting a CDP reply does not block the read loop that delivers it.
+                    task = asyncio.ensure_future(result)
+                    self._tasks.add(task)
+                    task.add_done_callback(lambda t: self._finish(method, t))
                 return True
             except Exception as e:
                 logger.error(f"Error in event handler for {method}: {e}")
                 return False
         return False
+
+    def _finish(self, method: str, task: asyncio.Task) -> None:
+        self._tasks.discard(task)
+        if not task.cancelled() and task.exception() is not None:
+            logger.error(f"Error in event handler for {method}: {task.exception()}")
+
+    async def cancel_tasks(self) -> None:
+        """Cancel the async handlers still running and wait for them to finish."""
+        tasks = list(self._tasks)
+        for task in tasks:
+            task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
 
     def clear(self) -> None:
         """Clear all registered handlers."""

@@ -20,6 +20,7 @@ class RegistryGenerator:
 """
         content += '"""CDP Event Registry"""\n\n'
 
+        content += "import asyncio\n"
         content += "import logging\n"
         content += "import inspect\n"
         content += "from typing import Any, Callable, Dict, Optional\n\n"
@@ -29,7 +30,8 @@ class RegistryGenerator:
         content += "class EventRegistry:\n"
         content += '    """Central registry for managing CDP event callbacks."""\n\n'
         content += "    def __init__(self):\n"
-        content += "        self._handlers: Dict[str, Callable[[Any, Optional[str]], None]] = {}\n\n"
+        content += "        self._handlers: Dict[str, Callable[[Any, Optional[str]], None]] = {}\n"
+        content += "        self._tasks: set[asyncio.Task] = set()\n\n"
 
         content += "    def register(\n"
         content += "        self,\n"
@@ -85,12 +87,27 @@ class RegistryGenerator:
         content += "                handler = self._handlers[method]\n"
         content += "                result = handler(params, session_id)\n"
         content += "                if inspect.isawaitable(result):\n"
-        content += "                    await result\n"
+        content += "                    # A task, so a handler awaiting a CDP reply does not block the read loop that delivers it.\n"
+        content += "                    task = asyncio.ensure_future(result)\n"
+        content += "                    self._tasks.add(task)\n"
+        content += "                    task.add_done_callback(lambda t: self._finish(method, t))\n"
         content += "                return True\n"
         content += "            except Exception as e:\n"
         content += '                logger.error(f"Error in event handler for {method}: {e}")\n'
         content += "                return False\n"
         content += "        return False\n\n"
+
+        content += "    def _finish(self, method: str, task: asyncio.Task) -> None:\n"
+        content += "        self._tasks.discard(task)\n"
+        content += "        if not task.cancelled() and task.exception() is not None:\n"
+        content += '            logger.error(f"Error in event handler for {method}: {task.exception()}")\n\n'
+
+        content += "    async def cancel_tasks(self) -> None:\n"
+        content += '        """Cancel the async handlers still running and wait for them to finish."""\n'
+        content += "        tasks = list(self._tasks)\n"
+        content += "        for task in tasks:\n"
+        content += "            task.cancel()\n"
+        content += "        await asyncio.gather(*tasks, return_exceptions=True)\n\n"
 
         content += "    def clear(self) -> None:\n"
         content += '        """Clear all registered handlers."""\n'
