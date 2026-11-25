@@ -287,6 +287,7 @@ class CDPClient:
             except asyncio.CancelledError:
                 pass
             self._message_handler_task = None
+        await self._event_registry.cancel_tasks()
 
         # Cancel all pending requests
         for future in self.pending_requests.values():
